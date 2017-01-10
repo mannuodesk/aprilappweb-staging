@@ -5229,7 +5229,6 @@ var BotTrainingService = (function () {
     //baseUrl:string = "http://localhost/";
     function BotTrainingService(http) {
         this.http = http;
-        //baseUrl:string = "http://aprilappserver.azurewebsites.net/";
         this.baseUrl = "https://aprilappserver-staging.azurewebsites.net/";
     }
     BotTrainingService.prototype.getAllGroups = function (type) {

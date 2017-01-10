@@ -17732,10 +17732,8 @@ var core_1 = __webpack_require__("./node_modules/@angular/core/index.js");
 var http_1 = __webpack_require__("./node_modules/@angular/http/index.js");
 __webpack_require__("./node_modules/rxjs/add/operator/map.js");
 var MiscServices = (function () {
-    //baseUrl:string = "http://localhost/";
     function MiscServices(http) {
         this.http = http;
-        //baseUrl:string = "http://aprilappserver.azurewebsites.net/";
         this.baseUrl = "https://aprilappserver-staging.azurewebsites.net/";
     }
     MiscServices.prototype.getAlldirectory = function () {

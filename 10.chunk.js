@@ -17518,6 +17518,7 @@ var Generic = (function () {
     function Generic(_botTrainingService, _rootNode) {
         this._botTrainingService = _botTrainingService;
         this._rootNode = _rootNode;
+        this.baseUrl = "https://aprilappserver-staging.azurewebsites.net/";
         this.select2GroupedData = [];
         this.GroupText = "";
         this.groups = [];
@@ -17944,7 +17945,7 @@ var Generic = (function () {
                 // gets the new and old index then removes the temporary attribute
                 var newIndex = ui.item.index() + 1;
                 var groupId = jQuery(this).attr('data-previndex');
-                jQuery.post("http://aprilappserver.azurewebsites.net/groups/setOrderOfGroups", {
+                jQuery.post("https://aprilappserver-staging.azurewebsites.net/responsemessage/sortingOfResponseMessages", {
                     oldIndex: oldIndex,
                     newIndex: newIndex,
                     groupId: groupId
@@ -17965,12 +17966,13 @@ var Generic = (function () {
                     }
                 });
                 jQuery(this).attr('data-previndex', id);
+                console.log(oldIndex);
             },
             update: function (e, ui) {
                 // gets the new and old index then removes the temporary attribute
                 var newIndex = ui.item.index() + 1;
                 var groupId = jQuery(this).attr('data-previndex');
-                jQuery.post("http://aprilappserver.azurewebsites.net/responsemessage/sortingOfResponseMessages", {
+                jQuery.post("http://localhost/responsemessage/sortingOfResponseMessages", {
                     oldIndex: oldIndex,
                     newIndex: newIndex,
                     groupId: groupId
@@ -18470,7 +18472,6 @@ var BotTrainingService = (function () {
     //baseUrl:string = "http://localhost/";
     function BotTrainingService(http) {
         this.http = http;
-        //baseUrl:string = "http://aprilappserver.azurewebsites.net/";
         this.baseUrl = "https://aprilappserver-staging.azurewebsites.net/";
     }
     BotTrainingService.prototype.getAllGroups = function (type) {

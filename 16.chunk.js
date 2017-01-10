@@ -4966,10 +4966,8 @@ var core_1 = __webpack_require__("./node_modules/@angular/core/index.js");
 var http_1 = __webpack_require__("./node_modules/@angular/http/index.js");
 __webpack_require__("./node_modules/rxjs/add/operator/map.js");
 var AIService = (function () {
-    //baseUrl:string = "http://localhost/";
     function AIService(http) {
         this.http = http;
-        //baseUrl:string = "http://aprilappserver.azurewebsites.net/";
         this.baseUrl = "https://aprilappserver-staging.azurewebsites.net/";
     }
     AIService.prototype.getAllphrases = function () {
@@ -5025,7 +5023,6 @@ var BotTrainingService = (function () {
     //baseUrl:string = "http://localhost/";
     function BotTrainingService(http) {
         this.http = http;
-        //baseUrl:string = "http://aprilappserver.azurewebsites.net/";
         this.baseUrl = "https://aprilappserver-staging.azurewebsites.net/";
     }
     BotTrainingService.prototype.getAllGroups = function (type) {
