@@ -17732,12 +17732,31 @@ var core_1 = __webpack_require__("./node_modules/@angular/core/index.js");
 var http_1 = __webpack_require__("./node_modules/@angular/http/index.js");
 __webpack_require__("./node_modules/rxjs/add/operator/map.js");
 var MiscServices = (function () {
+    //baseUrl:string = "http://localhost/";
     function MiscServices(http) {
         this.http = http;
         this.baseUrl = "https://aprilappserver-staging.azurewebsites.net/";
     }
+    MiscServices.prototype.getAboutApril = function () {
+        return this.http.get(this.baseUrl + 'aboutapril/getAboutApril')
+            .map(function (res) { return res.json(); });
+    };
     MiscServices.prototype.getAlldirectory = function () {
         return this.http.get(this.baseUrl + 'directory/getAllDirectory')
+            .map(function (res) { return res.json(); });
+    };
+    MiscServices.prototype.addAboutApril = function (content) {
+        var body = JSON.stringify({ 'content': content });
+        var headers = new http_1.Headers({ 'Content-Type': 'application/json' });
+        var options = new http_1.RequestOptions({ method: 'post', headers: headers });
+        return this.http.post(this.baseUrl + "aboutapril/addAboutApril", body, options)
+            .map(function (res) { return res.json(); });
+    };
+    MiscServices.prototype.updateAboutApril = function (content, Id) {
+        var body = JSON.stringify({ 'content': content, 'Id': Id });
+        var headers = new http_1.Headers({ 'Content-Type': 'application/json' });
+        var options = new http_1.RequestOptions({ method: 'post', headers: headers });
+        return this.http.post(this.baseUrl + "aboutapril/updateAboutApril", body, options)
             .map(function (res) { return res.json(); });
     };
     MiscServices.prototype.addDirectory = function (title, content) {
