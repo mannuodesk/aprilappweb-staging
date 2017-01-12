@@ -4988,7 +4988,7 @@ var AIService = (function () {
     //baseUrl:string = "http://localhost/";
     function AIService(http) {
         this.http = http;
-        this.baseUrl = "https://aprilappserver-staging.azurewebsites.net/";
+        this.baseUrl = "https://aprilappserverstaging.azurewebsites.net/";
     }
     AIService.prototype.getAllphrases = function () {
         return this.http.get(this.baseUrl + 'phrases/getAllphrases')
@@ -5051,7 +5051,7 @@ var BotTrainingService = (function () {
     //baseUrl:string = "http://localhost/";
     function BotTrainingService(http) {
         this.http = http;
-        this.baseUrl = "https://aprilappserver-staging.azurewebsites.net/";
+        this.baseUrl = "https://aprilappserverstaging.azurewebsites.net/";
     }
     BotTrainingService.prototype.getAllGroups = function (type) {
         return this.http.get(this.baseUrl + 'groups/getGroupsBlocks/' + type)

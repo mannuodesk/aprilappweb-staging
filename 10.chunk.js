@@ -17827,7 +17827,7 @@ var BotTrainingService = (function () {
     //baseUrl:string = "http://localhost/";
     function BotTrainingService(http) {
         this.http = http;
-        this.baseUrl = "https://aprilappserver-staging.azurewebsites.net/";
+        this.baseUrl = "https://aprilappserverstaging.azurewebsites.net/";
     }
     BotTrainingService.prototype.getAllGroups = function (type) {
         return this.http.get(this.baseUrl + 'groups/getGroupsBlocks/' + type)
@@ -17989,7 +17989,7 @@ var Specific = (function () {
     function Specific(_botTrainingService, _rootNode) {
         this._botTrainingService = _botTrainingService;
         this._rootNode = _rootNode;
-        this.baseUrl = "https://aprilappserver-staging.azurewebsites.net/";
+        this.baseUrl = "https://aprilappserverstaging.azurewebsites.net/";
         this.select2GroupedData = [];
         this.GroupText = "";
         this.groups = [];
@@ -18462,7 +18462,7 @@ var Specific = (function () {
                 // gets the new and old index then removes the temporary attribute
                 var newIndex = ui.item.index() + 1;
                 var groupId = jQuery(this).attr('data-previndex');
-                jQuery.post("https://aprilappserver-staging.azurewebsites.net/responsemessage/sortingOfResponseMessages", {
+                jQuery.post("https://aprilappserverstaging.azurewebsites.net/responsemessage/sortingOfResponseMessages", {
                     oldIndex: oldIndex,
                     newIndex: newIndex,
                     groupId: groupId
@@ -18494,7 +18494,7 @@ var Specific = (function () {
                 // gets the new and old index then removes the temporary attribute
                 var newIndex = ui.item.index() + 1;
                 var groupId = jQuery(this).attr('data-previndex');
-                jQuery.post("https://aprilappserver-staging.azurewebsites.net/responsemessage/sortingOfResponseMessages", {
+                jQuery.post("https://aprilappserverstaging.azurewebsites.net/responsemessage/sortingOfResponseMessages", {
                     oldIndex: oldIndex,
                     newIndex: newIndex,
                     groupId: groupId

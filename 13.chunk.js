@@ -17735,7 +17735,7 @@ var MiscServices = (function () {
     //baseUrl:string = "http://localhost/";
     function MiscServices(http) {
         this.http = http;
-        this.baseUrl = "https://aprilappserver-staging.azurewebsites.net/";
+        this.baseUrl = "https://aprilappserverstaging.azurewebsites.net/";
     }
     MiscServices.prototype.getAboutApril = function () {
         return this.http.get(this.baseUrl + 'aboutapril/getAboutApril')
