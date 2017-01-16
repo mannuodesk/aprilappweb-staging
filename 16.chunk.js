@@ -17316,152 +17316,6 @@ return /******/ (function(modules) { // webpackBootstrap
 
 /***/ },
 
-/***/ "./src/app/aboutapril/aboutapril.component.html":
-/***/ function(module, exports) {
-
-module.exports = "<ol class=\"breadcrumb\">\r\n    <li class=\"breadcrumb-item\">YOU ARE HERE</li>\r\n    <li class=\"breadcrumb-item active\">About April</li>\r\n</ol>\r\n<h1 class=\"page-title\">About April</h1>\r\n\r\n<section>\r\n    <div class=\"row\">\r\n        <div class=\"col-lg-12 col-xs-12\">\r\n            <quill-editor class=\"form-control\" [(ngModel)]=\"aboutAprilContent\" (onEditorCreated)=\"onEditorCreated($event)\" (onContentChanged)=\"logChange($event);\"></quill-editor>\r\n        </div>\r\n    </div>\r\n    <br/>\r\n    <div class=\"row\">\r\n        <div class=\"offset-lg-4 col-lg-4\">\r\n        <button class=\"btn btn-block btn-success\" (click)=\"addDirectory()\">\r\n            Submit\r\n        </button>\r\n        </div>\r\n    </div>\r\n</section>"
-
-/***/ },
-
-/***/ "./src/app/aboutapril/aboutapril.component.scss":
-/***/ function(module, exports) {
-
-module.exports = ""
-
-/***/ },
-
-/***/ "./src/app/aboutapril/aboutapril.component.ts":
-/***/ function(module, exports, __webpack_require__) {
-
-"use strict";
-"use strict";
-var core_1 = __webpack_require__("./node_modules/@angular/core/index.js");
-var MiscServices_1 = __webpack_require__("./src/app/services/MiscServices.ts");
-var Quill = __webpack_require__("./node_modules/quill/dist/quill.js");
-var AboutApril = (function () {
-    function AboutApril(_miscService) {
-        var _this = this;
-        this._miscService = _miscService;
-        this.aboutAprilContent = "";
-        this.update = false;
-        this.Id = "";
-        this._miscService.getAboutApril().subscribe(function (a) {
-            console.log(a);
-            if (a.data != null) {
-                _this.update = true;
-                _this.aboutAprilContent = a.data.content;
-                _this.Id = a.data._id;
-            }
-        });
-    }
-    AboutApril.prototype.onReady = function (event, i, responseMessageId) {
-    };
-    AboutApril.prototype.onBlur = function (event) {
-        var text = this.aboutAprilContent;
-        this._miscService.updateAboutApril(this.aboutAprilContent).subscribe(function (a) {
-            if (a.code == 200) {
-            }
-        });
-    };
-    AboutApril.prototype.onEditorCreated = function (quill, i, responseMessageId) {
-    };
-    AboutApril.prototype.logChange = function ($event) {
-        console.log($event);
-    };
-    AboutApril.prototype.addDirectory = function () {
-        if (this.update == true) {
-            var text = this.aboutAprilContent;
-            this._miscService.updateAboutApril(this.aboutAprilContent, this.Id).subscribe(function (a) {
-                if (a.code == 200) {
-                }
-            });
-        }
-        else {
-            if (this.aboutAprilContent != "") {
-                this._miscService.addAboutApril(this.aboutAprilContent).subscribe(function (a) {
-                    if (a.code == 200) {
-                    }
-                });
-            }
-        }
-    };
-    AboutApril = __decorate([
-        core_1.Component({
-            selector: 'aboutapril',
-            styles: [__webpack_require__("./src/app/aboutapril/aboutapril.component.scss")],
-            template: __webpack_require__("./src/app/aboutapril/aboutapril.component.html"),
-            providers: [MiscServices_1.MiscServices],
-            encapsulation: core_1.ViewEncapsulation.None
-        }), 
-        __metadata('design:paramtypes', [(typeof (_a = typeof MiscServices_1.MiscServices !== 'undefined' && MiscServices_1.MiscServices) === 'function' && _a) || Object])
-    ], AboutApril);
-    return AboutApril;
-    var _a;
-}());
-exports.AboutApril = AboutApril;
-
-
-/***/ },
-
-/***/ "./src/app/aboutapril/aboutapril.module.ts":
-/***/ function(module, exports, __webpack_require__) {
-
-"use strict";
-"use strict";
-__webpack_require__("./node_modules/messenger/build/js/messenger.js");
-__webpack_require__("./node_modules/jquery-ui/ui/sortable.js");
-__webpack_require__("./node_modules/jquery.nestable/jquery.nestable.js");
-var common_1 = __webpack_require__("./node_modules/@angular/common/index.js");
-var forms_1 = __webpack_require__("./node_modules/@angular/forms/index.js");
-var core_1 = __webpack_require__("./node_modules/@angular/core/index.js");
-var router_1 = __webpack_require__("./node_modules/@angular/router/index.js");
-var ng2_bootstrap_1 = __webpack_require__("./node_modules/ng2-bootstrap/ng2-bootstrap.js");
-var ng2_bootstrap_2 = __webpack_require__("./node_modules/ng2-bootstrap/ng2-bootstrap.js");
-var ng2_bootstrap_3 = __webpack_require__("./node_modules/ng2-bootstrap/ng2-bootstrap.js");
-var ng2_modal_1 = __webpack_require__("./node_modules/ng2-modal/index.js");
-var aboutapril_component_1 = __webpack_require__("./src/app/aboutapril/aboutapril.component.ts");
-var widget_module_1 = __webpack_require__("./src/app/layout/widget/widget.module.ts");
-var ng2_select2_1 = __webpack_require__("./node_modules/ng2-select2/ng2-select2.js");
-var quill_module_1 = __webpack_require__("./src/app/directory/quill/quill.module.ts");
-exports.routes = [
-    { path: '', component: aboutapril_component_1.AboutApril, pathMatch: 'full' }
-];
-var AboutAprilModule = (function () {
-    function AboutAprilModule() {
-    }
-    AboutAprilModule.routes = exports.routes;
-    AboutAprilModule = __decorate([
-        core_1.NgModule({
-            declarations: [
-                // Components / Directives/ Pipes
-                aboutapril_component_1.AboutApril
-            ],
-            imports: [
-                common_1.CommonModule,
-                forms_1.FormsModule,
-                router_1.RouterModule.forChild(exports.routes),
-                ng2_bootstrap_1.AlertModule,
-                widget_module_1.WidgetModule,
-                ng2_bootstrap_1.TooltipModule,
-                ng2_modal_1.ModalModule,
-                ng2_bootstrap_2.ButtonsModule,
-                ng2_bootstrap_2.DropdownModule,
-                ng2_bootstrap_3.TabsModule,
-                ng2_bootstrap_3.AccordionModule,
-                ng2_select2_1.Select2Module,
-                quill_module_1.QuillModule
-            ]
-        }), 
-        __metadata('design:paramtypes', [])
-    ], AboutAprilModule);
-    return AboutAprilModule;
-}());
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.default = AboutAprilModule;
-
-
-/***/ },
-
 /***/ "./src/app/directory/quill/quill.component.css":
 /***/ function(module, exports) {
 
@@ -17713,6 +17567,10 @@ var MiscServices = (function () {
         return this.http.get(this.baseUrl + 'aboutapril/getAboutApril')
             .map(function (res) { return res.json(); });
     };
+    MiscServices.prototype.getTermsOfService = function () {
+        return this.http.get(this.baseUrl + 'termsofservice/getTermsOfService')
+            .map(function (res) { return res.json(); });
+    };
     MiscServices.prototype.getAlldirectory = function () {
         return this.http.get(this.baseUrl + 'directory/getAllDirectory')
             .map(function (res) { return res.json(); });
@@ -17724,11 +17582,25 @@ var MiscServices = (function () {
         return this.http.post(this.baseUrl + "aboutapril/addAboutApril", body, options)
             .map(function (res) { return res.json(); });
     };
+    MiscServices.prototype.addTermsOfService = function (content) {
+        var body = JSON.stringify({ 'content': content });
+        var headers = new http_1.Headers({ 'Content-Type': 'application/json' });
+        var options = new http_1.RequestOptions({ method: 'post', headers: headers });
+        return this.http.post(this.baseUrl + "termsofservice/addTermsOfService", body, options)
+            .map(function (res) { return res.json(); });
+    };
     MiscServices.prototype.updateAboutApril = function (content, Id) {
         var body = JSON.stringify({ 'content': content, 'Id': Id });
         var headers = new http_1.Headers({ 'Content-Type': 'application/json' });
         var options = new http_1.RequestOptions({ method: 'post', headers: headers });
         return this.http.post(this.baseUrl + "aboutapril/updateAboutApril", body, options)
+            .map(function (res) { return res.json(); });
+    };
+    MiscServices.prototype.updateTermsOfService = function (content, Id) {
+        var body = JSON.stringify({ 'content': content, 'Id': Id });
+        var headers = new http_1.Headers({ 'Content-Type': 'application/json' });
+        var options = new http_1.RequestOptions({ method: 'post', headers: headers });
+        return this.http.post(this.baseUrl + "termsofservice/updateTermsOfService", body, options)
             .map(function (res) { return res.json(); });
     };
     MiscServices.prototype.addDirectory = function (title, content) {
@@ -17758,6 +17630,145 @@ var MiscServices = (function () {
     var _a;
 }());
 exports.MiscServices = MiscServices;
+
+
+/***/ },
+
+/***/ "./src/app/termsofservice/termsofservice.component.html":
+/***/ function(module, exports) {
+
+module.exports = "<ol class=\"breadcrumb\">\r\n    <li class=\"breadcrumb-item\">YOU ARE HERE</li>\r\n    <li class=\"breadcrumb-item active\">Terms Of Service</li>\r\n</ol>\r\n<h1 class=\"page-title\">Terms Of Service</h1>\r\n\r\n<section>\r\n    <div class=\"row\">\r\n        <div class=\"col-lg-12 col-xs-12\">\r\n            <quill-editor class=\"form-control\" [(ngModel)]=\"termsOfServiceContent\" (onEditorCreated)=\"onEditorCreated($event)\" (onContentChanged)=\"logChange($event);\"></quill-editor>\r\n        </div>\r\n    </div>\r\n    <br/>\r\n    <div class=\"row\">\r\n        <div class=\"offset-lg-4 col-lg-4\">\r\n        <button class=\"btn btn-block btn-success\" (click)=\"addDirectory()\">\r\n            Submit\r\n        </button>\r\n        </div>\r\n    </div>\r\n</section>"
+
+/***/ },
+
+/***/ "./src/app/termsofservice/termsofservice.component.scss":
+/***/ function(module, exports) {
+
+module.exports = ""
+
+/***/ },
+
+/***/ "./src/app/termsofservice/termsofservice.component.ts":
+/***/ function(module, exports, __webpack_require__) {
+
+"use strict";
+"use strict";
+var core_1 = __webpack_require__("./node_modules/@angular/core/index.js");
+var MiscServices_1 = __webpack_require__("./src/app/services/MiscServices.ts");
+var Quill = __webpack_require__("./node_modules/quill/dist/quill.js");
+var TermsOfService = (function () {
+    function TermsOfService(_miscService) {
+        var _this = this;
+        this._miscService = _miscService;
+        this.termsOfServiceContent = "";
+        this.update = false;
+        this.Id = "";
+        this._miscService.getTermsOfService().subscribe(function (a) {
+            console.log(a);
+            if (a.data != null) {
+                _this.update = true;
+                _this.termsOfServiceContent = a.data.content;
+                _this.Id = a.data._id;
+            }
+        });
+    }
+    TermsOfService.prototype.onReady = function (event, i, responseMessageId) {
+    };
+    TermsOfService.prototype.onEditorCreated = function (quill, i, responseMessageId) {
+    };
+    TermsOfService.prototype.logChange = function ($event) {
+        console.log($event);
+    };
+    TermsOfService.prototype.addDirectory = function () {
+        if (this.update == true) {
+            var text = this.termsOfServiceContent;
+            this._miscService.updateTermsOfService(this.termsOfServiceContent, this.Id).subscribe(function (a) {
+                if (a.code == 200) {
+                }
+            });
+        }
+        else {
+            if (this.termsOfServiceContent != "") {
+                this._miscService.addTermsOfService(this.termsOfServiceContent).subscribe(function (a) {
+                    if (a.code == 200) {
+                    }
+                });
+            }
+        }
+    };
+    TermsOfService = __decorate([
+        core_1.Component({
+            selector: 'termsofservice',
+            styles: [__webpack_require__("./src/app/termsofservice/termsofservice.component.scss")],
+            template: __webpack_require__("./src/app/termsofservice/termsofservice.component.html"),
+            providers: [MiscServices_1.MiscServices],
+            encapsulation: core_1.ViewEncapsulation.None
+        }), 
+        __metadata('design:paramtypes', [(typeof (_a = typeof MiscServices_1.MiscServices !== 'undefined' && MiscServices_1.MiscServices) === 'function' && _a) || Object])
+    ], TermsOfService);
+    return TermsOfService;
+    var _a;
+}());
+exports.TermsOfService = TermsOfService;
+
+
+/***/ },
+
+/***/ "./src/app/termsofservice/termsofservice.module.ts":
+/***/ function(module, exports, __webpack_require__) {
+
+"use strict";
+"use strict";
+__webpack_require__("./node_modules/messenger/build/js/messenger.js");
+__webpack_require__("./node_modules/jquery-ui/ui/sortable.js");
+__webpack_require__("./node_modules/jquery.nestable/jquery.nestable.js");
+var common_1 = __webpack_require__("./node_modules/@angular/common/index.js");
+var forms_1 = __webpack_require__("./node_modules/@angular/forms/index.js");
+var core_1 = __webpack_require__("./node_modules/@angular/core/index.js");
+var router_1 = __webpack_require__("./node_modules/@angular/router/index.js");
+var ng2_bootstrap_1 = __webpack_require__("./node_modules/ng2-bootstrap/ng2-bootstrap.js");
+var ng2_bootstrap_2 = __webpack_require__("./node_modules/ng2-bootstrap/ng2-bootstrap.js");
+var ng2_bootstrap_3 = __webpack_require__("./node_modules/ng2-bootstrap/ng2-bootstrap.js");
+var ng2_modal_1 = __webpack_require__("./node_modules/ng2-modal/index.js");
+var termsofservice_component_1 = __webpack_require__("./src/app/termsofservice/termsofservice.component.ts");
+var widget_module_1 = __webpack_require__("./src/app/layout/widget/widget.module.ts");
+var ng2_select2_1 = __webpack_require__("./node_modules/ng2-select2/ng2-select2.js");
+var quill_module_1 = __webpack_require__("./src/app/directory/quill/quill.module.ts");
+exports.routes = [
+    { path: '', component: termsofservice_component_1.TermsOfService, pathMatch: 'full' }
+];
+var TermsOfServiceModule = (function () {
+    function TermsOfServiceModule() {
+    }
+    TermsOfServiceModule.routes = exports.routes;
+    TermsOfServiceModule = __decorate([
+        core_1.NgModule({
+            declarations: [
+                // Components / Directives/ Pipes
+                termsofservice_component_1.TermsOfService
+            ],
+            imports: [
+                common_1.CommonModule,
+                forms_1.FormsModule,
+                router_1.RouterModule.forChild(exports.routes),
+                ng2_bootstrap_1.AlertModule,
+                widget_module_1.WidgetModule,
+                ng2_bootstrap_1.TooltipModule,
+                ng2_modal_1.ModalModule,
+                ng2_bootstrap_2.ButtonsModule,
+                ng2_bootstrap_2.DropdownModule,
+                ng2_bootstrap_3.TabsModule,
+                ng2_bootstrap_3.AccordionModule,
+                ng2_select2_1.Select2Module,
+                quill_module_1.QuillModule
+            ]
+        }), 
+        __metadata('design:paramtypes', [])
+    ], TermsOfServiceModule);
+    return TermsOfServiceModule;
+}());
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.default = TermsOfServiceModule;
 
 
 /***/ }
