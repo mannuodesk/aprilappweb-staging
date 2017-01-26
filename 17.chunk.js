@@ -138,7 +138,7 @@ function fromByteArray (uint8) {
 
 var base64 = __webpack_require__("./node_modules/base64-js/index.js")
 var ieee754 = __webpack_require__("./node_modules/ieee754/index.js")
-var isArray = __webpack_require__("./node_modules/isarray/index.js")
+var isArray = __webpack_require__("./node_modules/buffer/node_modules/isarray/index.js")
 
 exports.Buffer = Buffer
 exports.SlowBuffer = SlowBuffer
@@ -1920,6 +1920,18 @@ function isnan (val) {
 
 /***/ },
 
+/***/ "./node_modules/buffer/node_modules/isarray/index.js":
+/***/ function(module, exports) {
+
+var toString = {}.toString;
+
+module.exports = Array.isArray || function (arr) {
+  return toString.call(arr) == '[object Array]';
+};
+
+
+/***/ },
+
 /***/ "./node_modules/ieee754/index.js":
 /***/ function(module, exports) {
 
@@ -2007,18 +2019,6 @@ exports.write = function (buffer, value, offset, isLE, mLen, nBytes) {
 
   buffer[offset + i - d] |= s * 128
 }
-
-
-/***/ },
-
-/***/ "./node_modules/isarray/index.js":
-/***/ function(module, exports) {
-
-var toString = {}.toString;
-
-module.exports = Array.isArray || function (arr) {
-  return toString.call(arr) == '[object Array]';
-};
 
 
 /***/ },
@@ -6656,7 +6656,6 @@ var Select2Component = (function () {
         this.blur = new core_1.EventEmitter();
     }
     Select2Component.prototype.ngAfterViewInit = function () {
-	console.log(this.data);
         if (this.data) {
             var that_1 = this;
             this.element = jQuery(this.selector.nativeElement);
@@ -6737,7 +6736,7 @@ exports.Select2Component = Select2Component;
 /***/ function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(Buffer) {/*!
- * Quill Editor v1.1.9
+ * Quill Editor v1.2.0
  * https://quilljs.com/
  * Copyright (c) 2014, Jason Chen
  * Copyright (c) 2013, salesforce.com
@@ -6940,7 +6939,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	var ContainerBlot = (function (_super) {
 	    __extends(ContainerBlot, _super);
 	    function ContainerBlot() {
-	        return _super.apply(this, arguments) || this;
+	        return _super !== null && _super.apply(this, arguments) || this;
 	    }
 	    ContainerBlot.prototype.appendChild = function (other) {
 	        this.insertBefore(other);
@@ -7467,7 +7466,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	var ParchmentError = (function (_super) {
 	    __extends(ParchmentError, _super);
 	    function ParchmentError(message) {
-	        var _this;
+	        var _this = this;
 	        message = '[Parchment] ' + message;
 	        _this = _super.call(this, message) || this;
 	        _this.message = message;
@@ -7615,7 +7614,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	var FormatBlot = (function (_super) {
 	    __extends(FormatBlot, _super);
 	    function FormatBlot() {
-	        return _super.apply(this, arguments) || this;
+	        return _super !== null && _super.apply(this, arguments) || this;
 	    }
 	    FormatBlot.formats = function (domNode) {
 	        if (typeof this.tagName === 'string') {
@@ -7821,7 +7820,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	var ClassAttributor = (function (_super) {
 	    __extends(ClassAttributor, _super);
 	    function ClassAttributor() {
-	        return _super.apply(this, arguments) || this;
+	        return _super !== null && _super.apply(this, arguments) || this;
 	    }
 	    ClassAttributor.keys = function (node) {
 	        return (node.getAttribute('class') || '').split(/\s+/).map(function (name) {
@@ -7876,7 +7875,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	var StyleAttributor = (function (_super) {
 	    __extends(StyleAttributor, _super);
 	    function StyleAttributor() {
-	        return _super.apply(this, arguments) || this;
+	        return _super !== null && _super.apply(this, arguments) || this;
 	    }
 	    StyleAttributor.keys = function (node) {
 	        return (node.getAttribute('style') || '').split(';').map(function (value) {
@@ -7921,7 +7920,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	var LeafBlot = (function (_super) {
 	    __extends(LeafBlot, _super);
 	    function LeafBlot() {
-	        return _super.apply(this, arguments) || this;
+	        return _super !== null && _super.apply(this, arguments) || this;
 	    }
 	    LeafBlot.value = function (domNode) {
 	        return true;
@@ -8130,7 +8129,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	var InlineBlot = (function (_super) {
 	    __extends(InlineBlot, _super);
 	    function InlineBlot() {
-	        return _super.apply(this, arguments) || this;
+	        return _super !== null && _super.apply(this, arguments) || this;
 	    }
 	    InlineBlot.formats = function (domNode) {
 	        if (domNode.tagName === InlineBlot.tagName)
@@ -8197,7 +8196,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	var BlockBlot = (function (_super) {
 	    __extends(BlockBlot, _super);
 	    function BlockBlot() {
-	        return _super.apply(this, arguments) || this;
+	        return _super !== null && _super.apply(this, arguments) || this;
 	    }
 	    BlockBlot.formats = function (domNode) {
 	        var tagName = Registry.query(BlockBlot.blotName).tagName;
@@ -8266,7 +8265,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	var EmbedBlot = (function (_super) {
 	    __extends(EmbedBlot, _super);
 	    function EmbedBlot() {
-	        return _super.apply(this, arguments) || this;
+	        return _super !== null && _super.apply(this, arguments) || this;
 	    }
 	    EmbedBlot.formats = function (domNode) {
 	        return undefined;
@@ -8460,6 +8459,11 @@ return /******/ (function(modules) { // webpackBootstrap
 	      _logger2.default.level(limit);
 	    }
 	  }, {
+	    key: 'find',
+	    value: function find(node) {
+	      return node.__quill || _parchment2.default.find(node);
+	    }
+	  }, {
 	    key: 'import',
 	    value: function _import(name) {
 	      if (this.imports[name] == null) {
@@ -8515,6 +8519,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    var html = this.container.innerHTML.trim();
 	    this.container.classList.add('ql-container');
 	    this.container.innerHTML = '';
+	    this.container.__quill = this;
 	    this.root = this.addContainer('ql-editor');
 	    this.root.classList.add('ql-blank');
 	    this.emitter = new _emitter4.default();
@@ -8714,9 +8719,36 @@ return /******/ (function(modules) { // webpackBootstrap
 	      }
 	    }
 	  }, {
+	    key: 'getIndex',
+	    value: function getIndex(blot) {
+	      return blot.offset(this.scroll);
+	    }
+	  }, {
 	    key: 'getLength',
 	    value: function getLength() {
 	      return this.scroll.length();
+	    }
+	  }, {
+	    key: 'getLeaf',
+	    value: function getLeaf(index) {
+	      return this.scroll.leaf(index);
+	    }
+	  }, {
+	    key: 'getLine',
+	    value: function getLine(index) {
+	      return this.scroll.line(index);
+	    }
+	  }, {
+	    key: 'getLines',
+	    value: function getLines() {
+	      var index = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 0;
+	      var length = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : Number.MAX_VALUE;
+
+	      if (typeof index !== 'number') {
+	        return this.scroll.lines(index.index, index.length);
+	      } else {
+	        return this.scroll.lines(index, length);
+	      }
 	    }
 	  }, {
 	    key: 'getModule',
@@ -8861,7 +8893,9 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	        this.selection.setRange(new _selection.Range(index, length), source);
 	      }
-	      this.selection.scrollIntoView();
+	      if (source !== _emitter4.default.sources.SILENT) {
+	        this.selection.scrollIntoView();
+	      }
 	    }
 	  }, {
 	    key: 'setText',
@@ -8910,7 +8944,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	Quill.events = _emitter4.default.events;
 	Quill.sources = _emitter4.default.sources;
 	// eslint-disable-next-line no-undef
-	Quill.version =  false ? 'dev' : ("1.1.9");
+	Quill.version =  false ? 'dev' : ("1.2.0");
 
 	Quill.imports = {
 	  'delta': _quillDelta2.default,
@@ -8985,7 +9019,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	  var range = index == null ? null : this.getSelection();
 	  var oldDelta = this.editor.delta;
 	  var change = modifier();
-	  if (range != null && source === _emitter4.default.sources.USER) {
+	  if (range != null) {
 	    if (index === true) index = range.index;
 	    if (shift == null) {
 	      range = shiftRange(range, change, source);
@@ -10682,6 +10716,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	      this.scroll.update();
 	      Object.keys(formats).forEach(function (format) {
+	        if (_this2.scroll.whitelist != null && !_this2.scroll.whitelist[format]) return;
 	        var lines = _this2.scroll.lines(index, Math.max(length, 1));
 	        var lengthRemaining = length;
 	        lines.forEach(function (line) {
@@ -12813,6 +12848,15 @@ return /******/ (function(modules) { // webpackBootstrap
 	        if (!this.hasFocus()) this.root.focus();
 	        var native = (this.getNativeRange() || {}).native;
 	        if (native == null || force || startNode !== native.startContainer || startOffset !== native.startOffset || endNode !== native.endContainer || endOffset !== native.endOffset) {
+
+	          if (startNode.tagName == "BR") {
+	            startOffset = [].indexOf.call(startNode.parentNode.childNodes, startNode);
+	            startNode = startNode.parentNode;
+	          }
+	          if (endNode.tagName == "BR") {
+	            endOffset = [].indexOf.call(endNode.parentNode.childNodes, endNode);
+	            endNode = endNode.parentNode;
+	          }
 	          var range = document.createRange();
 	          range.setStart(startNode, startOffset);
 	          range.setEnd(endNode, endOffset);
@@ -12874,16 +12918,14 @@ return /******/ (function(modules) { // webpackBootstrap
 	    value: function update() {
 	      var source = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : _emitter4.default.sources.USER;
 
-	      var nativeRange = void 0,
-	          oldRange = this.lastRange;
+	      var oldRange = this.lastRange;
 
-	      var _getRange = this.getRange();
+	      var _getRange = this.getRange(),
+	          _getRange2 = _slicedToArray(_getRange, 2),
+	          lastRange = _getRange2[0],
+	          nativeRange = _getRange2[1];
 
-	      var _getRange2 = _slicedToArray(_getRange, 2);
-
-	      this.lastRange = _getRange2[0];
-	      nativeRange = _getRange2[1];
-
+	      this.lastRange = lastRange;
 	      if (this.lastRange != null) {
 	        this.savedRange = this.lastRange;
 	      }
@@ -14097,7 +14139,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    });
 	    _this.addBinding({ key: Keyboard.keys.ENTER, shiftKey: null }, handleEnter);
 	    _this.addBinding({ key: Keyboard.keys.ENTER, metaKey: null, ctrlKey: null, altKey: null }, function () {});
-	    if (/Gecko/i.test(navigator.userAgent)) {
+	    if (/Firefox/i.test(navigator.userAgent)) {
 	      // Need to handle delete and backspace for Firefox in the general case #1171
 	      _this.addBinding({ key: Keyboard.keys.BACKSPACE }, { collapsed: true }, handleBackspace);
 	      _this.addBinding({ key: Keyboard.keys.DELETE }, { collapsed: true }, handleDelete);
@@ -14146,17 +14188,17 @@ return /******/ (function(modules) { // webpackBootstrap
 	        var range = _this2.quill.getSelection();
 	        if (range == null || !_this2.quill.hasFocus()) return;
 
-	        var _quill$scroll$line = _this2.quill.scroll.line(range.index),
-	            _quill$scroll$line2 = _slicedToArray(_quill$scroll$line, 2),
-	            line = _quill$scroll$line2[0],
-	            offset = _quill$scroll$line2[1];
+	        var _quill$getLine = _this2.quill.getLine(range.index),
+	            _quill$getLine2 = _slicedToArray(_quill$getLine, 2),
+	            line = _quill$getLine2[0],
+	            offset = _quill$getLine2[1];
 
-	        var _quill$scroll$leaf = _this2.quill.scroll.leaf(range.index),
-	            _quill$scroll$leaf2 = _slicedToArray(_quill$scroll$leaf, 2),
-	            leafStart = _quill$scroll$leaf2[0],
-	            offsetStart = _quill$scroll$leaf2[1];
+	        var _quill$getLeaf = _this2.quill.getLeaf(range.index),
+	            _quill$getLeaf2 = _slicedToArray(_quill$getLeaf, 2),
+	            leafStart = _quill$getLeaf2[0],
+	            offsetStart = _quill$getLeaf2[1];
 
-	        var _ref = range.length === 0 ? [leafStart, offsetStart] : _this2.quill.scroll.leaf(range.index + range.length),
+	        var _ref = range.length === 0 ? [leafStart, offsetStart] : _this2.quill.getLeaf(range.index + range.length),
 	            _ref2 = _slicedToArray(_ref, 2),
 	            leafEnd = _ref2[0],
 	            offsetEnd = _ref2[1];
@@ -14297,9 +14339,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	      handler: function handler(range) {
 	        this.quill.scroll.insertAt(range.index, '\n');
 
-	        var _quill$scroll$line3 = this.quill.scroll.line(range.index + 1),
-	            _quill$scroll$line4 = _slicedToArray(_quill$scroll$line3, 1),
-	            line = _quill$scroll$line4[0];
+	        var _quill$getLine3 = this.quill.getLine(range.index + 1),
+	            _quill$getLine4 = _slicedToArray(_quill$getLine3, 1),
+	            line = _quill$getLine4[0];
 
 	        line.format('list', 'unchecked');
 	        this.quill.update(_quill2.default.sources.USER);
@@ -14325,10 +14367,22 @@ return /******/ (function(modules) { // webpackBootstrap
 	      format: { list: false },
 	      prefix: /^(1\.|-)$/,
 	      handler: function handler(range, context) {
+	        if (this.quill.scroll.whitelist != null && !this.quill.scroll.whitelist['list']) return true;
 	        var length = context.prefix.length;
 	        this.quill.scroll.deleteAt(range.index - length, length);
 	        this.quill.formatLine(range.index - length, 1, 'list', length === 1 ? 'bullet' : 'ordered', _quill2.default.sources.USER);
 	        this.quill.setSelection(range.index - length, _quill2.default.sources.SILENT);
+	      }
+	    },
+	    'code exit': {
+	      key: Keyboard.keys.ENTER,
+	      collapsed: true,
+	      format: ['code-block'],
+	      prefix: /\n\n$/,
+	      suffix: /^\s+$/,
+	      handler: function handler(range) {
+	        this.quill.format('code-block', false, _quill2.default.sources.USER);
+	        this.quill.deleteText(range.index - 2, 1, _quill2.default.sources.USER);
 	      }
 	    }
 	  }
@@ -14337,9 +14391,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	function handleBackspace(range, context) {
 	  if (range.index === 0) return;
 
-	  var _quill$scroll$line5 = this.quill.scroll.line(range.index),
-	      _quill$scroll$line6 = _slicedToArray(_quill$scroll$line5, 1),
-	      line = _quill$scroll$line6[0];
+	  var _quill$getLine5 = this.quill.getLine(range.index),
+	      _quill$getLine6 = _slicedToArray(_quill$getLine5, 1),
+	      line = _quill$getLine6[0];
 
 	  var formats = {};
 	  if (context.offset === 0) {
@@ -14347,16 +14401,20 @@ return /******/ (function(modules) { // webpackBootstrap
 	    var prevFormats = this.quill.getFormat(range.index - 1, 1);
 	    formats = _op2.default.attributes.diff(curFormats, prevFormats) || {};
 	  }
-	  this.quill.deleteText(range.index - 1, 1, _quill2.default.sources.USER);
+	  // Check for astral symbols
+	  var length = /[\uD800-\uDBFF][\uDC00-\uDFFF]$/.test(context.prefix) ? 2 : 1;
+	  this.quill.deleteText(range.index - length, length, _quill2.default.sources.USER);
 	  if (Object.keys(formats).length > 0) {
-	    this.quill.formatLine(range.index - 1, 1, formats, _quill2.default.sources.USER);
+	    this.quill.formatLine(range.index - length, length, formats, _quill2.default.sources.USER);
 	  }
 	  this.quill.selection.scrollIntoView();
 	}
 
-	function handleDelete(range) {
-	  if (range.index >= this.quill.getLength() - 1) return;
-	  this.quill.deleteText(range.index, 1, _quill2.default.sources.USER);
+	function handleDelete(range, context) {
+	  // Check for astral symbols
+	  var length = /^[\uD800-\uDBFF][\uDC00-\uDFFF]/.test(context.suffix) ? 2 : 1;
+	  if (range.index >= this.quill.getLength() - length) return;
+	  this.quill.deleteText(range.index, length, _quill2.default.sources.USER);
 	}
 
 	function handleDeleteRange(range) {
@@ -14378,6 +14436,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	    return lineFormats;
 	  }, {});
 	  this.quill.insertText(range.index, '\n', lineFormats, _quill2.default.sources.USER);
+	  // Earlier scroll.deleteAt might have messed up our selection,
+	  // so insertText's built in selection preservation is not reliable
+	  this.quill.setSelection(range.index + 1, _quill2.default.sources.SILENT);
 	  this.quill.selection.scrollIntoView();
 	  Object.keys(context.format).forEach(function (name) {
 	    if (lineFormats[name] != null) return;
@@ -14403,9 +14464,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	          offset = _quill$scroll$descend2[1];
 
 	      if (block == null) return;
-	      var scrollOffset = this.quill.scroll.offset(block);
+	      var scrollIndex = this.quill.getIndex(block);
 	      var start = block.newlineIndex(offset, true) + 1;
-	      var end = block.newlineIndex(scrollOffset + offset + length);
+	      var end = block.newlineIndex(scrollIndex + offset + length);
 	      var lines = block.domNode.textContent.slice(start, end).split('\n');
 	      offset = 0;
 	      lines.forEach(function (line, i) {
@@ -14892,10 +14953,47 @@ return /******/ (function(modules) { // webpackBootstrap
 	var List = function (_Container) {
 	  _inherits(List, _Container);
 
-	  function List() {
+	  _createClass(List, null, [{
+	    key: 'create',
+	    value: function create(value) {
+	      var tagName = value === 'ordered' ? 'OL' : 'UL';
+	      var node = _get(List.__proto__ || Object.getPrototypeOf(List), 'create', this).call(this, tagName);
+	      if (value === 'checked' || value === 'unchecked') {
+	        node.setAttribute('data-checked', value === 'checked');
+	      }
+	      return node;
+	    }
+	  }, {
+	    key: 'formats',
+	    value: function formats(domNode) {
+	      if (domNode.tagName === 'OL') return 'ordered';
+	      if (domNode.tagName === 'UL') {
+	        if (domNode.hasAttribute('data-checked')) {
+	          return domNode.getAttribute('data-checked') === 'true' ? 'checked' : 'unchecked';
+	        } else {
+	          return 'bullet';
+	        }
+	      }
+	      return undefined;
+	    }
+	  }]);
+
+	  function List(domNode) {
 	    _classCallCheck(this, List);
 
-	    return _possibleConstructorReturn(this, (List.__proto__ || Object.getPrototypeOf(List)).apply(this, arguments));
+	    var _this2 = _possibleConstructorReturn(this, (List.__proto__ || Object.getPrototypeOf(List)).call(this, domNode));
+
+	    domNode.addEventListener('click', function (e) {
+	      if (e.target.parentNode !== domNode) return;
+	      var format = _this2.statics.formats(domNode);
+	      var blot = _parchment2.default.find(e.target);
+	      if (format === 'checked') {
+	        blot.format('list', 'unchecked');
+	      } else if (format === 'unchecked') {
+	        blot.format('list', 'checked');
+	      }
+	    });
+	    return _this2;
 	  }
 
 	  _createClass(List, [{
@@ -14941,29 +15039,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	        this.appendChild(item);
 	      }
 	      _get(List.prototype.__proto__ || Object.getPrototypeOf(List.prototype), 'replace', this).call(this, target);
-	    }
-	  }], [{
-	    key: 'create',
-	    value: function create(value) {
-	      var tagName = value === 'ordered' ? 'OL' : 'UL';
-	      var node = _get(List.__proto__ || Object.getPrototypeOf(List), 'create', this).call(this, tagName);
-	      if (value === 'checked' || value === 'unchecked') {
-	        node.setAttribute('data-checked', value === 'checked');
-	      }
-	      return node;
-	    }
-	  }, {
-	    key: 'formats',
-	    value: function formats(domNode) {
-	      if (domNode.tagName === 'OL') return 'ordered';
-	      if (domNode.tagName === 'UL') {
-	        if (domNode.hasAttribute('data-checked')) {
-	          return domNode.getAttribute('data-checked') === 'true' ? 'checked' : 'unchecked';
-	        } else {
-	          return 'bullet';
-	        }
-	      }
-	      return undefined;
 	    }
 	  }]);
 
@@ -15998,12 +16073,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	      }
 	      this.quill.format('direction', value, _quill2.default.sources.USER);
 	    },
-	    link: function link(value) {
-	      if (value === true) {
-	        value = prompt('Enter link URL:');
-	      }
-	      this.quill.format('link', value, _quill2.default.sources.USER);
-	    },
 	    indent: function indent(value) {
 	      var range = this.quill.getSelection();
 	      var formats = this.quill.getFormat(range);
@@ -16012,6 +16081,25 @@ return /******/ (function(modules) { // webpackBootstrap
 	        var modifier = value === '+1' ? 1 : -1;
 	        if (formats.direction === 'rtl') modifier *= -1;
 	        this.quill.format('indent', indent + modifier, _quill2.default.sources.USER);
+	      }
+	    },
+	    link: function link(value) {
+	      if (value === true) {
+	        value = prompt('Enter link URL:');
+	      }
+	      this.quill.format('link', value, _quill2.default.sources.USER);
+	    },
+	    list: function list(value) {
+	      var range = this.quill.getSelection();
+	      var formats = this.quill.getFormat(range);
+	      if (value === 'check') {
+	        if (formats['list'] === 'checked' || formats['list'] === 'unchecked') {
+	          this.quill.format('list', false, _quill2.default.sources.USER);
+	        } else {
+	          this.quill.format('list', 'unchecked', _quill2.default.sources.USER);
+	        }
+	      } else {
+	        this.quill.format('list', value, _quill2.default.sources.USER);
 	      }
 	    }
 	  }
@@ -16065,7 +16153,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	  'list': {
 	    'ordered': __webpack_require__(94),
 	    'bullet': __webpack_require__(95),
-	    'unchecked': __webpack_require__(96)
+	    'check': __webpack_require__(96)
 	  },
 	  'script': {
 	    'sub': __webpack_require__(97),
@@ -16735,12 +16823,12 @@ return /******/ (function(modules) { // webpackBootstrap
 	        _this2.root.style.left = '0px';
 	        _this2.root.style.width = '';
 	        _this2.root.style.width = _this2.root.offsetWidth + 'px';
-	        var lines = _this2.quill.scroll.lines(range.index, range.length);
+	        var lines = _this2.quill.getLines(range.index, range.length);
 	        if (lines.length === 1) {
 	          _this2.position(_this2.quill.getBounds(range));
 	        } else {
 	          var lastLine = lines[lines.length - 1];
-	          var index = lastLine.offset(_this2.quill.scroll);
+	          var index = _this2.quill.getIndex(lastLine);
 	          var length = Math.min(lastLine.length() - 1, range.index + range.length - index);
 	          var _bounds = _this2.quill.getBounds(new _selection.Range(index, length));
 	          _this2.position(_bounds);
@@ -17316,145 +17404,6 @@ return /******/ (function(modules) { // webpackBootstrap
 
 /***/ },
 
-/***/ "./src/app/aboutapril/aboutapril.component.html":
-/***/ function(module, exports) {
-
-module.exports = "<ol class=\"breadcrumb\">\r\n    <li class=\"breadcrumb-item\">YOU ARE HERE</li>\r\n    <li class=\"breadcrumb-item active\">About April</li>\r\n</ol>\r\n<h1 class=\"page-title\">About April</h1>\r\n\r\n<section>\r\n    <div class=\"row\">\r\n        <div class=\"col-lg-12 col-xs-12\">\r\n            <quill-editor class=\"form-control\" [(ngModel)]=\"aboutAprilContent\" (onEditorCreated)=\"onEditorCreated($event)\" (onContentChanged)=\"logChange($event);\"></quill-editor>\r\n        </div>\r\n    </div>\r\n    <br/>\r\n    <div class=\"row\">\r\n        <div class=\"offset-lg-4 col-lg-4\">\r\n        <button class=\"btn btn-block btn-success\" (click)=\"addDirectory()\">\r\n            Submit\r\n        </button>\r\n        </div>\r\n    </div>\r\n</section>"
-
-/***/ },
-
-/***/ "./src/app/aboutapril/aboutapril.component.scss":
-/***/ function(module, exports) {
-
-module.exports = ""
-
-/***/ },
-
-/***/ "./src/app/aboutapril/aboutapril.component.ts":
-/***/ function(module, exports, __webpack_require__) {
-
-"use strict";
-"use strict";
-var core_1 = __webpack_require__("./node_modules/@angular/core/index.js");
-var MiscServices_1 = __webpack_require__("./src/app/services/MiscServices.ts");
-var Quill = __webpack_require__("./node_modules/quill/dist/quill.js");
-var AboutApril = (function () {
-    function AboutApril(_miscService) {
-        var _this = this;
-        this._miscService = _miscService;
-        this.aboutAprilContent = "";
-        this.update = false;
-        this.Id = "";
-        this._miscService.getAboutApril().subscribe(function (a) {
-            console.log(a);
-            if (a.data != null) {
-                _this.update = true;
-                _this.aboutAprilContent = a.data.content;
-                _this.Id = a.data._id;
-            }
-        });
-    }
-    AboutApril.prototype.onReady = function (event, i, responseMessageId) {
-    };
-    AboutApril.prototype.onEditorCreated = function (quill, i, responseMessageId) {
-    };
-    AboutApril.prototype.logChange = function ($event) {
-        console.log($event);
-    };
-    AboutApril.prototype.addDirectory = function () {
-        if (this.update == true) {
-            var text = this.aboutAprilContent;
-            this._miscService.updateAboutApril(this.aboutAprilContent, this.Id).subscribe(function (a) {
-                if (a.code == 200) {
-                }
-            });
-        }
-        else {
-            if (this.aboutAprilContent != "") {
-                this._miscService.addAboutApril(this.aboutAprilContent).subscribe(function (a) {
-                    if (a.code == 200) {
-                    }
-                });
-            }
-        }
-    };
-    AboutApril = __decorate([
-        core_1.Component({
-            selector: 'aboutapril',
-            styles: [__webpack_require__("./src/app/aboutapril/aboutapril.component.scss")],
-            template: __webpack_require__("./src/app/aboutapril/aboutapril.component.html"),
-            providers: [MiscServices_1.MiscServices],
-            encapsulation: core_1.ViewEncapsulation.None
-        }), 
-        __metadata('design:paramtypes', [(typeof (_a = typeof MiscServices_1.MiscServices !== 'undefined' && MiscServices_1.MiscServices) === 'function' && _a) || Object])
-    ], AboutApril);
-    return AboutApril;
-    var _a;
-}());
-exports.AboutApril = AboutApril;
-
-
-/***/ },
-
-/***/ "./src/app/aboutapril/aboutapril.module.ts":
-/***/ function(module, exports, __webpack_require__) {
-
-"use strict";
-"use strict";
-__webpack_require__("./node_modules/messenger/build/js/messenger.js");
-__webpack_require__("./node_modules/jquery-ui/ui/sortable.js");
-__webpack_require__("./node_modules/jquery.nestable/jquery.nestable.js");
-var common_1 = __webpack_require__("./node_modules/@angular/common/index.js");
-var forms_1 = __webpack_require__("./node_modules/@angular/forms/index.js");
-var core_1 = __webpack_require__("./node_modules/@angular/core/index.js");
-var router_1 = __webpack_require__("./node_modules/@angular/router/index.js");
-var ng2_bootstrap_1 = __webpack_require__("./node_modules/ng2-bootstrap/ng2-bootstrap.js");
-var ng2_bootstrap_2 = __webpack_require__("./node_modules/ng2-bootstrap/ng2-bootstrap.js");
-var ng2_bootstrap_3 = __webpack_require__("./node_modules/ng2-bootstrap/ng2-bootstrap.js");
-var ng2_modal_1 = __webpack_require__("./node_modules/ng2-modal/index.js");
-var aboutapril_component_1 = __webpack_require__("./src/app/aboutapril/aboutapril.component.ts");
-var widget_module_1 = __webpack_require__("./src/app/layout/widget/widget.module.ts");
-var ng2_select2_1 = __webpack_require__("./node_modules/ng2-select2/ng2-select2.js");
-var quill_module_1 = __webpack_require__("./src/app/directory/quill/quill.module.ts");
-exports.routes = [
-    { path: '', component: aboutapril_component_1.AboutApril, pathMatch: 'full' }
-];
-var AboutAprilModule = (function () {
-    function AboutAprilModule() {
-    }
-    AboutAprilModule.routes = exports.routes;
-    AboutAprilModule = __decorate([
-        core_1.NgModule({
-            declarations: [
-                // Components / Directives/ Pipes
-                aboutapril_component_1.AboutApril
-            ],
-            imports: [
-                common_1.CommonModule,
-                forms_1.FormsModule,
-                router_1.RouterModule.forChild(exports.routes),
-                ng2_bootstrap_1.AlertModule,
-                widget_module_1.WidgetModule,
-                ng2_bootstrap_1.TooltipModule,
-                ng2_modal_1.ModalModule,
-                ng2_bootstrap_2.ButtonsModule,
-                ng2_bootstrap_2.DropdownModule,
-                ng2_bootstrap_3.TabsModule,
-                ng2_bootstrap_3.AccordionModule,
-                ng2_select2_1.Select2Module,
-                quill_module_1.QuillModule
-            ]
-        }), 
-        __metadata('design:paramtypes', [])
-    ], AboutAprilModule);
-    return AboutAprilModule;
-}());
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.default = AboutAprilModule;
-
-
-/***/ },
-
 /***/ "./src/app/directory/quill/quill.component.css":
 /***/ function(module, exports) {
 
@@ -17622,6 +17571,177 @@ exports.QuillModule = QuillModule;
 
 /***/ },
 
+/***/ "./src/app/faqs/faqs.component.html":
+/***/ function(module, exports) {
+
+module.exports = "<ol class=\"breadcrumb\">\n    <li class=\"breadcrumb-item\">YOU ARE HERE</li>\n    <li class=\"breadcrumb-item active\">Frequently Asked Questions</li>\n</ol>\n<h1 class=\"page-title\">Frequently Asked<span class=\"fw-semi-bold\"> Questions</span></h1>\n\n<div class=\"row\">\n\n    <div class=\"col-lg-12 col-xs-12\">\n        <div class=\"panel-group\" id=\"accordion\">\n            <div *ngFor=\"let item of directoryList; let i = index\">\n                <div class=\"panel panel-default\">\n                    <div class=\"panel-heading\">\n                        <span class=\"deleteDirectory\" (click)=\"deleteDirectory(item._id)\"><i class=\"fa fa-trash-o\"></i></span>\n                        <h4 class=\"panel-title\">\n                            <a data-toggle=\"collapse\" data-parent=\"#accordion\" href=\"#item{{item._id}}\">{{item.title}}</a>\n                        </h4>\n                    </div>\n                    <div id=\"item{{item._id}}\" class=\"panel-collapse collapse\">\n                        <div class=\"panel-body\">\n                            <quill-editor class=\"form-control\" [(ngModel)]=\"ckeditorContent[i]\" (onEditorCreated)=\"onEditorCreated($event, i, item._id)\" (writeValue)=\"item.content\"\n                              (onContentChanged)=\"onBlur($event, item._id, i);\"  ></quill-editor>\n                                <!--(onContentChanged)=\"onBlur($event, , item._id, i);\"-->\n                            <br/>\n                        </div>\n                    </div>\n                </div>\n            </div>\n        </div>\n    </div>\n</div>\n<div class=\"row page-title\">\n    <h4><strong>Add FAQ</strong></h4>\n</div>\n<section class=\"AddDirectory\">\n    <div class=\"row\">\n        <div class=\"col-lg-6 offset-lg-3 col-xs-12 col-sm-12\">\n\n            <div class=\"form-group row\">\n                <label class=\"col-md-3\" for=\"tooltip-enabled\">FAQ Title</label>\n                <div class=\"col-md-7 \">\n                    <input type=\"text\" [(ngModel)]=\"directoryTitle\" id=\"tooltip-enabled\" class=\"form-control\" tooltipPlacement=\"top\" tooltip=\"Some explanation text here\"\n                        placeholder=\"FAQ Title..\">\n                </div>\n            </div>\n            <quill-editor class=\"form-control\" [(ngModel)]=\"addDirectoryContent\" (onEditorCreated)=\"onEditorCreated($event)\" (onContentChanged)=\"logChange($event);\"></quill-editor>\n            <br/>\n            <div class=\"row\">\n                <button type=\"button\" (click)=\"addDirectory()\" class=\"btn btn-info btn-block submitBtn col-lg-6 offset-lg-3 col-xs-6\">Submit</button>\n            </div>\n        </div>\n    </div>\n</section>"
+
+/***/ },
+
+/***/ "./src/app/faqs/faqs.component.scss":
+/***/ function(module, exports) {
+
+module.exports = ".widget2 {\n  background-color: #eeeeee !important; }\n\n.AddGroupBtn {\n  margin-left: 1.5%; }\n\n.btn-red {\n  background-color: #e9604a;\n  color: white;\n  border-radius: 7px; }\n\n.rowcolor {\n  background-color: white;\n  margin-left: 0.1%;\n  border-radius: 7px;\n  margin-bottom: 2%; }\n\n.title {\n  text-transform: uppercase;\n  font-size: 13px;\n  line-height: 2.15;\n  color: #767676;\n  margin: 0 0 8px;\n  padding: 2%; }\n\n.rightborder {\n  border-right: 1px solid #eeeeee; }\n\n.art-baloons-input {\n  position: relative;\n  min-height: 36px;\n  border-radius: 7px;\n  box-shadow: inset 0 1px 3px 0 rgba(0, 0, 0, 0.08);\n  border: 1px solid rgba(0, 0, 0, 0.2);\n  background-color: rgba(0, 0, 0, 0.01);\n  transition: box-shadow .1s,border-color .1s;\n  cursor: text;\n  padding: 4px 0 0 8px;\n  line-height: 26px; }\n\n.paddingrow {\n  padding: 0 2.5% 2.5%; }\n\n.green {\n  display: inline-block;\n  position: relative;\n  vertical-align: top;\n  line-height: 26px;\n  min-height: 26px;\n  max-width: 98.5%;\n  word-wrap: break-word;\n  border-radius: 18px;\n  background-color: #45c195;\n  padding: 0 8px;\n  font-size: 16px;\n  color: #fff;\n  margin: 0 8px 4px 0; }\n\n.dropdownBtnColor {\n  background-color: #a6a6a6 !important;\n  border-color: #a6a6a6 !important; }\n\n.closeBuild {\n  position: absolute;\n  z-index: 1000;\n  right: -2px;\n  display: none;\n  border-radius: 50%;\n  width: 28px;\n  height: 28px;\n  border: 1px solid black;\n  background-color: white;\n  padding: 0.3% 0.5%; }\n\n.closePhrase {\n  position: absolute;\n  z-index: 1000;\n  right: -4px;\n  top: -9px;\n  display: none; }\n\n.quickReplyCloseBtn {\n  color: black;\n  font-size: 18px; }\n\n.phraseFont {\n  font-size: 12px !important; }\n\n.replySelectionDropdown {\n  display: inline-block;\n  color: #448af1;\n  cursor: pointer; }\n\n.replySelectionUL {\n  list-style: none;\n  position: absolute;\n  margin: 0;\n  padding: 0;\n  top: -2px;\n  float: right;\n  left: 136px;\n  z-index: 100000;\n  overflow: hidden;\n  border-radius: 7px;\n  background-color: #fff;\n  box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.12);\n  border: 1px solid rgba(0, 0, 0, 0.24); }\n\n.replySelectionLI {\n  display: block;\n  height: 28px;\n  line-height: 28px;\n  padding: 0 12px;\n  margin: 0;\n  cursor: pointer;\n  white-space: nowrap;\n  color: #000; }\n\n/**\r\n * Switchery.\r\n */\n.switch {\n  box-sizing: content-box; }\n\n.switch input {\n  display: none; }\n\n.switch i {\n  display: inline-block;\n  cursor: pointer;\n  padding-right: 10px;\n  transition: all ease 0.2s;\n  -webkit-transition: all ease 0.2s;\n  border-radius: 20px;\n  box-shadow: inset 0 0 1px rgba(0, 0, 0, 0.5); }\n\n.switch i:before {\n  display: block;\n  content: '';\n  width: 15px;\n  height: 15px;\n  padding: 1px;\n  border-radius: 20px;\n  background: white;\n  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.5); }\n\n.switch :checked + i {\n  padding-right: 0;\n  padding-left: 10px;\n  background: #64bd63; }\n\n.switcheryToggle {\n  float: right;\n  display: none; }\n\n/*.close:hover{\r\n    display: block !important;\r\n}*/\n"
+
+/***/ },
+
+/***/ "./src/app/faqs/faqs.component.ts":
+/***/ function(module, exports, __webpack_require__) {
+
+"use strict";
+/* WEBPACK VAR INJECTION */(function(jQuery) {"use strict";
+var core_1 = __webpack_require__("./node_modules/@angular/core/index.js");
+var MiscServices_1 = __webpack_require__("./src/app/services/MiscServices.ts");
+var Quill = __webpack_require__("./node_modules/quill/dist/quill.js");
+var Faqs = (function () {
+    function Faqs(_miscService) {
+        var _this = this;
+        this._miscService = _miscService;
+        this.addDirectoryContent = "";
+        this.directoryTitle = "";
+        this.directoryList = [];
+        this.ckeditorContent = [];
+        this._miscService.getAllFaqs().subscribe(function (a) {
+            if (a.code == 200) {
+                _this.directoryList = a.data;
+                console.log(_this.directoryList);
+                for (var j = 0; j < _this.directoryList.length; j++) {
+                    var text = _this.directoryList[j].content;
+                    _this.ckeditorContent[j] = text;
+                }
+            }
+        });
+    }
+    Faqs.prototype.ngOnInit = function () {
+        jQuery('.nav-tabs').on('shown.bs.tab', 'a', function (e) {
+            if (e.relatedTarget) {
+                jQuery(e.relatedTarget).removeClass('active');
+            }
+        });
+    };
+    Faqs.prototype.onReady = function (event, i, responseMessageId) {
+        //alert(i);
+        for (var j = 0; j < this.directoryList.length; j++) {
+            if (this.directoryList[j]._id == responseMessageId) {
+                var text = this.directoryList[j].content;
+                console.log(text);
+                var match = /\r|\n/.exec(text);
+                if (match) {
+                    alert();
+                }
+                var text = this.directoryList[j].content;
+                this.ckeditorContent[i] = text;
+            }
+        }
+    };
+    Faqs.prototype.onBlur = function (event, directoryId, i) {
+        var text = this.ckeditorContent[i];
+        this._miscService.updateFaqs(directoryId, this.ckeditorContent[i]).subscribe(function (a) {
+            if (a.code == 200) {
+            }
+        });
+    };
+    Faqs.prototype.onEditorCreated = function (quill, i, responseMessageId) {
+    };
+    Faqs.prototype.logChange = function ($event) {
+        console.log($event);
+    };
+    Faqs.prototype.addDirectory = function () {
+        var _this = this;
+        this._miscService.addFaqs(this.directoryTitle, this.addDirectoryContent).subscribe(function (a) {
+            if (a.code == 200) {
+                _this.addDirectoryContent = "";
+                _this.directoryTitle = "";
+            }
+        });
+    };
+    Faqs.prototype.deleteDirectory = function (Id) {
+        var _this = this;
+        this._miscService.deleteFaqs(Id).subscribe(function (a) {
+            if (a.code == 200) {
+                _this.addDirectoryContent = "";
+                _this.directoryTitle = "";
+            }
+        });
+    };
+    Faqs = __decorate([
+        core_1.Component({
+            selector: '[faqs]',
+            template: __webpack_require__("./src/app/faqs/faqs.component.html"),
+            encapsulation: core_1.ViewEncapsulation.None,
+            providers: [MiscServices_1.MiscServices],
+            styles: [__webpack_require__("./src/app/faqs/faqs.component.scss")]
+        }), 
+        __metadata('design:paramtypes', [(typeof (_a = typeof MiscServices_1.MiscServices !== 'undefined' && MiscServices_1.MiscServices) === 'function' && _a) || Object])
+    ], Faqs);
+    return Faqs;
+    var _a;
+}());
+exports.Faqs = Faqs;
+
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__("./node_modules/jquery/dist/jquery.js")))
+
+/***/ },
+
+/***/ "./src/app/faqs/faqs.module.ts":
+/***/ function(module, exports, __webpack_require__) {
+
+"use strict";
+"use strict";
+__webpack_require__("./node_modules/messenger/build/js/messenger.js");
+__webpack_require__("./node_modules/jquery-ui/ui/sortable.js");
+__webpack_require__("./node_modules/jquery.nestable/jquery.nestable.js");
+var common_1 = __webpack_require__("./node_modules/@angular/common/index.js");
+var forms_1 = __webpack_require__("./node_modules/@angular/forms/index.js");
+var core_1 = __webpack_require__("./node_modules/@angular/core/index.js");
+var router_1 = __webpack_require__("./node_modules/@angular/router/index.js");
+var ng2_bootstrap_1 = __webpack_require__("./node_modules/ng2-bootstrap/ng2-bootstrap.js");
+var ng2_bootstrap_2 = __webpack_require__("./node_modules/ng2-bootstrap/ng2-bootstrap.js");
+var ng2_bootstrap_3 = __webpack_require__("./node_modules/ng2-bootstrap/ng2-bootstrap.js");
+var ng2_modal_1 = __webpack_require__("./node_modules/ng2-modal/index.js");
+var faqs_component_1 = __webpack_require__("./src/app/faqs/faqs.component.ts");
+var widget_module_1 = __webpack_require__("./src/app/layout/widget/widget.module.ts");
+var ng2_select2_1 = __webpack_require__("./node_modules/ng2-select2/ng2-select2.js");
+var quill_module_1 = __webpack_require__("./src/app/directory/quill/quill.module.ts");
+exports.routes = [
+    { path: '', component: faqs_component_1.Faqs, pathMatch: 'full' }
+];
+var UiElementsModule = (function () {
+    function UiElementsModule() {
+    }
+    UiElementsModule.routes = exports.routes;
+    UiElementsModule = __decorate([
+        core_1.NgModule({
+            declarations: [
+                // Components / Directives/ Pipes
+                faqs_component_1.Faqs
+            ],
+            imports: [
+                common_1.CommonModule,
+                forms_1.FormsModule,
+                router_1.RouterModule.forChild(exports.routes),
+                ng2_bootstrap_1.AlertModule,
+                widget_module_1.WidgetModule,
+                ng2_bootstrap_1.TooltipModule,
+                ng2_modal_1.ModalModule,
+                ng2_bootstrap_2.ButtonsModule,
+                ng2_bootstrap_2.DropdownModule,
+                ng2_bootstrap_3.TabsModule,
+                ng2_bootstrap_3.AccordionModule,
+                ng2_select2_1.Select2Module,
+                quill_module_1.QuillModule
+            ]
+        }), 
+        __metadata('design:paramtypes', [])
+    ], UiElementsModule);
+    return UiElementsModule;
+}());
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.default = UiElementsModule;
+
+
+/***/ },
+
 /***/ "./src/app/layout/widget/widget.directive.ts":
 /***/ function(module, exports, __webpack_require__) {
 
@@ -17714,6 +17834,10 @@ var MiscServices = (function () {
         return this.http.get(this.baseUrl + 'directory/getAllDirectory')
             .map(function (res) { return res.json(); });
     };
+    MiscServices.prototype.getAllFaqs = function () {
+        return this.http.get(this.baseUrl + 'faqs/getAllFaqs')
+            .map(function (res) { return res.json(); });
+    };
     MiscServices.prototype.addAboutApril = function (content) {
         var body = JSON.stringify({ 'content': content });
         var headers = new http_1.Headers({ 'Content-Type': 'application/json' });
@@ -17749,6 +17873,13 @@ var MiscServices = (function () {
         return this.http.post(this.baseUrl + "directory/addDirectory", body, options)
             .map(function (res) { return res.json(); });
     };
+    MiscServices.prototype.addFaqs = function (title, content) {
+        var body = JSON.stringify({ "title": title, 'content': content });
+        var headers = new http_1.Headers({ 'Content-Type': 'application/json' });
+        var options = new http_1.RequestOptions({ method: 'post', headers: headers });
+        return this.http.post(this.baseUrl + "faqs/addFaqs", body, options)
+            .map(function (res) { return res.json(); });
+    };
     MiscServices.prototype.updateDirectory = function (_directoryId, content) {
         console.log(content);
         var body = JSON.stringify({ "_directoryId": _directoryId, 'content': content });
@@ -17757,8 +17888,20 @@ var MiscServices = (function () {
         return this.http.post(this.baseUrl + "directory/updateDirectoryContent", body, options)
             .map(function (res) { return res.json(); });
     };
+    MiscServices.prototype.updateFaqs = function (_directoryId, content) {
+        console.log(content);
+        var body = JSON.stringify({ "_faqsId": _directoryId, 'content': content });
+        var headers = new http_1.Headers({ 'Content-Type': 'application/json' });
+        var options = new http_1.RequestOptions({ method: 'post', headers: headers });
+        return this.http.post(this.baseUrl + "faqs/updateFaqsContent", body, options)
+            .map(function (res) { return res.json(); });
+    };
     MiscServices.prototype.deleteDirectory = function (Id) {
         return this.http.get(this.baseUrl + 'directory/deleteDirectory/' + Id)
+            .map(function (res) { return res.json(); });
+    };
+    MiscServices.prototype.deleteFaqs = function (Id) {
+        return this.http.get(this.baseUrl + 'faqs/deleteFaqs/' + Id)
             .map(function (res) { return res.json(); });
     };
     MiscServices = __decorate([

@@ -138,7 +138,7 @@ function fromByteArray (uint8) {
 
 var base64 = __webpack_require__("./node_modules/base64-js/index.js")
 var ieee754 = __webpack_require__("./node_modules/ieee754/index.js")
-var isArray = __webpack_require__("./node_modules/isarray/index.js")
+var isArray = __webpack_require__("./node_modules/buffer/node_modules/isarray/index.js")
 
 exports.Buffer = Buffer
 exports.SlowBuffer = SlowBuffer
@@ -1920,6 +1920,18 @@ function isnan (val) {
 
 /***/ },
 
+/***/ "./node_modules/buffer/node_modules/isarray/index.js":
+/***/ function(module, exports) {
+
+var toString = {}.toString;
+
+module.exports = Array.isArray || function (arr) {
+  return toString.call(arr) == '[object Array]';
+};
+
+
+/***/ },
+
 /***/ "./node_modules/ieee754/index.js":
 /***/ function(module, exports) {
 
@@ -2007,18 +2019,6 @@ exports.write = function (buffer, value, offset, isLE, mLen, nBytes) {
 
   buffer[offset + i - d] |= s * 128
 }
-
-
-/***/ },
-
-/***/ "./node_modules/isarray/index.js":
-/***/ function(module, exports) {
-
-var toString = {}.toString;
-
-module.exports = Array.isArray || function (arr) {
-  return toString.call(arr) == '[object Array]';
-};
 
 
 /***/ },
@@ -6656,7 +6656,6 @@ var Select2Component = (function () {
         this.blur = new core_1.EventEmitter();
     }
     Select2Component.prototype.ngAfterViewInit = function () {
-	console.log(this.data);
         if (this.data) {
             var that_1 = this;
             this.element = jQuery(this.selector.nativeElement);
@@ -6737,7 +6736,7 @@ exports.Select2Component = Select2Component;
 /***/ function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(Buffer) {/*!
- * Quill Editor v1.1.9
+ * Quill Editor v1.2.0
  * https://quilljs.com/
  * Copyright (c) 2014, Jason Chen
  * Copyright (c) 2013, salesforce.com
@@ -6940,7 +6939,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	var ContainerBlot = (function (_super) {
 	    __extends(ContainerBlot, _super);
 	    function ContainerBlot() {
-	        return _super.apply(this, arguments) || this;
+	        return _super !== null && _super.apply(this, arguments) || this;
 	    }
 	    ContainerBlot.prototype.appendChild = function (other) {
 	        this.insertBefore(other);
@@ -7467,7 +7466,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	var ParchmentError = (function (_super) {
 	    __extends(ParchmentError, _super);
 	    function ParchmentError(message) {
-	        var _this;
+	        var _this = this;
 	        message = '[Parchment] ' + message;
 	        _this = _super.call(this, message) || this;
 	        _this.message = message;
@@ -7615,7 +7614,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	var FormatBlot = (function (_super) {
 	    __extends(FormatBlot, _super);
 	    function FormatBlot() {
-	        return _super.apply(this, arguments) || this;
+	        return _super !== null && _super.apply(this, arguments) || this;
 	    }
 	    FormatBlot.formats = function (domNode) {
 	        if (typeof this.tagName === 'string') {
@@ -7821,7 +7820,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	var ClassAttributor = (function (_super) {
 	    __extends(ClassAttributor, _super);
 	    function ClassAttributor() {
-	        return _super.apply(this, arguments) || this;
+	        return _super !== null && _super.apply(this, arguments) || this;
 	    }
 	    ClassAttributor.keys = function (node) {
 	        return (node.getAttribute('class') || '').split(/\s+/).map(function (name) {
@@ -7876,7 +7875,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	var StyleAttributor = (function (_super) {
 	    __extends(StyleAttributor, _super);
 	    function StyleAttributor() {
-	        return _super.apply(this, arguments) || this;
+	        return _super !== null && _super.apply(this, arguments) || this;
 	    }
 	    StyleAttributor.keys = function (node) {
 	        return (node.getAttribute('style') || '').split(';').map(function (value) {
@@ -7921,7 +7920,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	var LeafBlot = (function (_super) {
 	    __extends(LeafBlot, _super);
 	    function LeafBlot() {
-	        return _super.apply(this, arguments) || this;
+	        return _super !== null && _super.apply(this, arguments) || this;
 	    }
 	    LeafBlot.value = function (domNode) {
 	        return true;
@@ -8130,7 +8129,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	var InlineBlot = (function (_super) {
 	    __extends(InlineBlot, _super);
 	    function InlineBlot() {
-	        return _super.apply(this, arguments) || this;
+	        return _super !== null && _super.apply(this, arguments) || this;
 	    }
 	    InlineBlot.formats = function (domNode) {
 	        if (domNode.tagName === InlineBlot.tagName)
@@ -8197,7 +8196,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	var BlockBlot = (function (_super) {
 	    __extends(BlockBlot, _super);
 	    function BlockBlot() {
-	        return _super.apply(this, arguments) || this;
+	        return _super !== null && _super.apply(this, arguments) || this;
 	    }
 	    BlockBlot.formats = function (domNode) {
 	        var tagName = Registry.query(BlockBlot.blotName).tagName;
@@ -8266,7 +8265,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	var EmbedBlot = (function (_super) {
 	    __extends(EmbedBlot, _super);
 	    function EmbedBlot() {
-	        return _super.apply(this, arguments) || this;
+	        return _super !== null && _super.apply(this, arguments) || this;
 	    }
 	    EmbedBlot.formats = function (domNode) {
 	        return undefined;
@@ -8460,6 +8459,11 @@ return /******/ (function(modules) { // webpackBootstrap
 	      _logger2.default.level(limit);
 	    }
 	  }, {
+	    key: 'find',
+	    value: function find(node) {
+	      return node.__quill || _parchment2.default.find(node);
+	    }
+	  }, {
 	    key: 'import',
 	    value: function _import(name) {
 	      if (this.imports[name] == null) {
@@ -8515,6 +8519,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    var html = this.container.innerHTML.trim();
 	    this.container.classList.add('ql-container');
 	    this.container.innerHTML = '';
+	    this.container.__quill = this;
 	    this.root = this.addContainer('ql-editor');
 	    this.root.classList.add('ql-blank');
 	    this.emitter = new _emitter4.default();
@@ -8714,9 +8719,36 @@ return /******/ (function(modules) { // webpackBootstrap
 	      }
 	    }
 	  }, {
+	    key: 'getIndex',
+	    value: function getIndex(blot) {
+	      return blot.offset(this.scroll);
+	    }
+	  }, {
 	    key: 'getLength',
 	    value: function getLength() {
 	      return this.scroll.length();
+	    }
+	  }, {
+	    key: 'getLeaf',
+	    value: function getLeaf(index) {
+	      return this.scroll.leaf(index);
+	    }
+	  }, {
+	    key: 'getLine',
+	    value: function getLine(index) {
+	      return this.scroll.line(index);
+	    }
+	  }, {
+	    key: 'getLines',
+	    value: function getLines() {
+	      var index = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 0;
+	      var length = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : Number.MAX_VALUE;
+
+	      if (typeof index !== 'number') {
+	        return this.scroll.lines(index.index, index.length);
+	      } else {
+	        return this.scroll.lines(index, length);
+	      }
 	    }
 	  }, {
 	    key: 'getModule',
@@ -8861,7 +8893,9 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	        this.selection.setRange(new _selection.Range(index, length), source);
 	      }
-	      this.selection.scrollIntoView();
+	      if (source !== _emitter4.default.sources.SILENT) {
+	        this.selection.scrollIntoView();
+	      }
 	    }
 	  }, {
 	    key: 'setText',
@@ -8910,7 +8944,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	Quill.events = _emitter4.default.events;
 	Quill.sources = _emitter4.default.sources;
 	// eslint-disable-next-line no-undef
-	Quill.version =  false ? 'dev' : ("1.1.9");
+	Quill.version =  false ? 'dev' : ("1.2.0");
 
 	Quill.imports = {
 	  'delta': _quillDelta2.default,
@@ -8985,7 +9019,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	  var range = index == null ? null : this.getSelection();
 	  var oldDelta = this.editor.delta;
 	  var change = modifier();
-	  if (range != null && source === _emitter4.default.sources.USER) {
+	  if (range != null) {
 	    if (index === true) index = range.index;
 	    if (shift == null) {
 	      range = shiftRange(range, change, source);
@@ -10682,6 +10716,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	      this.scroll.update();
 	      Object.keys(formats).forEach(function (format) {
+	        if (_this2.scroll.whitelist != null && !_this2.scroll.whitelist[format]) return;
 	        var lines = _this2.scroll.lines(index, Math.max(length, 1));
 	        var lengthRemaining = length;
 	        lines.forEach(function (line) {
@@ -12813,6 +12848,15 @@ return /******/ (function(modules) { // webpackBootstrap
 	        if (!this.hasFocus()) this.root.focus();
 	        var native = (this.getNativeRange() || {}).native;
 	        if (native == null || force || startNode !== native.startContainer || startOffset !== native.startOffset || endNode !== native.endContainer || endOffset !== native.endOffset) {
+
+	          if (startNode.tagName == "BR") {
+	            startOffset = [].indexOf.call(startNode.parentNode.childNodes, startNode);
+	            startNode = startNode.parentNode;
+	          }
+	          if (endNode.tagName == "BR") {
+	            endOffset = [].indexOf.call(endNode.parentNode.childNodes, endNode);
+	            endNode = endNode.parentNode;
+	          }
 	          var range = document.createRange();
 	          range.setStart(startNode, startOffset);
 	          range.setEnd(endNode, endOffset);
@@ -12874,16 +12918,14 @@ return /******/ (function(modules) { // webpackBootstrap
 	    value: function update() {
 	      var source = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : _emitter4.default.sources.USER;
 
-	      var nativeRange = void 0,
-	          oldRange = this.lastRange;
+	      var oldRange = this.lastRange;
 
-	      var _getRange = this.getRange();
+	      var _getRange = this.getRange(),
+	          _getRange2 = _slicedToArray(_getRange, 2),
+	          lastRange = _getRange2[0],
+	          nativeRange = _getRange2[1];
 
-	      var _getRange2 = _slicedToArray(_getRange, 2);
-
-	      this.lastRange = _getRange2[0];
-	      nativeRange = _getRange2[1];
-
+	      this.lastRange = lastRange;
 	      if (this.lastRange != null) {
 	        this.savedRange = this.lastRange;
 	      }
@@ -14097,7 +14139,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    });
 	    _this.addBinding({ key: Keyboard.keys.ENTER, shiftKey: null }, handleEnter);
 	    _this.addBinding({ key: Keyboard.keys.ENTER, metaKey: null, ctrlKey: null, altKey: null }, function () {});
-	    if (/Gecko/i.test(navigator.userAgent)) {
+	    if (/Firefox/i.test(navigator.userAgent)) {
 	      // Need to handle delete and backspace for Firefox in the general case #1171
 	      _this.addBinding({ key: Keyboard.keys.BACKSPACE }, { collapsed: true }, handleBackspace);
 	      _this.addBinding({ key: Keyboard.keys.DELETE }, { collapsed: true }, handleDelete);
@@ -14146,17 +14188,17 @@ return /******/ (function(modules) { // webpackBootstrap
 	        var range = _this2.quill.getSelection();
 	        if (range == null || !_this2.quill.hasFocus()) return;
 
-	        var _quill$scroll$line = _this2.quill.scroll.line(range.index),
-	            _quill$scroll$line2 = _slicedToArray(_quill$scroll$line, 2),
-	            line = _quill$scroll$line2[0],
-	            offset = _quill$scroll$line2[1];
+	        var _quill$getLine = _this2.quill.getLine(range.index),
+	            _quill$getLine2 = _slicedToArray(_quill$getLine, 2),
+	            line = _quill$getLine2[0],
+	            offset = _quill$getLine2[1];
 
-	        var _quill$scroll$leaf = _this2.quill.scroll.leaf(range.index),
-	            _quill$scroll$leaf2 = _slicedToArray(_quill$scroll$leaf, 2),
-	            leafStart = _quill$scroll$leaf2[0],
-	            offsetStart = _quill$scroll$leaf2[1];
+	        var _quill$getLeaf = _this2.quill.getLeaf(range.index),
+	            _quill$getLeaf2 = _slicedToArray(_quill$getLeaf, 2),
+	            leafStart = _quill$getLeaf2[0],
+	            offsetStart = _quill$getLeaf2[1];
 
-	        var _ref = range.length === 0 ? [leafStart, offsetStart] : _this2.quill.scroll.leaf(range.index + range.length),
+	        var _ref = range.length === 0 ? [leafStart, offsetStart] : _this2.quill.getLeaf(range.index + range.length),
 	            _ref2 = _slicedToArray(_ref, 2),
 	            leafEnd = _ref2[0],
 	            offsetEnd = _ref2[1];
@@ -14297,9 +14339,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	      handler: function handler(range) {
 	        this.quill.scroll.insertAt(range.index, '\n');
 
-	        var _quill$scroll$line3 = this.quill.scroll.line(range.index + 1),
-	            _quill$scroll$line4 = _slicedToArray(_quill$scroll$line3, 1),
-	            line = _quill$scroll$line4[0];
+	        var _quill$getLine3 = this.quill.getLine(range.index + 1),
+	            _quill$getLine4 = _slicedToArray(_quill$getLine3, 1),
+	            line = _quill$getLine4[0];
 
 	        line.format('list', 'unchecked');
 	        this.quill.update(_quill2.default.sources.USER);
@@ -14325,10 +14367,22 @@ return /******/ (function(modules) { // webpackBootstrap
 	      format: { list: false },
 	      prefix: /^(1\.|-)$/,
 	      handler: function handler(range, context) {
+	        if (this.quill.scroll.whitelist != null && !this.quill.scroll.whitelist['list']) return true;
 	        var length = context.prefix.length;
 	        this.quill.scroll.deleteAt(range.index - length, length);
 	        this.quill.formatLine(range.index - length, 1, 'list', length === 1 ? 'bullet' : 'ordered', _quill2.default.sources.USER);
 	        this.quill.setSelection(range.index - length, _quill2.default.sources.SILENT);
+	      }
+	    },
+	    'code exit': {
+	      key: Keyboard.keys.ENTER,
+	      collapsed: true,
+	      format: ['code-block'],
+	      prefix: /\n\n$/,
+	      suffix: /^\s+$/,
+	      handler: function handler(range) {
+	        this.quill.format('code-block', false, _quill2.default.sources.USER);
+	        this.quill.deleteText(range.index - 2, 1, _quill2.default.sources.USER);
 	      }
 	    }
 	  }
@@ -14337,9 +14391,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	function handleBackspace(range, context) {
 	  if (range.index === 0) return;
 
-	  var _quill$scroll$line5 = this.quill.scroll.line(range.index),
-	      _quill$scroll$line6 = _slicedToArray(_quill$scroll$line5, 1),
-	      line = _quill$scroll$line6[0];
+	  var _quill$getLine5 = this.quill.getLine(range.index),
+	      _quill$getLine6 = _slicedToArray(_quill$getLine5, 1),
+	      line = _quill$getLine6[0];
 
 	  var formats = {};
 	  if (context.offset === 0) {
@@ -14347,16 +14401,20 @@ return /******/ (function(modules) { // webpackBootstrap
 	    var prevFormats = this.quill.getFormat(range.index - 1, 1);
 	    formats = _op2.default.attributes.diff(curFormats, prevFormats) || {};
 	  }
-	  this.quill.deleteText(range.index - 1, 1, _quill2.default.sources.USER);
+	  // Check for astral symbols
+	  var length = /[\uD800-\uDBFF][\uDC00-\uDFFF]$/.test(context.prefix) ? 2 : 1;
+	  this.quill.deleteText(range.index - length, length, _quill2.default.sources.USER);
 	  if (Object.keys(formats).length > 0) {
-	    this.quill.formatLine(range.index - 1, 1, formats, _quill2.default.sources.USER);
+	    this.quill.formatLine(range.index - length, length, formats, _quill2.default.sources.USER);
 	  }
 	  this.quill.selection.scrollIntoView();
 	}
 
-	function handleDelete(range) {
-	  if (range.index >= this.quill.getLength() - 1) return;
-	  this.quill.deleteText(range.index, 1, _quill2.default.sources.USER);
+	function handleDelete(range, context) {
+	  // Check for astral symbols
+	  var length = /^[\uD800-\uDBFF][\uDC00-\uDFFF]/.test(context.suffix) ? 2 : 1;
+	  if (range.index >= this.quill.getLength() - length) return;
+	  this.quill.deleteText(range.index, length, _quill2.default.sources.USER);
 	}
 
 	function handleDeleteRange(range) {
@@ -14378,6 +14436,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	    return lineFormats;
 	  }, {});
 	  this.quill.insertText(range.index, '\n', lineFormats, _quill2.default.sources.USER);
+	  // Earlier scroll.deleteAt might have messed up our selection,
+	  // so insertText's built in selection preservation is not reliable
+	  this.quill.setSelection(range.index + 1, _quill2.default.sources.SILENT);
 	  this.quill.selection.scrollIntoView();
 	  Object.keys(context.format).forEach(function (name) {
 	    if (lineFormats[name] != null) return;
@@ -14403,9 +14464,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	          offset = _quill$scroll$descend2[1];
 
 	      if (block == null) return;
-	      var scrollOffset = this.quill.scroll.offset(block);
+	      var scrollIndex = this.quill.getIndex(block);
 	      var start = block.newlineIndex(offset, true) + 1;
-	      var end = block.newlineIndex(scrollOffset + offset + length);
+	      var end = block.newlineIndex(scrollIndex + offset + length);
 	      var lines = block.domNode.textContent.slice(start, end).split('\n');
 	      offset = 0;
 	      lines.forEach(function (line, i) {
@@ -14892,10 +14953,47 @@ return /******/ (function(modules) { // webpackBootstrap
 	var List = function (_Container) {
 	  _inherits(List, _Container);
 
-	  function List() {
+	  _createClass(List, null, [{
+	    key: 'create',
+	    value: function create(value) {
+	      var tagName = value === 'ordered' ? 'OL' : 'UL';
+	      var node = _get(List.__proto__ || Object.getPrototypeOf(List), 'create', this).call(this, tagName);
+	      if (value === 'checked' || value === 'unchecked') {
+	        node.setAttribute('data-checked', value === 'checked');
+	      }
+	      return node;
+	    }
+	  }, {
+	    key: 'formats',
+	    value: function formats(domNode) {
+	      if (domNode.tagName === 'OL') return 'ordered';
+	      if (domNode.tagName === 'UL') {
+	        if (domNode.hasAttribute('data-checked')) {
+	          return domNode.getAttribute('data-checked') === 'true' ? 'checked' : 'unchecked';
+	        } else {
+	          return 'bullet';
+	        }
+	      }
+	      return undefined;
+	    }
+	  }]);
+
+	  function List(domNode) {
 	    _classCallCheck(this, List);
 
-	    return _possibleConstructorReturn(this, (List.__proto__ || Object.getPrototypeOf(List)).apply(this, arguments));
+	    var _this2 = _possibleConstructorReturn(this, (List.__proto__ || Object.getPrototypeOf(List)).call(this, domNode));
+
+	    domNode.addEventListener('click', function (e) {
+	      if (e.target.parentNode !== domNode) return;
+	      var format = _this2.statics.formats(domNode);
+	      var blot = _parchment2.default.find(e.target);
+	      if (format === 'checked') {
+	        blot.format('list', 'unchecked');
+	      } else if (format === 'unchecked') {
+	        blot.format('list', 'checked');
+	      }
+	    });
+	    return _this2;
 	  }
 
 	  _createClass(List, [{
@@ -14941,29 +15039,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	        this.appendChild(item);
 	      }
 	      _get(List.prototype.__proto__ || Object.getPrototypeOf(List.prototype), 'replace', this).call(this, target);
-	    }
-	  }], [{
-	    key: 'create',
-	    value: function create(value) {
-	      var tagName = value === 'ordered' ? 'OL' : 'UL';
-	      var node = _get(List.__proto__ || Object.getPrototypeOf(List), 'create', this).call(this, tagName);
-	      if (value === 'checked' || value === 'unchecked') {
-	        node.setAttribute('data-checked', value === 'checked');
-	      }
-	      return node;
-	    }
-	  }, {
-	    key: 'formats',
-	    value: function formats(domNode) {
-	      if (domNode.tagName === 'OL') return 'ordered';
-	      if (domNode.tagName === 'UL') {
-	        if (domNode.hasAttribute('data-checked')) {
-	          return domNode.getAttribute('data-checked') === 'true' ? 'checked' : 'unchecked';
-	        } else {
-	          return 'bullet';
-	        }
-	      }
-	      return undefined;
 	    }
 	  }]);
 
@@ -15998,12 +16073,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	      }
 	      this.quill.format('direction', value, _quill2.default.sources.USER);
 	    },
-	    link: function link(value) {
-	      if (value === true) {
-	        value = prompt('Enter link URL:');
-	      }
-	      this.quill.format('link', value, _quill2.default.sources.USER);
-	    },
 	    indent: function indent(value) {
 	      var range = this.quill.getSelection();
 	      var formats = this.quill.getFormat(range);
@@ -16012,6 +16081,25 @@ return /******/ (function(modules) { // webpackBootstrap
 	        var modifier = value === '+1' ? 1 : -1;
 	        if (formats.direction === 'rtl') modifier *= -1;
 	        this.quill.format('indent', indent + modifier, _quill2.default.sources.USER);
+	      }
+	    },
+	    link: function link(value) {
+	      if (value === true) {
+	        value = prompt('Enter link URL:');
+	      }
+	      this.quill.format('link', value, _quill2.default.sources.USER);
+	    },
+	    list: function list(value) {
+	      var range = this.quill.getSelection();
+	      var formats = this.quill.getFormat(range);
+	      if (value === 'check') {
+	        if (formats['list'] === 'checked' || formats['list'] === 'unchecked') {
+	          this.quill.format('list', false, _quill2.default.sources.USER);
+	        } else {
+	          this.quill.format('list', 'unchecked', _quill2.default.sources.USER);
+	        }
+	      } else {
+	        this.quill.format('list', value, _quill2.default.sources.USER);
 	      }
 	    }
 	  }
@@ -16065,7 +16153,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	  'list': {
 	    'ordered': __webpack_require__(94),
 	    'bullet': __webpack_require__(95),
-	    'unchecked': __webpack_require__(96)
+	    'check': __webpack_require__(96)
 	  },
 	  'script': {
 	    'sub': __webpack_require__(97),
@@ -16735,12 +16823,12 @@ return /******/ (function(modules) { // webpackBootstrap
 	        _this2.root.style.left = '0px';
 	        _this2.root.style.width = '';
 	        _this2.root.style.width = _this2.root.offsetWidth + 'px';
-	        var lines = _this2.quill.scroll.lines(range.index, range.length);
+	        var lines = _this2.quill.getLines(range.index, range.length);
 	        if (lines.length === 1) {
 	          _this2.position(_this2.quill.getBounds(range));
 	        } else {
 	          var lastLine = lines[lines.length - 1];
-	          var index = lastLine.offset(_this2.quill.scroll);
+	          var index = _this2.quill.getIndex(lastLine);
 	          var length = Math.min(lastLine.length() - 1, range.index + range.length - index);
 	          var _bounds = _this2.quill.getBounds(new _selection.Range(index, length));
 	          _this2.position(_bounds);

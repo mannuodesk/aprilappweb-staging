@@ -20369,7 +20369,6 @@ var Select2Component = (function () {
         this.blur = new core_1.EventEmitter();
     }
     Select2Component.prototype.ngAfterViewInit = function () {
-	console.log(this.data);
         if (this.data) {
             var that_1 = this;
             this.element = jQuery(this.selector.nativeElement);

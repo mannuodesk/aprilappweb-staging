@@ -1,2599 +1,607 @@
 webpackJsonpac__name_([20],{
 
-/***/ "./node_modules/jquery-ui/ui/core.js":
-/***/ function(module, exports, __webpack_require__) {
-
-var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/*!
- * jQuery UI Core 1.11.4
- * http://jqueryui.com
- *
- * Copyright jQuery Foundation and other contributors
- * Released under the MIT license.
- * http://jquery.org/license
- *
- * http://api.jqueryui.com/category/ui-core/
- */
-(function( factory ) {
-	if ( true ) {
-
-		// AMD. Register as an anonymous module.
-		!(__WEBPACK_AMD_DEFINE_ARRAY__ = [ __webpack_require__("./node_modules/jquery/dist/jquery.js") ], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
-	} else {
-
-		// Browser globals
-		factory( jQuery );
-	}
-}(function( $ ) {
-
-// $.ui might exist from components with no dependencies, e.g., $.ui.position
-$.ui = $.ui || {};
-
-$.extend( $.ui, {
-	version: "1.11.4",
-
-	keyCode: {
-		BACKSPACE: 8,
-		COMMA: 188,
-		DELETE: 46,
-		DOWN: 40,
-		END: 35,
-		ENTER: 13,
-		ESCAPE: 27,
-		HOME: 36,
-		LEFT: 37,
-		PAGE_DOWN: 34,
-		PAGE_UP: 33,
-		PERIOD: 190,
-		RIGHT: 39,
-		SPACE: 32,
-		TAB: 9,
-		UP: 38
-	}
-});
-
-// plugins
-$.fn.extend({
-	scrollParent: function( includeHidden ) {
-		var position = this.css( "position" ),
-			excludeStaticParent = position === "absolute",
-			overflowRegex = includeHidden ? /(auto|scroll|hidden)/ : /(auto|scroll)/,
-			scrollParent = this.parents().filter( function() {
-				var parent = $( this );
-				if ( excludeStaticParent && parent.css( "position" ) === "static" ) {
-					return false;
-				}
-				return overflowRegex.test( parent.css( "overflow" ) + parent.css( "overflow-y" ) + parent.css( "overflow-x" ) );
-			}).eq( 0 );
-
-		return position === "fixed" || !scrollParent.length ? $( this[ 0 ].ownerDocument || document ) : scrollParent;
-	},
-
-	uniqueId: (function() {
-		var uuid = 0;
-
-		return function() {
-			return this.each(function() {
-				if ( !this.id ) {
-					this.id = "ui-id-" + ( ++uuid );
-				}
-			});
-		};
-	})(),
-
-	removeUniqueId: function() {
-		return this.each(function() {
-			if ( /^ui-id-\d+$/.test( this.id ) ) {
-				$( this ).removeAttr( "id" );
-			}
-		});
-	}
-});
-
-// selectors
-function focusable( element, isTabIndexNotNaN ) {
-	var map, mapName, img,
-		nodeName = element.nodeName.toLowerCase();
-	if ( "area" === nodeName ) {
-		map = element.parentNode;
-		mapName = map.name;
-		if ( !element.href || !mapName || map.nodeName.toLowerCase() !== "map" ) {
-			return false;
-		}
-		img = $( "img[usemap='#" + mapName + "']" )[ 0 ];
-		return !!img && visible( img );
-	}
-	return ( /^(input|select|textarea|button|object)$/.test( nodeName ) ?
-		!element.disabled :
-		"a" === nodeName ?
-			element.href || isTabIndexNotNaN :
-			isTabIndexNotNaN) &&
-		// the element and all of its ancestors must be visible
-		visible( element );
-}
-
-function visible( element ) {
-	return $.expr.filters.visible( element ) &&
-		!$( element ).parents().addBack().filter(function() {
-			return $.css( this, "visibility" ) === "hidden";
-		}).length;
-}
-
-$.extend( $.expr[ ":" ], {
-	data: $.expr.createPseudo ?
-		$.expr.createPseudo(function( dataName ) {
-			return function( elem ) {
-				return !!$.data( elem, dataName );
-			};
-		}) :
-		// support: jQuery <1.8
-		function( elem, i, match ) {
-			return !!$.data( elem, match[ 3 ] );
-		},
-
-	focusable: function( element ) {
-		return focusable( element, !isNaN( $.attr( element, "tabindex" ) ) );
-	},
-
-	tabbable: function( element ) {
-		var tabIndex = $.attr( element, "tabindex" ),
-			isTabIndexNaN = isNaN( tabIndex );
-		return ( isTabIndexNaN || tabIndex >= 0 ) && focusable( element, !isTabIndexNaN );
-	}
-});
-
-// support: jQuery <1.8
-if ( !$( "<a>" ).outerWidth( 1 ).jquery ) {
-	$.each( [ "Width", "Height" ], function( i, name ) {
-		var side = name === "Width" ? [ "Left", "Right" ] : [ "Top", "Bottom" ],
-			type = name.toLowerCase(),
-			orig = {
-				innerWidth: $.fn.innerWidth,
-				innerHeight: $.fn.innerHeight,
-				outerWidth: $.fn.outerWidth,
-				outerHeight: $.fn.outerHeight
-			};
-
-		function reduce( elem, size, border, margin ) {
-			$.each( side, function() {
-				size -= parseFloat( $.css( elem, "padding" + this ) ) || 0;
-				if ( border ) {
-					size -= parseFloat( $.css( elem, "border" + this + "Width" ) ) || 0;
-				}
-				if ( margin ) {
-					size -= parseFloat( $.css( elem, "margin" + this ) ) || 0;
-				}
-			});
-			return size;
-		}
-
-		$.fn[ "inner" + name ] = function( size ) {
-			if ( size === undefined ) {
-				return orig[ "inner" + name ].call( this );
-			}
-
-			return this.each(function() {
-				$( this ).css( type, reduce( this, size ) + "px" );
-			});
-		};
-
-		$.fn[ "outer" + name] = function( size, margin ) {
-			if ( typeof size !== "number" ) {
-				return orig[ "outer" + name ].call( this, size );
-			}
-
-			return this.each(function() {
-				$( this).css( type, reduce( this, size, true, margin ) + "px" );
-			});
-		};
-	});
-}
-
-// support: jQuery <1.8
-if ( !$.fn.addBack ) {
-	$.fn.addBack = function( selector ) {
-		return this.add( selector == null ?
-			this.prevObject : this.prevObject.filter( selector )
-		);
-	};
-}
-
-// support: jQuery 1.6.1, 1.6.2 (http://bugs.jquery.com/ticket/9413)
-if ( $( "<a>" ).data( "a-b", "a" ).removeData( "a-b" ).data( "a-b" ) ) {
-	$.fn.removeData = (function( removeData ) {
-		return function( key ) {
-			if ( arguments.length ) {
-				return removeData.call( this, $.camelCase( key ) );
-			} else {
-				return removeData.call( this );
-			}
-		};
-	})( $.fn.removeData );
-}
-
-// deprecated
-$.ui.ie = !!/msie [\w.]+/.exec( navigator.userAgent.toLowerCase() );
-
-$.fn.extend({
-	focus: (function( orig ) {
-		return function( delay, fn ) {
-			return typeof delay === "number" ?
-				this.each(function() {
-					var elem = this;
-					setTimeout(function() {
-						$( elem ).focus();
-						if ( fn ) {
-							fn.call( elem );
-						}
-					}, delay );
-				}) :
-				orig.apply( this, arguments );
-		};
-	})( $.fn.focus ),
-
-	disableSelection: (function() {
-		var eventType = "onselectstart" in document.createElement( "div" ) ?
-			"selectstart" :
-			"mousedown";
-
-		return function() {
-			return this.bind( eventType + ".ui-disableSelection", function( event ) {
-				event.preventDefault();
-			});
-		};
-	})(),
-
-	enableSelection: function() {
-		return this.unbind( ".ui-disableSelection" );
-	},
-
-	zIndex: function( zIndex ) {
-		if ( zIndex !== undefined ) {
-			return this.css( "zIndex", zIndex );
-		}
-
-		if ( this.length ) {
-			var elem = $( this[ 0 ] ), position, value;
-			while ( elem.length && elem[ 0 ] !== document ) {
-				// Ignore z-index if position is set to a value where z-index is ignored by the browser
-				// This makes behavior of this function consistent across browsers
-				// WebKit always returns auto if the element is positioned
-				position = elem.css( "position" );
-				if ( position === "absolute" || position === "relative" || position === "fixed" ) {
-					// IE returns 0 when zIndex is not specified
-					// other browsers return a string
-					// we ignore the case of nested elements with an explicit value of 0
-					// <div style="z-index: -10;"><div style="z-index: 0;"></div></div>
-					value = parseInt( elem.css( "zIndex" ), 10 );
-					if ( !isNaN( value ) && value !== 0 ) {
-						return value;
-					}
-				}
-				elem = elem.parent();
-			}
-		}
-
-		return 0;
-	}
-});
-
-// $.ui.plugin is deprecated. Use $.widget() extensions instead.
-$.ui.plugin = {
-	add: function( module, option, set ) {
-		var i,
-			proto = $.ui[ module ].prototype;
-		for ( i in set ) {
-			proto.plugins[ i ] = proto.plugins[ i ] || [];
-			proto.plugins[ i ].push( [ option, set[ i ] ] );
-		}
-	},
-	call: function( instance, name, args, allowDisconnected ) {
-		var i,
-			set = instance.plugins[ name ];
-
-		if ( !set ) {
-			return;
-		}
-
-		if ( !allowDisconnected && ( !instance.element[ 0 ].parentNode || instance.element[ 0 ].parentNode.nodeType === 11 ) ) {
-			return;
-		}
-
-		for ( i = 0; i < set.length; i++ ) {
-			if ( instance.options[ set[ i ][ 0 ] ] ) {
-				set[ i ][ 1 ].apply( instance.element, args );
-			}
-		}
-	}
-};
-
-}));
-
-
-/***/ },
-
-/***/ "./node_modules/jquery-ui/ui/mouse.js":
-/***/ function(module, exports, __webpack_require__) {
-
-var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/*!
- * jQuery UI Mouse 1.11.4
- * http://jqueryui.com
- *
- * Copyright jQuery Foundation and other contributors
- * Released under the MIT license.
- * http://jquery.org/license
- *
- * http://api.jqueryui.com/mouse/
- */
-(function( factory ) {
-	if ( true ) {
-
-		// AMD. Register as an anonymous module.
-		!(__WEBPACK_AMD_DEFINE_ARRAY__ = [
-			__webpack_require__("./node_modules/jquery/dist/jquery.js"),
-			__webpack_require__("./node_modules/jquery-ui/ui/widget.js")
-		], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
-	} else {
-
-		// Browser globals
-		factory( jQuery );
-	}
-}(function( $ ) {
-
-var mouseHandled = false;
-$( document ).mouseup( function() {
-	mouseHandled = false;
-});
-
-return $.widget("ui.mouse", {
-	version: "1.11.4",
-	options: {
-		cancel: "input,textarea,button,select,option",
-		distance: 1,
-		delay: 0
-	},
-	_mouseInit: function() {
-		var that = this;
-
-		this.element
-			.bind("mousedown." + this.widgetName, function(event) {
-				return that._mouseDown(event);
-			})
-			.bind("click." + this.widgetName, function(event) {
-				if (true === $.data(event.target, that.widgetName + ".preventClickEvent")) {
-					$.removeData(event.target, that.widgetName + ".preventClickEvent");
-					event.stopImmediatePropagation();
-					return false;
-				}
-			});
-
-		this.started = false;
-	},
-
-	// TODO: make sure destroying one instance of mouse doesn't mess with
-	// other instances of mouse
-	_mouseDestroy: function() {
-		this.element.unbind("." + this.widgetName);
-		if ( this._mouseMoveDelegate ) {
-			this.document
-				.unbind("mousemove." + this.widgetName, this._mouseMoveDelegate)
-				.unbind("mouseup." + this.widgetName, this._mouseUpDelegate);
-		}
-	},
-
-	_mouseDown: function(event) {
-		// don't let more than one widget handle mouseStart
-		if ( mouseHandled ) {
-			return;
-		}
-
-		this._mouseMoved = false;
-
-		// we may have missed mouseup (out of window)
-		(this._mouseStarted && this._mouseUp(event));
-
-		this._mouseDownEvent = event;
-
-		var that = this,
-			btnIsLeft = (event.which === 1),
-			// event.target.nodeName works around a bug in IE 8 with
-			// disabled inputs (#7620)
-			elIsCancel = (typeof this.options.cancel === "string" && event.target.nodeName ? $(event.target).closest(this.options.cancel).length : false);
-		if (!btnIsLeft || elIsCancel || !this._mouseCapture(event)) {
-			return true;
-		}
-
-		this.mouseDelayMet = !this.options.delay;
-		if (!this.mouseDelayMet) {
-			this._mouseDelayTimer = setTimeout(function() {
-				that.mouseDelayMet = true;
-			}, this.options.delay);
-		}
-
-		if (this._mouseDistanceMet(event) && this._mouseDelayMet(event)) {
-			this._mouseStarted = (this._mouseStart(event) !== false);
-			if (!this._mouseStarted) {
-				event.preventDefault();
-				return true;
-			}
-		}
-
-		// Click event may never have fired (Gecko & Opera)
-		if (true === $.data(event.target, this.widgetName + ".preventClickEvent")) {
-			$.removeData(event.target, this.widgetName + ".preventClickEvent");
-		}
-
-		// these delegates are required to keep context
-		this._mouseMoveDelegate = function(event) {
-			return that._mouseMove(event);
-		};
-		this._mouseUpDelegate = function(event) {
-			return that._mouseUp(event);
-		};
-
-		this.document
-			.bind( "mousemove." + this.widgetName, this._mouseMoveDelegate )
-			.bind( "mouseup." + this.widgetName, this._mouseUpDelegate );
-
-		event.preventDefault();
-
-		mouseHandled = true;
-		return true;
-	},
-
-	_mouseMove: function(event) {
-		// Only check for mouseups outside the document if you've moved inside the document
-		// at least once. This prevents the firing of mouseup in the case of IE<9, which will
-		// fire a mousemove event if content is placed under the cursor. See #7778
-		// Support: IE <9
-		if ( this._mouseMoved ) {
-			// IE mouseup check - mouseup happened when mouse was out of window
-			if ($.ui.ie && ( !document.documentMode || document.documentMode < 9 ) && !event.button) {
-				return this._mouseUp(event);
-
-			// Iframe mouseup check - mouseup occurred in another document
-			} else if ( !event.which ) {
-				return this._mouseUp( event );
-			}
-		}
-
-		if ( event.which || event.button ) {
-			this._mouseMoved = true;
-		}
-
-		if (this._mouseStarted) {
-			this._mouseDrag(event);
-			return event.preventDefault();
-		}
-
-		if (this._mouseDistanceMet(event) && this._mouseDelayMet(event)) {
-			this._mouseStarted =
-				(this._mouseStart(this._mouseDownEvent, event) !== false);
-			(this._mouseStarted ? this._mouseDrag(event) : this._mouseUp(event));
-		}
-
-		return !this._mouseStarted;
-	},
-
-	_mouseUp: function(event) {
-		this.document
-			.unbind( "mousemove." + this.widgetName, this._mouseMoveDelegate )
-			.unbind( "mouseup." + this.widgetName, this._mouseUpDelegate );
-
-		if (this._mouseStarted) {
-			this._mouseStarted = false;
-
-			if (event.target === this._mouseDownEvent.target) {
-				$.data(event.target, this.widgetName + ".preventClickEvent", true);
-			}
-
-			this._mouseStop(event);
-		}
-
-		mouseHandled = false;
-		return false;
-	},
-
-	_mouseDistanceMet: function(event) {
-		return (Math.max(
-				Math.abs(this._mouseDownEvent.pageX - event.pageX),
-				Math.abs(this._mouseDownEvent.pageY - event.pageY)
-			) >= this.options.distance
-		);
-	},
-
-	_mouseDelayMet: function(/* event */) {
-		return this.mouseDelayMet;
-	},
-
-	// These are placeholder methods, to be overriden by extending plugin
-	_mouseStart: function(/* event */) {},
-	_mouseDrag: function(/* event */) {},
-	_mouseStop: function(/* event */) {},
-	_mouseCapture: function(/* event */) { return true; }
-});
-
-}));
-
-
-/***/ },
-
-/***/ "./node_modules/jquery-ui/ui/sortable.js":
-/***/ function(module, exports, __webpack_require__) {
-
-var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/*!
- * jQuery UI Sortable 1.11.4
- * http://jqueryui.com
- *
- * Copyright jQuery Foundation and other contributors
- * Released under the MIT license.
- * http://jquery.org/license
- *
- * http://api.jqueryui.com/sortable/
- */
-(function( factory ) {
-	if ( true ) {
-
-		// AMD. Register as an anonymous module.
-		!(__WEBPACK_AMD_DEFINE_ARRAY__ = [
-			__webpack_require__("./node_modules/jquery/dist/jquery.js"),
-			__webpack_require__("./node_modules/jquery-ui/ui/core.js"),
-			__webpack_require__("./node_modules/jquery-ui/ui/mouse.js"),
-			__webpack_require__("./node_modules/jquery-ui/ui/widget.js")
-		], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
-	} else {
-
-		// Browser globals
-		factory( jQuery );
-	}
-}(function( $ ) {
-
-return $.widget("ui.sortable", $.ui.mouse, {
-	version: "1.11.4",
-	widgetEventPrefix: "sort",
-	ready: false,
-	options: {
-		appendTo: "parent",
-		axis: false,
-		connectWith: false,
-		containment: false,
-		cursor: "auto",
-		cursorAt: false,
-		dropOnEmpty: true,
-		forcePlaceholderSize: false,
-		forceHelperSize: false,
-		grid: false,
-		handle: false,
-		helper: "original",
-		items: "> *",
-		opacity: false,
-		placeholder: false,
-		revert: false,
-		scroll: true,
-		scrollSensitivity: 20,
-		scrollSpeed: 20,
-		scope: "default",
-		tolerance: "intersect",
-		zIndex: 1000,
-
-		// callbacks
-		activate: null,
-		beforeStop: null,
-		change: null,
-		deactivate: null,
-		out: null,
-		over: null,
-		receive: null,
-		remove: null,
-		sort: null,
-		start: null,
-		stop: null,
-		update: null
-	},
-
-	_isOverAxis: function( x, reference, size ) {
-		return ( x >= reference ) && ( x < ( reference + size ) );
-	},
-
-	_isFloating: function( item ) {
-		return (/left|right/).test(item.css("float")) || (/inline|table-cell/).test(item.css("display"));
-	},
-
-	_create: function() {
-		this.containerCache = {};
-		this.element.addClass("ui-sortable");
-
-		//Get the items
-		this.refresh();
-
-		//Let's determine the parent's offset
-		this.offset = this.element.offset();
-
-		//Initialize mouse events for interaction
-		this._mouseInit();
-
-		this._setHandleClassName();
-
-		//We're ready to go
-		this.ready = true;
-
-	},
-
-	_setOption: function( key, value ) {
-		this._super( key, value );
-
-		if ( key === "handle" ) {
-			this._setHandleClassName();
-		}
-	},
-
-	_setHandleClassName: function() {
-		this.element.find( ".ui-sortable-handle" ).removeClass( "ui-sortable-handle" );
-		$.each( this.items, function() {
-			( this.instance.options.handle ?
-				this.item.find( this.instance.options.handle ) : this.item )
-				.addClass( "ui-sortable-handle" );
-		});
-	},
-
-	_destroy: function() {
-		this.element
-			.removeClass( "ui-sortable ui-sortable-disabled" )
-			.find( ".ui-sortable-handle" )
-				.removeClass( "ui-sortable-handle" );
-		this._mouseDestroy();
-
-		for ( var i = this.items.length - 1; i >= 0; i-- ) {
-			this.items[i].item.removeData(this.widgetName + "-item");
-		}
-
-		return this;
-	},
-
-	_mouseCapture: function(event, overrideHandle) {
-		var currentItem = null,
-			validHandle = false,
-			that = this;
-
-		if (this.reverting) {
-			return false;
-		}
-
-		if(this.options.disabled || this.options.type === "static") {
-			return false;
-		}
-
-		//We have to refresh the items data once first
-		this._refreshItems(event);
-
-		//Find out if the clicked node (or one of its parents) is a actual item in this.items
-		$(event.target).parents().each(function() {
-			if($.data(this, that.widgetName + "-item") === that) {
-				currentItem = $(this);
-				return false;
-			}
-		});
-		if($.data(event.target, that.widgetName + "-item") === that) {
-			currentItem = $(event.target);
-		}
-
-		if(!currentItem) {
-			return false;
-		}
-		if(this.options.handle && !overrideHandle) {
-			$(this.options.handle, currentItem).find("*").addBack().each(function() {
-				if(this === event.target) {
-					validHandle = true;
-				}
-			});
-			if(!validHandle) {
-				return false;
-			}
-		}
-
-		this.currentItem = currentItem;
-		this._removeCurrentsFromItems();
-		return true;
-
-	},
-
-	_mouseStart: function(event, overrideHandle, noActivation) {
-
-		var i, body,
-			o = this.options;
-
-		this.currentContainer = this;
-
-		//We only need to call refreshPositions, because the refreshItems call has been moved to mouseCapture
-		this.refreshPositions();
-
-		//Create and append the visible helper
-		this.helper = this._createHelper(event);
-
-		//Cache the helper size
-		this._cacheHelperProportions();
-
-		/*
-		 * - Position generation -
-		 * This block generates everything position related - it's the core of draggables.
-		 */
-
-		//Cache the margins of the original element
-		this._cacheMargins();
-
-		//Get the next scrolling parent
-		this.scrollParent = this.helper.scrollParent();
-
-		//The element's absolute position on the page minus margins
-		this.offset = this.currentItem.offset();
-		this.offset = {
-			top: this.offset.top - this.margins.top,
-			left: this.offset.left - this.margins.left
-		};
-
-		$.extend(this.offset, {
-			click: { //Where the click happened, relative to the element
-				left: event.pageX - this.offset.left,
-				top: event.pageY - this.offset.top
-			},
-			parent: this._getParentOffset(),
-			relative: this._getRelativeOffset() //This is a relative to absolute position minus the actual position calculation - only used for relative positioned helper
-		});
-
-		// Only after we got the offset, we can change the helper's position to absolute
-		// TODO: Still need to figure out a way to make relative sorting possible
-		this.helper.css("position", "absolute");
-		this.cssPosition = this.helper.css("position");
-
-		//Generate the original position
-		this.originalPosition = this._generatePosition(event);
-		this.originalPageX = event.pageX;
-		this.originalPageY = event.pageY;
-
-		//Adjust the mouse offset relative to the helper if "cursorAt" is supplied
-		(o.cursorAt && this._adjustOffsetFromHelper(o.cursorAt));
-
-		//Cache the former DOM position
-		this.domPosition = { prev: this.currentItem.prev()[0], parent: this.currentItem.parent()[0] };
-
-		//If the helper is not the original, hide the original so it's not playing any role during the drag, won't cause anything bad this way
-		if(this.helper[0] !== this.currentItem[0]) {
-			this.currentItem.hide();
-		}
-
-		//Create the placeholder
-		this._createPlaceholder();
-
-		//Set a containment if given in the options
-		if(o.containment) {
-			this._setContainment();
-		}
-
-		if( o.cursor && o.cursor !== "auto" ) { // cursor option
-			body = this.document.find( "body" );
-
-			// support: IE
-			this.storedCursor = body.css( "cursor" );
-			body.css( "cursor", o.cursor );
-
-			this.storedStylesheet = $( "<style>*{ cursor: "+o.cursor+" !important; }</style>" ).appendTo( body );
-		}
-
-		if(o.opacity) { // opacity option
-			if (this.helper.css("opacity")) {
-				this._storedOpacity = this.helper.css("opacity");
-			}
-			this.helper.css("opacity", o.opacity);
-		}
-
-		if(o.zIndex) { // zIndex option
-			if (this.helper.css("zIndex")) {
-				this._storedZIndex = this.helper.css("zIndex");
-			}
-			this.helper.css("zIndex", o.zIndex);
-		}
-
-		//Prepare scrolling
-		if(this.scrollParent[0] !== this.document[0] && this.scrollParent[0].tagName !== "HTML") {
-			this.overflowOffset = this.scrollParent.offset();
-		}
-
-		//Call callbacks
-		this._trigger("start", event, this._uiHash());
-
-		//Recache the helper size
-		if(!this._preserveHelperProportions) {
-			this._cacheHelperProportions();
-		}
-
-
-		//Post "activate" events to possible containers
-		if( !noActivation ) {
-			for ( i = this.containers.length - 1; i >= 0; i-- ) {
-				this.containers[ i ]._trigger( "activate", event, this._uiHash( this ) );
-			}
-		}
-
-		//Prepare possible droppables
-		if($.ui.ddmanager) {
-			$.ui.ddmanager.current = this;
-		}
-
-		if ($.ui.ddmanager && !o.dropBehaviour) {
-			$.ui.ddmanager.prepareOffsets(this, event);
-		}
-
-		this.dragging = true;
-
-		this.helper.addClass("ui-sortable-helper");
-		this._mouseDrag(event); //Execute the drag once - this causes the helper not to be visible before getting its correct position
-		return true;
-
-	},
-
-	_mouseDrag: function(event) {
-		var i, item, itemElement, intersection,
-			o = this.options,
-			scrolled = false;
-
-		//Compute the helpers position
-		this.position = this._generatePosition(event);
-		this.positionAbs = this._convertPositionTo("absolute");
-
-		if (!this.lastPositionAbs) {
-			this.lastPositionAbs = this.positionAbs;
-		}
-
-		//Do scrolling
-		if(this.options.scroll) {
-			if(this.scrollParent[0] !== this.document[0] && this.scrollParent[0].tagName !== "HTML") {
-
-				if((this.overflowOffset.top + this.scrollParent[0].offsetHeight) - event.pageY < o.scrollSensitivity) {
-					this.scrollParent[0].scrollTop = scrolled = this.scrollParent[0].scrollTop + o.scrollSpeed;
-				} else if(event.pageY - this.overflowOffset.top < o.scrollSensitivity) {
-					this.scrollParent[0].scrollTop = scrolled = this.scrollParent[0].scrollTop - o.scrollSpeed;
-				}
-
-				if((this.overflowOffset.left + this.scrollParent[0].offsetWidth) - event.pageX < o.scrollSensitivity) {
-					this.scrollParent[0].scrollLeft = scrolled = this.scrollParent[0].scrollLeft + o.scrollSpeed;
-				} else if(event.pageX - this.overflowOffset.left < o.scrollSensitivity) {
-					this.scrollParent[0].scrollLeft = scrolled = this.scrollParent[0].scrollLeft - o.scrollSpeed;
-				}
-
-			} else {
-
-				if(event.pageY - this.document.scrollTop() < o.scrollSensitivity) {
-					scrolled = this.document.scrollTop(this.document.scrollTop() - o.scrollSpeed);
-				} else if(this.window.height() - (event.pageY - this.document.scrollTop()) < o.scrollSensitivity) {
-					scrolled = this.document.scrollTop(this.document.scrollTop() + o.scrollSpeed);
-				}
-
-				if(event.pageX - this.document.scrollLeft() < o.scrollSensitivity) {
-					scrolled = this.document.scrollLeft(this.document.scrollLeft() - o.scrollSpeed);
-				} else if(this.window.width() - (event.pageX - this.document.scrollLeft()) < o.scrollSensitivity) {
-					scrolled = this.document.scrollLeft(this.document.scrollLeft() + o.scrollSpeed);
-				}
-
-			}
-
-			if(scrolled !== false && $.ui.ddmanager && !o.dropBehaviour) {
-				$.ui.ddmanager.prepareOffsets(this, event);
-			}
-		}
-
-		//Regenerate the absolute position used for position checks
-		this.positionAbs = this._convertPositionTo("absolute");
-
-		//Set the helper position
-		if(!this.options.axis || this.options.axis !== "y") {
-			this.helper[0].style.left = this.position.left+"px";
-		}
-		if(!this.options.axis || this.options.axis !== "x") {
-			this.helper[0].style.top = this.position.top+"px";
-		}
-
-		//Rearrange
-		for (i = this.items.length - 1; i >= 0; i--) {
-
-			//Cache variables and intersection, continue if no intersection
-			item = this.items[i];
-			itemElement = item.item[0];
-			intersection = this._intersectsWithPointer(item);
-			if (!intersection) {
-				continue;
-			}
-
-			// Only put the placeholder inside the current Container, skip all
-			// items from other containers. This works because when moving
-			// an item from one container to another the
-			// currentContainer is switched before the placeholder is moved.
-			//
-			// Without this, moving items in "sub-sortables" can cause
-			// the placeholder to jitter between the outer and inner container.
-			if (item.instance !== this.currentContainer) {
-				continue;
-			}
-
-			// cannot intersect with itself
-			// no useless actions that have been done before
-			// no action if the item moved is the parent of the item checked
-			if (itemElement !== this.currentItem[0] &&
-				this.placeholder[intersection === 1 ? "next" : "prev"]()[0] !== itemElement &&
-				!$.contains(this.placeholder[0], itemElement) &&
-				(this.options.type === "semi-dynamic" ? !$.contains(this.element[0], itemElement) : true)
-			) {
-
-				this.direction = intersection === 1 ? "down" : "up";
-
-				if (this.options.tolerance === "pointer" || this._intersectsWithSides(item)) {
-					this._rearrange(event, item);
-				} else {
-					break;
-				}
-
-				this._trigger("change", event, this._uiHash());
-				break;
-			}
-		}
-
-		//Post events to containers
-		this._contactContainers(event);
-
-		//Interconnect with droppables
-		if($.ui.ddmanager) {
-			$.ui.ddmanager.drag(this, event);
-		}
-
-		//Call callbacks
-		this._trigger("sort", event, this._uiHash());
-
-		this.lastPositionAbs = this.positionAbs;
-		return false;
-
-	},
-
-	_mouseStop: function(event, noPropagation) {
-
-		if(!event) {
-			return;
-		}
-
-		//If we are using droppables, inform the manager about the drop
-		if ($.ui.ddmanager && !this.options.dropBehaviour) {
-			$.ui.ddmanager.drop(this, event);
-		}
-
-		if(this.options.revert) {
-			var that = this,
-				cur = this.placeholder.offset(),
-				axis = this.options.axis,
-				animation = {};
-
-			if ( !axis || axis === "x" ) {
-				animation.left = cur.left - this.offset.parent.left - this.margins.left + (this.offsetParent[0] === this.document[0].body ? 0 : this.offsetParent[0].scrollLeft);
-			}
-			if ( !axis || axis === "y" ) {
-				animation.top = cur.top - this.offset.parent.top - this.margins.top + (this.offsetParent[0] === this.document[0].body ? 0 : this.offsetParent[0].scrollTop);
-			}
-			this.reverting = true;
-			$(this.helper).animate( animation, parseInt(this.options.revert, 10) || 500, function() {
-				that._clear(event);
-			});
-		} else {
-			this._clear(event, noPropagation);
-		}
-
-		return false;
-
-	},
-
-	cancel: function() {
-
-		if(this.dragging) {
-
-			this._mouseUp({ target: null });
-
-			if(this.options.helper === "original") {
-				this.currentItem.css(this._storedCSS).removeClass("ui-sortable-helper");
-			} else {
-				this.currentItem.show();
-			}
-
-			//Post deactivating events to containers
-			for (var i = this.containers.length - 1; i >= 0; i--){
-				this.containers[i]._trigger("deactivate", null, this._uiHash(this));
-				if(this.containers[i].containerCache.over) {
-					this.containers[i]._trigger("out", null, this._uiHash(this));
-					this.containers[i].containerCache.over = 0;
-				}
-			}
-
-		}
-
-		if (this.placeholder) {
-			//$(this.placeholder[0]).remove(); would have been the jQuery way - unfortunately, it unbinds ALL events from the original node!
-			if(this.placeholder[0].parentNode) {
-				this.placeholder[0].parentNode.removeChild(this.placeholder[0]);
-			}
-			if(this.options.helper !== "original" && this.helper && this.helper[0].parentNode) {
-				this.helper.remove();
-			}
-
-			$.extend(this, {
-				helper: null,
-				dragging: false,
-				reverting: false,
-				_noFinalSort: null
-			});
-
-			if(this.domPosition.prev) {
-				$(this.domPosition.prev).after(this.currentItem);
-			} else {
-				$(this.domPosition.parent).prepend(this.currentItem);
-			}
-		}
-
-		return this;
-
-	},
-
-	serialize: function(o) {
-
-		var items = this._getItemsAsjQuery(o && o.connected),
-			str = [];
-		o = o || {};
-
-		$(items).each(function() {
-			var res = ($(o.item || this).attr(o.attribute || "id") || "").match(o.expression || (/(.+)[\-=_](.+)/));
-			if (res) {
-				str.push((o.key || res[1]+"[]")+"="+(o.key && o.expression ? res[1] : res[2]));
-			}
-		});
-
-		if(!str.length && o.key) {
-			str.push(o.key + "=");
-		}
-
-		return str.join("&");
-
-	},
-
-	toArray: function(o) {
-
-		var items = this._getItemsAsjQuery(o && o.connected),
-			ret = [];
-
-		o = o || {};
-
-		items.each(function() { ret.push($(o.item || this).attr(o.attribute || "id") || ""); });
-		return ret;
-
-	},
-
-	/* Be careful with the following core functions */
-	_intersectsWith: function(item) {
-
-		var x1 = this.positionAbs.left,
-			x2 = x1 + this.helperProportions.width,
-			y1 = this.positionAbs.top,
-			y2 = y1 + this.helperProportions.height,
-			l = item.left,
-			r = l + item.width,
-			t = item.top,
-			b = t + item.height,
-			dyClick = this.offset.click.top,
-			dxClick = this.offset.click.left,
-			isOverElementHeight = ( this.options.axis === "x" ) || ( ( y1 + dyClick ) > t && ( y1 + dyClick ) < b ),
-			isOverElementWidth = ( this.options.axis === "y" ) || ( ( x1 + dxClick ) > l && ( x1 + dxClick ) < r ),
-			isOverElement = isOverElementHeight && isOverElementWidth;
-
-		if ( this.options.tolerance === "pointer" ||
-			this.options.forcePointerForContainers ||
-			(this.options.tolerance !== "pointer" && this.helperProportions[this.floating ? "width" : "height"] > item[this.floating ? "width" : "height"])
-		) {
-			return isOverElement;
-		} else {
-
-			return (l < x1 + (this.helperProportions.width / 2) && // Right Half
-				x2 - (this.helperProportions.width / 2) < r && // Left Half
-				t < y1 + (this.helperProportions.height / 2) && // Bottom Half
-				y2 - (this.helperProportions.height / 2) < b ); // Top Half
-
-		}
-	},
-
-	_intersectsWithPointer: function(item) {
-
-		var isOverElementHeight = (this.options.axis === "x") || this._isOverAxis(this.positionAbs.top + this.offset.click.top, item.top, item.height),
-			isOverElementWidth = (this.options.axis === "y") || this._isOverAxis(this.positionAbs.left + this.offset.click.left, item.left, item.width),
-			isOverElement = isOverElementHeight && isOverElementWidth,
-			verticalDirection = this._getDragVerticalDirection(),
-			horizontalDirection = this._getDragHorizontalDirection();
-
-		if (!isOverElement) {
-			return false;
-		}
-
-		return this.floating ?
-			( ((horizontalDirection && horizontalDirection === "right") || verticalDirection === "down") ? 2 : 1 )
-			: ( verticalDirection && (verticalDirection === "down" ? 2 : 1) );
-
-	},
-
-	_intersectsWithSides: function(item) {
-
-		var isOverBottomHalf = this._isOverAxis(this.positionAbs.top + this.offset.click.top, item.top + (item.height/2), item.height),
-			isOverRightHalf = this._isOverAxis(this.positionAbs.left + this.offset.click.left, item.left + (item.width/2), item.width),
-			verticalDirection = this._getDragVerticalDirection(),
-			horizontalDirection = this._getDragHorizontalDirection();
-
-		if (this.floating && horizontalDirection) {
-			return ((horizontalDirection === "right" && isOverRightHalf) || (horizontalDirection === "left" && !isOverRightHalf));
-		} else {
-			return verticalDirection && ((verticalDirection === "down" && isOverBottomHalf) || (verticalDirection === "up" && !isOverBottomHalf));
-		}
-
-	},
-
-	_getDragVerticalDirection: function() {
-		var delta = this.positionAbs.top - this.lastPositionAbs.top;
-		return delta !== 0 && (delta > 0 ? "down" : "up");
-	},
-
-	_getDragHorizontalDirection: function() {
-		var delta = this.positionAbs.left - this.lastPositionAbs.left;
-		return delta !== 0 && (delta > 0 ? "right" : "left");
-	},
-
-	refresh: function(event) {
-		this._refreshItems(event);
-		this._setHandleClassName();
-		this.refreshPositions();
-		return this;
-	},
-
-	_connectWith: function() {
-		var options = this.options;
-		return options.connectWith.constructor === String ? [options.connectWith] : options.connectWith;
-	},
-
-	_getItemsAsjQuery: function(connected) {
-
-		var i, j, cur, inst,
-			items = [],
-			queries = [],
-			connectWith = this._connectWith();
-
-		if(connectWith && connected) {
-			for (i = connectWith.length - 1; i >= 0; i--){
-				cur = $(connectWith[i], this.document[0]);
-				for ( j = cur.length - 1; j >= 0; j--){
-					inst = $.data(cur[j], this.widgetFullName);
-					if(inst && inst !== this && !inst.options.disabled) {
-						queries.push([$.isFunction(inst.options.items) ? inst.options.items.call(inst.element) : $(inst.options.items, inst.element).not(".ui-sortable-helper").not(".ui-sortable-placeholder"), inst]);
-					}
-				}
-			}
-		}
-
-		queries.push([$.isFunction(this.options.items) ? this.options.items.call(this.element, null, { options: this.options, item: this.currentItem }) : $(this.options.items, this.element).not(".ui-sortable-helper").not(".ui-sortable-placeholder"), this]);
-
-		function addItems() {
-			items.push( this );
-		}
-		for (i = queries.length - 1; i >= 0; i--){
-			queries[i][0].each( addItems );
-		}
-
-		return $(items);
-
-	},
-
-	_removeCurrentsFromItems: function() {
-
-		var list = this.currentItem.find(":data(" + this.widgetName + "-item)");
-
-		this.items = $.grep(this.items, function (item) {
-			for (var j=0; j < list.length; j++) {
-				if(list[j] === item.item[0]) {
-					return false;
-				}
-			}
-			return true;
-		});
-
-	},
-
-	_refreshItems: function(event) {
-
-		this.items = [];
-		this.containers = [this];
-
-		var i, j, cur, inst, targetData, _queries, item, queriesLength,
-			items = this.items,
-			queries = [[$.isFunction(this.options.items) ? this.options.items.call(this.element[0], event, { item: this.currentItem }) : $(this.options.items, this.element), this]],
-			connectWith = this._connectWith();
-
-		if(connectWith && this.ready) { //Shouldn't be run the first time through due to massive slow-down
-			for (i = connectWith.length - 1; i >= 0; i--){
-				cur = $(connectWith[i], this.document[0]);
-				for (j = cur.length - 1; j >= 0; j--){
-					inst = $.data(cur[j], this.widgetFullName);
-					if(inst && inst !== this && !inst.options.disabled) {
-						queries.push([$.isFunction(inst.options.items) ? inst.options.items.call(inst.element[0], event, { item: this.currentItem }) : $(inst.options.items, inst.element), inst]);
-						this.containers.push(inst);
-					}
-				}
-			}
-		}
-
-		for (i = queries.length - 1; i >= 0; i--) {
-			targetData = queries[i][1];
-			_queries = queries[i][0];
-
-			for (j=0, queriesLength = _queries.length; j < queriesLength; j++) {
-				item = $(_queries[j]);
-
-				item.data(this.widgetName + "-item", targetData); // Data for target checking (mouse manager)
-
-				items.push({
-					item: item,
-					instance: targetData,
-					width: 0, height: 0,
-					left: 0, top: 0
-				});
-			}
-		}
-
-	},
-
-	refreshPositions: function(fast) {
-
-		// Determine whether items are being displayed horizontally
-		this.floating = this.items.length ?
-			this.options.axis === "x" || this._isFloating( this.items[ 0 ].item ) :
-			false;
-
-		//This has to be redone because due to the item being moved out/into the offsetParent, the offsetParent's position will change
-		if(this.offsetParent && this.helper) {
-			this.offset.parent = this._getParentOffset();
-		}
-
-		var i, item, t, p;
-
-		for (i = this.items.length - 1; i >= 0; i--){
-			item = this.items[i];
-
-			//We ignore calculating positions of all connected containers when we're not over them
-			if(item.instance !== this.currentContainer && this.currentContainer && item.item[0] !== this.currentItem[0]) {
-				continue;
-			}
-
-			t = this.options.toleranceElement ? $(this.options.toleranceElement, item.item) : item.item;
-
-			if (!fast) {
-				item.width = t.outerWidth();
-				item.height = t.outerHeight();
-			}
-
-			p = t.offset();
-			item.left = p.left;
-			item.top = p.top;
-		}
-
-		if(this.options.custom && this.options.custom.refreshContainers) {
-			this.options.custom.refreshContainers.call(this);
-		} else {
-			for (i = this.containers.length - 1; i >= 0; i--){
-				p = this.containers[i].element.offset();
-				this.containers[i].containerCache.left = p.left;
-				this.containers[i].containerCache.top = p.top;
-				this.containers[i].containerCache.width = this.containers[i].element.outerWidth();
-				this.containers[i].containerCache.height = this.containers[i].element.outerHeight();
-			}
-		}
-
-		return this;
-	},
-
-	_createPlaceholder: function(that) {
-		that = that || this;
-		var className,
-			o = that.options;
-
-		if(!o.placeholder || o.placeholder.constructor === String) {
-			className = o.placeholder;
-			o.placeholder = {
-				element: function() {
-
-					var nodeName = that.currentItem[0].nodeName.toLowerCase(),
-						element = $( "<" + nodeName + ">", that.document[0] )
-							.addClass(className || that.currentItem[0].className+" ui-sortable-placeholder")
-							.removeClass("ui-sortable-helper");
-
-					if ( nodeName === "tbody" ) {
-						that._createTrPlaceholder(
-							that.currentItem.find( "tr" ).eq( 0 ),
-							$( "<tr>", that.document[ 0 ] ).appendTo( element )
-						);
-					} else if ( nodeName === "tr" ) {
-						that._createTrPlaceholder( that.currentItem, element );
-					} else if ( nodeName === "img" ) {
-						element.attr( "src", that.currentItem.attr( "src" ) );
-					}
-
-					if ( !className ) {
-						element.css( "visibility", "hidden" );
-					}
-
-					return element;
-				},
-				update: function(container, p) {
-
-					// 1. If a className is set as 'placeholder option, we don't force sizes - the class is responsible for that
-					// 2. The option 'forcePlaceholderSize can be enabled to force it even if a class name is specified
-					if(className && !o.forcePlaceholderSize) {
-						return;
-					}
-
-					//If the element doesn't have a actual height by itself (without styles coming from a stylesheet), it receives the inline height from the dragged item
-					if(!p.height()) { p.height(that.currentItem.innerHeight() - parseInt(that.currentItem.css("paddingTop")||0, 10) - parseInt(that.currentItem.css("paddingBottom")||0, 10)); }
-					if(!p.width()) { p.width(that.currentItem.innerWidth() - parseInt(that.currentItem.css("paddingLeft")||0, 10) - parseInt(that.currentItem.css("paddingRight")||0, 10)); }
-				}
-			};
-		}
-
-		//Create the placeholder
-		that.placeholder = $(o.placeholder.element.call(that.element, that.currentItem));
-
-		//Append it after the actual current item
-		that.currentItem.after(that.placeholder);
-
-		//Update the size of the placeholder (TODO: Logic to fuzzy, see line 316/317)
-		o.placeholder.update(that, that.placeholder);
-
-	},
-
-	_createTrPlaceholder: function( sourceTr, targetTr ) {
-		var that = this;
-
-		sourceTr.children().each(function() {
-			$( "<td>&#160;</td>", that.document[ 0 ] )
-				.attr( "colspan", $( this ).attr( "colspan" ) || 1 )
-				.appendTo( targetTr );
-		});
-	},
-
-	_contactContainers: function(event) {
-		var i, j, dist, itemWithLeastDistance, posProperty, sizeProperty, cur, nearBottom, floating, axis,
-			innermostContainer = null,
-			innermostIndex = null;
-
-		// get innermost container that intersects with item
-		for (i = this.containers.length - 1; i >= 0; i--) {
-
-			// never consider a container that's located within the item itself
-			if($.contains(this.currentItem[0], this.containers[i].element[0])) {
-				continue;
-			}
-
-			if(this._intersectsWith(this.containers[i].containerCache)) {
-
-				// if we've already found a container and it's more "inner" than this, then continue
-				if(innermostContainer && $.contains(this.containers[i].element[0], innermostContainer.element[0])) {
-					continue;
-				}
-
-				innermostContainer = this.containers[i];
-				innermostIndex = i;
-
-			} else {
-				// container doesn't intersect. trigger "out" event if necessary
-				if(this.containers[i].containerCache.over) {
-					this.containers[i]._trigger("out", event, this._uiHash(this));
-					this.containers[i].containerCache.over = 0;
-				}
-			}
-
-		}
-
-		// if no intersecting containers found, return
-		if(!innermostContainer) {
-			return;
-		}
-
-		// move the item into the container if it's not there already
-		if(this.containers.length === 1) {
-			if (!this.containers[innermostIndex].containerCache.over) {
-				this.containers[innermostIndex]._trigger("over", event, this._uiHash(this));
-				this.containers[innermostIndex].containerCache.over = 1;
-			}
-		} else {
-
-			//When entering a new container, we will find the item with the least distance and append our item near it
-			dist = 10000;
-			itemWithLeastDistance = null;
-			floating = innermostContainer.floating || this._isFloating(this.currentItem);
-			posProperty = floating ? "left" : "top";
-			sizeProperty = floating ? "width" : "height";
-			axis = floating ? "clientX" : "clientY";
-
-			for (j = this.items.length - 1; j >= 0; j--) {
-				if(!$.contains(this.containers[innermostIndex].element[0], this.items[j].item[0])) {
-					continue;
-				}
-				if(this.items[j].item[0] === this.currentItem[0]) {
-					continue;
-				}
-
-				cur = this.items[j].item.offset()[posProperty];
-				nearBottom = false;
-				if ( event[ axis ] - cur > this.items[ j ][ sizeProperty ] / 2 ) {
-					nearBottom = true;
-				}
-
-				if ( Math.abs( event[ axis ] - cur ) < dist ) {
-					dist = Math.abs( event[ axis ] - cur );
-					itemWithLeastDistance = this.items[ j ];
-					this.direction = nearBottom ? "up": "down";
-				}
-			}
-
-			//Check if dropOnEmpty is enabled
-			if(!itemWithLeastDistance && !this.options.dropOnEmpty) {
-				return;
-			}
-
-			if(this.currentContainer === this.containers[innermostIndex]) {
-				if ( !this.currentContainer.containerCache.over ) {
-					this.containers[ innermostIndex ]._trigger( "over", event, this._uiHash() );
-					this.currentContainer.containerCache.over = 1;
-				}
-				return;
-			}
-
-			itemWithLeastDistance ? this._rearrange(event, itemWithLeastDistance, null, true) : this._rearrange(event, null, this.containers[innermostIndex].element, true);
-			this._trigger("change", event, this._uiHash());
-			this.containers[innermostIndex]._trigger("change", event, this._uiHash(this));
-			this.currentContainer = this.containers[innermostIndex];
-
-			//Update the placeholder
-			this.options.placeholder.update(this.currentContainer, this.placeholder);
-
-			this.containers[innermostIndex]._trigger("over", event, this._uiHash(this));
-			this.containers[innermostIndex].containerCache.over = 1;
-		}
-
-
-	},
-
-	_createHelper: function(event) {
-
-		var o = this.options,
-			helper = $.isFunction(o.helper) ? $(o.helper.apply(this.element[0], [event, this.currentItem])) : (o.helper === "clone" ? this.currentItem.clone() : this.currentItem);
-
-		//Add the helper to the DOM if that didn't happen already
-		if(!helper.parents("body").length) {
-			$(o.appendTo !== "parent" ? o.appendTo : this.currentItem[0].parentNode)[0].appendChild(helper[0]);
-		}
-
-		if(helper[0] === this.currentItem[0]) {
-			this._storedCSS = { width: this.currentItem[0].style.width, height: this.currentItem[0].style.height, position: this.currentItem.css("position"), top: this.currentItem.css("top"), left: this.currentItem.css("left") };
-		}
-
-		if(!helper[0].style.width || o.forceHelperSize) {
-			helper.width(this.currentItem.width());
-		}
-		if(!helper[0].style.height || o.forceHelperSize) {
-			helper.height(this.currentItem.height());
-		}
-
-		return helper;
-
-	},
-
-	_adjustOffsetFromHelper: function(obj) {
-		if (typeof obj === "string") {
-			obj = obj.split(" ");
-		}
-		if ($.isArray(obj)) {
-			obj = {left: +obj[0], top: +obj[1] || 0};
-		}
-		if ("left" in obj) {
-			this.offset.click.left = obj.left + this.margins.left;
-		}
-		if ("right" in obj) {
-			this.offset.click.left = this.helperProportions.width - obj.right + this.margins.left;
-		}
-		if ("top" in obj) {
-			this.offset.click.top = obj.top + this.margins.top;
-		}
-		if ("bottom" in obj) {
-			this.offset.click.top = this.helperProportions.height - obj.bottom + this.margins.top;
-		}
-	},
-
-	_getParentOffset: function() {
-
-
-		//Get the offsetParent and cache its position
-		this.offsetParent = this.helper.offsetParent();
-		var po = this.offsetParent.offset();
-
-		// This is a special case where we need to modify a offset calculated on start, since the following happened:
-		// 1. The position of the helper is absolute, so it's position is calculated based on the next positioned parent
-		// 2. The actual offset parent is a child of the scroll parent, and the scroll parent isn't the document, which means that
-		//    the scroll is included in the initial calculation of the offset of the parent, and never recalculated upon drag
-		if(this.cssPosition === "absolute" && this.scrollParent[0] !== this.document[0] && $.contains(this.scrollParent[0], this.offsetParent[0])) {
-			po.left += this.scrollParent.scrollLeft();
-			po.top += this.scrollParent.scrollTop();
-		}
-
-		// This needs to be actually done for all browsers, since pageX/pageY includes this information
-		// with an ugly IE fix
-		if( this.offsetParent[0] === this.document[0].body || (this.offsetParent[0].tagName && this.offsetParent[0].tagName.toLowerCase() === "html" && $.ui.ie)) {
-			po = { top: 0, left: 0 };
-		}
-
-		return {
-			top: po.top + (parseInt(this.offsetParent.css("borderTopWidth"),10) || 0),
-			left: po.left + (parseInt(this.offsetParent.css("borderLeftWidth"),10) || 0)
-		};
-
-	},
-
-	_getRelativeOffset: function() {
-
-		if(this.cssPosition === "relative") {
-			var p = this.currentItem.position();
-			return {
-				top: p.top - (parseInt(this.helper.css("top"),10) || 0) + this.scrollParent.scrollTop(),
-				left: p.left - (parseInt(this.helper.css("left"),10) || 0) + this.scrollParent.scrollLeft()
-			};
-		} else {
-			return { top: 0, left: 0 };
-		}
-
-	},
-
-	_cacheMargins: function() {
-		this.margins = {
-			left: (parseInt(this.currentItem.css("marginLeft"),10) || 0),
-			top: (parseInt(this.currentItem.css("marginTop"),10) || 0)
-		};
-	},
-
-	_cacheHelperProportions: function() {
-		this.helperProportions = {
-			width: this.helper.outerWidth(),
-			height: this.helper.outerHeight()
-		};
-	},
-
-	_setContainment: function() {
-
-		var ce, co, over,
-			o = this.options;
-		if(o.containment === "parent") {
-			o.containment = this.helper[0].parentNode;
-		}
-		if(o.containment === "document" || o.containment === "window") {
-			this.containment = [
-				0 - this.offset.relative.left - this.offset.parent.left,
-				0 - this.offset.relative.top - this.offset.parent.top,
-				o.containment === "document" ? this.document.width() : this.window.width() - this.helperProportions.width - this.margins.left,
-				(o.containment === "document" ? this.document.width() : this.window.height() || this.document[0].body.parentNode.scrollHeight) - this.helperProportions.height - this.margins.top
-			];
-		}
-
-		if(!(/^(document|window|parent)$/).test(o.containment)) {
-			ce = $(o.containment)[0];
-			co = $(o.containment).offset();
-			over = ($(ce).css("overflow") !== "hidden");
-
-			this.containment = [
-				co.left + (parseInt($(ce).css("borderLeftWidth"),10) || 0) + (parseInt($(ce).css("paddingLeft"),10) || 0) - this.margins.left,
-				co.top + (parseInt($(ce).css("borderTopWidth"),10) || 0) + (parseInt($(ce).css("paddingTop"),10) || 0) - this.margins.top,
-				co.left+(over ? Math.max(ce.scrollWidth,ce.offsetWidth) : ce.offsetWidth) - (parseInt($(ce).css("borderLeftWidth"),10) || 0) - (parseInt($(ce).css("paddingRight"),10) || 0) - this.helperProportions.width - this.margins.left,
-				co.top+(over ? Math.max(ce.scrollHeight,ce.offsetHeight) : ce.offsetHeight) - (parseInt($(ce).css("borderTopWidth"),10) || 0) - (parseInt($(ce).css("paddingBottom"),10) || 0) - this.helperProportions.height - this.margins.top
-			];
-		}
-
-	},
-
-	_convertPositionTo: function(d, pos) {
-
-		if(!pos) {
-			pos = this.position;
-		}
-		var mod = d === "absolute" ? 1 : -1,
-			scroll = this.cssPosition === "absolute" && !(this.scrollParent[0] !== this.document[0] && $.contains(this.scrollParent[0], this.offsetParent[0])) ? this.offsetParent : this.scrollParent,
-			scrollIsRootNode = (/(html|body)/i).test(scroll[0].tagName);
-
-		return {
-			top: (
-				pos.top	+																// The absolute mouse position
-				this.offset.relative.top * mod +										// Only for relative positioned nodes: Relative offset from element to offset parent
-				this.offset.parent.top * mod -											// The offsetParent's offset without borders (offset + border)
-				( ( this.cssPosition === "fixed" ? -this.scrollParent.scrollTop() : ( scrollIsRootNode ? 0 : scroll.scrollTop() ) ) * mod)
-			),
-			left: (
-				pos.left +																// The absolute mouse position
-				this.offset.relative.left * mod +										// Only for relative positioned nodes: Relative offset from element to offset parent
-				this.offset.parent.left * mod	-										// The offsetParent's offset without borders (offset + border)
-				( ( this.cssPosition === "fixed" ? -this.scrollParent.scrollLeft() : scrollIsRootNode ? 0 : scroll.scrollLeft() ) * mod)
-			)
-		};
-
-	},
-
-	_generatePosition: function(event) {
-
-		var top, left,
-			o = this.options,
-			pageX = event.pageX,
-			pageY = event.pageY,
-			scroll = this.cssPosition === "absolute" && !(this.scrollParent[0] !== this.document[0] && $.contains(this.scrollParent[0], this.offsetParent[0])) ? this.offsetParent : this.scrollParent, scrollIsRootNode = (/(html|body)/i).test(scroll[0].tagName);
-
-		// This is another very weird special case that only happens for relative elements:
-		// 1. If the css position is relative
-		// 2. and the scroll parent is the document or similar to the offset parent
-		// we have to refresh the relative offset during the scroll so there are no jumps
-		if(this.cssPosition === "relative" && !(this.scrollParent[0] !== this.document[0] && this.scrollParent[0] !== this.offsetParent[0])) {
-			this.offset.relative = this._getRelativeOffset();
-		}
-
-		/*
-		 * - Position constraining -
-		 * Constrain the position to a mix of grid, containment.
-		 */
-
-		if(this.originalPosition) { //If we are not dragging yet, we won't check for options
-
-			if(this.containment) {
-				if(event.pageX - this.offset.click.left < this.containment[0]) {
-					pageX = this.containment[0] + this.offset.click.left;
-				}
-				if(event.pageY - this.offset.click.top < this.containment[1]) {
-					pageY = this.containment[1] + this.offset.click.top;
-				}
-				if(event.pageX - this.offset.click.left > this.containment[2]) {
-					pageX = this.containment[2] + this.offset.click.left;
-				}
-				if(event.pageY - this.offset.click.top > this.containment[3]) {
-					pageY = this.containment[3] + this.offset.click.top;
-				}
-			}
-
-			if(o.grid) {
-				top = this.originalPageY + Math.round((pageY - this.originalPageY) / o.grid[1]) * o.grid[1];
-				pageY = this.containment ? ( (top - this.offset.click.top >= this.containment[1] && top - this.offset.click.top <= this.containment[3]) ? top : ((top - this.offset.click.top >= this.containment[1]) ? top - o.grid[1] : top + o.grid[1])) : top;
-
-				left = this.originalPageX + Math.round((pageX - this.originalPageX) / o.grid[0]) * o.grid[0];
-				pageX = this.containment ? ( (left - this.offset.click.left >= this.containment[0] && left - this.offset.click.left <= this.containment[2]) ? left : ((left - this.offset.click.left >= this.containment[0]) ? left - o.grid[0] : left + o.grid[0])) : left;
-			}
-
-		}
-
-		return {
-			top: (
-				pageY -																// The absolute mouse position
-				this.offset.click.top -													// Click offset (relative to the element)
-				this.offset.relative.top	-											// Only for relative positioned nodes: Relative offset from element to offset parent
-				this.offset.parent.top +												// The offsetParent's offset without borders (offset + border)
-				( ( this.cssPosition === "fixed" ? -this.scrollParent.scrollTop() : ( scrollIsRootNode ? 0 : scroll.scrollTop() ) ))
-			),
-			left: (
-				pageX -																// The absolute mouse position
-				this.offset.click.left -												// Click offset (relative to the element)
-				this.offset.relative.left	-											// Only for relative positioned nodes: Relative offset from element to offset parent
-				this.offset.parent.left +												// The offsetParent's offset without borders (offset + border)
-				( ( this.cssPosition === "fixed" ? -this.scrollParent.scrollLeft() : scrollIsRootNode ? 0 : scroll.scrollLeft() ))
-			)
-		};
-
-	},
-
-	_rearrange: function(event, i, a, hardRefresh) {
-
-		a ? a[0].appendChild(this.placeholder[0]) : i.item[0].parentNode.insertBefore(this.placeholder[0], (this.direction === "down" ? i.item[0] : i.item[0].nextSibling));
-
-		//Various things done here to improve the performance:
-		// 1. we create a setTimeout, that calls refreshPositions
-		// 2. on the instance, we have a counter variable, that get's higher after every append
-		// 3. on the local scope, we copy the counter variable, and check in the timeout, if it's still the same
-		// 4. this lets only the last addition to the timeout stack through
-		this.counter = this.counter ? ++this.counter : 1;
-		var counter = this.counter;
-
-		this._delay(function() {
-			if(counter === this.counter) {
-				this.refreshPositions(!hardRefresh); //Precompute after each DOM insertion, NOT on mousemove
-			}
-		});
-
-	},
-
-	_clear: function(event, noPropagation) {
-
-		this.reverting = false;
-		// We delay all events that have to be triggered to after the point where the placeholder has been removed and
-		// everything else normalized again
-		var i,
-			delayedTriggers = [];
-
-		// We first have to update the dom position of the actual currentItem
-		// Note: don't do it if the current item is already removed (by a user), or it gets reappended (see #4088)
-		if(!this._noFinalSort && this.currentItem.parent().length) {
-			this.placeholder.before(this.currentItem);
-		}
-		this._noFinalSort = null;
-
-		if(this.helper[0] === this.currentItem[0]) {
-			for(i in this._storedCSS) {
-				if(this._storedCSS[i] === "auto" || this._storedCSS[i] === "static") {
-					this._storedCSS[i] = "";
-				}
-			}
-			this.currentItem.css(this._storedCSS).removeClass("ui-sortable-helper");
-		} else {
-			this.currentItem.show();
-		}
-
-		if(this.fromOutside && !noPropagation) {
-			delayedTriggers.push(function(event) { this._trigger("receive", event, this._uiHash(this.fromOutside)); });
-		}
-		if((this.fromOutside || this.domPosition.prev !== this.currentItem.prev().not(".ui-sortable-helper")[0] || this.domPosition.parent !== this.currentItem.parent()[0]) && !noPropagation) {
-			delayedTriggers.push(function(event) { this._trigger("update", event, this._uiHash()); }); //Trigger update callback if the DOM position has changed
-		}
-
-		// Check if the items Container has Changed and trigger appropriate
-		// events.
-		if (this !== this.currentContainer) {
-			if(!noPropagation) {
-				delayedTriggers.push(function(event) { this._trigger("remove", event, this._uiHash()); });
-				delayedTriggers.push((function(c) { return function(event) { c._trigger("receive", event, this._uiHash(this)); };  }).call(this, this.currentContainer));
-				delayedTriggers.push((function(c) { return function(event) { c._trigger("update", event, this._uiHash(this));  }; }).call(this, this.currentContainer));
-			}
-		}
-
-
-		//Post events to containers
-		function delayEvent( type, instance, container ) {
-			return function( event ) {
-				container._trigger( type, event, instance._uiHash( instance ) );
-			};
-		}
-		for (i = this.containers.length - 1; i >= 0; i--){
-			if (!noPropagation) {
-				delayedTriggers.push( delayEvent( "deactivate", this, this.containers[ i ] ) );
-			}
-			if(this.containers[i].containerCache.over) {
-				delayedTriggers.push( delayEvent( "out", this, this.containers[ i ] ) );
-				this.containers[i].containerCache.over = 0;
-			}
-		}
-
-		//Do what was originally in plugins
-		if ( this.storedCursor ) {
-			this.document.find( "body" ).css( "cursor", this.storedCursor );
-			this.storedStylesheet.remove();
-		}
-		if(this._storedOpacity) {
-			this.helper.css("opacity", this._storedOpacity);
-		}
-		if(this._storedZIndex) {
-			this.helper.css("zIndex", this._storedZIndex === "auto" ? "" : this._storedZIndex);
-		}
-
-		this.dragging = false;
-
-		if(!noPropagation) {
-			this._trigger("beforeStop", event, this._uiHash());
-		}
-
-		//$(this.placeholder[0]).remove(); would have been the jQuery way - unfortunately, it unbinds ALL events from the original node!
-		this.placeholder[0].parentNode.removeChild(this.placeholder[0]);
-
-		if ( !this.cancelHelperRemoval ) {
-			if ( this.helper[ 0 ] !== this.currentItem[ 0 ] ) {
-				this.helper.remove();
-			}
-			this.helper = null;
-		}
-
-		if(!noPropagation) {
-			for (i=0; i < delayedTriggers.length; i++) {
-				delayedTriggers[i].call(this, event);
-			} //Trigger all delayed events
-			this._trigger("stop", event, this._uiHash());
-		}
-
-		this.fromOutside = false;
-		return !this.cancelHelperRemoval;
-
-	},
-
-	_trigger: function() {
-		if ($.Widget.prototype._trigger.apply(this, arguments) === false) {
-			this.cancel();
-		}
-	},
-
-	_uiHash: function(_inst) {
-		var inst = _inst || this;
-		return {
-			helper: inst.helper,
-			placeholder: inst.placeholder || $([]),
-			position: inst.position,
-			originalPosition: inst.originalPosition,
-			offset: inst.positionAbs,
-			item: inst.currentItem,
-			sender: _inst ? _inst.element : null
-		};
-	}
-
-});
-
-}));
-
-
-/***/ },
-
-/***/ "./node_modules/jquery-ui/ui/widget.js":
-/***/ function(module, exports, __webpack_require__) {
-
-var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/*!
- * jQuery UI Widget 1.11.4
- * http://jqueryui.com
- *
- * Copyright jQuery Foundation and other contributors
- * Released under the MIT license.
- * http://jquery.org/license
- *
- * http://api.jqueryui.com/jQuery.widget/
- */
-(function( factory ) {
-	if ( true ) {
-
-		// AMD. Register as an anonymous module.
-		!(__WEBPACK_AMD_DEFINE_ARRAY__ = [ __webpack_require__("./node_modules/jquery/dist/jquery.js") ], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
-	} else {
-
-		// Browser globals
-		factory( jQuery );
-	}
-}(function( $ ) {
-
-var widget_uuid = 0,
-	widget_slice = Array.prototype.slice;
-
-$.cleanData = (function( orig ) {
-	return function( elems ) {
-		var events, elem, i;
-		for ( i = 0; (elem = elems[i]) != null; i++ ) {
-			try {
-
-				// Only trigger remove when necessary to save time
-				events = $._data( elem, "events" );
-				if ( events && events.remove ) {
-					$( elem ).triggerHandler( "remove" );
-				}
-
-			// http://bugs.jquery.com/ticket/8235
-			} catch ( e ) {}
-		}
-		orig( elems );
-	};
-})( $.cleanData );
-
-$.widget = function( name, base, prototype ) {
-	var fullName, existingConstructor, constructor, basePrototype,
-		// proxiedPrototype allows the provided prototype to remain unmodified
-		// so that it can be used as a mixin for multiple widgets (#8876)
-		proxiedPrototype = {},
-		namespace = name.split( "." )[ 0 ];
-
-	name = name.split( "." )[ 1 ];
-	fullName = namespace + "-" + name;
-
-	if ( !prototype ) {
-		prototype = base;
-		base = $.Widget;
-	}
-
-	// create selector for plugin
-	$.expr[ ":" ][ fullName.toLowerCase() ] = function( elem ) {
-		return !!$.data( elem, fullName );
-	};
-
-	$[ namespace ] = $[ namespace ] || {};
-	existingConstructor = $[ namespace ][ name ];
-	constructor = $[ namespace ][ name ] = function( options, element ) {
-		// allow instantiation without "new" keyword
-		if ( !this._createWidget ) {
-			return new constructor( options, element );
-		}
-
-		// allow instantiation without initializing for simple inheritance
-		// must use "new" keyword (the code above always passes args)
-		if ( arguments.length ) {
-			this._createWidget( options, element );
-		}
-	};
-	// extend with the existing constructor to carry over any static properties
-	$.extend( constructor, existingConstructor, {
-		version: prototype.version,
-		// copy the object used to create the prototype in case we need to
-		// redefine the widget later
-		_proto: $.extend( {}, prototype ),
-		// track widgets that inherit from this widget in case this widget is
-		// redefined after a widget inherits from it
-		_childConstructors: []
-	});
-
-	basePrototype = new base();
-	// we need to make the options hash a property directly on the new instance
-	// otherwise we'll modify the options hash on the prototype that we're
-	// inheriting from
-	basePrototype.options = $.widget.extend( {}, basePrototype.options );
-	$.each( prototype, function( prop, value ) {
-		if ( !$.isFunction( value ) ) {
-			proxiedPrototype[ prop ] = value;
-			return;
-		}
-		proxiedPrototype[ prop ] = (function() {
-			var _super = function() {
-					return base.prototype[ prop ].apply( this, arguments );
-				},
-				_superApply = function( args ) {
-					return base.prototype[ prop ].apply( this, args );
-				};
-			return function() {
-				var __super = this._super,
-					__superApply = this._superApply,
-					returnValue;
-
-				this._super = _super;
-				this._superApply = _superApply;
-
-				returnValue = value.apply( this, arguments );
-
-				this._super = __super;
-				this._superApply = __superApply;
-
-				return returnValue;
-			};
-		})();
-	});
-	constructor.prototype = $.widget.extend( basePrototype, {
-		// TODO: remove support for widgetEventPrefix
-		// always use the name + a colon as the prefix, e.g., draggable:start
-		// don't prefix for widgets that aren't DOM-based
-		widgetEventPrefix: existingConstructor ? (basePrototype.widgetEventPrefix || name) : name
-	}, proxiedPrototype, {
-		constructor: constructor,
-		namespace: namespace,
-		widgetName: name,
-		widgetFullName: fullName
-	});
-
-	// If this widget is being redefined then we need to find all widgets that
-	// are inheriting from it and redefine all of them so that they inherit from
-	// the new version of this widget. We're essentially trying to replace one
-	// level in the prototype chain.
-	if ( existingConstructor ) {
-		$.each( existingConstructor._childConstructors, function( i, child ) {
-			var childPrototype = child.prototype;
-
-			// redefine the child widget using the same prototype that was
-			// originally used, but inherit from the new version of the base
-			$.widget( childPrototype.namespace + "." + childPrototype.widgetName, constructor, child._proto );
-		});
-		// remove the list of existing child constructors from the old constructor
-		// so the old child constructors can be garbage collected
-		delete existingConstructor._childConstructors;
-	} else {
-		base._childConstructors.push( constructor );
-	}
-
-	$.widget.bridge( name, constructor );
-
-	return constructor;
-};
-
-$.widget.extend = function( target ) {
-	var input = widget_slice.call( arguments, 1 ),
-		inputIndex = 0,
-		inputLength = input.length,
-		key,
-		value;
-	for ( ; inputIndex < inputLength; inputIndex++ ) {
-		for ( key in input[ inputIndex ] ) {
-			value = input[ inputIndex ][ key ];
-			if ( input[ inputIndex ].hasOwnProperty( key ) && value !== undefined ) {
-				// Clone objects
-				if ( $.isPlainObject( value ) ) {
-					target[ key ] = $.isPlainObject( target[ key ] ) ?
-						$.widget.extend( {}, target[ key ], value ) :
-						// Don't extend strings, arrays, etc. with objects
-						$.widget.extend( {}, value );
-				// Copy everything else by reference
-				} else {
-					target[ key ] = value;
-				}
-			}
-		}
-	}
-	return target;
-};
-
-$.widget.bridge = function( name, object ) {
-	var fullName = object.prototype.widgetFullName || name;
-	$.fn[ name ] = function( options ) {
-		var isMethodCall = typeof options === "string",
-			args = widget_slice.call( arguments, 1 ),
-			returnValue = this;
-
-		if ( isMethodCall ) {
-			this.each(function() {
-				var methodValue,
-					instance = $.data( this, fullName );
-				if ( options === "instance" ) {
-					returnValue = instance;
-					return false;
-				}
-				if ( !instance ) {
-					return $.error( "cannot call methods on " + name + " prior to initialization; " +
-						"attempted to call method '" + options + "'" );
-				}
-				if ( !$.isFunction( instance[options] ) || options.charAt( 0 ) === "_" ) {
-					return $.error( "no such method '" + options + "' for " + name + " widget instance" );
-				}
-				methodValue = instance[ options ].apply( instance, args );
-				if ( methodValue !== instance && methodValue !== undefined ) {
-					returnValue = methodValue && methodValue.jquery ?
-						returnValue.pushStack( methodValue.get() ) :
-						methodValue;
-					return false;
-				}
-			});
-		} else {
-
-			// Allow multiple hashes to be passed on init
-			if ( args.length ) {
-				options = $.widget.extend.apply( null, [ options ].concat(args) );
-			}
-
-			this.each(function() {
-				var instance = $.data( this, fullName );
-				if ( instance ) {
-					instance.option( options || {} );
-					if ( instance._init ) {
-						instance._init();
-					}
-				} else {
-					$.data( this, fullName, new object( options, this ) );
-				}
-			});
-		}
-
-		return returnValue;
-	};
-};
-
-$.Widget = function( /* options, element */ ) {};
-$.Widget._childConstructors = [];
-
-$.Widget.prototype = {
-	widgetName: "widget",
-	widgetEventPrefix: "",
-	defaultElement: "<div>",
-	options: {
-		disabled: false,
-
-		// callbacks
-		create: null
-	},
-	_createWidget: function( options, element ) {
-		element = $( element || this.defaultElement || this )[ 0 ];
-		this.element = $( element );
-		this.uuid = widget_uuid++;
-		this.eventNamespace = "." + this.widgetName + this.uuid;
-
-		this.bindings = $();
-		this.hoverable = $();
-		this.focusable = $();
-
-		if ( element !== this ) {
-			$.data( element, this.widgetFullName, this );
-			this._on( true, this.element, {
-				remove: function( event ) {
-					if ( event.target === element ) {
-						this.destroy();
-					}
-				}
-			});
-			this.document = $( element.style ?
-				// element within the document
-				element.ownerDocument :
-				// element is window or document
-				element.document || element );
-			this.window = $( this.document[0].defaultView || this.document[0].parentWindow );
-		}
-
-		this.options = $.widget.extend( {},
-			this.options,
-			this._getCreateOptions(),
-			options );
-
-		this._create();
-		this._trigger( "create", null, this._getCreateEventData() );
-		this._init();
-	},
-	_getCreateOptions: $.noop,
-	_getCreateEventData: $.noop,
-	_create: $.noop,
-	_init: $.noop,
-
-	destroy: function() {
-		this._destroy();
-		// we can probably remove the unbind calls in 2.0
-		// all event bindings should go through this._on()
-		this.element
-			.unbind( this.eventNamespace )
-			.removeData( this.widgetFullName )
-			// support: jquery <1.6.3
-			// http://bugs.jquery.com/ticket/9413
-			.removeData( $.camelCase( this.widgetFullName ) );
-		this.widget()
-			.unbind( this.eventNamespace )
-			.removeAttr( "aria-disabled" )
-			.removeClass(
-				this.widgetFullName + "-disabled " +
-				"ui-state-disabled" );
-
-		// clean up events and states
-		this.bindings.unbind( this.eventNamespace );
-		this.hoverable.removeClass( "ui-state-hover" );
-		this.focusable.removeClass( "ui-state-focus" );
-	},
-	_destroy: $.noop,
-
-	widget: function() {
-		return this.element;
-	},
-
-	option: function( key, value ) {
-		var options = key,
-			parts,
-			curOption,
-			i;
-
-		if ( arguments.length === 0 ) {
-			// don't return a reference to the internal hash
-			return $.widget.extend( {}, this.options );
-		}
-
-		if ( typeof key === "string" ) {
-			// handle nested keys, e.g., "foo.bar" => { foo: { bar: ___ } }
-			options = {};
-			parts = key.split( "." );
-			key = parts.shift();
-			if ( parts.length ) {
-				curOption = options[ key ] = $.widget.extend( {}, this.options[ key ] );
-				for ( i = 0; i < parts.length - 1; i++ ) {
-					curOption[ parts[ i ] ] = curOption[ parts[ i ] ] || {};
-					curOption = curOption[ parts[ i ] ];
-				}
-				key = parts.pop();
-				if ( arguments.length === 1 ) {
-					return curOption[ key ] === undefined ? null : curOption[ key ];
-				}
-				curOption[ key ] = value;
-			} else {
-				if ( arguments.length === 1 ) {
-					return this.options[ key ] === undefined ? null : this.options[ key ];
-				}
-				options[ key ] = value;
-			}
-		}
-
-		this._setOptions( options );
-
-		return this;
-	},
-	_setOptions: function( options ) {
-		var key;
-
-		for ( key in options ) {
-			this._setOption( key, options[ key ] );
-		}
-
-		return this;
-	},
-	_setOption: function( key, value ) {
-		this.options[ key ] = value;
-
-		if ( key === "disabled" ) {
-			this.widget()
-				.toggleClass( this.widgetFullName + "-disabled", !!value );
-
-			// If the widget is becoming disabled, then nothing is interactive
-			if ( value ) {
-				this.hoverable.removeClass( "ui-state-hover" );
-				this.focusable.removeClass( "ui-state-focus" );
-			}
-		}
-
-		return this;
-	},
-
-	enable: function() {
-		return this._setOptions({ disabled: false });
-	},
-	disable: function() {
-		return this._setOptions({ disabled: true });
-	},
-
-	_on: function( suppressDisabledCheck, element, handlers ) {
-		var delegateElement,
-			instance = this;
-
-		// no suppressDisabledCheck flag, shuffle arguments
-		if ( typeof suppressDisabledCheck !== "boolean" ) {
-			handlers = element;
-			element = suppressDisabledCheck;
-			suppressDisabledCheck = false;
-		}
-
-		// no element argument, shuffle and use this.element
-		if ( !handlers ) {
-			handlers = element;
-			element = this.element;
-			delegateElement = this.widget();
-		} else {
-			element = delegateElement = $( element );
-			this.bindings = this.bindings.add( element );
-		}
-
-		$.each( handlers, function( event, handler ) {
-			function handlerProxy() {
-				// allow widgets to customize the disabled handling
-				// - disabled as an array instead of boolean
-				// - disabled class as method for disabling individual parts
-				if ( !suppressDisabledCheck &&
-						( instance.options.disabled === true ||
-							$( this ).hasClass( "ui-state-disabled" ) ) ) {
-					return;
-				}
-				return ( typeof handler === "string" ? instance[ handler ] : handler )
-					.apply( instance, arguments );
-			}
-
-			// copy the guid so direct unbinding works
-			if ( typeof handler !== "string" ) {
-				handlerProxy.guid = handler.guid =
-					handler.guid || handlerProxy.guid || $.guid++;
-			}
-
-			var match = event.match( /^([\w:-]*)\s*(.*)$/ ),
-				eventName = match[1] + instance.eventNamespace,
-				selector = match[2];
-			if ( selector ) {
-				delegateElement.delegate( selector, eventName, handlerProxy );
-			} else {
-				element.bind( eventName, handlerProxy );
-			}
-		});
-	},
-
-	_off: function( element, eventName ) {
-		eventName = (eventName || "").split( " " ).join( this.eventNamespace + " " ) +
-			this.eventNamespace;
-		element.unbind( eventName ).undelegate( eventName );
-
-		// Clear the stack to avoid memory leaks (#10056)
-		this.bindings = $( this.bindings.not( element ).get() );
-		this.focusable = $( this.focusable.not( element ).get() );
-		this.hoverable = $( this.hoverable.not( element ).get() );
-	},
-
-	_delay: function( handler, delay ) {
-		function handlerProxy() {
-			return ( typeof handler === "string" ? instance[ handler ] : handler )
-				.apply( instance, arguments );
-		}
-		var instance = this;
-		return setTimeout( handlerProxy, delay || 0 );
-	},
-
-	_hoverable: function( element ) {
-		this.hoverable = this.hoverable.add( element );
-		this._on( element, {
-			mouseenter: function( event ) {
-				$( event.currentTarget ).addClass( "ui-state-hover" );
-			},
-			mouseleave: function( event ) {
-				$( event.currentTarget ).removeClass( "ui-state-hover" );
-			}
-		});
-	},
-
-	_focusable: function( element ) {
-		this.focusable = this.focusable.add( element );
-		this._on( element, {
-			focusin: function( event ) {
-				$( event.currentTarget ).addClass( "ui-state-focus" );
-			},
-			focusout: function( event ) {
-				$( event.currentTarget ).removeClass( "ui-state-focus" );
-			}
-		});
-	},
-
-	_trigger: function( type, event, data ) {
-		var prop, orig,
-			callback = this.options[ type ];
-
-		data = data || {};
-		event = $.Event( event );
-		event.type = ( type === this.widgetEventPrefix ?
-			type :
-			this.widgetEventPrefix + type ).toLowerCase();
-		// the original event may come from any element
-		// so we need to reset the target on the new event
-		event.target = this.element[ 0 ];
-
-		// copy original event properties over to the new event
-		orig = event.originalEvent;
-		if ( orig ) {
-			for ( prop in orig ) {
-				if ( !( prop in event ) ) {
-					event[ prop ] = orig[ prop ];
-				}
-			}
-		}
-
-		this.element.trigger( event, data );
-		return !( $.isFunction( callback ) &&
-			callback.apply( this.element[0], [ event ].concat( data ) ) === false ||
-			event.isDefaultPrevented() );
-	}
-};
-
-$.each( { show: "fadeIn", hide: "fadeOut" }, function( method, defaultEffect ) {
-	$.Widget.prototype[ "_" + method ] = function( element, options, callback ) {
-		if ( typeof options === "string" ) {
-			options = { effect: options };
-		}
-		var hasOptions,
-			effectName = !options ?
-				method :
-				options === true || typeof options === "number" ?
-					defaultEffect :
-					options.effect || defaultEffect;
-		options = options || {};
-		if ( typeof options === "number" ) {
-			options = { duration: options };
-		}
-		hasOptions = !$.isEmptyObject( options );
-		options.complete = callback;
-		if ( options.delay ) {
-			element.delay( options.delay );
-		}
-		if ( hasOptions && $.effects && $.effects.effect[ effectName ] ) {
-			element[ method ]( options );
-		} else if ( effectName !== method && element[ effectName ] ) {
-			element[ effectName ]( options.duration, options.easing, callback );
-		} else {
-			element.queue(function( next ) {
-				$( this )[ method ]();
-				if ( callback ) {
-					callback.call( element[ 0 ] );
-				}
-				next();
-			});
-		}
-	};
-});
-
-return $.widget;
-
-}));
-
-
-/***/ },
-
-/***/ "./src/app/grid/grid-demo/grid-demo.ts":
+/***/ "./src/app/inbox/inbox.component.ts":
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
 /* WEBPACK VAR INJECTION */(function(jQuery) {"use strict";
 var core_1 = __webpack_require__("./node_modules/@angular/core/index.js");
-var GridDemo = (function () {
-    function GridDemo() {
+var Inbox = (function () {
+    function Inbox(el) {
+        this.mailListShow = true;
+        this.mailFormShow = false;
+        this.mailDetailShow = false;
+        this.currentFolderName = 'Inbox';
+        this.$el = jQuery(el.nativeElement);
+        this.initMailboxAppDemo(this.$el);
     }
-    GridDemo.prototype.render = function () {
-        jQuery.fn.widgster.Constructor.DEFAULTS.bodySelector = '.widget-body';
-        var $widgets = jQuery('.widget'), $newsWidget = jQuery('#news-widget'), $sharesWidget = jQuery('#shares-widget'), $autoloadWidget = jQuery('#autoload-widget');
-        /**
-         * turn off .content-wrap transforms & disable sorting when widget fullscreened
-         */
-        $widgets.on('fullscreen.widgster', function () {
-            jQuery('.content-wrap').css({
-                '-webkit-transform': 'none',
-                '-ms-transform': 'none',
-                transform: 'none',
-                'margin': 0,
-                'z-index': 2
-            });
-            // prevent widget from dragging when fullscreened
-            jQuery('.widget-container').sortable('option', 'disabled', true);
-        }).on('restore.widgster closed.widgster', function () {
-            jQuery('.content-wrap').css({
-                '-webkit-transform': '',
-                '-ms-transform': '',
-                transform: '',
-                margin: '',
-                'z-index': ''
-            });
-            jQuery('body').css({
-                'overflow-y': 'scroll'
-            });
-            // allow dragging back
-            jQuery('.widget-container').sortable('option', 'disabled', false);
-        });
-        /**
-         * Make refresh button spin when loading
-         */
-        $newsWidget.on('load.widgster', function () {
-            jQuery(this).find('[data-widgster="load"] > i').addClass('fa-spin');
-        }).on('loaded.widgster', function () {
-            jQuery(this).find('[data-widgster="load"] > i').removeClass('fa-spin');
-        });
-        /**
-         * Custom close prompt for news widget
-         */
-        $newsWidget.widgster({
-            showLoader: false,
-            closePrompt: function (callback) {
-                jQuery('#news-close-modal').modal('show');
-                jQuery('#news-widget-remove').on('click', function () {
-                    jQuery('#news-close-modal').on('hidden.bs.modal', callback).modal('hide');
-                });
-            }
-        });
-        /**
-         * Use custom loader template
-         */
-        $sharesWidget.widgster({
-            loaderTemplate: '<div class="loader animated fadeIn">' +
-                '   <span class="spinner"><i class="fa fa-spinner fa-spin"></i></span>' +
-                '</div>'
-        });
-        /**
-         * Make hidden spinner appear & spin when loading
-         */
-        $autoloadWidget.on('load.widgster', function () {
-            jQuery(this).find('.fa-spinner').addClass('fa-spin in');
-        }).on('loaded.widgster', function () {
-            jQuery(this).find('.fa-spinner').removeClass('fa-spin in');
-        }).on('load.widgster fullscreen.widgster restore.widgster', function () {
-            jQuery(this).find('.dropdown.open > .dropdown-toggle').dropdown('toggle');
-        });
-        /**
-         * Init all other widgets with default settings & settings retrieved from data-* attributes
-         */
-        $widgets.widgster();
-        /**
-         * Init tooltips for all widget controls on page
-         */
-        jQuery('.widget-controls > a').tooltip({ placement: 'bottom' });
+    Inbox.prototype.handleComposeBtn = function (event) {
+        this.repliedMessage = event || undefined;
+        this.changeEmailComponents('mailForm');
     };
-    GridDemo.prototype.ngOnInit = function () {
-        this.render();
+    Inbox.prototype.onReplyMail = function (mail) {
+        this.currentMail = mail;
+        this.changeEmailComponents('mailDetail');
     };
-    GridDemo = __decorate([
-        core_1.Directive({
-            selector: '[grid-demo]',
-        }), 
-        __metadata('design:paramtypes', [])
-    ], GridDemo);
-    return GridDemo;
-}());
-exports.GridDemo = GridDemo;
-
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__("./node_modules/jquery/dist/jquery.js")))
-
-/***/ },
-
-/***/ "./src/app/grid/grid.component.ts":
-/***/ function(module, exports, __webpack_require__) {
-
-"use strict";
-/* WEBPACK VAR INJECTION */(function(jQuery) {"use strict";
-var core_1 = __webpack_require__("./node_modules/@angular/core/index.js");
-var GridComponent = (function () {
-    function GridComponent() {
-        this.sortOptions = {
-            connectWith: '.widget-container',
-            handle: 'header, .handle',
-            cursor: 'move',
-            iframeFix: false,
-            items: '.widget:not(.locked)',
-            opacity: 0.8,
-            helper: 'original',
-            revert: true,
-            forceHelperSize: true,
-            placeholder: 'widget widget-placeholder',
-            forcePlaceholderSize: true,
-            tolerance: 'pointer'
+    Inbox.prototype.changeEmailComponents = function (componentName) {
+        var mailState = {
+            'mailList': function (that) {
+                that.mailFormShow = that.mailDetailShow = false;
+                that.mailListShow = true;
+            },
+            'mailForm': function (that) {
+                that.mailListShow = that.mailDetailShow = false;
+                that.mailFormShow = true;
+            },
+            'mailDetail': function (that) {
+                that.mailListShow = that.mailFormShow = false;
+                that.mailDetailShow = true;
+            },
         };
-    }
-    GridComponent.prototype.ngOnInit = function () {
-        jQuery('.widget-container').sortable(this.sortOptions);
+        mailState[componentName](this);
     };
-    GridComponent = __decorate([
+    Inbox.prototype.setFolderName = function (folderName) {
+        this.currentFolderName = folderName;
+        if (!this.mailListShow) {
+            this.changeEmailComponents('mailList');
+        }
+    };
+    /* tslint:disable */
+    Inbox.prototype.initMailboxAppDemo = function ($el) {
+        var showAlert = function () {
+            $el.find('#app-alert')
+                .removeClass('hide')
+                .one('webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend', function () {
+                jQuery(this).removeClass('animated bounceInLeft');
+            });
+        };
+        setTimeout(function () { return showAlert(); }, 3000);
+    };
+    /* tslint:enable */
+    Inbox.prototype.changeActiveItem = function () {
+        this.$el.find('.nav a').on('click', function () {
+            jQuery('.nav').find('.active').removeClass('active');
+            jQuery(this).parent().addClass('active');
+        });
+    };
+    Inbox.prototype.ngOnInit = function () {
+        this.changeActiveItem();
+    };
+    Inbox = __decorate([
         core_1.Component({
-            selector: '[grid]',
-            template: __webpack_require__("./src/app/grid/grid.template.html"),
-            encapsulation: core_1.ViewEncapsulation.None,
-            styles: [__webpack_require__("./src/app/grid/grid.style.scss")]
+            selector: 'inbox',
+            template: __webpack_require__("./src/app/inbox/inbox.template.html"),
+            styles: [__webpack_require__("./src/app/inbox/inbox.style.scss")]
         }), 
-        __metadata('design:paramtypes', [])
-    ], GridComponent);
-    return GridComponent;
+        __metadata('design:paramtypes', [(typeof (_a = typeof core_1.ElementRef !== 'undefined' && core_1.ElementRef) === 'function' && _a) || Object])
+    ], Inbox);
+    return Inbox;
+    var _a;
 }());
-exports.GridComponent = GridComponent;
+exports.Inbox = Inbox;
 
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__("./node_modules/jquery/dist/jquery.js")))
 
 /***/ },
 
-/***/ "./src/app/grid/grid.module.ts":
+/***/ "./src/app/inbox/inbox.module.ts":
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
 "use strict";
-__webpack_require__("./node_modules/jquery-ui/ui/sortable.js");
 var core_1 = __webpack_require__("./node_modules/@angular/core/index.js");
 var common_1 = __webpack_require__("./node_modules/@angular/common/index.js");
+var forms_1 = __webpack_require__("./node_modules/@angular/forms/index.js");
 var router_1 = __webpack_require__("./node_modules/@angular/router/index.js");
-var grid_component_1 = __webpack_require__("./src/app/grid/grid.component.ts");
-var grid_demo_1 = __webpack_require__("./src/app/grid/grid-demo/grid-demo.ts");
+var inbox_component_1 = __webpack_require__("./src/app/inbox/inbox.component.ts");
+var mail_list_component_1 = __webpack_require__("./src/app/inbox/mail-list/mail-list.component.ts");
+var mail_form_component_1 = __webpack_require__("./src/app/inbox/mail-form/mail-form.component.ts");
+var mail_detail_component_1 = __webpack_require__("./src/app/inbox/mail-detail/mail-detail.component.ts");
+var search_pipe_1 = __webpack_require__("./src/app/inbox/mail-list/pipes/search-pipe.ts");
+var folders_pipe_1 = __webpack_require__("./src/app/inbox/mail-list/pipes/folders-pipe.ts");
 exports.routes = [
-    { path: '', component: grid_component_1.GridComponent, pathMatch: 'full' }
+    { path: '', component: inbox_component_1.Inbox, pathMatch: 'full' }
 ];
-var GridModule = (function () {
-    function GridModule() {
+var InboxModule = (function () {
+    function InboxModule() {
     }
-    GridModule.routes = exports.routes;
-    GridModule = __decorate([
+    InboxModule.routes = exports.routes;
+    InboxModule = __decorate([
         core_1.NgModule({
-            imports: [common_1.CommonModule, router_1.RouterModule.forChild(exports.routes)],
-            declarations: [grid_component_1.GridComponent, grid_demo_1.GridDemo]
+            imports: [
+                forms_1.FormsModule,
+                common_1.CommonModule,
+                router_1.RouterModule.forChild(exports.routes)],
+            declarations: [
+                inbox_component_1.Inbox,
+                mail_list_component_1.MailList,
+                mail_form_component_1.MailForm,
+                mail_detail_component_1.MailDetail,
+                folders_pipe_1.FoldersPipe,
+                search_pipe_1.SearchPipe
+            ]
         }), 
         __metadata('design:paramtypes', [])
-    ], GridModule);
-    return GridModule;
+    ], InboxModule);
+    return InboxModule;
 }());
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.default = GridModule;
+exports.default = InboxModule;
 
 
 /***/ },
 
-/***/ "./src/app/grid/grid.style.scss":
+/***/ "./src/app/inbox/inbox.style.scss":
 /***/ function(module, exports) {
 
-module.exports = "/***********************************/\n/**          NEWS LIST           **/\n/**********************************/\n.news-list {\n  margin-bottom: 0;\n  padding-left: 0; }\n  .news-list li {\n    list-style: none;\n    box-sizing: content-box;\n    border-top: 1px solid #eeeeee;\n    padding: 12px;\n    cursor: pointer;\n    transition: background-color 0.2s ease-out; }\n    .news-list li:hover {\n      background: #f6f6f6; }\n    .news-list li:last-child {\n      margin-bottom: -10px; }\n  .news-list img,\n  .news-list .icon {\n    float: left;\n    height: 50px;\n    width: 50px; }\n  .news-list .icon {\n    line-height: 50px;\n    border-radius: 50%;\n    text-align: center;\n    font-size: 28px; }\n  .news-list .news-item-info {\n    margin-left: 62px;\n    /*50 + 12px padding*/ }\n  .news-list .name {\n    text-transform: uppercase; }\n    .news-list .name a {\n      text-decoration: none; }\n      .news-list .name a:hover {\n        color: #218BC3; }\n"
+module.exports = ".nav-email-folders > li > .nav-link {\n  padding-top: 10px;\n  padding-bottom: 10px;\n  border-radius: 0.25rem;\n  color: #777;\n  font-weight: 400; }\n  .nav-email-folders > li > .nav-link:hover {\n    background-color: #e5e5e5;\n    color: #55595c; }\n  .nav-email-folders > li > .nav-link > .fa-circle {\n    margin-top: 3px; }\n\n.nav-email-folders > li > .nav-link > .label {\n  padding-top: 5px;\n  padding-bottom: 5px; }\n\n.nav-email-folders > li.active > .nav-link, .nav-email-folders > li.active > .nav-link:hover, .nav-email-folders > li.active > .nav-link:focus {\n  background-color: #ddd;\n  color: #55595c;\n  font-weight: 600; }\n  .nav-email-folders > li.active > .nav-link > .label, .nav-email-folders > li.active > .nav-link:hover > .label, .nav-email-folders > li.active > .nav-link:focus > .label {\n    color: #55595c;\n    background-color: #fff; }\n\n.nav-email-folders .tag-white {\n  color: #555; }\n"
 
 /***/ },
 
-/***/ "./src/app/grid/grid.template.html":
+/***/ "./src/app/inbox/inbox.template.html":
 /***/ function(module, exports) {
 
-module.exports = "<!-- jquery ui sortable chrome overflow-x fix. when set to hidden does not behaves as expected. resetting back\r\n     just for this page.\r\n     http://bugs.jqueryui.com/ticket/9588 -->\r\n<style>\r\n  body{\r\n    overflow-x: visible;\r\n  }\r\n</style>\r\n<ol class=\"breadcrumb\">\r\n  <li class=\"breadcrumb-item\">YOU ARE HERE</li>\r\n  <li class=\"breadcrumb-item active\">Grid</li>\r\n</ol>\r\n<h1 class=\"page-title\">Grid - <span class=\"fw-semi-bold\">Options</span></h1>\r\n<div class=\"row\">\r\n  <div class=\"col-lg-7 offset-xl-1 \">\r\n    <section class=\"widget\" widget>\r\n      <header>\r\n        <h5>Draggable Grid &nbsp;<span class=\"tag tag-danger fw-normal\">since 2.1</span></h5>\r\n      </header>\r\n      <div class=\"widget-body\">\r\n        <p>\r\n          <strong>Widgster</strong> is a plugin that allows to easily implement basic widget functions that\r\n          lots of our customers have requested.  For now it has the following essential\r\n          widget features:\r\n        </p>\r\n        <ul class=\"text-list\">\r\n          <li><strong>Collapse/Expand</strong> - all widgets can be collapsed to fill only header's vertical space;</li>\r\n          <li><strong>Close</strong> - closable. Any widget may be removed by clicking the close btn;</li>\r\n          <li><strong>Full Screen</strong> - an option to make widget fill the whole window (just like OS);</li>\r\n          <li><strong>Ajax Load</strong> - the hottest option allowing to load/reload widget content asynchronously. You just\r\n            need to provide an url to fetch the data from. With loader delivered.</li>\r\n        </ul>\r\n        <p>It's available under MIT license, check out <a href=\"https://github.com/flatlogic/widgster\" target=\"_blank\">github</a> to find it.</p>\r\n        <p>\r\n          Test it out!\r\n        </p>\r\n      </div>\r\n    </section>\r\n  </div>\r\n</div>\r\n<div class=\"row\" grid-demo>\r\n  <div class=\"col-lg-6  widget-container\">\r\n    <section class=\"widget\" widget id=\"default-widget\" data-widgster-load=\"assets/demo/grid/default.php\">\r\n      <header>\r\n        <h6>Default <span class=\"fw-semi-bold\">Widget</span></h6>\r\n        <div class=\"widget-controls\">\r\n          <a data-widgster=\"load\" title=\"Reload\" href=\"#\"><i class=\"fa fa-refresh\"></i></a>\r\n          <a data-widgster=\"expand\" title=\"Expand\" href=\"#\"><i class=\"glyphicon glyphicon-chevron-up\"></i></a>\r\n          <a data-widgster=\"collapse\" title=\"Collapse\" href=\"#\"><i class=\"glyphicon glyphicon-chevron-down\"></i></a>\r\n          <a data-widgster=\"fullscreen\" title=\"Full Screen\" href=\"#\"><i class=\"glyphicon glyphicon-fullscreen\"></i></a>\r\n          <a data-widgster=\"restore\" title=\"Restore\" href=\"#\"><i class=\"glyphicon glyphicon-resize-small\"></i></a>\r\n          <a data-widgster=\"close\" title=\"Close\" href=\"#\"><i class=\"glyphicon glyphicon-remove\"></i></a>\r\n        </div>\r\n      </header>\r\n      <div class=\"widget-body\">\r\n        <p>A timestamp this widget was created: Apr 24, 19:07:07</p>\r\n        <p>A timestamp this widget was updated: Apr 24, 19:07:07</p>\r\n      </div>\r\n    </section>\r\n    <section class=\"widget\" widget id=\"shares-widget\"\r\n             data-widgster-load=\"assets/demo/grid/shares.php\"\r\n             data-post-processing=\"true\">\r\n      <header>\r\n        <h6>\r\n          <span class=\"tag tag-primary\"><i class=\"fa fa-facebook\"></i></span> &nbsp;\r\n          Latest <span class=\"fw-semi-bold\">Shares</span>\r\n        </h6>\r\n        <div class=\"widget-controls\">\r\n          <a data-widgster=\"load\" title=\"Reload\" href=\"#\"><strong class=\"text-gray-light\">Reload</strong></a>\r\n          <a data-widgster=\"close\" title=\"Close\" href=\"#\"><strong class=\"text-gray-light\">Close</strong></a>\r\n        </div>\r\n      </header>\r\n      <div class=\"widget-body no-padding\">\r\n        <div class=\"list-group list-group-lg\">\r\n          <a href=\"#\" class=\"list-group-item\">\r\n                                <span class=\"thumb-sm pull-xs-left mr\">\r\n                                    <img class=\"img-circle\" src=\"assets/img/people/a1.jpg\" alt=\"...\">\r\n                                </span>\r\n            <i class=\"fa fa-circle pull-xs-right text-danger mt-sm\"></i>\r\n            <h6 class=\"no-margin\">Maikel Basso</h6>\r\n            <small class=\"text-muted\">about 2 mins ago</small>\r\n          </a>\r\n          <a href=\"#\" class=\"list-group-item\">\r\n                                <span class=\"thumb-sm pull-xs-left mr\">\r\n                                    <img class=\"img-circle\" src=\"assets/img/people/a2.jpg\" alt=\"...\">\r\n                                </span>\r\n            <i class=\"fa fa-circle pull-xs-right text-info mt-sm\"></i>\r\n            <h6 class=\"no-margin\">Ianus Arendse</h6>\r\n            <small class=\"text-muted\">about 42 mins ago</small>\r\n          </a>\r\n          <a href=\"#\" class=\"list-group-item\">\r\n                                <span class=\"thumb-sm pull-xs-left mr\">\r\n                                    <img class=\"img-circle\" src=\"assets/img/people/a3.jpg\" alt=\"...\">\r\n                                </span>\r\n            <i class=\"fa fa-circle pull-xs-right text-success mt-sm\"></i>\r\n            <h6 class=\"no-margin\">Valdemar Landau</h6>\r\n            <small class=\"text-muted\">one hour ago</small>\r\n          </a>\r\n          <a href=\"#\" class=\"list-group-item mb-n-md\">\r\n                                <span class=\"thumb-sm pull-xs-left mr\">\r\n                                    <img class=\"img-circle\" src=\"assets/img/people/a4.jpg\" alt=\"...\">\r\n                                </span>\r\n            <i class=\"fa fa-circle pull-xs-right text-warning mt-sm\"></i>\r\n            <h6 class=\"no-margin\">Rick Teagan</h6>\r\n            <small class=\"text-muted\">3 hours ago</small>\r\n          </a>\r\n        </div>\r\n      </div>\r\n    </section>\r\n    <section class=\"widget\" widget id=\"autoload-widget\"\r\n             data-widgster-load=\"assets/demo/grid/autoload.php\"\r\n             data-post-processing=\"true\"\r\n             data-widgster-autoload=\"true\"\r\n             data-widgster-show-loader=\"false\">\r\n      <header>\r\n        <h6>Autoload <span class=\"fw-semi-bold\">Widget</span></h6>\r\n        <div class=\"widget-controls dropdown\" data-dropdown data-ng-init=\"isOpen = false\" data-is-open=\"isOpen\">\r\n                            <span>\r\n                                <i class=\"fa fa-spinner fa-lg fade mr-xs\"></i>\r\n                            </span>\r\n          <a href=\"#\" class=\"dropdown-toggle\" data-toggle=\"dropdown\">\r\n            <i class=\"fa fa-cog\"></i>\r\n          </a>\r\n          <ul class=\"dropdown-menu dropdown-menu-right\">\r\n            <li>\r\n              <a class=\"dropdown-item\" data-widgster=\"load\" title=\"Reload\" ng-click=\"isOpen = false\">Reload\r\n                &nbsp;&nbsp;<span class=\"tag tag-pill tag-success animated bounceIn\"><strong>9</strong></span>\r\n              </a>\r\n            </li>\r\n            <li>\r\n              <a class=\"dropdown-item\" data-widgster=\"fullscreen\" title=\"Full Screen\" ng-click=\"isOpen = false\">Fullscreen</a>\r\n              <a class=\"dropdown-item\" data-widgster=\"restore\" title=\"Restore\" ng-click=\"isOpen = false\">Restore</a>\r\n            </li>\r\n            <li class=\"dropdown-divider\"></li>\r\n            <li><a class=\"dropdown-item\" data-widgster=\"close\" title=\"Close\" ng-click=\"isOpen = false\">Close</a></li>\r\n          </ul>\r\n        </div>\r\n      </header>\r\n      <div class=\"widget-body\">\r\n        <h3 class=\"text-xs-center no-margin\">Sign up, it's <strong>free</strong></h3>\r\n        <p class=\"lead text-muted text-xs-center\">\r\n          Faith makes it possible to achieve that which man's mind can conceive and believe.\r\n        </p>\r\n        <form>\r\n          <div class=\"form-group\">\r\n            <label for=\"exampleInputEmail1\"><i class=\"fa fa-circle text-warning\"></i> &nbsp; Email address</label>\r\n            <input type=\"email\" class=\"form-control\" id=\"exampleInputEmail1\"\r\n                   placeholder=\"Enter email\">\r\n          </div>\r\n          <div class=\"form-group\">\r\n            <label for=\"pswd\"><i class=\"fa fa-circle text-danger\"></i> &nbsp; Password</label>\r\n            <input class=\"form-control\" id=\"pswd\" type=\"text\" placeholder=\"Min 8 characters\">\r\n          </div>\r\n          <p>\r\n            To make a widget automatically load it's content you just need to set\r\n            <strong>data-widgster-autoload</strong> attribute and provide an url.\r\n          </p>\r\n<pre><code>data-widgster-load=\"server/ajax_widget.html\"\r\ndata-widgster-autoload=\"true\"</code></pre>\r\n          <p>\r\n            <strong>data-widgster-autoload</strong> may be set to an integer value. If set, for example, to\r\n            2000 will refresh widget every 2 seconds.\r\n          </p>\r\n          <div class=\"clearfix\">\r\n            <div class=\"btn-toolbar pull-xs-right\">\r\n              <button type=\"button\" class=\"btn btn-transparent\">Cancel</button>\r\n              <button type=\"button\" class=\"btn btn-success\">&nbsp;Submit&nbsp;</button>\r\n            </div>\r\n          </div>\r\n        </form>\r\n      </div>\r\n    </section>\r\n    <section class=\"widget\" widget style=\"min-height: 200px\">\r\n      <header>\r\n        <h6>Custom <span class=\"fw-semi-bold\">Loader</span></h6>\r\n      </header>\r\n      <div class=\"widget-body\">\r\n        <div class=\"loader animated fadeIn handle\">\r\n                        <span class=\"spinner\">\r\n                            <i class=\"fa fa-spinner fa-spin\"></i>\r\n                        </span>\r\n        </div>\r\n      </div>\r\n    </section>\r\n  </div>\r\n  <div class=\"col-lg-6  widget-container\">\r\n    <section class=\"widget\" widget id=\"news-widget\" data-widgster-load=\"assets/demo/grid/news.php\" data-post-processing=\"true\">\r\n      <header>\r\n        <h6>\r\n          News <span class=\"tag tag-pill tag-success\">17</span>\r\n        </h6>\r\n        <span class=\"text-muted\">spinning refresh button & close prompt</span>\r\n        <div class=\"widget-controls\">\r\n          <a data-widgster=\"expand\" title=\"Expand\" href=\"#\"><i class=\"glyphicon glyphicon-chevron-up\"></i></a>\r\n          <a data-widgster=\"collapse\" title=\"Collapse\" href=\"#\"><i class=\"glyphicon glyphicon-chevron-down\"></i></a>\r\n          <a data-widgster=\"load\" title=\"I am spinning!\" href=\"#\"><i class=\"fa fa-refresh\"></i></a>\r\n          <a data-widgster=\"close\" title=\"Close\" href=\"#\"><i class=\"glyphicon glyphicon-remove\"></i></a>\r\n        </div>\r\n      </header>\r\n      <div class=\"widget-body no-padding\">\r\n        <ul class=\"news-list stretchable\">\r\n          <li>\r\n                                <span class=\"icon bg-danger text-white\">\r\n                                    <i class=\"fa fa-star\"></i>\r\n                                </span>\r\n            <div class=\"news-item-info\">\r\n              <h5 class=\"name no-margin mb-xs\"><a href=\"#\">First Human Colony on Mars</a></h5>\r\n              <p class=\"fs-mini\">\r\n                First 700 people will take part in building first human settlement outside of Earth.\r\n                That's awesome, right?\r\n              </p>\r\n              <time class=\"help-block\">Mar 20, 18:46</time>\r\n            </div>\r\n          </li>\r\n          <li>\r\n                                <span class=\"icon bg-info text-white\">\r\n                                    <i class=\"fa fa-microphone\"></i>\r\n                                </span>\r\n            <div class=\"news-item-info\">\r\n              <h5 class=\"name no-margin mb-xs\"><a href=\"#\">Light Blue reached $300</a></h5>\r\n              <p class=\"fs-mini\">\r\n                Light Blue Inc. shares just hit $300 price. \"This was inevitable. It should\r\n                have happen sooner or later\" - says NYSE expert.\r\n              </p>\r\n              <time class=\"help-block\">Sep 25, 11:59</time>\r\n            </div>\r\n          </li>\r\n          <li>\r\n                                <span class=\"icon bg-success text-white\">\r\n                                    <i class=\"fa fa-eye\"></i>\r\n                                </span>\r\n            <div class=\"news-item-info\">\r\n              <h5 class=\"name no-margin mb-xs\"><a href=\"#\">No more spying</a></h5>\r\n              <p class=\"fs-mini\">\r\n                Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor\r\n                incididunt ut labore et dolore magna aliqua.\r\n              </p>\r\n              <time class=\"help-block\">Mar 20, 18:46</time>\r\n            </div>\r\n          </li>\r\n        </ul>\r\n      </div>\r\n      <div id=\"news-close-modal\" class=\"modal fade\" tabindex=\"-1\" role=\"dialog\" aria-labelledby=\"news-close-modal-label\" aria-hidden=\"true\" style=\"display: none;\">\r\n        <div class=\"modal-dialog\">\r\n          <div class=\"modal-content\">\r\n            <div class=\"modal-header\">\r\n              <button type=\"button\" class=\"close\" data-dismiss=\"modal\" aria-hidden=\"true\">×</button>\r\n              <h5 class=\"modal-title\" id=\"news-close-modal-label\">Sure?</h5>\r\n            </div>\r\n            <div class=\"modal-body\">\r\n              Do you really want to unrevertably remove this super news widget?\r\n            </div>\r\n            <div class=\"modal-footer\">\r\n              <button type=\"button\" class=\"btn btn-default\" data-dismiss=\"modal\">No</button>\r\n              <button type=\"button\" class=\"btn btn-danger\" id=\"news-widget-remove\">Yes, remove widget</button>\r\n            </div>\r\n\r\n          </div><!-- /.modal-content -->\r\n        </div><!-- /.modal-dialog -->\r\n      </div>\r\n    </section>\r\n    <section class=\"widget locked\" widget data-widgster-collapsed=\"true\">\r\n      <header>\r\n        <h6>Collapsed by default & locked</h6>\r\n        <div class=\"widget-controls\">\r\n          <a data-widgster=\"expand\" title=\"Expand\" href=\"#\"><i class=\"glyphicon glyphicon-chevron-up\"></i></a>\r\n          <a data-widgster=\"collapse\" title=\"Collapse\" href=\"#\"><i class=\"glyphicon glyphicon-chevron-down\"></i></a>\r\n          <a data-widgster=\"close\" title=\"Close\" href=\"#\"><i class=\"glyphicon glyphicon-remove\"></i></a>\r\n        </div>\r\n      </header>\r\n      <div class=\"widget-body\">\r\n        <blockquote >\r\n          There are no limits. There are plateaus, but you must not stay there, you must go beyond\r\n          them. If it kills you, it kills you. A man must constantly exceed his level.\r\n          <footer>\r\n            Bruce Lee\r\n          </footer>\r\n        </blockquote>\r\n        <p>To make a widget initially collapsed just add <code>data-widgster-collapsed=\"true\"</code> attribute to <code>.widget</code>.</p>\r\n        <p>To make it locked (prevent dragging) add <code>.locked</code> class.</p>\r\n      </div>\r\n    </section>\r\n    <section class=\"widget bg-gray\" widget>\r\n      <div class=\"widget-body no-padding\">\r\n        <div class=\"jumbotron handle bg-gray text-white mb-0\">\r\n          <div class=\"container\">\r\n            <h1>Draggable story!</h1>\r\n            <p class=\"lead\">\r\n              <em>Build</em> your own\r\n              interfaces! Sit back and relax.\r\n            </p>\r\n            <p class=\"text-xs-center\">\r\n              <a class=\"btn btn-danger btn-lg\" data-widgster=\"fullscreen\">\r\n                Fullscreen me! &nbsp;\r\n                <i class=\"fa fa-check\"></i>\r\n              </a>\r\n            </p>\r\n            <a class=\"btn btn-danger btn-lg\" data-widgster=\"restore\">\r\n              Want to go back?\r\n            </a>\r\n          </div>\r\n        </div>\r\n      </div>\r\n    </section>\r\n  </div>\r\n</div>\r\n"
+module.exports = "<ol class=\"breadcrumb\">\r\n  <li class=\"breadcrumb-item\">YOU ARE HERE</li>\r\n  <li class=\"breadcrumb-item active\">Email</li>\r\n</ol>\r\n<div class=\"alert alert-warning alert-sm pull-right no-margin animated bounceInLeft hide\" id=\"app-alert\">\r\n  <button type=\"button\" class=\"ml-lg close\" data-dismiss=\"alert\" aria-hidden=\"true\">×</button>\r\n  Hey! This is a <span class=\"fw-semi-bold\">real app</span> with CRUD and Search functions. Have fun!\r\n</div>\r\n<h1 class=\"page-title\">Email - <span class=\"fw-semi-bold\">Inbox</span></h1>\r\n<div class=\"row\">\r\n  <div class=\"col-lg-3 col-xl-2 col-xs-12\">\r\n    <a class=\"btn btn-danger btn-block\" href=\"#\" id=\"compose-btn\" (click)=\"handleComposeBtn()\">Compose</a>\r\n    <ul class=\"nav nav-pills nav-stacked nav-email-folders mt\" id=\"folders-list\">\r\n      <li class=\"nav-item active\">\r\n        <a class=\"nav-link\" (click)=\"setFolderName('Inbox')\">\r\n          <span class=\"tag tag-pill tag-white pull-xs-right\">2</span>\r\n          Inbox\r\n        </a>\r\n      </li>\r\n      <li class=\"nav-item\"><a class=\"nav-link\" (click)=\"setFolderName('Starred')\">Starred</a></li>\r\n      <li class=\"nav-item\"><a class=\"nav-link\" (click)=\"setFolderName('Sent Mail')\">Sent Mail</a></li>\r\n      <li class=\"nav-item\">\r\n        <a class=\"nav-link\" (click)=\"setFolderName('Draft')\">\r\n          <span class=\"tag tag-pill tag-danger pull-xs-right\">3</span>\r\n          Draft\r\n        </a>\r\n      </li>\r\n      <li class=\"nav-item\"><a class=\"nav-link\" (click)=\"setFolderName('Trash')\">Trash</a></li>\r\n    </ul>\r\n    <h6 class=\"mt\">QUICK VIEW</h6>\r\n    <ul class=\"nav nav-pills nav-stacked nav-email-folders mb-lg fs-mini\">\r\n      <li class=\"nav-item\"><a class=\"nav-link\" href=\"#\"><i class=\"fa fa-circle text-danger pull-xs-right\"></i> Work </a></li>\r\n      <li class=\"nav-item\"><a class=\"nav-link\" href=\"#\"><i class=\"fa fa-circle text-white pull-xs-right\"></i> Private </a></li>\r\n      <li class=\"nav-item\"><a class=\"nav-link\" href=\"#\"><i class=\"fa fa-circle text-gray-light pull-xs-right\"></i> Saved </a></li>\r\n    </ul>\r\n  </div>\r\n  <div *ngIf=\"mailListShow\" mail-list [folderName]=\"currentFolderName\" (replyMail)=\"onReplyMail($event)\" class=\"col-lg-9 col-xl-10 col-xs-12\"></div>\r\n  <div *ngIf=\"mailFormShow\" mail-form (backToMailList)=\"changeEmailComponents('mailList')\" [message]=\"repliedMessage\" class=\"col-lg-9 col-xl-10 col-xs-12\"></div>\r\n  <div *ngIf=\"mailDetailShow\" mail-detail [mail]=\"currentMail\" (replyMessage)=\"handleComposeBtn($event)\" (backToMailList)=\"changeEmailComponents('mailList')\" class=\"col-lg-9 col-xl-10 col-xs-12\"></div>\r\n</div>\r\n"
+
+/***/ },
+
+/***/ "./src/app/inbox/mail-detail/mail-detail.component.ts":
+/***/ function(module, exports, __webpack_require__) {
+
+"use strict";
+"use strict";
+var core_1 = __webpack_require__("./node_modules/@angular/core/index.js");
+var MailDetail = (function () {
+    function MailDetail() {
+        this.backToMailList = new core_1.EventEmitter();
+        this.replyMessage = new core_1.EventEmitter();
+        this.math = Math;
+    }
+    MailDetail.prototype.onToBack = function () {
+        this.backToMailList.emit('');
+    };
+    MailDetail.prototype.goToReply = function (mail) {
+        this.replyMessage.emit(mail);
+    };
+    MailDetail.prototype.Math = function () {
+        return Math.random();
+    };
+    __decorate([
+        core_1.Input(), 
+        __metadata('design:type', Object)
+    ], MailDetail.prototype, "mail", void 0);
+    __decorate([
+        core_1.Output(), 
+        __metadata('design:type', Object)
+    ], MailDetail.prototype, "backToMailList", void 0);
+    __decorate([
+        core_1.Output(), 
+        __metadata('design:type', Object)
+    ], MailDetail.prototype, "replyMessage", void 0);
+    MailDetail = __decorate([
+        core_1.Component({
+            selector: '[mail-detail]',
+            template: __webpack_require__("./src/app/inbox/mail-detail/mail-detail.template.html"),
+            styles: [__webpack_require__("./src/app/inbox/mail-detail/mail-detail.style.scss")]
+        }), 
+        __metadata('design:paramtypes', [])
+    ], MailDetail);
+    return MailDetail;
+}());
+exports.MailDetail = MailDetail;
+
+
+/***/ },
+
+/***/ "./src/app/inbox/mail-detail/mail-detail.style.scss":
+/***/ function(module, exports) {
+
+module.exports = ".email-view hr {\n  margin: 5px 0; }\n\n.email-view .email-body {\n  margin-top: 1rem; }\n\n.email-details img {\n  width: 30px;\n  height: 30px;\n  float: left; }\n\n.email-details-content::after {\n  content: \"\";\n  display: table;\n  clear: both; }\n\n.email-details-content .email {\n  color: #999999;\n  font-size: 13px; }\n\n.email-details-content .receiver {\n  display: block;\n  color: #999999;\n  margin-top: -6px; }\n\n.email-details-content .email-date {\n  margin-right: 10px;\n  line-height: 28px;\n  vertical-align: middle; }\n\n.email-attachments .attachment img {\n  display: block; }\n\n.email-attachments .attachment .title {\n  margin: 0;\n  font-weight: bold; }\n"
+
+/***/ },
+
+/***/ "./src/app/inbox/mail-detail/mail-detail.template.html":
+/***/ function(module, exports) {
+
+module.exports = "<div class=\"clearfix mb-xs\">\r\n  <a class=\"btn btn-default btn-sm width-50 pull-xs-left\" id=\"back-btn\" (click)=\"onToBack()\">\r\n    <i class=\"fa fa-angle-left fa-lg\"></i>\r\n  </a>\r\n</div>\r\n<section class=\"widget widget-email\">\r\n  <header>\r\n    <h4>{{mail.subject}}</h4>\r\n    <div class=\"widget-controls\">\r\n      <a href=\"#\"><i class=\"fa fa-print\"></i></a>\r\n    </div>\r\n  </header>\r\n  <div class=\"widget-body\">\r\n    <div id=\"email-view\" class=\"email-view\">\r\n      <div class=\"email-details clearfix\">\r\n        <div class=\"email-details-content\">\r\n          <span class=\"thumb thumb-sm pull-xs-left\">\r\n            <img class=\"img-circle\" src=\"assets/img/people/a5.jpg\" alt=\"Philip Horbacheuski\">\r\n          </span>\r\n          <div class=\"pull-xs-left\">\r\n            <strong>{{mail.sender}}</strong>\r\n            <span *ngIf=\"mail.senderMail\" class=\"email\">&lt;{{mail.senderMail}}&gt;</span>\r\n            <span class=\"receiver\">to Wrapbootstrap</span>\r\n          </div>\r\n          <div class=\"email-actions pull-xs-right\">\r\n            <div class=\"btn-group\">\r\n              <button id=\"email-opened-reply\" class=\"btn btn-sm btn-gray\" (click)=\"goToReply(mail)\">\r\n                <i class=\"fa fa-reply\"></i> Reply\r\n              </button>\r\n              <button class=\"btn btn-sm btn-gray dropdown-toggle\" data-toggle=\"dropdown\">\r\n                <i class=\"fa fa-angle-down\"></i>\r\n              </button>\r\n              <ul class=\"dropdown-menu pull-xs-right\">\r\n                <li><a class=\"dropdown-item\" href=\"#\"><i class=\"fa fa-reply reply-btn\"></i> Reply</a></li>\r\n                <li><a class=\"dropdown-item\" href=\"#\"><i class=\"fa fa-arrow-right reply-btn\"></i> Forward</a></li>\r\n                <li><a class=\"dropdown-item\" href=\"#\"><i class=\"fa fa-print\"></i> Print</a></li>\r\n                <li class=\"dropdown-divider\"></li>\r\n                <li><a class=\"dropdown-item\" href=\"#\"><i class=\"fa fa-ban\"></i> Spam</a></li>\r\n                <li><a class=\"dropdown-item\" href=\"#\"><i class=\"glyphicon glyphicon-trash\"></i> Delete</a></li>\r\n              </ul>\r\n            </div>\r\n          </div>\r\n          <time class=\"email-date pull-xs-right\">\r\n            0:30\r\n          </time>\r\n        </div>\r\n      </div>\r\n      <div class=\"email-body\">\r\n        <div class=\"email-body\" [innerHTML]=\"mail.body\"></div>\r\n      </div>\r\n      <div *ngIf=\"!mail.body\" class=\"email-body\">\r\n        {{mail.subject}}\r\n      </div>\r\n      <div class=\"email-attachments\">\r\n        <div class=\"row\">\r\n          <div class=\"col-sm-6\">\r\n            <hr *ngIf=\"mail.attachments\">\r\n            <p  *ngIf=\"mail.attachments\" class=\"details\"><strong>{{mail.attachments.length}} attachments</strong> &nbsp;-&nbsp; <a href=\"#\">Download all attachments</a>\r\n              &nbsp;&nbsp;&nbsp;<a href=\"#\">View all Images</a></p>\r\n            <section *ngFor=\"let attachment of mail.attachments; let i = index\" class=\"attachment\">\r\n              <img class=\"img-fluid\" src=\"{{attachment}}\" alt=\"\">\r\n              <h5 class=\"title\">some-cool-image{{i + 1}}.jpg</h5>\r\n              <p class=\"details\">\r\n                568K  &nbsp;&nbsp;\r\n                <a href=\"#\">View</a> &nbsp;&nbsp;\r\n                <a href=\"#\">Download</a>\r\n              </p>\r\n            </section>\r\n          </div>\r\n        </div>\r\n      </div>\r\n    </div>\r\n  </div>\r\n</section>\r\n"
+
+/***/ },
+
+/***/ "./src/app/inbox/mail-form/mail-form.component.ts":
+/***/ function(module, exports, __webpack_require__) {
+
+"use strict";
+"use strict";
+var core_1 = __webpack_require__("./node_modules/@angular/core/index.js");
+var core_2 = __webpack_require__("./node_modules/@angular/core/index.js");
+var core_3 = __webpack_require__("./node_modules/@angular/core/index.js");
+var MailForm = (function () {
+    function MailForm() {
+        this.backToMailList = new core_3.EventEmitter();
+        this.sender = '';
+        this.subject = '';
+        this.body = 'There are no implementations' +
+            ' of Wysiwyg editors in Angular 2 version yet.' +
+            ' So we hope it will appear soon.';
+    }
+    MailForm.prototype.onToBack = function () {
+        console.log('qwerty');
+        this.backToMailList.emit('');
+    };
+    MailForm.prototype.ngOnInit = function () {
+        if (this.message) {
+            this.sender = this.message.sender;
+            this.subject = 'Re: ' + this.message.subject;
+            var span = document.createElement('span');
+            span.innerHTML = this.message.body;
+            this.body = span.innerText;
+        }
+    };
+    __decorate([
+        core_2.Output(), 
+        __metadata('design:type', Object)
+    ], MailForm.prototype, "backToMailList", void 0);
+    __decorate([
+        core_2.Input(), 
+        __metadata('design:type', Object)
+    ], MailForm.prototype, "message", void 0);
+    MailForm = __decorate([
+        core_1.Component({
+            selector: '[mail-form]',
+            template: __webpack_require__("./src/app/inbox/mail-form/mail-form.template.html"),
+        }), 
+        __metadata('design:paramtypes', [])
+    ], MailForm);
+    return MailForm;
+}());
+exports.MailForm = MailForm;
+
+
+/***/ },
+
+/***/ "./src/app/inbox/mail-form/mail-form.template.html":
+/***/ function(module, exports) {
+
+module.exports = "<div class=\"clearfix mb-xs\">\r\n  <a class=\"btn btn-secondary btn-sm width-50 pull-xs-left\" id=\"back-btn\" (click)=\"onToBack()\">\r\n    <i class=\"fa fa-angle-left fa-lg\"></i>\r\n  </a>\r\n</div>\r\n<section class=\"widget widget-email\">\r\n  <header id=\"widget-email-header\">\r\n    <h4>Compose <span class=\"fw-semi-bold\">New</span></h4>\r\n  </header>\r\n  <div class=\"widget-body\" id=\"mailbox-content\">\r\n    <div class=\"compose-view\" id=\"compose-view\">\r\n      <form id=\"email-compose\" class=\"form-email-compose\" method=\"get\" action=\"#\">\r\n        <div class=\"form-group\">\r\n          <input type=\"email\" id=\"input-to\" placeholder=\"To\" [(ngModel)]=\"sender\" name=\"sender\" class=\"input-transparent form-control\">\r\n        </div>\r\n        <div class=\"form-group\">\r\n          <input type=\"text\" id=\"input-subject\" placeholder=\"Subject\" [(ngModel)]=\"subject\"  name=\"subject\" class=\"input-transparent form-control\">\r\n        </div>\r\n        <div class=\"form-group\">\r\n          <textarea rows=\"10\" class=\"form-control\" id=\"wysiwyg\" placeholder=\"Message\">{{ body }}</textarea>\r\n        </div>\r\n        <div class=\"clearfix\">\r\n          <div class=\"btn-toolbar pull-right\">\r\n            <button type=\"reset\" id=\"compose-discard-button\" class=\"btn btn-gray\">Discard</button>\r\n            <button type=\"button\" id=\"compose-save-button\" class=\"btn btn-gray\">&nbsp;&nbsp;Save&nbsp;&nbsp;</button>\r\n            <button type=\"submit\" id=\"compose-send-button\" class=\"btn btn-danger\">&nbsp;&nbsp;&nbsp;Send&nbsp;&nbsp;&nbsp;</button>\r\n          </div>\r\n        </div>\r\n      </form>\r\n    </div>\r\n  </div>\r\n</section>\r\n"
+
+/***/ },
+
+/***/ "./src/app/inbox/mail-list/mail-list.component.ts":
+/***/ function(module, exports, __webpack_require__) {
+
+"use strict";
+/* WEBPACK VAR INJECTION */(function(jQuery) {"use strict";
+var core_1 = __webpack_require__("./node_modules/@angular/core/index.js");
+var core_2 = __webpack_require__("./node_modules/@angular/core/index.js");
+var core_3 = __webpack_require__("./node_modules/@angular/core/index.js");
+var MAILS = [
+    { id: 1,
+        'sender': 'Philip Horbacheuski',
+        'senderMail': 'philip.horbacheuski@example.com',
+        'subject': 'Hi, Welcome to Google Mail',
+        'date': '18:31',
+        'paperclip': true,
+        'attachment': true,
+        'unread': true,
+        'starred': true,
+        'folderId': 1,
+        'selected': false,
+        'attachments': ['assets/img/pictures/1.jpg', 'assets/img/pictures/2.jpg'],
+        'body': '<p>Projecting surrounded literature ' +
+            'yet delightful alteration but bed men. Open are' +
+            ' from long why cold. If must snug by upon sang ' +
+            'loud left. As me do preference entreaties compliment ' +
+            'motionless ye literature. Day behaviour explained law' +
+            ' remainder.</p>    <p><strong>On then sake' +
+            ' home</strong> is am leaf. Of suspicion do' +
+            ' departure at extremely he believing. Do know ' +
+            'said mind do rent they oh hope of. General enquire' +
+            ' picture letters garrets on offices of no on.</p>' +
+            ' <p>All the best,</p> <p>Vitaut the Great, CEO,' +
+            ' <br>Fooby Inc.</p>' },
+    { 'id': 2,
+        'sender': 'StackExchange',
+        'subject': 'New Python questions for this week!',
+        'date': 'Aug 14',
+        'paperclip': true,
+        'unread': true,
+        'attachment': true,
+        'timestamp': 1376508566000,
+        'folderId': 1,
+        'selected': false,
+        'attachments': ['assets/img/pictures/3.jpg'],
+        'body': '<h1>THIS IS HTML!!!!</h1>' },
+    { 'id': 3,
+        'sender': 'notifications@facebook.com',
+        'senderMail': 'notifications@facebook.com',
+        'subject': 'Someone just commented on your photo!',
+        'date': 'Aug 7',
+        'selected': false,
+        'unread': false,
+        'timestamp': 1375877213000,
+        'folderId': 1 },
+    { 'id': 4,
+        'sender': 'Twitter',
+        'subject': '@hackernews is now following you on Twitter',
+        'date': 'Jul 31',
+        'starred': true,
+        'unread': true,
+        'selected': false,
+        'timestamp': 1375261974000,
+        'folderId': 1 },
+    { 'id': 5,
+        'sender': 'LinkedIn',
+        'subject': 'Jobs you may be interested in',
+        'date': 'May 12',
+        'selected': false,
+        'unread': false,
+        'timestamp': 1373634231000,
+        'folderId': 1 },
+    { 'id': 6,
+        'sender': 'Naevius Victorsson',
+        'subject': 'Front no party young abode state up',
+        'date': 'May 1',
+        'starred': true,
+        'unread': false,
+        'selected': false,
+        'timestamp': 1373516566000,
+        'folderId': 1 },
+    { 'id': 7,
+        'sender': 'Nikola Foley',
+        'subject': 'Quiet led own cause three him',
+        'date': 'Apr 23',
+        'paperclip': true,
+        'attachment': true,
+        'attachments': ['assets/img/pictures/5.jpg', 'assets/img/pictures/4.jpg'],
+        'unread': false,
+        'selected': false,
+        'timestamp': 1374508566000,
+        'folderId': 1 },
+    { 'id': 8,
+        'sender': 'Ernst Hardy',
+        'subject': 'Raising say express had chiefly detract demands she',
+        'date': 'Apr 20',
+        'selected': false,
+        'unread': false,
+        'timestamp': 1373877213000,
+        'folderId': 1 },
+    { 'id': 9,
+        'sender': 'Lubbert Fuller',
+        'subject': 'Civility vicinity graceful is it at',
+        'date': 'Jul 3',
+        'starred': true,
+        'selected': false,
+        'unread': false,
+        'timestamp': 1376516566000,
+        'folderId': 2 },
+    { 'id': 10,
+        'sender': 'Tatenda Guerra',
+        'subject': 'Improve up at to on mention perhaps raising',
+        'date': 'Jul 13',
+        'attachment': true,
+        'attachments': ['assets/img/pictures/6.jpg'],
+        'selected': false,
+        'unread': false,
+        'timestamp': 1376508566000,
+        'folderId': 3 },
+    { 'id': 12,
+        'sender': 'Ladislao Roche',
+        'subject': 'Way building not get formerly her peculiar',
+        'date': 'Jul 18',
+        'selected': false,
+        'unread': true,
+        'timestamp': 1375877213000,
+        'folderId': 2 },
+    { 'id': 13,
+        'sender': 'Areli.Tanzi@gmail.com',
+        'senderMail': 'Areli.Tanzi@gmail.com',
+        'subject': 'Up uncommonly prosperous sentiments simplicity',
+        'date': 'Jul 24',
+        'starred': true,
+        'attachment': true,
+        'attachments': ['assets/img/pictures/9.jpg'],
+        'selected': false,
+        'unread': false,
+        'timestamp': 1375261974000,
+        'folderId': 2 },
+    { 'id': 14,
+        'sender': 'Oluwaseyi Tremble',
+        'subject': 'Reasonable appearance companions oh',
+        'date': 'Jul 28',
+        'selected': false,
+        'unread': false,
+        'timestamp': 1373634231000,
+        'folderId': 3 }
+];
+var MailList = (function () {
+    function MailList(el) {
+        this.replyMail = new core_3.EventEmitter();
+        this.mails = MAILS;
+        this.$el = jQuery(el.nativeElement);
+    }
+    MailList.prototype.openMail = function (mail) {
+        mail.unread = false;
+        this.replyMail.emit(mail);
+    };
+    MailList.prototype.selectMail = function (mail) {
+        mail.selected = mail.selected ? false : true;
+        this.checkToggleAll();
+    };
+    MailList.prototype.selectAll = function () {
+        var checked = this.$toggleAll.prop('checked');
+        this.toggleAll(checked);
+    };
+    MailList.prototype.checkToggleAll = function () {
+        var checked = true;
+        // TODO select read (all)
+        this.$el.find('.toggle-one').each(function (i, el) {
+            if (!jQuery(el).prop('checked') && checked) {
+                checked = false;
+            }
+        });
+        this.$toggleAll.prop('checked', checked);
+    };
+    MailList.prototype.toggleAll = function (checked) {
+        for (var _i = 0, _a = this.mails; _i < _a.length; _i++) {
+            var mail = _a[_i];
+            mail.selected = checked;
+        }
+        this.$toggleAll.prop('checked', checked);
+    };
+    MailList.prototype.selectRead = function () {
+        this.toggleAll(false);
+        this.mails.filter(function (mail) { return !mail.unread; }).forEach(function (mail) { return mail.selected = true; });
+        this.checkToggleAll();
+    };
+    MailList.prototype.selectUnread = function () {
+        this.toggleAll(false);
+        this.mails.filter(function (mail) { return mail.unread; }).forEach(function (mail) { return mail.selected = true; });
+        this.checkToggleAll();
+    };
+    MailList.prototype.markSelectedAsRead = function () {
+        this.mails.filter(function (mail) { return mail.selected; }).forEach(function (mail) { return mail.unread = false; });
+    };
+    MailList.prototype.markSelectedAsUnread = function () {
+        this.mails.filter(function (mail) { return mail.selected; }).forEach(function (mail) { return mail.unread = true; });
+    };
+    MailList.prototype.deleteEmails = function () {
+        var mails = [];
+        this.mails.forEach(function (mail) {
+            if (!mail.selected) {
+                mails.push(mail);
+            }
+        });
+        this.mails = mails;
+    };
+    MailList.prototype.ngOnInit = function () {
+        this.$toggleAll = this.$el.find('#toggle-all');
+    };
+    MailList.prototype.ngOnChanges = function (event) {
+        if ('folderName' in event) {
+            if (!(event.folderName.previousValue instanceof Object)) {
+                this.toggleAll(false);
+            }
+        }
+    };
+    MailList.prototype.changeStarStatus = function (mail) {
+        mail.starred = !mail.starred;
+    };
+    __decorate([
+        core_2.Output(), 
+        __metadata('design:type', Object)
+    ], MailList.prototype, "replyMail", void 0);
+    __decorate([
+        core_2.Input(), 
+        __metadata('design:type', Object)
+    ], MailList.prototype, "folderName", void 0);
+    MailList = __decorate([
+        core_1.Component({
+            selector: '[mail-list]',
+            template: __webpack_require__("./src/app/inbox/mail-list/mail-list.template.html"),
+            styles: [__webpack_require__("./src/app/inbox/mail-list/mail-list.style.scss")]
+        }), 
+        __metadata('design:paramtypes', [(typeof (_a = typeof core_3.ElementRef !== 'undefined' && core_3.ElementRef) === 'function' && _a) || Object])
+    ], MailList);
+    return MailList;
+    var _a;
+}());
+exports.MailList = MailList;
+
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__("./node_modules/jquery/dist/jquery.js")))
+
+/***/ },
+
+/***/ "./src/app/inbox/mail-list/mail-list.style.scss":
+/***/ function(module, exports) {
+
+module.exports = ".widget-email-count {\n  display: inline-block;\n  margin: 0;\n  font-size: 13px;\n  color: #818a91;\n  line-height: 29px; }\n  .widget-email-count + .widget-email-pagination {\n    margin-left: 10px;\n    border-left: 1px solid #ddd;\n    padding-left: 15px;\n    border-radius: 0;\n    vertical-align: -9px; }\n\n.widget-email header .form-control {\n  font-size: 0.8571rem;\n  border: 1px solid #ccc; }\n  .widget-email header .form-control:focus {\n    border-color: #66afe9;\n    outline: none; }\n\n.widget-email-pagination {\n  margin: 0; }\n  .widget-email-pagination .page-link {\n    color: #888; }\n\n.table-emails {\n  margin-bottom: 0; }\n  .table-emails tbody > tr > td:first-child {\n    width: 45px; }\n  .table-emails td,\n  .table-emails th {\n    padding: 7px 5px 7px 5px; }\n  .table-emails td > .abc-checkbox,\n  .table-emails th > .abc-checkbox {\n    left: -18px; }\n    .table-emails td > .abc-checkbox > label:before,\n    .table-emails td > .abc-checkbox > label:after,\n    .table-emails th > .abc-checkbox > label:before,\n    .table-emails th > .abc-checkbox > label:after {\n      margin-left: 0px; }\n  .table-emails .name,\n  .table-emails .subject,\n  .table-emails .date {\n    cursor: pointer; }\n  .table-emails .date {\n    text-align: right;\n    min-width: 65px; }\n  .table-emails .unread {\n    font-weight: 600;\n    color: #55595c; }\n  .table-emails .starred {\n    color: #818a91;\n    cursor: pointer; }\n    .table-emails .starred:hover {\n      color: #55595c; }\n    .table-emails .starred .fa-star {\n      color: #f0ad4e; }\n"
+
+/***/ },
+
+/***/ "./src/app/inbox/mail-list/mail-list.template.html":
+/***/ function(module, exports) {
+
+module.exports = "<div class=\"clearfix mb-xs\">\r\n  <a class=\"btn btn-secondary btn-sm width-50 pull-left hide\" id=\"back-btn\" href=\"inbox.html\">\r\n    <i class=\"fa fa-angle-left fa-lg\"></i>\r\n  </a>\r\n  <div class=\"pull-xs-right\" id=\"folder-stats\">\r\n    <p class=\"widget-email-count\">Showing 1 - 10 of 96 messages</p>\r\n    <ul class=\"pagination pagination-sm widget-email-pagination\">\r\n      <li class=\"prev disabled page-item\"><a class=\"page-link\" href=\"#\"><i class=\"fa fa-chevron-left\"></i></a></li>\r\n      <li class=\"active page-item\"><a class=\"page-link\" href=\"#\">1</a></li>\r\n      <li class=\"page-item\"><a class=\"page-link\" href=\"#\">2</a></li>\r\n      <li class=\"next page-item\"><a class=\"page-link\" href=\"#\"><i class=\"fa fa-chevron-right\"></i></a></li>\r\n    </ul>\r\n  </div>\r\n</div>\r\n<section class=\"widget widget-email\">\r\n  <header id=\"widget-email-header\">\r\n    <div class=\"row\">\r\n      <div class=\"col-sm-6\">\r\n        <div class=\"btn-group\">\r\n          <a class=\"btn btn-secondary btn-sm dropdown-toggle\" href=\"#\" data-toggle=\"dropdown\">\r\n            Select\r\n            <i class=\"fa fa-angle-down \"></i>\r\n          </a>\r\n          <ul class=\"dropdown-menu\">\r\n            <li><a class=\"dropdown-item\" (click)=\"toggleAll(true)\">All</a></li>\r\n            <li><a class=\"dropdown-item\" (click)=\"toggleAll(false)\">None</a></li>\r\n            <li class=\"dropdown-divider\"></li>\r\n            <li><a class=\"dropdown-item\" (click)=\"selectRead()\">Read</a></li>\r\n            <li><a class=\"dropdown-item\" (click)=\"selectUnread()\">Unread</a></li>\r\n          </ul>\r\n        </div>\r\n        <div class=\"btn-group\">\r\n          <a class=\"btn btn-sm btn-secondary dropdown-toggle\" href=\"#\" data-toggle=\"dropdown\">\r\n            Actions\r\n            <i class=\"fa fa-angle-down \"></i>\r\n          </a>\r\n          <ul class=\"dropdown-menu\">\r\n            <li><a class=\"dropdown-item\" href=\"#\">Reply</a></li>\r\n            <li><a class=\"dropdown-item\" href=\"#\">Forward</a></li>\r\n            <li><a class=\"dropdown-item\" href=\"#\">Archive</a></li>\r\n            <li class=\"dropdown-divider\"></li>\r\n            <li><a class=\"dropdown-item\" (click)=\"markSelectedAsRead()\">Mark As Read</a></li>\r\n            <li><a class=\"dropdown-item\" (click)=\"markSelectedAsUnread()\">Mark As Unread</a></li>\r\n            <li class=\"dropdown-divider\"></li>\r\n            <li><a class=\"dropdown-item\" (click)=\"deleteEmails()\">Delete</a></li>\r\n          </ul>\r\n        </div>\r\n      </div>\r\n      <div class=\"col-sm-6\">\r\n        <input class=\"form-control form-control-sm width-200 pull-xs-right\" id=\"mailbox-search\" [(ngModel)]=\"searchText\" type=\"text\" placeholder=\"Search Messages\">\r\n      </div>\r\n    </div>\r\n  </header>\r\n  <div class=\"widget-body\" id=\"mailbox-content\">\r\n    <table class=\"table table-striped table-emails table-hover\" id=\"folder-view\" >\r\n      <thead>\r\n      <tr>\r\n        <th colspan=\"3\" id=\"folder-actions\">\r\n          <div class=\"checkbox abc-checkbox\">\r\n            <input id=\"toggle-all\" type=\"checkbox\" (click)=\"selectAll()\">\r\n            <label for=\"toggle-all\"></label>\r\n          </div>\r\n        </th>\r\n      </tr>\r\n      </thead>\r\n      <tbody>\r\n      <tr *ngFor=\"let mail of mails | FoldersPipe : folderName | SearchPipe : searchText\" [ngClass]=\"{'unread': mail.unread}\">\r\n        <td>\r\n          <div class=\"checkbox abc-checkbox\">\r\n            <input class=\"toggle-one\" type=\"checkbox\" id=\"checkbox{{mail.id}}\" [checked]=\"mail.selected\"  (click)=\"selectMail(mail)\">\r\n            <label attr.for=\"checkbox{{mail.id}}\"></label>\r\n          </div>\r\n        </td>\r\n        <td><span class=\"starred\"><i class=\"fa\" [ngClass]=\"{'fa-star': mail.starred, 'fa-star-o': !mail.starred}\" (click)=\"changeStarStatus(mail)\"></i></span></td>\r\n        <td class=\"name hidden-xs-down\" (click)=\"openMail(mail)\">{{mail.sender}}</td>\r\n        <td class=\"subject\" (click)=\"openMail(mail)\">{{mail.subject}}</td>\r\n        <td class=\"hidden-xs-down\">\r\n          <i [ngClass]=\"{'fa fa-paperclip': mail.paperclip}\"></i>\r\n        </td>\r\n        <td class=\"date\">{{mail.date}}</td>\r\n      </tr>\r\n      <tr *ngIf=\"(mails).length == 4\">\r\n          <td colspan=\"12\">\r\n              Nothing here yet\r\n          </td>\r\n      </tr>\r\n      </tbody>\r\n    </table>\r\n  </div>\r\n</section>\r\n"
+
+/***/ },
+
+/***/ "./src/app/inbox/mail-list/pipes/folders-pipe.ts":
+/***/ function(module, exports, __webpack_require__) {
+
+"use strict";
+"use strict";
+var core_1 = __webpack_require__("./node_modules/@angular/core/index.js");
+var FOLDERS = [
+    { 'name': 'Inbox', 'order': 0, 'id': 1, 'unread': 2 },
+    { 'name': 'Sent Mail', 'order': 6, 'id': 2, 'unread': 0 },
+    { 'name': 'Draft', 'order': 7, 'id': 3, 'unread': 3 },
+    { 'name': 'Trash', 'order': 8, 'id': 4, 'unread': 0 }
+];
+var FoldersPipe = (function () {
+    function FoldersPipe() {
+        this.folders = FOLDERS;
+    }
+    FoldersPipe.prototype.transform = function (value, args) {
+        var _this = this;
+        var folderName = args;
+        if (value) {
+            return value.filter(function (conversation) {
+                /* tslint:disable */
+                if (folderName == 'Starred') {
+                    return conversation.starred;
+                }
+                else {
+                    var folder = _this.folders.filter(function (folder) { return folder.name == folderName; });
+                    return folder[0].id == conversation.folderId;
+                }
+            });
+        }
+    };
+    FoldersPipe = __decorate([
+        core_1.Pipe({
+            name: 'FoldersPipe'
+        }), 
+        __metadata('design:paramtypes', [])
+    ], FoldersPipe);
+    return FoldersPipe;
+}());
+exports.FoldersPipe = FoldersPipe;
+
+
+/***/ },
+
+/***/ "./src/app/inbox/mail-list/pipes/search-pipe.ts":
+/***/ function(module, exports, __webpack_require__) {
+
+"use strict";
+"use strict";
+var core_1 = __webpack_require__("./node_modules/@angular/core/index.js");
+var SearchPipe = (function () {
+    function SearchPipe() {
+    }
+    SearchPipe.prototype.transform = function (value, args) {
+        var searchText = new RegExp(args, 'ig');
+        if (value) {
+            return value.filter(function (mail) {
+                if (mail.sender) {
+                    return mail.sender.search(searchText) !== -1;
+                }
+                if (mail.subject) {
+                    return mail.subject.search(searchText) !== -1;
+                }
+            });
+        }
+    };
+    SearchPipe = __decorate([
+        core_1.Pipe({
+            name: 'SearchPipe'
+        }), 
+        __metadata('design:paramtypes', [])
+    ], SearchPipe);
+    return SearchPipe;
+}());
+exports.SearchPipe = SearchPipe;
+
 
 /***/ }
 
