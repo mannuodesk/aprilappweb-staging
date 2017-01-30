@@ -4712,14 +4712,14 @@ exports.Select2Component = Select2Component;
 /***/ "./src/app/buildai/buildai.component.html":
 /***/ function(module, exports) {
 
-module.exports = "<ol class=\"breadcrumb\">\n    <li class=\"breadcrumb-item\">YOU ARE HERE</li>\n    <li class=\"breadcrumb-item active\">Build AI</li>\n</ol>\n<h1 class=\"page-title\">Build<span class=\"fw-semi-bold\"> AI</span></h1>\n<section class=\"widget widget2\" (click)=\"closeUL()\" widget>\n    <header>\n        <h4>\n            Build AI\n        </h4>\n    </header>\n    <div class=\"widget-body\">\n        <div class=\"row\">\n            <div class=\"AddGroupBtn\">\n                <button type=\"button\" (click)=\"addAiRule()\" class=\"btn btn-red\"><i class=\"fa fa-plus\" aria-hidden=\"true\"></i> Add AI Rule</button>\n            </div>\n        </div>\n        <br/>\n        <div *ngFor=\"let phraseGroup of phraseGroups\" class=\"row rowcolor\" (mouseenter)=\"mouseEnterPG(phraseGroup.phraseGroup._id)\"\n            (mouseleave)=\"mouseLeavePG(phraseGroup.phraseGroup._id)\">\n            <a id=\"phraseGrp{{phraseGroup.phraseGroup._id}}\" (click)=\"deletePhraseGroup(phraseGroup.phraseGroup._id)\" href=\"#\" class=\"closeBuild\" data-dismiss=\"alert\" aria-hidden=\"true\"><i class=\"fa fa-trash-o quickReplyCloseBtn\" aria-hidden=\"true\"></i></a>\n            <div class=\"col-md-6 rightborder\">\n                <div class=\"title\">\n                    IF USER SAYS SOMETHING SIMILAR TO:\n                </div>\n                <div class=\"paddingrow\">\n                    <input type=\"text\" id=\"phraseText{{phraseGroup.phraseGroup._id}}\" (keyup)=\"onKey($event, phraseGroup.phraseGroup._id)\" class=\"form-control\"\n                        placeholder=\"Press Enter to add more Phrases\" />\n                </div>\n                <div class=\"paddingrow\">\n                    <span class=\"green\" *ngFor=\"let phraseGroup2 of phraseGroup.phrases\" (mouseenter)=\"mouseEnterPhrase(phraseGroup2._id)\"\n                    (mouseleave)=\"mouseLeavePhrase(phraseGroup2._id)\" (click)=\"deletePhrase(phraseGroup2._id)\">\n                        <a id=\"deletePhrase{{phraseGroup2._id}}\" href=\"#\" class=\"closePhrase\" data-dismiss=\"alert\" aria-hidden=\"true\"><i class=\"fa fa-trash-o quickReplyCloseBtn\" aria-hidden=\"true\"></i></a>\n                        {{phraseGroup2.phrase}}\n                    </span>\n                </div>\n            </div>\n            <div class=\"col-md-6\">\n                <div class=\"title\">\n                    Bot Replies with\n                    <span id=\"\" class=\"replySelectionDropdown\" (click)=\"openReplyUL(phraseGroup.phraseGroup._id)\">\n                        BLOCK <i class=\"fa fa-arrow-down\" aria-hidden=\"true\"></i>\n                    </span>\n                    <ul id=\"replyUL{{phraseGroup.phraseGroup._id}}\" class=\"replySelectionUL\" style=\"display:none\">\n                        <li class=\"replySelectionLI\" (click)=\"selectReplyUL(phraseGroup.phraseGroup._id, 'block')\">BLOCK</li>\n                        <li class=\"replySelectionLI\" (click)=\"selectReplyUL(phraseGroup.phraseGroup._id, 'text')\">TEXT</li>\n                    </ul>\n                    <div id=\"checkbox-ios{{phraseGroup.phraseGroup._id}}\" class=\"display-inline-block checkbox-ios switcheryToggle\">\n                        <label htmlFor=\"{{phraseGroup.phraseGroup._id}}\" class=\"switch\">\n                            <input type=\"checkbox\" class=\"ios\" checked id=\"{{phraseGroup.phraseGroup._id}}\"><i></i>\n                        </label>\n                    </div>\n                </div>\n                <div class=\"paddingrow\">\n                    <div class=\"dropdown\">\n                        <button id=\"block{{phraseGroup.phraseGroup._id}}\" *ngIf=\"phraseGroup.phraseGroup._blockId != undefined\" class=\"btn btn-primary btn-block dropdown-toggle dropdownBtnColor\"\n                            type=\"button\" data-toggle=\"dropdown\">{{phraseGroup.phraseGroup._blockId.name}}\n                            \n                        <span class=\"caret\"></span></button>\n                        <button id=\"block{{phraseGroup.phraseGroup._id}}\" *ngIf=\"phraseGroup.phraseGroup._blockId == undefined\" class=\"btn btn-primary btn-block dropdown-toggle dropdownBtnColor\"\n                            type=\"button\" data-toggle=\"dropdown\">Select Block to Map\n                            \n                        <span class=\"caret\"></span></button>\n                        <ul class=\"dropdown-menu\">\n                            <li><a style=\"cursor:pointer\" *ngFor=\"let p of select2GroupedData\" class=\"btn btn-block\" (click)=\"changeDropdown(p.id, phraseGroup.phraseGroup._id)\">{{p.text}}</a></li>\n                        </ul>\n                    </div>\n                </div>\n            </div>\n        </div>\n\n    </div>\n</section>"
+module.exports = "<ol class=\"breadcrumb\">\n    <li class=\"breadcrumb-item\">YOU ARE HERE</li>\n    <li class=\"breadcrumb-item active\">Build AI</li>\n</ol>\n<h1 class=\"page-title\">Build<span class=\"fw-semi-bold\"> AI</span></h1>\n<section class=\"widget widget2\" (click)=\"closeUL()\" widget>\n    <header>\n        <h4>\n            Build AI\n        </h4>\n    </header>\n    <div class=\"widget-body\">\n        <div class=\"row\">\n            <div class=\"AddGroupBtn\">\n                <button type=\"button\" (click)=\"addAiRule()\" class=\"btn btn-red\"><i class=\"fa fa-plus\" aria-hidden=\"true\"></i> Add AI Rule</button>\n            </div>\n        </div>\n        <br/>\n        <div *ngFor=\"let phraseGroup of phraseGroups\" class=\"row rowcolor\" (mouseenter)=\"mouseEnterPG(phraseGroup.phraseGroup._id)\"\n            (mouseleave)=\"mouseLeavePG(phraseGroup.phraseGroup._id)\">\n            <a id=\"phraseGrp{{phraseGroup.phraseGroup._id}}\" (click)=\"deletePhraseGroup(phraseGroup.phraseGroup._id)\" href=\"#\" class=\"closeBuild\" data-dismiss=\"alert\" aria-hidden=\"true\"><i class=\"fa fa-trash-o quickReplyCloseBtn\" aria-hidden=\"true\"></i></a>\n            <div class=\"col-md-6 rightborder\">\n                <div class=\"title\">\n                    IF USER SAYS SOMETHING SIMILAR TO:\n                </div>\n                <div class=\"paddingrow\">\n                    <input type=\"text\" id=\"phraseText{{phraseGroup.phraseGroup._id}}\" (keyup)=\"onKey($event, phraseGroup.phraseGroup._id)\" class=\"form-control\"\n                        placeholder=\"Press Enter to add more Phrases\" />\n                </div>\n                <div class=\"paddingrow\">\n                    <span class=\"green\" *ngFor=\"let phraseGroup2 of phraseGroup.phrases\" (mouseenter)=\"mouseEnterPhrase(phraseGroup2._id)\"\n                    (mouseleave)=\"mouseLeavePhrase(phraseGroup2._id)\" (click)=\"deletePhrase(phraseGroup2._id)\">\n                        <a id=\"deletePhrase{{phraseGroup2._id}}\" href=\"#\" class=\"closePhrase\" data-dismiss=\"alert\" aria-hidden=\"true\"><i class=\"fa fa-trash-o quickReplyCloseBtn\" aria-hidden=\"true\"></i></a>\n                        {{phraseGroup2.phrase}}\n                    </span>\n                </div>\n            </div>\n            <div class=\"col-md-6\">\n                <div class=\"title\">\n                    Bot Replies with\n                    <span id=\"replySelectionText{{phraseGroup.phraseGroup._id}}\" class=\"replySelectionDropdown\" (click)=\"openReplyUL(phraseGroup.phraseGroup._id)\">\n                        {{phraseGroup.phraseGroup.phraseGroupType}} <i class=\"fa fa-arrow-down\" aria-hidden=\"true\"></i>\n                    </span>\n                    <ul id=\"replyUL{{phraseGroup.phraseGroup._id}}\" class=\"replySelectionUL\" style=\"display:none\">\n                        <li class=\"replySelectionLI\" (click)=\"selectReplyUL(phraseGroup.phraseGroup._id, 'block')\">BLOCK</li>\n                        <li class=\"replySelectionLI\" (click)=\"selectReplyUL(phraseGroup.phraseGroup._id, 'text')\">TEXT</li>\n                    </ul>\n                    <!--<div id=\"checkbox-ios{{phraseGroup.phraseGroup._id}}\" class=\"display-inline-block checkbox-ios switcheryToggle\">\n                        <label htmlFor=\"{{phraseGroup.phraseGroup._id}}\" class=\"switch\">\n                            <input type=\"checkbox\" class=\"ios\" checked id=\"{{phraseGroup.phraseGroup._id}}\"><i></i>\n                        </label>\n                    </div>-->\n                </div>\n                <div class=\"paddingrow\">\n                    <div class=\"dropdown{{phraseGroup.phraseGroup._id}} attr\" [hidden]=\"phraseGroup.phraseGroup.phraseGroupType == 'text'\">\n                        <!--<button id=\"block{{phraseGroup.phraseGroup._id}}\" *ngIf=\"phraseGroup.phraseGroup._blockId != undefined\" class=\"btn btn-primary btn-block dropdown-toggle dropdownBtnColor\"\n                            type=\"button\" data-toggle=\"dropdown\">{{phraseGroup.phraseGroup._blockId.name}}\n                            \n                        <span class=\"caret\"></span></button>\n                        <button id=\"block{{phraseGroup.phraseGroup._id}}\" *ngIf=\"phraseGroup.phraseGroup._blockId == undefined\" class=\"btn btn-primary btn-block dropdown-toggle dropdownBtnColor\"\n                            type=\"button\" data-toggle=\"dropdown\">Select Block to Map\n                            \n                        <span class=\"caret\"></span></button>\n                        <ul class=\"dropdown-menu\">\n                            <li><a style=\"cursor:pointer\" *ngFor=\"let p of select2GroupedData\" class=\"btn btn-block\" (click)=\"changeDropdown(p.id, phraseGroup.phraseGroup._id)\">{{p.text}}</a></li>\n                        </ul>-->\n                        <select2 id=\"grouped-select{{phraseGroup.phraseGroup._id}}\" *ngIf=\"phraseGroup.phraseGroup._blockId == undefined\" class=\"dropdownBtnColor\" class=\"col-md-12 btn btn-primary btn-block dropdown-toggle dropdownBtnColor\"\n                         (valueChanged)=\"changeDropdown($event, phraseGroup.phraseGroup._id)\" [data]=\"dataArray\"></select2>\n                        <select2 id=\"grouped-select{{phraseGroup.phraseGroup._id}}\" *ngIf=\"phraseGroup.phraseGroup._blockId != undefined\" [value]=\"phraseGroup.phraseGroup._blockId._id\" class=\"dropdownBtnColor\" class=\"col-md-12 btn btn-primary btn-block dropdown-toggle dropdownBtnColor\"\n                         (valueChanged)=\"changeDropdown($event, phraseGroup.phraseGroup._id)\" [data]=\"dataArray\"></select2>\n                    </div>\n                    <div class=\"textbox{{phraseGroup.phraseGroup._id}} attr\" [hidden]=\"phraseGroup.phraseGroup.phraseGroupType == 'block'\">\n                        <div *ngFor=\"let obj of phraseGroup.phraseGroup.textArray;let i = index\">\n                            <a id=\"delTextPhraseGrp{{phraseGroup.phraseGroup._id}}{{i}}\" (click)=\"deleteTextBox(phraseGroup.phraseGroup._id, i)\" href=\"#\" class=\"closeTextBoxDel\" data-dismiss=\"alert\" aria-hidden=\"true\"><i class=\"fa fa-trash-o quickReplyCloseBtn\" aria-hidden=\"true\"></i></a>\n                            <input type=\"text\" (mouseenter)=\"mouseEnterTD(phraseGroup.phraseGroup._id, i)\"  mouseLeaveTD=\"mouseLeaveTD(phraseGroup.phraseGroup._id, i)\"  (change)=\"textOfTextBox(phraseGroup.phraseGroup._id, i, $event)\" class=\"form-control textBoxBtn\" value=\"{{obj}}\" placeholder=\"Enter Text\"/>\n                        </div>\n                        <div class=\"addAnswerBtn\" (click)=\"addTextBox(phraseGroup.phraseGroup._id)\">\n                            <i class=\"fa fa-plus\" aria-hidden=\"true\"></i>\n                            Add Answer\n                        </div>\n                    </div>\n                </div>\n            </div>\n        </div>\n    </div>\n</section>"
 
 /***/ },
 
 /***/ "./src/app/buildai/buildai.component.scss":
 /***/ function(module, exports) {
 
-module.exports = ".widget2 {\n  background-color: #eeeeee !important; }\n\n.AddGroupBtn {\n  margin-left: 1.5%; }\n\n.btn-red {\n  background-color: #e9604a;\n  color: white;\n  border-radius: 7px; }\n\n.rowcolor {\n  background-color: white;\n  margin-left: 0.1%;\n  border-radius: 7px;\n  margin-bottom: 2%; }\n\n.title {\n  text-transform: uppercase;\n  font-size: 13px;\n  line-height: 2.15;\n  color: #767676;\n  margin: 0 0 8px;\n  padding: 2%; }\n\n.rightborder {\n  border-right: 1px solid #eeeeee; }\n\n.art-baloons-input {\n  position: relative;\n  min-height: 36px;\n  border-radius: 7px;\n  box-shadow: inset 0 1px 3px 0 rgba(0, 0, 0, 0.08);\n  border: 1px solid rgba(0, 0, 0, 0.2);\n  background-color: rgba(0, 0, 0, 0.01);\n  transition: box-shadow .1s,border-color .1s;\n  cursor: text;\n  padding: 4px 0 0 8px;\n  line-height: 26px; }\n\n.paddingrow {\n  padding: 0 2.5% 2.5%; }\n\n.green {\n  display: inline-block;\n  position: relative;\n  vertical-align: top;\n  line-height: 26px;\n  min-height: 26px;\n  max-width: 98.5%;\n  word-wrap: break-word;\n  border-radius: 18px;\n  background-color: #45c195;\n  padding: 0 8px;\n  font-size: 16px;\n  color: #fff;\n  margin: 0 8px 4px 0; }\n\n.dropdownBtnColor {\n  background-color: #a6a6a6 !important;\n  border-color: #a6a6a6 !important; }\n\n.closeBuild {\n  position: absolute;\n  z-index: 1000;\n  right: -2px;\n  display: none;\n  border-radius: 50%;\n  width: 28px;\n  height: 28px;\n  border: 1px solid black;\n  background-color: white;\n  padding: 0.3% 0.5%; }\n\n.closePhrase {\n  position: absolute;\n  z-index: 1000;\n  right: -4px;\n  top: -9px;\n  display: none; }\n\n.quickReplyCloseBtn {\n  color: black;\n  font-size: 18px; }\n\n.phraseFont {\n  font-size: 12px !important; }\n\n.replySelectionDropdown {\n  display: inline-block;\n  color: #448af1;\n  cursor: pointer; }\n\n.replySelectionUL {\n  list-style: none;\n  position: absolute;\n  margin: 0;\n  padding: 0;\n  top: -2px;\n  float: right;\n  left: 136px;\n  z-index: 100000;\n  overflow: hidden;\n  border-radius: 7px;\n  background-color: #fff;\n  box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.12);\n  border: 1px solid rgba(0, 0, 0, 0.24); }\n\n.replySelectionLI {\n  display: block;\n  height: 28px;\n  line-height: 28px;\n  padding: 0 12px;\n  margin: 0;\n  cursor: pointer;\n  white-space: nowrap;\n  color: #000; }\n\n/**\r\n * Switchery.\r\n */\n.switch {\n  box-sizing: content-box; }\n\n.switch input {\n  display: none; }\n\n.switch i {\n  display: inline-block;\n  cursor: pointer;\n  padding-right: 10px;\n  transition: all ease 0.2s;\n  -webkit-transition: all ease 0.2s;\n  border-radius: 20px;\n  box-shadow: inset 0 0 1px rgba(0, 0, 0, 0.5); }\n\n.switch i:before {\n  display: block;\n  content: '';\n  width: 15px;\n  height: 15px;\n  padding: 1px;\n  border-radius: 20px;\n  background: white;\n  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.5); }\n\n.switch :checked + i {\n  padding-right: 0;\n  padding-left: 10px;\n  background: #64bd63; }\n\n.switcheryToggle {\n  float: right;\n  display: none; }\n\n/*.close:hover{\r\n    display: block !important;\r\n}*/\n"
+module.exports = ".widget2 {\n  background-color: #eeeeee !important; }\n\n.AddGroupBtn {\n  margin-left: 1.5%; }\n\n.btn-red {\n  background-color: #e9604a;\n  color: white;\n  border-radius: 7px; }\n\n.rowcolor {\n  background-color: white;\n  margin-left: 0.1%;\n  border-radius: 7px;\n  margin-bottom: 2%; }\n\n.title {\n  text-transform: uppercase;\n  font-size: 13px;\n  line-height: 2.15;\n  color: #767676;\n  margin: 0 0 8px;\n  padding: 2%; }\n\n.rightborder {\n  border-right: 1px solid #eeeeee; }\n\n.art-baloons-input {\n  position: relative;\n  min-height: 36px;\n  border-radius: 7px;\n  box-shadow: inset 0 1px 3px 0 rgba(0, 0, 0, 0.08);\n  border: 1px solid rgba(0, 0, 0, 0.2);\n  background-color: rgba(0, 0, 0, 0.01);\n  transition: box-shadow .1s,border-color .1s;\n  cursor: text;\n  padding: 4px 0 0 8px;\n  line-height: 26px; }\n\n.paddingrow {\n  padding: 0 2.5% 2.5%; }\n\n.green {\n  display: inline-block;\n  position: relative;\n  vertical-align: top;\n  line-height: 26px;\n  min-height: 26px;\n  max-width: 98.5%;\n  word-wrap: break-word;\n  border-radius: 18px;\n  background-color: #45c195;\n  padding: 0 8px;\n  font-size: 16px;\n  color: #fff;\n  margin: 0 8px 4px 0; }\n\n.dropdownBtnColor {\n  background-color: #a6a6a6 !important;\n  border-color: #a6a6a6 !important; }\n\n.closeBuild {\n  position: absolute;\n  z-index: 1000;\n  right: -2px;\n  display: none;\n  border-radius: 50%;\n  width: 28px;\n  height: 28px;\n  border: 1px solid black;\n  background-color: white;\n  padding: 0.3% 0.5%; }\n\n.closePhrase {\n  position: absolute;\n  z-index: 1000;\n  right: -4px;\n  top: -9px;\n  display: none; }\n\n.quickReplyCloseBtn {\n  color: black;\n  font-size: 18px; }\n\n.phraseFont {\n  font-size: 12px !important; }\n\n.replySelectionDropdown {\n  display: inline-block;\n  color: #448af1;\n  cursor: pointer; }\n\n.replySelectionUL {\n  list-style: none;\n  position: absolute;\n  margin: 0;\n  padding: 0;\n  top: -2px;\n  float: right;\n  left: 136px;\n  z-index: 100000;\n  overflow: hidden;\n  border-radius: 7px;\n  background-color: #fff;\n  box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.12);\n  border: 1px solid rgba(0, 0, 0, 0.24); }\n\n.replySelectionLI {\n  display: block;\n  height: 28px;\n  line-height: 28px;\n  padding: 0 12px;\n  margin: 0;\n  cursor: pointer;\n  white-space: nowrap;\n  color: #000; }\n\n/**\r\n * Switchery.\r\n */\n.switch {\n  box-sizing: content-box; }\n\n.switch input {\n  display: none; }\n\n.switch i {\n  display: inline-block;\n  cursor: pointer;\n  padding-right: 10px;\n  transition: all ease 0.2s;\n  -webkit-transition: all ease 0.2s;\n  border-radius: 20px;\n  box-shadow: inset 0 0 1px rgba(0, 0, 0, 0.5); }\n\n.switch i:before {\n  display: block;\n  content: '';\n  width: 15px;\n  height: 15px;\n  padding: 1px;\n  border-radius: 20px;\n  background: white;\n  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.5); }\n\n.switch :checked + i {\n  padding-right: 0;\n  padding-left: 10px;\n  background: #64bd63; }\n\n.switcheryToggle {\n  float: right;\n  display: none; }\n\n.addAnswerBtn {\n  cursor: pointer;\n  min-width: 100px;\n  height: 34px;\n  line-height: 32px;\n  padding: 0 24px;\n  text-align: center;\n  color: #000;\n  background-color: #fff;\n  font-size: 14px;\n  border-radius: 7px;\n  box-shadow: 0 1px 3px -1px rgba(0, 0, 0, 0.13);\n  border: 1px solid rgba(0, 0, 0, 0.13);\n  border-bottom-color: rgba(0, 0, 0, 0.17);\n  transition: box-shadow 80ms ease,border-color 80ms ease,background-color 80ms ease;\n  text-transform: uppercase;\n  text-decoration: none !important; }\n\n.textBoxBtn {\n  margin-bottom: 15px; }\n\n.closeTextBoxDel {\n  position: absolute;\n  z-index: 1000;\n  right: 15px;\n  border-radius: 50%;\n  width: 20px;\n  height: 20px; }\n\n/*.close:hover{\r\n    display: block !important;\r\n}*/\n"
 
 /***/ },
 
@@ -4739,7 +4739,9 @@ var BuildAI = (function () {
         this.phraseGroups = [];
         this.blockGroupsModel = [];
         this.select2GroupedData = [];
+        this.dataArray = [];
         this.phraseGroups = [];
+        this.getDataArray();
         this.populate();
         this.populateBlocks();
     }
@@ -4788,11 +4790,12 @@ var BuildAI = (function () {
             }
         });
     };
-    BuildAI.prototype.changeDropdown = function (blockId, phaseGroupId) {
+    BuildAI.prototype.changeDropdown = function (e, phaseGroupId) {
+        console.log(e.value);
         for (var i = 0; i < this.select2GroupedData.length; i++) {
-            if (this.select2GroupedData[i].id == blockId) {
-                jQuery('#block' + phaseGroupId).html(this.select2GroupedData[i].text + " <span class='caret'></span></button>");
-                this._aiService.updatePhraseGroup(blockId, phaseGroupId).subscribe(function (a) {
+            if (this.select2GroupedData[i].id == e.value) {
+                //jQuery('#block' + phaseGroupId).html(this.select2GroupedData[i].text + " <span class='caret'></span></button>");
+                this._aiService.updatePhraseGroup(e.value, phaseGroupId).subscribe(function (a) {
                     if (a.code == 200) {
                     }
                 });
@@ -4809,6 +4812,11 @@ var BuildAI = (function () {
             }
         });
     };
+    BuildAI.prototype.textOfTextBox = function (Id, index, elem) {
+        console.log(elem.srcElement.value);
+        this._aiService.editTextBoxPhraseGroup(Id, index, elem.srcElement.value).subscribe(function (a) {
+        });
+    };
     BuildAI.prototype.addAiRule = function () {
         var _this = this;
         this._aiService.postPhrasesGroups().subscribe(function (a) {
@@ -4821,14 +4829,98 @@ var BuildAI = (function () {
         jQuery('.replySelectionUL').hide();
         jQuery('#replyUL' + replyULId).show();
     };
+    BuildAI.prototype.mouseEnterTD = function (id, i) {
+        console.log('delTextPhraseGrp' + id + i);
+        jQuery('#delTextPhraseGrp' + id + i).show();
+    };
+    BuildAI.prototype.mouseLeaveTD = function (id, i) {
+        jQuery('#delTextPhraseGrp' + id + i).hide();
+    };
+    BuildAI.prototype.getDataArray = function () {
+        var _this = this;
+        var blockObj = {
+            id: '',
+            text: ''
+        };
+        var groupObj = {
+            'id': '',
+            'text': '',
+            'children': []
+        };
+        blockObj.id = '-1';
+        blockObj.text = 'Select a Block';
+        groupObj.id = '0';
+        groupObj.text = 'Block Mapping';
+        groupObj.children.push(blockObj);
+        this.dataArray.push(groupObj);
+        this._botTrainingService.getAllGroups2('-1').subscribe(function (a) {
+            if (a.code == 200) {
+                _this.blockGroupsModel = a.data;
+                for (var i = 0; i < _this.blockGroupsModel.length; i++) {
+                    groupObj = {
+                        'id': '',
+                        'text': '',
+                        'children': []
+                    };
+                    groupObj.id = _this.blockGroupsModel[i].group._id;
+                    groupObj.text = _this.blockGroupsModel[i].group.name;
+                    groupObj.children = [];
+                    for (var j = 0; j < _this.blockGroupsModel[i].blocks.length; j++) {
+                        blockObj = {
+                            id: '',
+                            text: ''
+                        };
+                        blockObj.id = _this.blockGroupsModel[i].blocks[j]._id;
+                        blockObj.text = _this.blockGroupsModel[i].blocks[j].name;
+                        groupObj.children.push(blockObj);
+                    }
+                    _this.dataArray.push(groupObj);
+                }
+                console.log(_this.dataArray);
+                return _this.dataArray;
+            }
+        });
+    };
+    /*getSelect2GroupedList(): Select2OptionData[] {
+      //console.log('1');
+      //console.log(this.dataArray);
+      return this.dataArray;
+    }*/
+    BuildAI.prototype.addTextBox = function (Id) {
+        var _this = this;
+        this._aiService.addTextBoxPhraseGroup(Id).subscribe(function (a) {
+            if (a.code == 200) {
+                for (var i = 0; i < _this.phraseGroups.length; i++) {
+                    if (_this.phraseGroups[i].phraseGroup._id == Id) {
+                        _this.phraseGroups[i].phraseGroup.textArray.push('');
+                        break;
+                    }
+                }
+            }
+        });
+    };
     BuildAI.prototype.selectReplyUL = function (replyULId, type) {
-        console.log(type);
+        for (var i = 0; i < this.phraseGroups.length; i++) {
+            if (this.phraseGroups[i].phraseGroup._id == replyULId) {
+                this.phraseGroups[i].phraseGroup.phraseGroupType = type;
+                break;
+            }
+        }
+        console.log(this.phraseGroups);
         if (type == 'text') {
+            jQuery('.dropdown' + replyULId).css('display', 'none !important');
+            jQuery('.textbox' + replyULId).css('display', 'block !important');
+            jQuery('#replySelectionText' + replyULId).html(type + ' <i class="fa fa-arrow-down" aria-hidden="true"></i>');
             jQuery('#checkbox-ios' + replyULId).show();
         }
         else {
+            jQuery('.textbox' + replyULId).css('display', 'none !important');
+            jQuery('.dropdown' + replyULId).css('display', 'block !important');
+            jQuery('#replySelectionText' + replyULId).html(type + ' <i class="fa fa-arrow-down" aria-hidden="true"></i>');
             jQuery('#checkbox-ios' + replyULId).hide();
         }
+        this._aiService.changePhraseGroupType(replyULId, type).subscribe(function (a) {
+        });
         jQuery('.replySelectionUL').hide();
     };
     BuildAI.prototype.closeUL = function () {
@@ -4849,6 +4941,17 @@ var BuildAI = (function () {
                 }
             });
         }
+    };
+    BuildAI.prototype.deleteTextBox = function (phraseGroupId, index) {
+        var _this = this;
+        this._aiService.deleteTextBoxPhraseGroup(phraseGroupId, index).subscribe(function (a) {
+            for (var i = 0; i < _this.phraseGroups.length; i++) {
+                if (_this.phraseGroups[i].phraseGroup._id == phraseGroupId) {
+                    _this.phraseGroups[i].phraseGroup.textArray.splice(index, 1);
+                    break;
+                }
+            }
+        });
     };
     BuildAI = __decorate([
         core_1.Component({
@@ -5010,6 +5113,10 @@ var AIService = (function () {
         return this.http.get(this.baseUrl + 'phrases/getAllphrases')
             .map(function (res) { return res.json(); });
     };
+    AIService.prototype.deleteTextBoxPhraseGroup = function (phraseGroupId, index) {
+        return this.http.get(this.baseUrl + 'phrasegroup/deleteTextBoxPhraseGroup/' + phraseGroupId + '/' + index)
+            .map(function (res) { return res.json(); });
+    };
     AIService.prototype.addPhrase = function (phraseText, _phraseGroupId) {
         var body = JSON.stringify({ "phraseText": phraseText, '_phraseGroupId': _phraseGroupId });
         var headers = new http_1.Headers({ 'Content-Type': 'application/json' });
@@ -5034,6 +5141,18 @@ var AIService = (function () {
     };
     AIService.prototype.deletePhrase = function (Id) {
         return this.http.get(this.baseUrl + 'phrases/deletePhrases/' + Id)
+            .map(function (res) { return res.json(); });
+    };
+    AIService.prototype.changePhraseGroupType = function (Id, type) {
+        return this.http.get(this.baseUrl + 'phrasegroup/changePhraseGroup/' + Id + '/' + type)
+            .map(function (res) { return res.json(); });
+    };
+    AIService.prototype.addTextBoxPhraseGroup = function (Id) {
+        return this.http.get(this.baseUrl + 'phrasegroup/addTextBoxPhraseGroup/' + Id)
+            .map(function (res) { return res.json(); });
+    };
+    AIService.prototype.editTextBoxPhraseGroup = function (Id, indexId, text) {
+        return this.http.get(this.baseUrl + 'phrasegroup/editTextBoxPhraseGroup/' + Id + '/' + indexId + '/' + text)
             .map(function (res) { return res.json(); });
     };
     AIService.prototype.postPhrasesGroups = function () {
@@ -5071,6 +5190,10 @@ var BotTrainingService = (function () {
     }
     BotTrainingService.prototype.getAllGroups = function (type) {
         return this.http.get(this.baseUrl + 'groups/getGroupsBlocks/' + type)
+            .map(function (res) { return res.json(); });
+    };
+    BotTrainingService.prototype.getAllGroups2 = function (type) {
+        return this.http.get(this.baseUrl + 'groups/getGroupsBlocks2/' + type)
             .map(function (res) { return res.json(); });
     };
     BotTrainingService.prototype.getAlBlocks = function () {
@@ -5183,6 +5306,10 @@ var BotTrainingService = (function () {
         //let body = JSON.stringify({ "name":group, "type":type, "description":group });
         var options = new http_1.RequestOptions({ method: 'post' });
         return this.http.post(this.baseUrl + "usercode/uploadPicture", formData, options)
+            .map(function (res) { return res.json(); });
+    };
+    BotTrainingService.prototype.editQuickReply = function (buttonName, responseMessageId, _quickReplyId) {
+        return this.http.get(this.baseUrl + 'responsemessagesroute/editQuickReply/' + buttonName + '/' + responseMessageId + '/' + _quickReplyId)
             .map(function (res) { return res.json(); });
     };
     BotTrainingService = __decorate([
