@@ -17571,801 +17571,6 @@ exports.QuillModule = QuillModule;
 
 /***/ },
 
-/***/ "./src/app/generic/generic.component.html":
-/***/ function(module, exports) {
-
-module.exports = "<ol class=\"breadcrumb\">\r\n  <li class=\"breadcrumb-item\">YOU ARE HERE</li>\r\n  <li class=\"breadcrumb-item active\">Generic Groups and Topics</li>\r\n</ol>\r\n<h1 class=\"page-title\">Lists - <span class=\"fw-semi-bold\">Generic Groups for BOT</span></h1>\r\n<section class=\"widget widget2\" widget>\r\n  <header>\r\n    <h4>\r\n      Generic Group Lists\r\n    </h4>\r\n  </header>\r\n  <div class=\"widget-body\">\r\n    <div class=\"row\">\r\n      <div class=\"col-md-6 col-sm-12 col-lg-6 col-xs-12 divseparator\">\r\n        <ul class=\"list-group list-group-sortable mt-lg\">\r\n          <li class=\"list-group-item\" *ngFor=\"let blockGroups of blockGroupsModel\" (mouseenter)=\"mouseEnterGroup(blockGroups.group._id)\"\r\n                      (mouseleave)=\"mouseLeaveGroup(blockGroups.group._id)\" id={{blockGroups.group._id}}>\r\n            <i class=\"fa fa-sort\"></i>\r\n            <a class=\"close\" *ngIf=\"blockGroups.group.isLocked == true\"><i class=\"fa fa-lock\" aria-hidden=\"true\"></i></a>\r\n            <a href=\"#\" id=\"gr{{blockGroups.group._id}}\" class=\"groupClose\" *ngIf=\"blockGroups.group.isLocked == false\" (click)=\"deleteGroup(blockGroups.group._id)\" data-dismiss=\"alert\"\r\n              aria-hidden=\"true\"><i class=\"fa fa-trash-o\" aria-hidden=\"true\"></i></a> &nbsp;&nbsp;&nbsp; {{blockGroups.group.order}}\r\n            &nbsp;&nbsp;&nbsp; {{blockGroups.group.name}}\r\n            <div class=\"row blocksdiv\">\r\n              <div id=\"block{{block._id}}\" class=\"blockbtns\" (mouseenter)=\"mouseEnterBlock(block._id)\"\r\n                      (mouseleave)=\"mouseLeaveBlock(block._id)\" *ngFor=\"let block of blockGroups.blocks\" (click)=\"blockDetail(block._id)\">\r\n                <a href=\"#\" id=\"closeBlock{{block._id}}\" class=\"closeBlock\" (click)=\"deleteBlock(block._id)\" data-dismiss=\"alert\" *ngIf=\"blockGroups.group.isLocked == false\" aria-hidden=\"true\"><i class=\"fa fa-trash-o\" aria-hidden=\"true\"></i></a>\r\n                {{block.name}}\r\n              </div>\r\n              <div *ngIf=\"blockGroups.group.isLocked == false\" class=\"addBlock{{blockGroups.group._id}} blockbtns addBlock2\" (click)=\"addBlock(blockGroups.group._id)\">\r\n                <i class=\"fa fa-plus\" aria-hidden=\"true\"></i> Add Block\r\n              </div>\r\n              <div class=\"saveBlock{{blockGroups.group._id}}\" style=\"display:none\">\r\n                <div class=\"input-group\">\r\n                  <input id=\"blockText{{blockGroups.group._id}}\" type=\"text\" class=\"form-control\" [(ngModel)]=\"blockName\" placeholder=\"Block Name\"\r\n                  />\r\n                  <div class=\"input-group-btn\">\r\n                    <button type=\"button\" (click)=\"saveBlock(blockGroups.group._id)\" class=\"btn\"><i class=\"fa fa-plus\"></i></button>\r\n                  </div>\r\n                </div>\r\n              </div>\r\n            </div>\r\n          </li>\r\n\r\n        </ul>\r\n        <div class=\"row GroupBtn\">\r\n          <p>\r\n            <button type=\"button\" (click)=\"toggleDivs(1)\" class=\"btn btn-info btn-block\">Add Generic Group</button>\r\n          </p>\r\n        </div>\r\n        <div class=\"row GroupForm\">\r\n          <div class=\"form-group\">\r\n            <div class=\"input-group\">\r\n              <input type=\"text\" [(ngModel)]=\"GroupText\" class=\"form-control\" id=\"bar\">\r\n              <div class=\"input-group-btn\">\r\n                <button type=\"button\" (click)=\"toggleDivs(2)\" class=\"btn\"><i class=\"fa fa-plus\"></i></button>\r\n                <button type=\"button\" (click)=\"refreshTextBox()\" class=\"btn btn-primary\"><i class=\"fa fa-refresh\"></i></button>\r\n              </div>\r\n            </div>\r\n          </div>\r\n        </div>\r\n        <div id=\"emptyGroup\" style=\"display:none\" class=\"form-group\">\r\n          <div class=\"alert alert-danger alert-sm\">\r\n            <span class=\"fw-semi-bold\">Danger:</span> Please Enter Group Name.\r\n          </div>\r\n        </div>\r\n      </div>\r\n      <div class=\"col-md-6 col-sm-12 col-lg-6 col-xs-12 rmdiv\" style=\"display:none\">\r\n        <div class=\"row\">\r\n          <div class=\"col-md-12 col-lg-12 col-xs-12 col-sm-12\">\r\n            <h4>\r\n              {{popBlockName}}\r\n            </h4>\r\n            <input id=\"popBlockIdd\" type=\"text\" value=\"{{popBlockId}}\" style=\"visibility:hidden\" />\r\n\r\n          </div>\r\n        </div>\r\n        <ul class=\"list-group list-group-sortable2 mt-lg\">\r\n          <div *ngFor=\"let card of cardArray; let i = index\">\r\n            <li class=\"list-group-item\" [ngClass]=\"{errorRM: card.isCompleted == false}\" *ngIf=\"card.type == 'gallery'\" id=\"{{card._id}}\">\r\n              <a href=\"#\" class=\"close\" (click)=\"deleteResponseMessage(card._id)\" data-dismiss=\"alert\" aria-hidden=\"true\"><i class=\"fa fa-trash-o\" aria-hidden=\"true\"></i></a>\r\n              <div class=\"row table galleryHorizontalRow\">\r\n\r\n                <div class=\"galleryColumns galleryColumns{{card._id}}\" *ngFor=\"let galleryCard of card.data\">\r\n                  <div class=\"card\">\r\n                    <div class=\"image col-md-12 col-lg-12 col-xs-12 col-sm-1\">\r\n                      <div class=\"image-inner\">\r\n                        <input accept=\"image/*\" [(ngModel)]=\"galleryImageFile\" type=\"file\" id=\"galleryImage{{galleryCard.indexId}}\" (change)=\"populateGalleryImage($event, card._id, card._blockId, galleryCard.indexId)\"\r\n                          style=\"visibility: hidden;\" name=\"files\" title=\"Load File\" />\r\n                        <div id=\"galleryImageBtn{{galleryCard.indexId}}\" *ngIf=\"galleryCard.pictureUrl == ''\">\r\n                          <button (click)=\"openGalleryImage(galleryCard.indexId)\" class=\"button-image col-xs-12 col-sm-12 btn-gray button-image--replace button-image--replace-gallery\">\r\n                            <span class=\"button-image__title\"><i class=\"fa fa-camera\" aria-hidden=\"true\"></i><br/>Upload Image</span>\r\n                          </button>\r\n                        </div>\r\n                        <div id=\"galleryImageDiv{{galleryCard.indexId}}\" *ngIf=\"galleryCard.pictureUrl != ''\" (mouseenter)=\"mouseEnterGI(galleryCard.indexId)\" (mouseleave)=\"mouseLeaveGI(galleryCard.indexId)\" [ngStyle]=\"{ 'background-image': 'url(' + galleryCard.pictureUrl + ')'}\">\r\n                          <div class=\"galleryImageBGDiv\" id=\"galleryImageChangeBtn{{galleryCard.indexId}}\">\r\n                            <button class=\"btn\" (click)=\"openGalleryImage(galleryCard.indexId)\" style=\"background:transparent\">\r\n                              <i class=\"fa fa-camera\" aria-hidden=\"true\" style=\"color:white;font-size:24px;\"></i>\r\n                            </button>\r\n                          </div>\r\n                        </div>\r\n                      </div>\r\n                    </div>\r\n                    <div class=\"card-content col-md-12 col-lg-12 col-xs-12 col-sm-12\">\r\n                      <div class=\"contenttitle\">\r\n                        <textarea id=\"galleryCardTitle{{galleryCard.indexId}}\" maxlength=\"80\" placeholder=\"title\" (change)=\"updateTitleGalleryCard(card._id, galleryCard.indexId)\">{{galleryCard.title}}</textarea>\r\n                      </div>\r\n                      <div class=\"contentbody contenttitle\">\r\n                        <textarea id=\"galleryCardDescription{{galleryCard.indexId}}\" maxlength=\"80\" placeholder=\"description\" (change)=\"updateDescriptionGalleryCard(card._id, galleryCard.indexId)\">{{galleryCard.description}}</textarea>\r\n                      </div>\r\n                      <div class=\"contenturl contenttitle\">\r\n                        <input id=\"galleryCardUrl{{galleryCard.indexId}}\" value=\"{{galleryCard.url}}\" type=\"url\" placeholder=\"Url\" (change)=\"updateUrlGalleryCard(card._id, galleryCard.indexId)\"\r\n                        />\r\n                      </div>\r\n                      <div *ngFor=\"let addButton of galleryCard.cardAddButton\">\r\n                        <div class=\"addbuttonResultList\" (mouseenter)=\"mouseEnterGCAB(galleryCard.indexId)\" (mouseleave)=\"mouseLeaveGCAB(galleryCard.indexId)\">\r\n                          <a href=\"#\" id=\"galleryCardAddBtn{{galleryCard.indexId}}\" class=\"randomTextClose\" (click)=\"deleteAddButton(addButton._addButtonId, galleryCard.indexId, 'gallery')\" data-dismiss=\"alert\"\r\n                            aria-hidden=\"true\"><i class=\"fa fa-trash-o\" aria-hidden=\"true\"></i></a>\r\n                          <label>{{addButton.buttonname}}</label>\r\n                          <p>{{addButton.urlblockname}}</p>\r\n                        </div>\r\n                      </div>\r\n                      <div class=\"addbutton\" *ngIf=\"galleryCard.cardAddButton.length != 3\" (click)=\"myModal.open();addButton(galleryCard.indexId, 'gallery', 'addButton')\">\r\n                        <i class=\"fa fa-plus\" aria-hidden=\"true\"></i> Add Button\r\n                      </div>\r\n                    </div>\r\n                    <div class=\"top-buttons\">\r\n                      <div class=\"button-remove\">\r\n                        remove\r\n                      </div>\r\n                    </div>\r\n                  </div>\r\n                </div>\r\n                <div class=\"galleryColumns galleryColumns{{card._id}}\">\r\n                  <div class=\"card add\" (click)=\"addGalleryCard(card._id, card._blockId)\">\r\n\r\n                  </div>\r\n                </div>\r\n              </div>\r\n            </li>\r\n            <li class=\"list-group-item\" [ngClass]=\"{errorRM: card.isCompleted == false}\" *ngIf=\"card.type == 'text'\" id=\"{{card._id}}\">\r\n              <a href=\"#\" class=\"close\" (click)=\"deleteResponseMessage(card._id)\" data-dismiss=\"alert\" aria-hidden=\"true\"><i class=\"fa fa-trash-o\" aria-hidden=\"true\"></i></a>\r\n              <div class=\"row\">\r\n                <div class=\"col-md-6 col-lg-6 col-xs-12 col-sm-12\">\r\n                  <div class=\"card\">\r\n                    <div class=\"card-content col-md-12 col-lg-12 col-xs-12 col-sm-12\">\r\n                      <div class=\"contenttitle textcard randomTextCard\" *ngFor=\"let text of card.data.randomText; let j = index\" (mouseenter)=\"mouseEnterRTC(card._id,text.indexId)\"\r\n                      (mouseleave)=\"mouseLeaveRTC(card._id,text.indexId)\">\r\n                        <a href=\"#\" (click)=\"deleteRandomTextBox(text.indexId,card._id)\" id=\"randText{{card._id}}{{text.indexId}}\" class=\"randomTextClose\" *ngIf=\"j!=0\" data-dismiss=\"alert\"\r\n                          aria-hidden=\"true\"><i class=\"fa fa-trash-o\" aria-hidden=\"true\"></i></a>\r\n                        <span id=\"textCardCount{{card._id}}{{text.indexId}}\" *ngIf=\"j!=0\" class=\"textcardCharCount\">{{320 - text.text.length}}  </span><!-- (keydown)=\"characterCount(card._id, text.indexId);dynamicHeight($event, card._id, text.indexId)\" -->\r\n                        <textarea id=\"textCardTitle{{card._id}}{{text.indexId}}\" rows=\"0\"  *ngIf=\"j!=0\" maxlength=\"320\" placeholder=\"title\" (keydown)=\"characterCount(card._id, text.indexId)\" (change)=\"updateTitleRandomTextCard(card._id, text.indexId)\">{{text.text}}</textarea>\r\n                      </div>\r\n                      <div class=\"addbutton\" style=\"border-radius: 0px;\" (click)=\"addTextRandom(card._id)\">\r\n                        <i class=\"fa fa-plus\" aria-hidden=\"true\"></i> Add Text Box\r\n                      </div>\r\n                      <div *ngFor=\"let addButton of card.data.cardAddButton\">\r\n                        <div class=\"addbuttonResultList\" (mouseenter)=\"mouseEnterTCAB(card._id, addButton._addButtonId)\" (mouseleave)=\"mouseLeaveTCAB(card._id, addButton._addButtonId)\">\r\n                          <a href=\"#\" id=\"textCardAddBtn{{card._id}}{{addButton._addButtonId}}\" class=\"randomTextClose\" (click)=\"deleteAddButton(addButton._addButtonId, card._id, 'text')\" data-dismiss=\"alert\" aria-hidden=\"true\"><i class=\"fa fa-trash-o\" aria-hidden=\"true\"></i></a>\r\n                          <label>{{addButton.buttonname}}</label>\r\n                          <p>{{addButton.urlblockname}}</p>\r\n                        </div>\r\n                      </div>\r\n                      <div *ngIf=\"card.data.cardAddButton.length != 3\">\r\n                        <div class=\"addbutton\" *ngIf=\"card.data.quickReplyButton.length == 0\" (click)=\"myModal.open();addButton(card._id, 'text','addButton')\">\r\n                          <i class=\"fa fa-plus\" aria-hidden=\"true\"></i> Add Button\r\n                        </div>\r\n                      </div>\r\n                    </div>\r\n                    <div class=\"top-buttons\">\r\n                      <div class=\"button-remove\">\r\n                        remove\r\n                      </div>\r\n                    </div>\r\n                  </div>\r\n                </div>\r\n              </div>\r\n            </li>\r\n            <li class=\"list-group-item\" [ngClass]=\"{errorRM: card.isCompleted == false}\" *ngIf=\"card.type == 'singletext'\" id=\"{{card._id}}\">\r\n              <a href=\"#\" class=\"close\" (click)=\"deleteResponseMessage(card._id)\" data-dismiss=\"alert\" aria-hidden=\"true\"><i class=\"fa fa-trash-o\" aria-hidden=\"true\"></i></a>\r\n              <div class=\"row\">\r\n                <div class=\"col-md-6 col-lg-6 col-xs-12 col-sm-12\">\r\n                  <div class=\"card\">\r\n                    <div class=\"card-content col-md-12 col-lg-12 col-xs-12 col-sm-12\">\r\n                      <div class=\"contenttitle textcard randomTextCard\">\r\n                        <span id=\"textCardCount{{card._id}}\" class=\"textcardCharCount\">{{320 - card.data.text.length}}  </span><!-- (keydown)=\"characterCount(card._id, text.indexId);dynamicHeight($event, card._id, text.indexId)\" -->\r\n                        <textarea id=\"textCardTitle{{card._id}}\" rows=\"0\"  *ngIf=\"j!=0\" maxlength=\"320\" placeholder=\"title\" (keydown)=\"characterCountOfSingle(card._id)\" (change)=\"updateTitleTextCard(card._id)\">{{card.data.text}}</textarea>\r\n                      </div>\r\n                      <div *ngFor=\"let addButton of card.data.cardAddButton\">\r\n                        <div class=\"addbuttonResultList\" (mouseenter)=\"mouseEnterTCAB(card._id, addButton._addButtonId)\" (mouseleave)=\"mouseLeaveTCAB(card._id, addButton._addButtonId)\">\r\n                          <a href=\"#\" id=\"textCardAddBtn{{card._id}}{{addButton._addButtonId}}\" class=\"randomTextClose\" (click)=\"deleteAddButton(addButton._addButtonId, card._id, 'text')\" data-dismiss=\"alert\" aria-hidden=\"true\"><i class=\"fa fa-trash-o\" aria-hidden=\"true\"></i></a>\r\n                          <label>{{addButton.buttonname}}</label>\r\n                          <p>{{addButton.urlblockname}}</p>\r\n                        </div>\r\n                      </div>\r\n                      <div *ngIf=\"card.data.cardAddButton.length != 3\">\r\n                        <div class=\"addbutton\" (click)=\"myModal.open();addButton(card._id, 'text','addButton')\">\r\n                          <i class=\"fa fa-plus\" aria-hidden=\"true\"></i> Add Button\r\n                        </div>\r\n                      </div>\r\n                    </div>\r\n                    <div class=\"top-buttons\">\r\n                      <div class=\"button-remove\">\r\n                        remove\r\n                      </div>\r\n                    </div>\r\n                  </div>\r\n                </div>\r\n              </div>\r\n            </li>\r\n            <li class=\"list-group-item\" [ngClass]=\"{errorRM: card.isCompleted == false}\" *ngIf=\"card.type == 'image'\" id=\"{{card._id}}\">\r\n              <a href=\"#\" class=\"close\" (click)=\"deleteResponseMessage(card._id)\" data-dismiss=\"alert\" aria-hidden=\"true\"><i class=\"fa fa-trash-o\" aria-hidden=\"true\"></i></a>\r\n              <div class=\"row\">\r\n                <div class=\"col-md-6 col-lg-6 col-xs-12 col-sm-12\">\r\n                  <div class=\"card\">\r\n                    <div class=\"image col-md-12 col-lg-12 col-xs-12 col-sm-12\">\r\n                      <div class=\"image-inner2\">\r\n                        <input accept=\"image/*\" type=\"file\" id=\"singleImage{{card._id}}\" (change)=\"populateSingleImage($event, card._id, card._blockId)\"\r\n                          style=\"visibility: hidden;\" name=\"files\" title=\"Load File\" />\r\n                        <div id=\"singleImageBtn{{card._id}}\" *ngIf=\"card.data.pictureUrl == ''\">\r\n                          <button (click)=\"openSingleImage(card._id)\" class=\"button-image button-image2 col-xs-12 col-sm-12 btn-gray button-image--replace button-image--replace-gallery\">\r\n                            <span class=\"button-image__title\"><i class=\"fa fa-camera\" aria-hidden=\"true\"></i><br/>Upload Image</span>\r\n                          </button>\r\n                        </div>\r\n                        <div id=\"singleImageDiv{{card._id}}\" (mouseenter)=\"mouseEnterSI(card._id)\" (mouseleave)=\"mouseLeaveSI(card._id)\" *ngIf=\"card.data.pictureUrl != ''\" [ngStyle]=\"{ 'background-image': 'url(' + card.data.pictureUrl + ')'}\">\r\n                          <div class=\"singleImageBGDiv\" id=\"singleImageChangeBtn{{card._id}}\">\r\n                            <button class=\"btn\" (click)=\"openSingleImage(card._id)\" style=\"background:transparent\">\r\n                              <i class=\"fa fa-camera\" aria-hidden=\"true\" style=\"color:white;font-size:24px;\"></i>\r\n                            </button>\r\n                          </div>\r\n                        </div>\r\n                      </div>\r\n                    </div>\r\n                    <div class=\"top-buttons\">\r\n                      <div class=\"button-remove\">\r\n                        remove\r\n                      </div>\r\n                    </div>\r\n                  </div>\r\n                </div>\r\n              </div>\r\n            </li>\r\n            <li class=\"list-group-item\" [ngClass]=\"{errorRM: card.isCompleted == false}\" *ngIf=\"card.type == 'article'\" id=\"{{card._id}}\">\r\n              <a href=\"#\" class=\"close\" (click)=\"deleteResponseMessage(card._id)\" data-dismiss=\"alert\" aria-hidden=\"true\"><i class=\"fa fa-trash-o\" aria-hidden=\"true\"></i></a>\r\n              <div class=\"row\">\r\n                <div class=\"col-md-6 col-lg-6 col-xs-12 col-sm-12\">\r\n                  <!--<div class=\"card col-md-12 col-lg-12 col-xs-12 col-sm-12\">-->\r\n                  <div class=\"card-content col-md-12 col-lg-12 col-xs-12 col-sm-12\">\r\n                    <div class=\"image\">\r\n                      <div class=\"image-inner2\">\r\n                        <input accept=\"image/*\" type=\"file\" id=\"singleImage{{card._id}}\" (change)=\"populateSingleImage($event, card._id, card._blockId)\"\r\n                          style=\"visibility: hidden;\" name=\"files\" title=\"Load File\" />\r\n                        <div id=\"singleImageBtn{{card._id}}\" *ngIf=\"card.data.pictureUrl == ''\">\r\n                          <button (click)=\"openSingleImage(card._id)\" class=\"button-image button-image2 col-xs-12 col-sm-12 btn-gray button-image--replace button-image--replace-gallery\">\r\n                            <span class=\"button-image__title\"><i class=\"fa fa-camera\" aria-hidden=\"true\"></i><br/>Upload Image</span>\r\n                          </button>\r\n                        </div>\r\n                        <div id=\"singleImageDiv{{card._id}}\" (mouseenter)=\"mouseEnterSI(card._id)\" (mouseleave)=\"mouseLeaveSI(card._id)\" *ngIf=\"card.data.pictureUrl != ''\" [ngStyle]=\"{ 'background-image': 'url(' + card.data.pictureUrl + ')'}\">\r\n                          <div class=\"singleImageBGDiv\" id=\"singleImageChangeBtn{{card._id}}\">\r\n                            <button class=\"btn\" (click)=\"openSingleImage(card._id)\" style=\"background:transparent\">\r\n                              <i class=\"fa fa-camera\" aria-hidden=\"true\" style=\"color:white;font-size:24px;\"></i>\r\n                            </button>\r\n                          </div>\r\n                        </div>\r\n                      </div>\r\n                    </div>\r\n                    <div class=\"contenttitle textcard\" style=\"margin-top: 5px;\">\r\n                      <textarea id=\"articleCardTitle{{card._id}}\" maxlength=\"80\" placeholder=\"title\" (change)=\"updateTitleArticleCard(card._id)\">{{card.data.text}}</textarea>\r\n                    </div>\r\n                    <div class=\"addbutton\" (click)=\"openArticleText(card._id);articleModal.open()\">\r\n                      View Article\r\n                    </div>\r\n                  </div>\r\n                </div>\r\n                <!--</div>-->\r\n              </div>\r\n            </li>\r\n            <li class=\"list-group-item\" [ngClass]=\"{errorRM: card.isCompleted == false}\" *ngIf=\"card.type == 'quickreply'\" id=\"{{card._id}}\">\r\n              <a href=\"#\" class=\"close\" (click)=\"deleteResponseMessage(card._id)\" data-dismiss=\"alert\" aria-hidden=\"true\"><i class=\"fa fa-trash-o\" aria-hidden=\"true\"></i></a>\r\n              <div class=\"row\">\r\n                <!--id=\"block{{block._id}}\" *ngFor=\"let block of blockGroups.blocks\" (click)=\"blockDetail(block._id)\" -->\r\n                <div class=\"col-md-12 col-lg-12 col-xs-12 col-sm-12\">\r\n                  <div class=\"QuickReplyButtons qrbtns\" (click)=\"editQuickReplyModal.open();editQR(quickReply._addButtonId, card._id, quickReply.buttonname, quickReply._blockId)\" (mouseenter)=\"mouseEnter(quickReply._addButtonId) \" (mouseleave) =\"mouseLeave(quickReply._addButtonId)\" *ngFor=\"let quickReply of card.data.quickReplyBtns\">\r\n                    \r\n                    <div id=\"{{quickReply._addButtonId}}\" (click)=\"deleteQuickReply(quickReply._addButtonId, card._id)\" class=\"quickReplyClose\" data-dismiss=\"alert\" aria-hidden=\"true\"><i class=\"fa fa-trash-o quickReplyCloseBtn\" aria-hidden=\"true\"></i></div>\r\n                    {{quickReply.buttonname}}\r\n                  </div>\r\n                  <div class=\"QuickReplyButtons QuickReplyButtonsBlack\" (click)=\"yourModal.open();addQuickReplyBtn(card._id)\">\r\n                    <i class=\"fa fa-plus\" aria-hidden=\"true\"></i> Add Quick Reply\r\n                  </div>\r\n                </div>\r\n                <!--</div>-->\r\n              </div>\r\n            </li>\r\n          </div>\r\n        </ul>\r\n        <div class=\"row topmargin\">\r\n          <div class=\"col-md-3 col-lg-3\">\r\n            <legend>\r\n              <span>Add a Card</span>\r\n            </legend>\r\n          </div>\r\n        </div>\r\n        <div class=\"row\">\r\n          <div class=\"col-md-12 col-lg-12\">\r\n            <div class=\"btn-group\">\r\n              <button type=\"button\" (click)=\"addCard(1)\" class=\"btn width-100 mb-xs\"><i class=\"fa fa-picture-o\" aria-hidden=\"true\"></i><br/>Gallery</button>\r\n              <button type=\"button\" *ngIf=\"isLocked==false\" (click)=\"addCard(6)\" class=\"btn width-100 mb-xs\"><i class=\"fa fa-file-text-o\" aria-hidden=\"true\"></i><br/>Text Card</button>\r\n              <button type=\"button\" *ngIf=\"isLocked==true\" (click)=\"addCard(2)\" class=\"btn width-100 mb-xs\"><i class=\"fa fa-file-text-o\" aria-hidden=\"true\"></i><br/>Random Text</button>\r\n              <button type=\"button\" (click)=\"addCard(3)\" class=\"btn width-100 mb-xs\"><i class=\"fa fa-picture-o\" aria-hidden=\"true\"></i><br/>Image</button>\r\n              <button type=\"button\" (click)=\"addCard(4)\" class=\"btn width-100 mb-xs\"><i class=\"fa fa-info-circle\" aria-hidden=\"true\"></i><br/>Article</button>\r\n              <button type=\"button\" (click)=\"addCard(5)\" class=\"btn width-100 mb-xs\"><i class=\"fa fa-link\" aria-hidden=\"true\"></i><br/>Quick Reply</button>\r\n            </div>\r\n          </div>\r\n        </div>\r\n      </div>\r\n      <div class=\"col-md-6 col-sm-12 col-lg-6 col-xs-12 articleEditor\" style=\"display:none\">\r\n\r\n      </div>\r\n    </div>\r\n  </div>\r\n</section>\r\n<modal #myModal>\r\n  <modal-header>\r\n    <h4 class=\"modal-title text-xs-center fw-bold mt\" id=\"myModalLabel18\">Add Buttons to Response</h4>\r\n    <input id=\"buttonName\" type=\"text\" class=\"form-control\" [(ngModel)]=\"AddButtonName\" placeholder=\"Enter Button Name\" style=\"width:88%;margin-left:5%;\"\r\n    />\r\n  </modal-header>\r\n  <modal-content>\r\n    <div class=\"col-md-12 col-lg-12\">\r\n      <ul class=\"addButtonList\">\r\n        <li (click)=\"modalChangeTab(1)\" id=\"blockBtn\" class=\"addButtonListItem modalliactive\"><a class=\"modalliitem\">Blocks</a></li>\r\n        <li (click)=\"modalChangeTab(2)\" id=\"urlBtn\" class=\"addButtonListItem\"><a class=\"modalliitem\">Url</a></li>\r\n      </ul>\r\n      <div class=\"modalContent\">\r\n        <div id=\"blockContent\" class=\"row modalContentActive\">\r\n          <div class=\"col-md-12 col-xs-12\">\r\n            <div class=\"form-group row\">\r\n              <div class=\"col-md-12\">\r\n                <select class=\"form-control\" [(ngModel)]=\"AddButtonBlock\" name=\"blocksdd\" id=\"simple-select\">\r\n                  <option selected=\"selected\" value=\"0\">Select Block</option>\r\n                  <option *ngFor=\"let card of select2GroupedData\" value=\"{{card.id}}\">{{card.text}}</option>\r\n                  \r\n                </select>\r\n              </div>\r\n            </div>\r\n            <div class=\"row\">\r\n              <div class=\"col-md-12\">\r\n                <button type=\"button\" class=\"btn btn-success btn-block\" (click)=\"addButtonPost(1)\">Save</button>\r\n              </div>\r\n            </div>\r\n          </div>\r\n        </div>\r\n        <div id=\"urlContent\" class=\"row modalContentDeActive\">\r\n          <div class=\"col-md-12 col-xs-12\">\r\n            <div class=\"form-group row\">\r\n              <div class=\"col-md-12\">\r\n                <div class=\"input-group\">\r\n                  <span class=\"input-group-addon\">http://</span>\r\n                  <input id=\"urlContentData\" class=\"form-control\" type=\"text\" [(ngModel)]=\"AddButtonUrl\" placeholder=\"Enter Url\">\r\n                </div>\r\n                <!--<input id=\"urlContentData\" type=\"text\" class=\"form-control\" [(ngModel)]=\"AddButtonUrl\" placeholder=\"Enter Url\" />-->\r\n              </div>\r\n            </div>\r\n            <div class=\"row\">\r\n              <div class=\"col-md-12\">\r\n                <button type=\"button\" class=\"btn btn-success btn-block\" (click)=\"addButtonPost(2)\">Save</button>\r\n              </div>\r\n            </div>\r\n          </div>\r\n        </div>\r\n        <div id=\"articleContent\" class=\"row modalContentDeActive\">\r\n          <div class=\"col-md-12 col-xs-12\">\r\n            <div class=\"form-group row\">\r\n              <div class=\"col-md-12\">\r\n                <input id=\"urlContentData\" type=\"text\" class=\"form-control\" [(ngModel)]=\"AddButtonUrl\" placeholder=\"Enter Url\" />\r\n              </div>\r\n            </div>\r\n            <div class=\"row\">\r\n              <div class=\"col-md-12\">\r\n                <button type=\"button\" class=\"btn btn-success btn-block\" (click)=\"addButtonPost(2)\">Save</button>\r\n              </div>\r\n            </div>\r\n          </div>\r\n        </div>\r\n      </div>\r\n    </div>\r\n  </modal-content>\r\n  <modal-footer>\r\n  </modal-footer>\r\n</modal>\r\n<modal #yourModal>\r\n  <modal-header>\r\n    <h4 class=\"modal-title text-xs-center fw-bold mt\" id=\"myModalLabel18\">Add Quick Reply</h4>\r\n    <input id=\"buttonName\" type=\"text\" class=\"form-control\" [(ngModel)]=\"AddButtonName\" placeholder=\"Enter Button Name\" style=\"width:88%;margin-left:5%;\"\r\n    />\r\n  </modal-header>\r\n  <modal-content>\r\n    <div class=\"col-md-12 col-lg-12\">\r\n      <ul class=\"addButtonList\">\r\n        <li id=\"blockBtn\" class=\"addButtonListItem\"><a class=\"modalliitem\" style=\"padding: 0em 6em;\">Blocks</a></li>\r\n      </ul>\r\n      <div class=\"modalContent\">\r\n        <div id=\"blockContent\" class=\"row modalContentActive\">\r\n          <div class=\"col-md-12 col-xs-12\">\r\n            <div class=\"form-group row\">\r\n              <div class=\"col-md-12\">\r\n                <select class=\"form-control\" [(ngModel)]=\"AddButtonBlock\" name=\"blocksdd\" id=\"simple-select\">\r\n                  <option selected=\"selected\" value=\"0\">Select Block</option>\r\n                  <option *ngFor=\"let card of select2GroupedData\" value=\"{{card.id}}\">{{card.text}}</option>   \r\n                </select>\r\n              </div>\r\n            </div>\r\n            <div class=\"row\">\r\n              <div class=\"col-md-12\">\r\n                <button type=\"button\" class=\"btn btn-success btn-block\" (click)=\"submitQuickReplyBtns();yourModal.close()\">Save</button>\r\n              </div>\r\n            </div>\r\n          </div>\r\n        </div>\r\n      </div>\r\n    </div>\r\n  </modal-content>\r\n  <modal-footer>\r\n  </modal-footer>\r\n</modal>\r\n<modal #articleModal>\r\n  <modal-header>\r\n    <h4 class=\"modal-title text-xs-center fw-bold mt\" id=\"myModalLabel18\">Article for {{articleModalTitle}}</h4>\r\n  </modal-header>\r\n  <modal-content>\r\n    <div class=\"col-md-12 col-lg-12\">\r\n      <div class=\"modalContent\">\r\n        <quill-editor [(ngModel)]=\"ckeditorContent\"></quill-editor>\r\n      </div>\r\n      <div class=\"row\">\r\n        <div class=\"col-md-12\">\r\n          <button type=\"button\" class=\"btn btn-success btn-block\" (click)=\"submitArticleText();articleModal.close()\">Save</button>\r\n        </div>\r\n      </div>\r\n    </div>\r\n  </modal-content>\r\n  <modal-footer>\r\n  </modal-footer>\r\n</modal>\r\n<modal #editQuickReplyModal>\r\n  <modal-header>\r\n    <h4 class=\"modal-title text-xs-center fw-bold mt\" id=\"myModalLabel18\">Edit Quick Reply</h4>\r\n    <input id=\"buttonName\" type=\"text\" class=\"form-control\" [(ngModel)]=\"EditQuickReplyName\" placeholder=\"Enter Button Name\" style=\"width:88%;margin-left:5%;\"\r\n    />\r\n  </modal-header>\r\n  <modal-content>\r\n    <div class=\"col-md-12 col-lg-12\">\r\n      <!--<ul class=\"addButtonList\">\r\n        <li id=\"blockBtn\" class=\"addButtonListItem\"><a class=\"modalliitem\" style=\"padding: 0em 6em;\">Blocks</a></li>\r\n      </ul>-->\r\n      <div class=\"modalContent\">\r\n        <div id=\"blockContent\" class=\"row modalContentActive\">\r\n          <div class=\"col-md-12 col-xs-12\">\r\n            <!--<div class=\"form-group row\">\r\n              <div class=\"col-md-12\">\r\n                <select class=\"form-control\" [(ngModel)]=\"EditBlockQuickReply\" name=\"blocksdd\" id=\"editQR-select\">\r\n                  <option selected=\"selected\" value=\"0\">Select Block</option>\r\n                  <option *ngFor=\"let card of select2GroupedData\" [selected]=\"card.id == EditBlockQuickReply\" value=\"{{card.id}}\">{{card.text}}</option>   \r\n                </select>\r\n              </div>\r\n            </div>-->\r\n            <div class=\"row\">\r\n              <div class=\"col-md-12\">\r\n                <button type=\"button\" class=\"btn btn-success btn-block\" (click)=\"editQuickReplyBtns();editQuickReplyModal.close()\">Update</button>\r\n              </div>\r\n            </div>\r\n          </div>\r\n        </div>\r\n      </div>\r\n    </div>\r\n  </modal-content>\r\n  <modal-footer>\r\n  </modal-footer>\r\n</modal>"
-
-/***/ },
-
-/***/ "./src/app/generic/generic.component.scss":
-/***/ function(module, exports) {
-
-module.exports = "@charset \"UTF-8\";\n@import url(\"https://fonts.googleapis.com/css?family=Open+Sans\");\nbody {\n  overflow-x: visible; }\n\n/*! Select2 Bootstrap Theme v0.1.0-beta.9 | MIT License | github.com/select2/select2-bootstrap-theme */\n.select2-container--bootstrap {\n  display: block;\n  /*------------------------------------*      #COMMON STYLES\n  \\*------------------------------------*/\n  /**\n   * Search field in the Select2 dropdown.\n   */\n  /**\n   * No outline for all search fields - in the dropdown\n   * and inline in multi Select2s.\n   */\n  /**\n   * Adjust Select2's choices hover and selected styles to match\n   * Bootstrap 3's default dropdown styles.\n   *\n   * @see http://getbootstrap.com/components/#dropdowns\n   */\n  /**\n   * Clear the selection.\n   */\n  /**\n   * Address disabled Select2 styles.\n   *\n   * @see https://select2.github.io/examples.html#disabled\n   * @see http://getbootstrap.com/css/#forms-control-disabled\n   */\n  /*------------------------------------*      #DROPDOWN\n  \\*------------------------------------*/\n  /**\n   * Dropdown border color and box-shadow.\n   */\n  /**\n   * Limit the dropdown height.\n   */\n  /*------------------------------------*      #SINGLE SELECT2\n  \\*------------------------------------*/\n  /*------------------------------------*    #MULTIPLE SELECT2\n  \\*------------------------------------*/\n  /**\n   * Address Bootstrap control sizing classes\n   *\n   * 1. Reset Bootstrap defaults.\n   * 2. Adjust the dropdown arrow button icon position.\n   *\n   * @see http://getbootstrap.com/css/#forms-control-sizes\n   */\n  /* 1 */\n  /*------------------------------------*    #RTL SUPPORT\n  \\*------------------------------------*/ }\n  .select2-container--bootstrap .select2-selection {\n    box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);\n    background-color: #fff;\n    border: 1px solid rgba(0, 0, 0, 0.15);\n    border-radius: 0.25rem;\n    color: #555555;\n    font-size: 1rem;\n    outline: 0; }\n    .select2-container--bootstrap .select2-selection.form-control {\n      border-radius: 0.25rem; }\n  .select2-container--bootstrap .select2-search--dropdown .select2-search__field {\n    box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);\n    background-color: #fff;\n    border: 1px solid rgba(0, 0, 0, 0.15);\n    border-radius: 0.25rem;\n    color: #555555;\n    font-size: 1rem; }\n  .select2-container--bootstrap .select2-search__field {\n    outline: 0;\n    /* Firefox 18- */\n    /**\n     * Firefox 19+\n     *\n     * @see http://stackoverflow.com/questions/24236240/color-for-styled-placeholder-text-is-muted-in-firefox\n     */ }\n    .select2-container--bootstrap .select2-search__field::-webkit-input-placeholder {\n      color: #999; }\n    .select2-container--bootstrap .select2-search__field:-moz-placeholder {\n      color: #999; }\n    .select2-container--bootstrap .select2-search__field::-moz-placeholder {\n      color: #999;\n      opacity: 1; }\n    .select2-container--bootstrap .select2-search__field:-ms-input-placeholder {\n      color: #999; }\n  .select2-container--bootstrap .select2-results__option {\n    padding: 6px 12px;\n    /**\n     * Disabled results.\n     *\n     * @see https://select2.github.io/examples.html#disabled-results\n     */\n    /**\n     * Hover state.\n     */\n    /**\n     * Selected state.\n     */ }\n    .select2-container--bootstrap .select2-results__option[role=group] {\n      padding: 0; }\n    .select2-container--bootstrap .select2-results__option[aria-disabled=true] {\n      color: #999999;\n      cursor: not-allowed; }\n    .select2-container--bootstrap .select2-results__option[aria-selected=true] {\n      background-color: #f5f5f5;\n      color: #272727; }\n    .select2-container--bootstrap .select2-results__option--highlighted[aria-selected] {\n      background-color: #5d8fc2;\n      color: #fff; }\n    .select2-container--bootstrap .select2-results__option .select2-results__option {\n      padding: 6px 12px; }\n      .select2-container--bootstrap .select2-results__option .select2-results__option .select2-results__group {\n        padding-left: 0; }\n      .select2-container--bootstrap .select2-results__option .select2-results__option .select2-results__option {\n        margin-left: -12px;\n        padding-left: 24px; }\n        .select2-container--bootstrap .select2-results__option .select2-results__option .select2-results__option .select2-results__option {\n          margin-left: -24px;\n          padding-left: 36px; }\n          .select2-container--bootstrap .select2-results__option .select2-results__option .select2-results__option .select2-results__option .select2-results__option {\n            margin-left: -36px;\n            padding-left: 48px; }\n            .select2-container--bootstrap .select2-results__option .select2-results__option .select2-results__option .select2-results__option .select2-results__option .select2-results__option {\n              margin-left: -48px;\n              padding-left: 60px; }\n              .select2-container--bootstrap .select2-results__option .select2-results__option .select2-results__option .select2-results__option .select2-results__option .select2-results__option .select2-results__option {\n                margin-left: -60px;\n                padding-left: 72px; }\n  .select2-container--bootstrap .select2-results__group {\n    color: #999999;\n    display: block;\n    padding: 6px 12px;\n    font-size: 0.875rem;\n    line-height: 1.5;\n    white-space: nowrap; }\n  .select2-container--bootstrap.select2-container--focus .select2-selection, .select2-container--bootstrap.select2-container--open .select2-selection {\n    box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 8px rgba(77, 144, 254, 0.6);\n    transition: border-color ease-in-out 0.15s, box-shadow ease-in-out 0.15s;\n    border-color: #4D90FE; }\n  .select2-container--bootstrap.select2-container--open {\n    /**\n     * Make the dropdown arrow point up while the dropdown is visible.\n     */\n    /**\n     * Handle border radii of the container when the dropdown is showing.\n     */ }\n    .select2-container--bootstrap.select2-container--open .select2-selection .select2-selection__arrow b {\n      border-color: transparent transparent #999 transparent;\n      border-width: 0 4px 4px 4px; }\n    .select2-container--bootstrap.select2-container--open.select2-container--below .select2-selection {\n      border-bottom-right-radius: 0;\n      border-bottom-left-radius: 0;\n      border-bottom-color: transparent; }\n    .select2-container--bootstrap.select2-container--open.select2-container--above .select2-selection {\n      border-top-right-radius: 0;\n      border-top-left-radius: 0;\n      border-top-color: transparent; }\n  .select2-container--bootstrap .select2-selection__clear {\n    color: #999;\n    cursor: pointer;\n    float: right;\n    font-weight: bold;\n    margin-right: 10px; }\n    .select2-container--bootstrap .select2-selection__clear:hover {\n      color: #f8f8f8; }\n  .select2-container--bootstrap.select2-container--disabled .select2-selection {\n    border-color: rgba(0, 0, 0, 0.15);\n    box-shadow: none; }\n  .select2-container--bootstrap.select2-container--disabled .select2-selection,\n  .select2-container--bootstrap.select2-container--disabled .select2-search__field {\n    cursor: not-allowed; }\n  .select2-container--bootstrap.select2-container--disabled .select2-selection,\n  .select2-container--bootstrap.select2-container--disabled .select2-selection--multiple .select2-selection__choice {\n    background-color: #eeeeee; }\n  .select2-container--bootstrap.select2-container--disabled .select2-selection__clear,\n  .select2-container--bootstrap.select2-container--disabled .select2-selection--multiple .select2-selection__choice__remove {\n    display: none; }\n  .select2-container--bootstrap .select2-dropdown {\n    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.175);\n    border-color: #4D90FE;\n    overflow-x: hidden;\n    margin-top: -1px; }\n    .select2-container--bootstrap .select2-dropdown--above {\n      box-shadow: 0px -6px 12px rgba(0, 0, 0, 0.175);\n      margin-top: 1px; }\n  .select2-container--bootstrap .select2-results > .select2-results__options {\n    max-height: 200px;\n    overflow-y: auto; }\n  .select2-container--bootstrap .select2-selection--single {\n    height: 35px;\n    line-height: 1.5;\n    padding: 6px 24px 6px 12px;\n    /**\n     * Adjust the single Select2's dropdown arrow button appearance.\n     */ }\n    .select2-container--bootstrap .select2-selection--single .select2-selection__arrow {\n      position: absolute;\n      bottom: 0;\n      right: 12px;\n      top: 0;\n      width: 4px; }\n      .select2-container--bootstrap .select2-selection--single .select2-selection__arrow b {\n        border-color: #999 transparent transparent transparent;\n        border-style: solid;\n        border-width: 4px 4px 0 4px;\n        height: 0;\n        left: 0;\n        margin-left: -4px;\n        margin-top: -2px;\n        position: absolute;\n        top: 50%;\n        width: 0; }\n    .select2-container--bootstrap .select2-selection--single .select2-selection__rendered {\n      color: #555555;\n      padding: 0; }\n    .select2-container--bootstrap .select2-selection--single .select2-selection__placeholder {\n      color: #999; }\n  .select2-container--bootstrap .select2-selection--multiple {\n    min-height: 35px;\n    padding: 0;\n    height: auto;\n    /**\n     * Make Multi Select2's choices match Bootstrap 3's default button styles.\n     */\n    /**\n     * Minus 2px borders.\n     */\n    /**\n     * Clear the selection.\n     */ }\n    .select2-container--bootstrap .select2-selection--multiple .select2-selection__rendered {\n      box-sizing: border-box;\n      display: block;\n      line-height: 1.5;\n      list-style: none;\n      margin: 0;\n      overflow: hidden;\n      padding: 0;\n      width: 100%;\n      text-overflow: ellipsis;\n      white-space: nowrap; }\n    .select2-container--bootstrap .select2-selection--multiple .select2-selection__placeholder {\n      color: #999;\n      float: left;\n      margin-top: 5px; }\n    .select2-container--bootstrap .select2-selection--multiple .select2-selection__choice {\n      color: #555555;\n      background: #f8f8f8;\n      border: 1px solid transparent;\n      border-radius: 0.25rem;\n      cursor: default;\n      float: left;\n      margin: 5px 0 0 6px;\n      padding: 0 6px; }\n    .select2-container--bootstrap .select2-selection--multiple .select2-search--inline .select2-search__field {\n      background: transparent;\n      padding: 0 12px;\n      height: 33px;\n      line-height: 1.5;\n      margin-top: 0;\n      min-width: 5em; }\n    .select2-container--bootstrap .select2-selection--multiple .select2-selection__choice__remove {\n      color: #999;\n      cursor: pointer;\n      display: inline-block;\n      font-weight: bold;\n      margin-right: 3px; }\n      .select2-container--bootstrap .select2-selection--multiple .select2-selection__choice__remove:hover {\n        color: #f8f8f8; }\n    .select2-container--bootstrap .select2-selection--multiple .select2-selection__clear {\n      margin-top: 6px; }\n  .select2-container--bootstrap .select2-selection--single.input-sm,\n  .input-group-sm .select2-container--bootstrap .select2-selection--single,\n  .form-group-sm .select2-container--bootstrap .select2-selection--single {\n    border-radius: 0.2rem;\n    font-size: 0.875rem;\n    height: 1.8125rem;\n    line-height: 1.5;\n    padding: 5px 22px 5px 10px;\n    /* 2 */ }\n    .select2-container--bootstrap .select2-selection--single.input-sm .select2-selection__arrow b,\n    .input-group-sm .select2-container--bootstrap .select2-selection--single .select2-selection__arrow b,\n    .form-group-sm .select2-container--bootstrap .select2-selection--single .select2-selection__arrow b {\n      margin-left: -5px; }\n  .select2-container--bootstrap .select2-selection--multiple.input-sm,\n  .input-group-sm .select2-container--bootstrap .select2-selection--multiple,\n  .form-group-sm .select2-container--bootstrap .select2-selection--multiple {\n    min-height: 1.8125rem;\n    border-radius: 0.2rem; }\n    .select2-container--bootstrap .select2-selection--multiple.input-sm .select2-selection__choice,\n    .input-group-sm .select2-container--bootstrap .select2-selection--multiple .select2-selection__choice,\n    .form-group-sm .select2-container--bootstrap .select2-selection--multiple .select2-selection__choice {\n      font-size: 0.875rem;\n      line-height: 1.5;\n      margin: 4px 0 0 5px;\n      padding: 0 5px; }\n    .select2-container--bootstrap .select2-selection--multiple.input-sm .select2-search--inline .select2-search__field,\n    .input-group-sm .select2-container--bootstrap .select2-selection--multiple .select2-search--inline .select2-search__field,\n    .form-group-sm .select2-container--bootstrap .select2-selection--multiple .select2-search--inline .select2-search__field {\n      padding: 0 10px;\n      font-size: 0.875rem;\n      height: -0.1875rem;\n      line-height: 1.5; }\n    .select2-container--bootstrap .select2-selection--multiple.input-sm .select2-selection__clear,\n    .input-group-sm .select2-container--bootstrap .select2-selection--multiple .select2-selection__clear,\n    .form-group-sm .select2-container--bootstrap .select2-selection--multiple .select2-selection__clear {\n      margin-top: 5px; }\n  .select2-container--bootstrap .select2-selection--single.input-lg,\n  .input-group-lg .select2-container--bootstrap .select2-selection--single,\n  .form-group-lg .select2-container--bootstrap .select2-selection--single {\n    border-radius: 0.3rem;\n    font-size: 1.25rem;\n    height: 3.16667rem;\n    line-height: 1.33333;\n    padding: 10px 28px 10px 16px;\n    /* 1 */ }\n    .select2-container--bootstrap .select2-selection--single.input-lg .select2-selection__arrow,\n    .input-group-lg .select2-container--bootstrap .select2-selection--single .select2-selection__arrow,\n    .form-group-lg .select2-container--bootstrap .select2-selection--single .select2-selection__arrow {\n      width: 4px; }\n      .select2-container--bootstrap .select2-selection--single.input-lg .select2-selection__arrow b,\n      .input-group-lg .select2-container--bootstrap .select2-selection--single .select2-selection__arrow b,\n      .form-group-lg .select2-container--bootstrap .select2-selection--single .select2-selection__arrow b {\n        border-width: 4px 4px 0 4px;\n        margin-left: -4px;\n        margin-left: -10px;\n        margin-top: -2px; }\n  .select2-container--bootstrap .select2-selection--multiple.input-lg,\n  .input-group-lg .select2-container--bootstrap .select2-selection--multiple,\n  .form-group-lg .select2-container--bootstrap .select2-selection--multiple {\n    min-height: 3.16667rem;\n    border-radius: 0.3rem; }\n    .select2-container--bootstrap .select2-selection--multiple.input-lg .select2-selection__choice,\n    .input-group-lg .select2-container--bootstrap .select2-selection--multiple .select2-selection__choice,\n    .form-group-lg .select2-container--bootstrap .select2-selection--multiple .select2-selection__choice {\n      font-size: 1.25rem;\n      line-height: 1.33333;\n      border-radius: 0.25rem;\n      margin: 9px 0 0 8px;\n      padding: 0 10px; }\n    .select2-container--bootstrap .select2-selection--multiple.input-lg .select2-search--inline .select2-search__field,\n    .input-group-lg .select2-container--bootstrap .select2-selection--multiple .select2-search--inline .select2-search__field,\n    .form-group-lg .select2-container--bootstrap .select2-selection--multiple .select2-search--inline .select2-search__field {\n      padding: 0 16px;\n      font-size: 1.25rem;\n      height: 1.16667rem;\n      line-height: 1.33333; }\n    .select2-container--bootstrap .select2-selection--multiple.input-lg .select2-selection__clear,\n    .input-group-lg .select2-container--bootstrap .select2-selection--multiple .select2-selection__clear,\n    .form-group-lg .select2-container--bootstrap .select2-selection--multiple .select2-selection__clear {\n      margin-top: 10px; }\n  .select2-container--bootstrap .select2-selection.input-lg.select2-container--open .select2-selection--single {\n    /**\n     * Make the dropdown arrow point up while the dropdown is visible.\n     */ }\n    .select2-container--bootstrap .select2-selection.input-lg.select2-container--open .select2-selection--single .select2-selection__arrow b {\n      border-color: transparent transparent #999 transparent;\n      border-width: 0 4px 4px 4px; }\n  .input-group-lg .select2-container--bootstrap .select2-selection.select2-container--open .select2-selection--single {\n    /**\n     * Make the dropdown arrow point up while the dropdown is visible.\n     */ }\n    .input-group-lg .select2-container--bootstrap .select2-selection.select2-container--open .select2-selection--single .select2-selection__arrow b {\n      border-color: transparent transparent #999 transparent;\n      border-width: 0 4px 4px 4px; }\n  .select2-container--bootstrap[dir=\"rtl\"] {\n    /**\n     * Single Select2\n     *\n     * 1. Makes sure that .select2-selection__placeholder is positioned\n     *    correctly.\n     */\n    /**\n     * Multiple Select2\n     */ }\n    .select2-container--bootstrap[dir=\"rtl\"] .select2-selection--single {\n      padding-left: 24px;\n      padding-right: 12px; }\n      .select2-container--bootstrap[dir=\"rtl\"] .select2-selection--single .select2-selection__rendered {\n        padding-right: 0;\n        padding-left: 0;\n        text-align: right;\n        /* 1 */ }\n      .select2-container--bootstrap[dir=\"rtl\"] .select2-selection--single .select2-selection__clear {\n        float: left; }\n      .select2-container--bootstrap[dir=\"rtl\"] .select2-selection--single .select2-selection__arrow {\n        left: 12px;\n        right: auto; }\n        .select2-container--bootstrap[dir=\"rtl\"] .select2-selection--single .select2-selection__arrow b {\n          margin-left: 0; }\n    .select2-container--bootstrap[dir=\"rtl\"] .select2-selection--multiple .select2-selection__choice,\n    .select2-container--bootstrap[dir=\"rtl\"] .select2-selection--multiple .select2-selection__placeholder {\n      float: right; }\n    .select2-container--bootstrap[dir=\"rtl\"] .select2-selection--multiple .select2-selection__choice {\n      margin-left: 0;\n      margin-right: 6px; }\n    .select2-container--bootstrap[dir=\"rtl\"] .select2-selection--multiple .select2-selection__choice__remove {\n      margin-left: 2px;\n      margin-right: auto; }\n\n/*------------------------------------*  #ADDITIONAL GOODIES\n\\*------------------------------------*/\n/**\n * Address Bootstrap's validation states\n *\n * If a Select2 widget parent has one of Bootstrap's validation state modifier\n * classes, adjust Select2's border colors and focus states accordingly.\n * You may apply said classes to the Select2 dropdown (body > .select2-container)\n * via JavaScript match Bootstraps' to make its styles match.\n *\n * @see http://getbootstrap.com/css/#forms-control-validation\n */\n.has-warning .select2-dropdown,\n.has-warning .select2-selection {\n  border-color: #8a6d3b; }\n\n.has-warning .select2-container--focus .select2-selection,\n.has-warning .select2-container--open .select2-selection {\n  box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 6px #c0a16b;\n  border-color: #66512c; }\n\n.has-warning.select2-drop-active {\n  border-color: #66512c; }\n  .has-warning.select2-drop-active.select2-drop.select2-drop-above {\n    border-top-color: #66512c; }\n\n.has-error .select2-dropdown,\n.has-error .select2-selection {\n  border-color: #a94442; }\n\n.has-error .select2-container--focus .select2-selection,\n.has-error .select2-container--open .select2-selection {\n  box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 6px #ce8483;\n  border-color: #843534; }\n\n.has-error.select2-drop-active {\n  border-color: #843534; }\n  .has-error.select2-drop-active.select2-drop.select2-drop-above {\n    border-top-color: #843534; }\n\n.has-success .select2-dropdown,\n.has-success .select2-selection {\n  border-color: #3c763d; }\n\n.has-success .select2-container--focus .select2-selection,\n.has-success .select2-container--open .select2-selection {\n  box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 6px #67b168;\n  border-color: #2b542c; }\n\n.has-success.select2-drop-active {\n  border-color: #2b542c; }\n  .has-success.select2-drop-active.select2-drop.select2-drop-above {\n    border-top-color: #2b542c; }\n\n/**\n * Select2 widgets in Bootstrap Input Groups\n *\n * When Select2 widgets are combined with other elements using Bootstraps\n * \"Input Group\" component, we don't want specific edges of the Select2\n * container to have a border-radius.\n *\n * Use .select2-bootstrap-prepend and .select2-bootstrap-append on\n * a Bootstrap 3 .input-group to let the contained Select2 widget know which\n * edges should not be rounded as they are directly followed by another element.\n *\n * @see http://getbootstrap.com/components/#input-groups\n */\n/**\n * Mimick Bootstraps .input-group .form-control styles.\n *\n * @see https://github.com/twbs/bootstrap/blob/master/less/input-groups.less\n */\n.input-group .select2-container--bootstrap {\n  display: table;\n  table-layout: fixed;\n  position: relative;\n  z-index: 2;\n  float: left;\n  width: 100%;\n  margin-bottom: 0;\n  /**\n   * Adjust z-index like Bootstrap does to show the focus-box-shadow\n   * above appended buttons in .input-group and .form-group.\n   */ }\n  .input-group .select2-container--bootstrap.select2-container--open, .input-group .select2-container--bootstrap.select2-container--focus {\n    z-index: 3; }\n\n.input-group.select2-bootstrap-prepend .select2-container--bootstrap .select2-selection {\n  border-bottom-left-radius: 0;\n  border-top-left-radius: 0; }\n\n.input-group.select2-bootstrap-append .select2-container--bootstrap .select2-selection {\n  border-bottom-right-radius: 0;\n  border-top-right-radius: 0; }\n\n/**\n * Adjust alignment of Bootstrap buttons in Bootstrap Input Groups to address\n * Multi Select2's height which - depending on how many elements have been selected -\n * may grow taller than its initial size.\n *\n * @see http://getbootstrap.com/components/#input-groups\n */\n.select2-bootstrap-append .select2-container--bootstrap,\n.select2-bootstrap-append .input-group-btn,\n.select2-bootstrap-append .input-group-btn .btn,\n.select2-bootstrap-prepend .select2-container--bootstrap,\n.select2-bootstrap-prepend .input-group-btn,\n.select2-bootstrap-prepend .input-group-btn .btn {\n  vertical-align: top; }\n\n/**\n * Temporary fix for https://github.com/select2/select2-bootstrap-theme/issues/9\n *\n * Provides `!important` for certain properties of the class applied to the\n * original `<select>` element to hide it.\n *\n * @see https://github.com/select2/select2/pull/3301\n * @see https://github.com/fk/select2/commit/31830c7b32cb3d8e1b12d5b434dee40a6e753ada\n */\n.form-control.select2-hidden-accessible {\n  position: absolute !important;\n  width: 1px !important; }\n\n/**\n * Display override for inline forms\n */\n.form-inline .select2-container--bootstrap {\n  display: inline-block; }\n\n.md-editor {\n  display: block;\n  border: 1px solid #ddd; }\n\n.md-editor .md-footer, .md-editor > .md-header {\n  display: block;\n  padding: 6px 4px;\n  background: #f5f5f5; }\n\n.md-editor > .md-header {\n  margin: 0; }\n\n.md-editor > .md-preview {\n  background: #fff;\n  border-top: 1px dashed #ddd;\n  border-bottom: 1px dashed #ddd;\n  min-height: 10px;\n  overflow: auto; }\n\n.md-editor > textarea {\n  font-family: Menlo,Monaco,Consolas,\"Courier New\",monospace;\n  font-size: 14px;\n  outline: 0;\n  margin: 0;\n  display: block;\n  padding: 0;\n  width: 100%;\n  border: 0;\n  border-top: 1px dashed #ddd;\n  border-bottom: 1px dashed #ddd;\n  border-radius: 0;\n  box-shadow: none;\n  background: #eee; }\n\n.md-editor > textarea:focus {\n  box-shadow: none;\n  background: #fff; }\n\n.md-editor.active {\n  border-color: #66afe9;\n  outline: 0;\n  -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 8px rgba(102, 175, 233, 0.6);\n  box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 8px rgba(102, 175, 233, 0.6); }\n\n.md-editor .md-controls {\n  float: right;\n  padding: 3px; }\n\n.md-editor .md-controls .md-control {\n  right: 5px;\n  color: #bebebe;\n  padding: 3px 3px 3px 10px; }\n\n.md-editor .md-controls .md-control:hover {\n  color: #333; }\n\n.md-editor.md-fullscreen-mode {\n  width: 100%;\n  height: 100%;\n  position: fixed;\n  top: 0;\n  left: 0;\n  z-index: 99999;\n  padding: 60px 30px 15px;\n  background: #fff !important;\n  border: 0 !important; }\n\n.md-editor.md-fullscreen-mode .md-footer {\n  display: none; }\n\n.md-editor.md-fullscreen-mode .md-input, .md-editor.md-fullscreen-mode .md-preview {\n  margin: 0 auto !important;\n  height: 100% !important;\n  font-size: 20px !important;\n  padding: 20px !important;\n  color: #999;\n  line-height: 1.6em !important;\n  resize: none !important;\n  box-shadow: none !important;\n  background: #fff !important;\n  border: 0 !important; }\n\n.md-editor.md-fullscreen-mode .md-preview {\n  color: #333;\n  overflow: auto; }\n\n.md-editor.md-fullscreen-mode .md-input:focus, .md-editor.md-fullscreen-mode .md-input:hover {\n  color: #333;\n  background: #fff !important; }\n\n.md-editor.md-fullscreen-mode .md-header {\n  background: 0 0;\n  text-align: center;\n  position: fixed;\n  width: 100%;\n  top: 20px; }\n\n.md-editor.md-fullscreen-mode .btn-group {\n  float: none; }\n\n.md-editor.md-fullscreen-mode .btn {\n  border: 0;\n  background: 0 0;\n  color: #b3b3b3; }\n\n.md-editor.md-fullscreen-mode .btn.active, .md-editor.md-fullscreen-mode .btn:active, .md-editor.md-fullscreen-mode .btn:focus, .md-editor.md-fullscreen-mode .btn:hover {\n  box-shadow: none;\n  color: #333; }\n\n.md-editor.md-fullscreen-mode .md-fullscreen-controls {\n  position: absolute;\n  top: 20px;\n  right: 20px;\n  text-align: right;\n  z-index: 1002;\n  display: block; }\n\n.md-editor.md-fullscreen-mode .md-fullscreen-controls a {\n  color: #b3b3b3;\n  clear: right;\n  margin: 10px;\n  width: 30px;\n  height: 30px;\n  text-align: center; }\n\n.md-editor.md-fullscreen-mode .md-fullscreen-controls a:hover {\n  color: #333;\n  text-decoration: none; }\n\n.md-editor.md-fullscreen-mode .md-editor {\n  height: 100% !important;\n  position: relative; }\n\n.md-editor .md-fullscreen-controls {\n  display: none; }\n\n.md-nooverflow {\n  overflow: hidden;\n  position: fixed;\n  width: 100%; }\n\n/**\r\n * Nestable\r\n */\nhtml body {\n  font-family: 'Open Sans', sans-serif; }\n\n.widget2 {\n  background-color: #eeeeee !important; }\n\n.dd {\n  position: relative;\n  display: block;\n  margin: 0;\n  padding: 0;\n  max-width: 600px;\n  list-style: none;\n  font-size: 13px;\n  line-height: 20px; }\n\n.dd-list {\n  display: block;\n  position: relative;\n  margin: 0;\n  padding: 0;\n  list-style: none; }\n\n.dd-list .dd-list {\n  padding-left: 30px; }\n\n.dd-collapsed .dd-list {\n  display: none; }\n\n.dd-item,\n.dd-empty,\n.dd-placeholder {\n  display: block;\n  position: relative;\n  margin: 0;\n  padding: 0;\n  min-height: 20px;\n  font-size: 13px;\n  line-height: 20px; }\n\n.dd-handle {\n  display: block;\n  height: 30px;\n  margin: 5px 0;\n  padding: 5px 10px;\n  color: #555555;\n  text-decoration: none;\n  background: #fff;\n  border: 1px solid #ddd;\n  border-radius: 0.25rem;\n  box-sizing: border-box; }\n\n.dd-item > button {\n  display: block;\n  position: relative;\n  cursor: pointer;\n  float: left;\n  width: 25px;\n  height: 20px;\n  margin: 5px 0;\n  padding: 0;\n  text-indent: 100%;\n  white-space: nowrap;\n  overflow: hidden;\n  border: 0;\n  background: transparent;\n  font-size: 12px;\n  line-height: 1;\n  text-align: center;\n  font-weight: bold;\n  color: #555555; }\n  .dd-item > button:focus, .dd-item > button:active {\n    outline: 0; }\n\n.dd-item > button:before {\n  content: '+';\n  display: block;\n  position: absolute;\n  width: 100%;\n  text-align: center;\n  text-indent: 0; }\n\n.dd-item > button[data-action=\"collapse\"]:before {\n  content: '-'; }\n\n.dd-placeholder,\n.dd-empty {\n  margin: 5px 0;\n  padding: 0;\n  min-height: 30px;\n  background: #ddd;\n  border: 1px dashed #999999;\n  box-sizing: border-box;\n  border-radius: 0.25rem; }\n\n.dd-empty {\n  border: 1px dashed #999999;\n  min-height: 100px;\n  background-size: 60px 60px;\n  background-position: 0 0, 30px 30px;\n  background-image: -moz-linear-gradient(45deg, #fff 25%, transparent 25%, transparent 75%, #fff 75%, #fff), -moz-linear-gradient(45deg, #fff 25%, transparent 25%, transparent 75%, #fff 75%, #fff);\n  background-image: linear-gradient(45deg, #FFF 25%, transparent 25%, transparent 75%, #FFF 75%, #FFF), linear-gradient(45deg, #FFF 25%, transparent 25%, transparent 75%, #FFF 75%, #FFF); }\n\n.dd-dragel {\n  position: absolute;\n  pointer-events: none;\n  z-index: 9999; }\n\n.dd-dragel > .dd-item .dd-handle {\n  margin-top: 0; }\n\n.dd-dragel .dd-handle {\n  -webkit-box-shadow: 2px 4px 6px 0 rgba(0, 0, 0, 0.1);\n  box-shadow: 2px 4px 6px 0 rgba(0, 0, 0, 0.1); }\n\n/**\r\n * Nestable Extras\r\n */\n.nestable-lists {\n  display: block;\n  clear: both;\n  padding: 30px 0;\n  width: 100%;\n  border: 0;\n  border-top: 2px solid #ddd;\n  border-bottom: 2px solid #ddd; }\n\n@media only screen and (min-width: 700px) {\n  .dd + .dd {\n    margin-left: 2%; } }\n\n.dd-hover > .dd-handle {\n  background: #2ea8e5 !important; }\n\n/**\r\n * Nestable Draggable Handles\r\n */\n.dd3-content {\n  display: block;\n  height: 30px;\n  margin: 5px 0;\n  padding: 5px 10px 5px 40px;\n  color: #333;\n  text-decoration: none;\n  font-weight: bold;\n  border: 1px solid #ccc;\n  background: #fafafa;\n  background: linear-gradient(top, #fafafa 0%, #eee 100%);\n  border-radius: 3px;\n  box-sizing: border-box; }\n\n.dd3-content:hover {\n  color: #2ea8e5;\n  background: #fff; }\n\n.dd-dragel > .dd3-item > .dd3-content {\n  margin: 0; }\n\n.dd3-item > button {\n  margin-left: 30px; }\n\n.dd3-handle {\n  position: absolute;\n  margin: 0;\n  left: 0;\n  top: 0;\n  cursor: pointer;\n  width: 30px;\n  text-indent: 100%;\n  white-space: nowrap;\n  overflow: hidden;\n  border: 1px solid #aaa;\n  background: #ddd;\n  background: -webkit-linear-gradient(top, #ddd 0%, #bbb 100%);\n  background: -moz-linear-gradient(top, #ddd 0%, #bbb 100%);\n  background: linear-gradient(top, #ddd 0%, #bbb 100%);\n  border-top-right-radius: 0;\n  border-bottom-right-radius: 0; }\n\n.dd3-handle:before {\n  content: '≡';\n  display: block;\n  position: absolute;\n  left: 0;\n  top: 3px;\n  width: 100%;\n  text-align: center;\n  text-indent: 0;\n  color: #fff;\n  font-size: 20px;\n  font-weight: normal; }\n\n.button-ver2.trash-popup {\n  position: absolute;\n  z-index: 10000;\n  background-color: #fff;\n  color: black;\n  box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.07);\n  border: 1px solid rgba(0, 0, 0, 0.12);\n  border-radius: 50%;\n  transform: scale(0.3);\n  opacity: 0;\n  transition: transform 0.2s cubic-bezier(0.2, 0.7, 0.5, 1), opacity 0.2s cubic-bezier(0.2, 0.7, 0.5, 1); }\n\n.mini:hover {\n  display: block; }\n\n.trash-popup {\n  top: -6px;\n  right: -6px;\n  left: auto; }\n\n.button-ver2 {\n  width: 20px;\n  height: 20px; }\n\n.button-ver2 {\n  -webkit-user-select: none;\n  -moz-user-select: none;\n  -ms-user-select: none;\n  user-select: none;\n  cursor: pointer; }\n\n.blocksdiv {\n  padding-top: 2%;\n  padding-left: 15%; }\n\n.divseparator {\n  border-right: 1px solid #eeeeee; }\n\n.list-group-item {\n  font-weight: bold; }\n\nlegend {\n  border-bottom: 0px solid #e5e5e5; }\n\n.blockbtns {\n  font-size: 12px;\n  padding-top: 7px;\n  height: 35px;\n  margin-right: 2%;\n  width: 25%;\n  border: 1px solid #a6a6a6;\n  border-radius: 10%;\n  text-align: center;\n  background-color: #a6a6a6;\n  font-weight: normal;\n  color: white;\n  cursor: pointer;\n  margin-bottom: 2%;\n  position: relative;\n  white-space: nowrap;\n  text-overflow: ellipsis; }\n\n.dd3-handle:hover {\n  background: #ddd; }\n\n.GroupBtn {\n  padding-left: 3%;\n  padding-top: 3%; }\n\n.GroupForm {\n  padding-left: 3%;\n  padding-top: 3%; }\n\n/***********************************/\n/**      LIST GROUP SORTABLE      **/\n/***********************************/\n.list-group-sortable > .list-group-item {\n  margin-bottom: 0;\n  border-radius: 0.25rem; }\n  .list-group-sortable > .list-group-item + .list-group-item {\n    margin-top: 0.5rem; }\n\n.list-group-sortable > .list-group-item-placeholder {\n  border: 1px dashed #999999;\n  background-color: #ddd; }\n\n.list-group-sortable:last-of-type > .list-group-item:last-child {\n  border-bottom: 1px solid #ddd; }\n\n.list-group-sortable2 > .list-group-item {\n  margin-bottom: 0;\n  border-radius: 0.25rem; }\n  .list-group-sortable2 > .list-group-item + .list-group-item {\n    margin-top: 0.5rem; }\n\n.list-group-sortable2 > .list-group-item-placeholder {\n  border: 1px dashed #999999;\n  background-color: #ddd; }\n\n.list-group-sortable2:last-of-type > .list-group-item:last-child {\n  border-bottom: 1px solid #ddd; }\n\n.image-inner div {\n  height: 144px;\n  background-position: 50%;\n  background-repeat: no-repeat;\n  background-size: cover;\n  transition: opacity .1s;\n  background-color: #fff;\n  border-top-left-radius: 7px;\n  border-top-right-radius: 7px; }\n\n.card-content .content {\n  padding: 3px; }\n\n.contenttitle textarea {\n  height: auto;\n  font-size: 13px;\n  font-weight: 600;\n  line-height: 1.4;\n  top: -1px;\n  color: #1d1d1d;\n  padding: 2px 6px 0 !important; }\n\n.contenttitle textarea {\n  width: 100%;\n  display: block;\n  padding: 3px 6px 0;\n  background-color: #eee;\n  border: 1px solid transparent;\n  resize: none;\n  transition: border-color .1s;\n  margin: 0;\n  overflow: hidden;\n  white-space: inherit; }\n\n.contenttitle input {\n  width: 100%;\n  display: block;\n  padding: 3px 6px 0;\n  background-color: #eee;\n  border: 1px solid transparent;\n  resize: none;\n  transition: border-color .1s;\n  margin: 0;\n  overflow: hidden;\n  white-space: inherit;\n  font-weight: 600; }\n\ninput:focus {\n  outline: none !important;\n  border: 1px solid #5dc4bf;\n  box-shadow: 0 0 10px #719ECE;\n  border-radius: 7px; }\n\n.image-inner {\n  border-bottom: 1px solid #fff; }\n\n.image-inner2 div {\n  height: 144px;\n  background-position: 50%;\n  background-repeat: no-repeat;\n  background-size: cover;\n  transition: opacity .1s;\n  background-color: #fff;\n  border-radius: 7px; }\n\ntextarea:focus {\n  outline: none !important;\n  border: 1px solid #5dc4bf;\n  box-shadow: 0 0 10px #719ECE;\n  border-radius: 7px; }\n\n.addbutton {\n  background-color: #eee;\n  font-size: 14px;\n  font-weight: normal;\n  color: #a6a6a6;\n  text-align: center;\n  line-height: 48px;\n  height: 49px;\n  cursor: pointer;\n  text-transform: uppercase;\n  border-bottom-left-radius: 7px;\n  border-bottom-right-radius: 7px; }\n\n::-webkit-input-placeholder {\n  text-align: center; }\n\n.btn-gray {\n  background-color: #eee;\n  border-color: #fff;\n  color: #a6a6a6; }\n\n.list-group-sortable .list-group-item {\n  font-weight: normal;\n  color: #a6a6a6; }\n\n.button-image--replace {\n  background-color: #eee;\n  color: #a6a6a6;\n  font-weight: normal;\n  border-top-left-radius: 7px;\n  border-top-right-radius: 7px;\n  background-position: center 51px;\n  width: 100%;\n  height: 144px !important;\n  top: 0 !important;\n  margin: 0;\n  line-height: 65px !important;\n  display: inline-block !important;\n  padding: 0;\n  border: none;\n  outline: none; }\n\n.button-image__title {\n  color: #a6a6a6;\n  font-size: 16px;\n  position: static !important;\n  display: inline-block !important;\n  font-weight: normal;\n  text-align: center;\n  vertical-align: bottom;\n  line-height: 1.43; }\n\n:-moz-placeholder {\n  /* Firefox 18- */\n  text-align: center; }\n\n::-moz-placeholder {\n  /* Firefox 19+ */\n  text-align: center; }\n\n:-ms-input-placeholder {\n  text-align: center; }\n\n.topmargin {\n  margin-top: 5%; }\n\n.button-image:hover {\n  opacity: 1;\n  color: #555555;\n  background-color: #c4c4c4;\n  border-color: #fff; }\n\n.addbutton:hover {\n  opacity: 1;\n  color: #555555;\n  background-color: #c4c4c4;\n  border-color: #fff; }\n\n.contenturl {\n  border-bottom: 1px solid #fff; }\n\n.top-buttons {\n  position: absolute;\n  right: -8px;\n  top: -28px;\n  height: 27px;\n  width: 271px;\n  text-align: right;\n  opacity: 1;\n  transition: opacity .1s;\n  -webkit-transition: opacity .1s;\n  white-space: nowrap;\n  padding: 0 4px 0 0;\n  z-index: 10; }\n\n.button-remove {\n  top: 21px;\n  left: 238px;\n  position: absolute;\n  margin: 0;\n  width: 32px;\n  height: 32px;\n  background: #fff none;\n  box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.07);\n  border: 1px solid rgba(0, 0, 0, 0.1);\n  border-radius: 16px;\n  transform: scale(0.3);\n  opacity: 0;\n  transition: opacity 0.2s cubic-bezier(0.2, 0.7, 0.5, 1), transform 0.2s cubic-bezier(0.2, 0.7, 0.5, 1); }\n\n.top-buttons .button.remove::before {\n  content: \"\";\n  position: absolute;\n  background: url(assets/img/download.png) 50% no-repeat;\n  top: 0;\n  left: 0;\n  width: 30px;\n  height: 31px;\n  opacity: .3;\n  transition: opasity 60ms; }\n\n.card.add::after {\n  content: \" \";\n  width: 24px;\n  height: 24px;\n  display: inline-block;\n  vertical-align: middle;\n  background: url(assets/img/plus.png) no-repeat 50%;\n  opacity: .3; }\n\n.card.add {\n  width: 85%;\n  margin-top: 8%;\n  height: 333px;\n  line-height: 333px;\n  text-align: center;\n  cursor: pointer;\n  border: 1px solid;\n  border-color: #fff;\n  background-color: #eee; }\n\n.textcard textarea {\n  background-color: white;\n  border: 1px solid #a6a6a6;\n  border-radius: 7px;\n  margin-bottom: 5px; }\n\n.list-group-sortable2 .list-group-item {\n  cursor: move;\n  margin: 5px; }\n\n.or {\n  height: 24px;\n  font-size: 12px;\n  line-height: 24px;\n  text-align: center;\n  color: #a6a6a6;\n  text-transform: uppercase; }\n\n.addquickreply {\n  border-radius: 20px;\n  height: 40px;\n  line-height: 40px; }\n\n.addquickreply {\n  font-size: 14px;\n  font-weight: normal;\n  text-align: center;\n  padding: 0;\n  outline: none;\n  cursor: pointer;\n  -webkit-user-select: none;\n  -moz-user-select: none;\n  -ms-user-select: none;\n  user-select: none;\n  text-transform: uppercase;\n  border-bottom-color: rgba(0, 0, 0, 0.17);\n  box-shadow: 0 1px 3px -1px rgba(0, 0, 0, 0.13);\n  transition: box-shadow 80ms ease 0s,border-top-color 80ms ease 0s,border-right-color 80ms ease 0s,border-bottom-color 80ms ease 0s,border-left-color 80ms ease 0s,background-color 80ms ease 0s; }\n\n.button-image2 {\n  border-radius: 7px; }\n\n.addquickreply2 {\n  margin-top: 5%; }\n\n.btn-info {\n  background-color: #a6a6a6;\n  border-color: #a6a6a6; }\n\n.galleryHorizontalRow {\n  display: -webkit-inline-box;\n  overflow-x: scroll;\n  padding-bottom: 10%; }\n\n.galleryColumns {\n  width: 50%; }\n\n.galleryHorizontalRow::-webkit-scrollbar {\n  width: 2px;\n  height: 5px; }\n\n.galleryHorizontalRow::-webkit-scrollbar-track {\n  -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);\n  border-radius: 7px; }\n\n.galleryHorizontalRow::-webkit-scrollbar-thumb {\n  border-radius: 7px;\n  -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.5); }\n\n.list-group-item {\n  border-bottom: 1px solid #ddd !important; }\n\n.addBlock2 {\n  background-color: #eee;\n  border-color: #fff;\n  color: #a6a6a6; }\n\n.blockactive {\n  background-color: #053748; }\n\n.addButtonList {\n  padding: 0;\n  list-style: none;\n  display: table;\n  table-layout: fixed;\n  width: 100%; }\n\n.addButtonListItem {\n  display: inline;\n  display: table-cell;\n  padding: 0em 4.5em;\n  cursor: pointer; }\n\n.modalliactive {\n  border: 1px solid #ddd;\n  border-bottom: none;\n  border-top-left-radius: 5px;\n  border-top-right-radius: 5px;\n  background-color: #ddd; }\n\n.modalliitem {\n  font-weight: 600;\n  font-size: 14px;\n  color: #a6a6a6; }\n\n.modal-dialog {\n  max-width: 400px !important;\n  margin: 30px auto; }\n\n.modalContentActive {\n  display: block; }\n\n.modalContentDeActive {\n  display: none; }\n\n/**\r\n * select2\r\n */\n.select2-container .select2-choice abbr {\n  background: url(\"assets/select2/select2.png\") right top no-repeat; }\n\n.select2-container .select2-choice .select2-arrow b {\n  background: url(\"assets/select2/select2.png\") no-repeat 0 1px; }\n\n.select2-search input {\n  background: #fff url(\"assets/select2/select2.png\") no-repeat 100% -22px;\n  background: url(\"assets/select2/select2.png\") no-repeat 100% -22px, -webkit-gradient(linear, left bottom, left top, color-stop(0.85, #fff), color-stop(0.99, #eee));\n  background: url(\"assets/select2/select2.png\") no-repeat 100% -22px, -webkit-linear-gradient(center bottom, #fff 85%, #eee 99%);\n  background: url(\"assets/select2/select2.png\") no-repeat 100% -22px, -moz-linear-gradient(center bottom, #fff 85%, #eee 99%);\n  background: url(\"assets/select2/select2.png\") no-repeat 100% -22px, linear-gradient(to bottom, #fff 85%, #eee 99%) 0 0; }\n\nhtml[dir=\"rtl\"] .select2-search input {\n  background: #fff url(\"assets/select2/select2.png\") no-repeat -37px -22px;\n  background: url(\"assets/select2/select2.png\") no-repeat -37px -22px, -webkit-gradient(linear, left bottom, left top, color-stop(0.85, #fff), color-stop(0.99, #eee));\n  background: url(\"assets/select2/select2.png\") no-repeat -37px -22px, -webkit-linear-gradient(center bottom, #fff 85%, #eee 99%);\n  background: url(\"assets/select2/select2.png\") no-repeat -37px -22px, -moz-linear-gradient(center bottom, #fff 85%, #eee 99%);\n  background: url(\"assets/select2/select2.png\") no-repeat -37px -22px, linear-gradient(to bottom, #fff 85%, #eee 99%) 0 0; }\n\n.select2-search-choice-close {\n  background: url(\"assets/select2/select2.png\") right top no-repeat; }\n\n.select2-search input.select2-active {\n  background: #fff url(\"assets/select2/select2-spinner.gif\") no-repeat 100%;\n  background: url(\"assets/select2/select2-spinner.gif\") no-repeat 100%, -webkit-gradient(linear, left bottom, left top, color-stop(0.85, #fff), color-stop(0.99, #eee));\n  background: url(\"assets/select2/select2-spinner.gif\") no-repeat 100%, -webkit-linear-gradient(center bottom, #fff 85%, #eee 99%);\n  background: url(\"assets/select2/select2-spinner.gif\") no-repeat 100%, -moz-linear-gradient(center bottom, #fff 85%, #eee 99%);\n  background: url(\"assets/select2/select2-spinner.gif\") no-repeat 100%, linear-gradient(to bottom, #fff 85%, #eee 99%) 0 0; }\n\n.select2-more-results.select2-active {\n  background: #f4f4f4 url(\"assets/select2/select2-spinner.gif\") no-repeat 100%; }\n\n.select2-container-multi .select2-choices .select2-search-field input.select2-active {\n  background: #fff url(\"assets/select2/select2-spinner.gif\") no-repeat 100% !important; }\n\n.select2-container .select2-selection--single .select2-selection__rendered {\n  color: #555555;\n  padding: 0; }\n\n.addbuttonResultList {\n  background-color: #eeeeee;\n  text-align: center;\n  margin-bottom: -13px; }\n\n.addQuickReplyList {\n  background-color: #eeeeee;\n  text-align: center;\n  margin-bottom: -13px; }\n\n.modalError {\n  border: 1px solid red; }\n\n.addQuickReplyListDisplay {\n  padding: 3px 3% 0 3%;\n  height: 55px;\n  margin-right: 2%;\n  border: 1px solid #053748;\n  border-radius: 10%;\n  text-align: center;\n  font-weight: normal;\n  color: black;\n  cursor: pointer;\n  margin-bottom: 2%;\n  position: relative;\n  box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.12);\n  background-color: white;\n  transition: padding .1s; }\n\n.blocksdivAddQuickReply {\n  padding-top: 2%;\n  padding-left: 7%; }\n\n.articleEditor {\n  padding: 2%; }\n\n.md-editor > textarea {\n  background-color: white; }\n\n.QuickReplyButtons {\n  display: inline-block;\n  font-size: 12px;\n  padding-top: 7px;\n  padding-left: 2%;\n  padding-right: 2%;\n  height: 35px;\n  margin-right: 5%;\n  border: 1px solid #a6a6a6;\n  border-radius: 10%;\n  text-align: center;\n  font-weight: normal;\n  color: #a6a6a6;\n  cursor: pointer;\n  margin-bottom: 2%;\n  position: relative;\n  white-space: nowrap; }\n\n.QuickReplyButtonsBlack {\n  color: white;\n  background-color: #a6a6a6; }\n\n.quickReplyClose {\n  top: -14px;\n  position: absolute;\n  left: auto;\n  right: -14px;\n  font-size: 1.5rem;\n  font-weight: bold;\n  line-height: 1;\n  color: #000;\n  text-shadow: 0 1px 0 #fff;\n  background-color: white;\n  border-radius: 50%;\n  width: 28px;\n  height: 28px;\n  border: 1px solid black;\n  display: none; }\n\n.quickReplyCloseBtn {\n  color: black;\n  font-size: 18px; }\n\n.singleImageBGDiv {\n  background: rgba(0, 0, 0, 0.2);\n  height: 144px;\n  width: 100%;\n  background-color: rgba(0, 0, 0, 0.8) !important;\n  padding: 32%;\n  display: none; }\n\n.galleryImageBGDiv {\n  background: rgba(0, 0, 0, 0.2);\n  height: 144px;\n  width: 100%;\n  background-color: rgba(0, 0, 0, 0.8) !important;\n  padding: 32%;\n  padding-left: 36%;\n  display: none; }\n\n.randomTextClose {\n  position: absolute;\n  left: auto;\n  right: 8px;\n  font-size: 1.5rem;\n  font-weight: bold;\n  line-height: 1;\n  color: #000;\n  text-shadow: 0 1px 0 #fff;\n  display: none; }\n\n.closeBlock {\n  top: -10px;\n  position: absolute;\n  left: auto;\n  right: -8px;\n  font-size: 1.5rem;\n  font-weight: bold;\n  line-height: 1;\n  color: #000;\n  text-shadow: 0 1px 0 #fff;\n  display: none;\n  padding-top: 2px;\n  width: 28px;\n  height: 28px;\n  background-color: white;\n  border: 1px solid black;\n  border-radius: 50%; }\n\n.closeBlock {\n  top: -10px;\n  position: absolute;\n  left: auto;\n  right: -8px;\n  font-size: 1.5rem;\n  font-weight: bold;\n  line-height: 1;\n  color: #000;\n  text-shadow: 0 1px 0 #fff;\n  display: none;\n  padding-top: 2px;\n  width: 28px;\n  height: 28px;\n  background-color: white;\n  border: 1px solid black;\n  border-radius: 50%; }\n\n.groupClose {\n  top: -10px;\n  position: absolute;\n  left: auto;\n  right: -8px;\n  font-size: 1.5rem;\n  font-weight: bold;\n  line-height: 1;\n  color: #000;\n  text-shadow: 0 1px 0 #fff;\n  display: none;\n  padding-top: 2px;\n  width: 28px;\n  height: 28px;\n  background-color: white;\n  border: 1px solid black;\n  border-radius: 50%;\n  padding-left: 1%; }\n\n.errorRM {\n  border: 1px solid red;\n  border-bottom: 1px solid red !important; }\n\n.textcardCharCount {\n  background-color: #5dc991;\n  border-radius: 30px;\n  font-size: 12px;\n  width: 30px;\n  height: 15px;\n  position: absolute;\n  left: -14px;\n  color: white;\n  padding-left: 5px; }\n"
-
-/***/ },
-
-/***/ "./src/app/generic/generic.component.ts":
-/***/ function(module, exports, __webpack_require__) {
-
-"use strict";
-/* WEBPACK VAR INJECTION */(function(jQuery) {"use strict";
-var core_1 = __webpack_require__("./node_modules/@angular/core/index.js");
-var BotTrainingService_1 = __webpack_require__("./src/app/services/BotTrainingService.ts");
-var BlockGroupsModel_1 = __webpack_require__("./src/app/models/BlockGroupsModel.ts");
-var Card_1 = __webpack_require__("./src/app/models/Card.ts");
-var ImageCard_1 = __webpack_require__("./src/app/models/ImageCard.ts");
-var TextCard_1 = __webpack_require__("./src/app/models/TextCard.ts");
-var GalleryCard_1 = __webpack_require__("./src/app/models/GalleryCard.ts");
-var CardAddButton_1 = __webpack_require__("./src/app/models/CardAddButton.ts");
-var ArticleCard_1 = __webpack_require__("./src/app/models/ArticleCard.ts");
-var QuickReplyCard_1 = __webpack_require__("./src/app/models/QuickReplyCard.ts");
-var core_2 = __webpack_require__("./node_modules/@angular/core/index.js");
-var ng2_modal_1 = __webpack_require__("./node_modules/ng2-modal/index.js");
-//select2GroupedData: Select2OptionData[] = [];
-var Generic = (function () {
-    function Generic(_botTrainingService, _rootNode) {
-        this._botTrainingService = _botTrainingService;
-        this._rootNode = _rootNode;
-        this.baseUrl = "https://aprilappserverstaging.azurewebsites.net/";
-        this.select2GroupedData = [];
-        this.GroupText = "";
-        this.groups = [];
-        this.blockGroupsModel = [];
-        this.popBlockName = "Block Name";
-        this.AddButtonBlock = "";
-        this.AddButtonName = "";
-        this.AddButtonUrl = "";
-        this.addButtonResponseMessageType = "";
-        this.articleText = "";
-        this.ckeditorContent = "";
-        this.articleModalTitle = "";
-        this.articleResponseId = "";
-        this.quickResponseMessageId = "";
-        this.sortOptions = {
-            placeholder: 'list-group-item list-group-item-placeholder',
-            forcePlaceholderSize: true
-        };
-        this.nest1Options = { group: 1 };
-        this.nest2Options = { group: 1 };
-        this.galleryCardArray = [];
-        this.cardArray = [];
-        this.populateGroups();
-        this.populateBlocksDropdown();
-    }
-    //Delete UI Buttons Hovering and Image Changing
-    Generic.prototype.mouseEnter = function (id) {
-        jQuery('#' + id).show();
-    };
-    Generic.prototype.mouseLeave = function (id) {
-        jQuery('#' + id).hide();
-    };
-    Generic.prototype.mouseEnterRTC = function (id, i) {
-        jQuery('#randText' + id + i).show();
-    };
-    Generic.prototype.mouseLeaveRTC = function (id, i) {
-        jQuery('#randText' + id + i).hide();
-    };
-    Generic.prototype.mouseEnterGI = function (id) {
-        jQuery('#galleryImageChangeBtn' + id).show();
-    };
-    Generic.prototype.mouseLeaveGI = function (id) {
-        jQuery('#galleryImageChangeBtn' + id).hide();
-    };
-    Generic.prototype.mouseEnterSI = function (id) {
-        jQuery('#singleImageChangeBtn' + id).show();
-    };
-    Generic.prototype.mouseLeaveSI = function (id) {
-        jQuery('#singleImageChangeBtn' + id).hide();
-    };
-    Generic.prototype.mouseEnterTCAB = function (id, addBtnId) {
-        jQuery('#textCardAddBtn' + id + addBtnId).show();
-    };
-    Generic.prototype.mouseLeaveTCAB = function (id, addBtnId) {
-        jQuery('#textCardAddBtn' + id + addBtnId).hide();
-    };
-    Generic.prototype.mouseEnterGCAB = function (id, i) {
-        jQuery('#galleryCardAddBtn' + id).show();
-    };
-    Generic.prototype.mouseLeaveGCAB = function (id, i) {
-        jQuery('#galleryCardAddBtn' + id).hide();
-    };
-    Generic.prototype.mouseEnterBlock = function (id) {
-        jQuery('#closeBlock' + id).show();
-    };
-    Generic.prototype.mouseLeaveBlock = function (id) {
-        jQuery('#closeBlock' + id).hide();
-    };
-    Generic.prototype.mouseEnterGroup = function (id) {
-        jQuery('#gr' + id).show();
-    };
-    Generic.prototype.mouseLeaveGroup = function (id) {
-        jQuery('#gr' + id).hide();
-    };
-    ///////////////////////////////////////////////
-    Generic.prototype.updateTitleRandomTextCard = function (responseMessageId, i) {
-        var _this = this;
-        this._botTrainingService.updateRandomTitleText(responseMessageId, jQuery('#textCardTitle' + responseMessageId + i).val(), i).subscribe(function (a) {
-            if (a.code == 200) {
-                _this.blockDetail(_this.popBlock._id);
-            }
-        });
-    };
-    Generic.prototype.addTextRandom = function (responseMessageId) {
-        var _this = this;
-        var count = jQuery('.randomTextCard').length + 1;
-        this._botTrainingService.addRandomText(responseMessageId, count).subscribe(function (a) {
-            if (a.code == 200) {
-                _this.blockDetail(_this.popBlock._id);
-            }
-        });
-    };
-    Generic.prototype.deleteQuickReply = function (addButtonId, parentId) {
-        var _this = this;
-        this._botTrainingService.deleteQuickReply(addButtonId, parentId).subscribe(function (a) {
-            if (a.code == 200) {
-                _this.blockDetail(_this.popBlock._id);
-            }
-        });
-    };
-    Generic.prototype.deleteRandomTextBox = function (addButtonId, parentId) {
-        var _this = this;
-        this._botTrainingService.deleteRandomText(addButtonId, parentId).subscribe(function (a) {
-            if (a.code == 200) {
-                _this.blockDetail(_this.popBlock._id);
-            }
-        });
-    };
-    Generic.prototype.deleteAddButton = function (addButtonId, parentId, type) {
-        var _this = this;
-        this._botTrainingService.deleteAddButton(addButtonId, parentId, type).subscribe(function (a) {
-            if (a.code == 200) {
-                _this.blockDetail(_this.popBlock._id);
-            }
-        });
-    };
-    Generic.prototype.deleteResponseMessage = function (resMesId) {
-        var _this = this;
-        this._botTrainingService.deleteResponseMessage(resMesId).subscribe(function (a) {
-            if (a.code == 200) {
-                for (var i = 0; i < _this.cardArray.length; i++) {
-                    var obj = _this.cardArray[i];
-                    if (obj._id == resMesId) {
-                        _this.cardArray.splice(i, 1);
-                    }
-                }
-            }
-        });
-    };
-    Generic.prototype.populateBlocksDropdown = function () {
-        var _this = this;
-        this._botTrainingService.getAllGroups('Generic').subscribe(function (a) {
-            if (a.code == 200) {
-                for (var i = 0; i < _this.blockGroupsModel.length; i++) {
-                    if (_this.blockGroupsModel[i].blocks.length > 0) {
-                        for (var j = 0; j < _this.blockGroupsModel[i].blocks.length; j++) {
-                            _this.select2GroupedData.push({ id: _this.blockGroupsModel[i].blocks[j]._id, text: _this.blockGroupsModel[i].blocks[j].name });
-                        }
-                    }
-                }
-            }
-        });
-    };
-    Generic.prototype.addButtonPost = function (val) {
-        var _this = this;
-        if (val == 1) {
-            var count = 0;
-            var blockname = "";
-            for (var i = 0; i < this.select2GroupedData.length; i++) {
-                if (this.select2GroupedData[i].id == this.AddButtonBlock) {
-                    blockname = this.select2GroupedData[i].text;
-                }
-            }
-            if (this.responseMessageDiff == 'addButton') {
-                var cardAddButton = new CardAddButton_1.CardAddButton(this.AddButtonName, blockname, this.AddButtonBlock, "");
-                count = jQuery('.addbuttonResultList').length;
-                console.log(count);
-            }
-            else {
-                //Add Quick Reply
-                var cardAddButton = new CardAddButton_1.CardAddButton(this.AddButtonName, blockname, this.AddButtonBlock, "");
-                count = jQuery('.addQuickReplyList').length;
-            }
-            if (this.AddButtonBlock != "" && this.AddButtonName != "") {
-                jQuery('#buttonName').removeClass('modalError');
-                jQuery('#simple-select').removeClass('modalError');
-                if (this.responseMessageDiff == 'addButton') {
-                    this._botTrainingService.addAddButton(this.addButtonResponseMessageId, cardAddButton, this.addButtonResponseMessageType, count).subscribe(function (a) {
-                        if (a.code == 200) {
-                            _this.AddButtonName = "";
-                            _this.AddButtonBlock = "";
-                            _this.blockDetail(_this.popBlock._id);
-                            _this.modalComponent.close();
-                        }
-                    });
-                }
-                else {
-                }
-            }
-            else {
-                jQuery('#buttonName').addClass('modalError');
-                jQuery('#simple-select').addClass('modalError');
-            }
-        }
-        else {
-            this.AddButtonUrl = 'http://' + this.AddButtonUrl;
-            var cardAddButton = new CardAddButton_1.CardAddButton(this.AddButtonName, this.AddButtonUrl, "", "");
-            if (this.AddButtonUrl != "" && this.AddButtonName != "") {
-                jQuery('#buttonName').removeClass('modalError');
-                jQuery('#urlContentData').removeClass('modalError');
-                this._botTrainingService.addAddButton(this.addButtonResponseMessageId, cardAddButton, this.addButtonResponseMessageType, jQuery('.addbuttonResultList').length).subscribe(function (a) {
-                    if (a.code == 200) {
-                        _this.AddButtonName = "";
-                        _this.AddButtonUrl = "";
-                        _this.blockDetail(_this.popBlock._id);
-                        _this.modalComponent.close();
-                    }
-                });
-            }
-            else {
-                jQuery('#buttonName').addClass('modalError');
-                jQuery('#urlContentData').addClass('modalError');
-            }
-        }
-    };
-    Generic.prototype.addButton = function (responseMessageId, type, diff) {
-        this.responseMessageDiff = diff;
-        if (diff == 'addButton') {
-            jQuery('#blockContent').css('display', 'block');
-            jQuery('#quickReplyContent').css('display', 'none');
-        }
-        else {
-            jQuery('#blockContent').css('display', 'none');
-            jQuery('#quickReplyContent').css('display', 'block');
-        }
-        this.addButtonResponseMessageType = type;
-        this.addButtonResponseMessageId = responseMessageId;
-    };
-    Generic.prototype.getSelect2DefaultList = function () {
-        return this.select2GroupedData;
-    };
-    Generic.prototype.modalChangeTab = function (val) {
-        if (val == 2) {
-            jQuery('#blockBtn').removeClass('modalliactive');
-            jQuery('#urlBtn').addClass('modalliactive');
-            jQuery('#blockContent').removeClass('modalContentActive');
-            jQuery('#blockContent').addClass('modalContentDeActive');
-            jQuery('#urlContent').addClass('modalContentActive');
-            jQuery('#urlContent').removeClass('modalContentDeActive');
-        }
-        else {
-            jQuery('#blockBtn').addClass('modalliactive');
-            jQuery('#urlBtn').removeClass('modalliactive');
-            jQuery('#blockContent').addClass('modalContentActive');
-            jQuery('#blockContent').removeClass('modalContentDeActive');
-            jQuery('#urlContent').removeClass('modalContentActive');
-            jQuery('#urlContent').addClass('modalContentDeActive');
-        }
-    };
-    //Card Functions
-    Generic.prototype.addQuickReplyBtn = function (Id) {
-        this.quickResponseMessageId = Id;
-    };
-    Generic.prototype.submitQuickReplyBtns = function () {
-        var _this = this;
-        console.log(this.quickResponseMessageId);
-        console.log(this.AddButtonName);
-        console.log(this.AddButtonBlock);
-        var count = jQuery('.qrbtns').length;
-        this._botTrainingService.addQuickReply(this.quickResponseMessageId, this.AddButtonName, this.AddButtonBlock, count).subscribe(function (a) {
-            if (a.code == 200) {
-                _this.blockDetail(_this.popBlock._id);
-            }
-        });
-    };
-    Generic.prototype.submitArticleText = function () {
-        var _this = this;
-        if (this.ckeditorContent !== undefined && this.ckeditorContent != "" && this.ckeditorContent != null) {
-            this._botTrainingService.updateArticleText(this.articleResponseId, this.ckeditorContent).subscribe(function (a) {
-                if (a.code == 200) {
-                    _this.blockDetail(_this.popBlock._id);
-                }
-            });
-        }
-    };
-    Generic.prototype.openArticleText = function (Id) {
-        this.articleResponseId = Id;
-        for (var j = 0; j < this.cardArray.length; j++) {
-            if (this.cardArray[j]._id == Id) {
-                var text = this.cardArray[j].data.articleText;
-                this.ckeditorContent = text;
-                this.articleModalTitle = this.cardArray[j].data.text;
-                break;
-            }
-        }
-    };
-    Generic.prototype.updateTitleArticleCard = function (responseMessageId) {
-        this._botTrainingService.updateTitleText(responseMessageId, jQuery('#articleCardTitle' + responseMessageId).val(), 0, 'article').subscribe(function (a) {
-            if (a.code == 200) {
-            }
-        });
-    };
-    Generic.prototype.updateTitleTextCard = function (responseMessageId) {
-        var _this = this;
-        this._botTrainingService.updateTitleText(responseMessageId, jQuery('#textCardTitle' + responseMessageId).val(), 0, 'text').subscribe(function (a) {
-            if (a.code == 200) {
-                _this.blockDetail(_this.popBlock._id);
-            }
-        });
-    };
-    Generic.prototype.updateTitleGalleryCard = function (responseMessageId, indexId) {
-        var _this = this;
-        this._botTrainingService.updateTitleText(responseMessageId, jQuery('#galleryCardTitle' + indexId).val(), indexId, 'gallery').subscribe(function (a) {
-            if (a.code == 200) {
-                _this.blockDetail(_this.popBlock._id);
-            }
-        });
-    };
-    Generic.prototype.updateDescriptionGalleryCard = function (responseMessageId, indexId) {
-        this._botTrainingService.updateDescriptionText(responseMessageId, jQuery('#galleryCardDescription' + indexId).val(), indexId).subscribe(function (a) {
-            if (a.code == 200) {
-            }
-        });
-    };
-    Generic.prototype.updateUrlGalleryCard = function (responseMessageId, indexId) {
-        this._botTrainingService.updateUrlText(responseMessageId, jQuery('#galleryCardUrl' + indexId).val(), indexId).subscribe(function (a) {
-            if (a.code == 200) {
-            }
-        });
-    };
-    Generic.prototype.openGalleryImage = function (Id) {
-        jQuery('#galleryImage' + Id).click();
-    };
-    Generic.prototype.openSingleImage = function (Id) {
-        jQuery('#singleImage' + Id).click();
-    };
-    Generic.prototype.populateGalleryImage = function (event, responseMessageId, blockId, indexId) {
-        var _this = this;
-        var file = event.target.files[0];
-        this._botTrainingService.getPictureUrl(file, responseMessageId, "gallery", indexId).subscribe(function (a) {
-            if (a.code == 200) {
-                _this.blockDetail(blockId);
-            }
-        });
-    };
-    Generic.prototype.populateSingleImage = function (event, responseMessageId, blockId) {
-        var _this = this;
-        var file = event.target.files[0];
-        this._botTrainingService.getPictureUrl(file, responseMessageId, "image", -1).subscribe(function (a) {
-            if (a.code == 200) {
-                _this.blockDetail(blockId);
-            }
-        });
-    };
-    ///
-    Generic.prototype.addBlock = function (Id) {
-        jQuery('.addBlock' + Id).hide();
-        jQuery('.saveBlock' + Id).show();
-    };
-    Generic.prototype.addGalleryCard = function (resMesId, blockId) {
-        var _this = this;
-        this.galleryCard = new GalleryCard_1.GalleryCard("", "", "", "", [], jQuery('.galleryColumns' + resMesId).length);
-        //this.card = new Card("gallery", this.galleryCard);
-        this._botTrainingService.addGalleryCard(this.galleryCard, resMesId).subscribe(function (a) {
-            if (a.code == 200) {
-                _this.blockDetail(blockId);
-            }
-        });
-    };
-    Generic.prototype.saveBlock = function (Id) {
-        var _this = this;
-        jQuery('#blockText' + Id).css('border', '1px solid rgba(0, 0, 0, 0.15);');
-        if (this.blockName != "" && this.blockName !== undefined) {
-            this._botTrainingService.addBlocks(this.blockName, 'Generic', Id).subscribe(function (a) {
-                if (a.code == 200) {
-                    jQuery('.addBlock' + Id).show();
-                    jQuery('.saveBlock' + Id).hide();
-                    _this.blockName = "";
-                    _this.addedBlock = a.data;
-                    for (var i = 0; i < _this.blockGroupsModel.length; i++) {
-                        if (_this.blockGroupsModel[i].group._id == Id) {
-                            _this.blockGroupsModel[i].blocks.push(_this.addedBlock);
-                            break;
-                        }
-                    }
-                }
-            });
-        }
-        else {
-            jQuery('#blockText' + Id).css('border', '1px solid red');
-        }
-    };
-    Generic.prototype.deleteBlock = function (Id) {
-        var _this = this;
-        jQuery('.rmdiv').hide();
-        this._botTrainingService.deleteBlock(Id)
-            .subscribe(function (a) {
-            if (a.code == 200) {
-                for (var i = 0; i < _this.blockGroupsModel.length; i++) {
-                    for (var j = 0; j < _this.blockGroupsModel[i].blocks.length; j++) {
-                        if (_this.blockGroupsModel[i].blocks[j]._id == Id) {
-                            _this.blockGroupsModel[i].blocks.splice(j, 1);
-                            break;
-                        }
-                    }
-                }
-            }
-        });
-    };
-    Generic.prototype.blockDetail = function (Id) {
-        jQuery('.blockbtns').removeClass("blockactive");
-        jQuery('#block' + Id).addClass("blockactive");
-        this.populateResponseMessages(Id);
-    };
-    Generic.prototype.populateResponseMessages = function (Id) {
-        var _this = this;
-        this._botTrainingService.getAllResponseMessages(Id).subscribe(function (a) {
-            if (a.code == 200) {
-                _this.cardArray = [];
-                _this.popBlock = a.data.block;
-                _this.cardArray = a.data.responseMessages;
-                _this.popBlockName = _this.popBlock.name;
-                _this.isLocked = _this.popBlock.isLocked;
-                console.log(_this.cardArray);
-                jQuery('.rmdiv').show();
-            }
-        });
-    };
-    Generic.prototype.addCard = function (val) {
-        var _this = this;
-        if (val == 1) {
-            //Gallery
-            this.galleryCard = new GalleryCard_1.GalleryCard("", "", "", "", [], 1);
-            this.card = new Card_1.Card("gallery", this.galleryCard);
-            var galleryCardArray = [];
-            galleryCardArray.push(this.galleryCard);
-            this._botTrainingService.addResponseMessage(galleryCardArray, "gallery", this.popBlock._id).subscribe(function (a) {
-                if (a.code == 200) {
-                    _this.cardArray.push(a.data);
-                }
-            });
-        }
-        else if (val == 2) {
-            //Random TextCard
-            var obj = {
-                'indexId': 1,
-                'text': ''
-            };
-            var tempArray = [];
-            tempArray.push(obj);
-            this.textCard = new TextCard_1.TextCard(tempArray, [], []);
-            this.card = new Card_1.Card("text", this.textCard);
-            this._botTrainingService.addResponseMessage(this.textCard, "text", this.popBlock._id).subscribe(function (a) {
-                if (a.code == 200) {
-                    _this.cardArray.push(a.data);
-                }
-            });
-        }
-        else if (val == 6) {
-            //singleText Card
-            //this.imageCard = new ImageCard("", []);
-            var singleTextObj = {
-                'text': '',
-                'cardAddButton': []
-            };
-            this.card = new Card_1.Card("singletext", singleTextObj);
-            this._botTrainingService.addResponseMessage(singleTextObj, "singletext", this.popBlock._id).subscribe(function (a) {
-                if (a.code == 200) {
-                    _this.cardArray.push(a.data);
-                }
-            });
-        }
-        else if (val == 3) {
-            //Image
-            this.imageCard = new ImageCard_1.ImageCard("", []);
-            this.card = new Card_1.Card("image", this.imageCard);
-            this._botTrainingService.addResponseMessage(this.imageCard, "image", this.popBlock._id).subscribe(function (a) {
-                if (a.code == 200) {
-                    _this.cardArray.push(a.data);
-                }
-            });
-        }
-        else if (val == 4) {
-            //Article
-            this.articleCard = new ArticleCard_1.ArticleCard("", "", "");
-            this.card = new Card_1.Card("image", this.articleCard);
-            this._botTrainingService.addResponseMessage(this.articleCard, "article", this.popBlock._id).subscribe(function (a) {
-                if (a.code == 200) {
-                    _this.cardArray.push(a.data);
-                }
-            });
-        }
-        else if (val == 5) {
-            //Quick Reply
-            this.quickReplyCard = new QuickReplyCard_1.QuickReplyCard([]);
-            this.card = new Card_1.Card("quickreply", this.quickReplyCard);
-            this._botTrainingService.addResponseMessage(this.quickReplyCard, "quickreply", this.popBlock._id).subscribe(function (a) {
-                if (a.code == 200) {
-                    _this.cardArray.push(a.data);
-                }
-            });
-        }
-    };
-    Generic.prototype.ngOnInit = function () {
-        jQuery('.nav-tabs').on('shown.bs.tab', 'a', function (e) {
-            if (e.relatedTarget) {
-                jQuery(e.relatedTarget).removeClass('active');
-            }
-        });
-        var oldIndex;
-        jQuery('#popover2').popover();
-        jQuery('.GroupBtn').show();
-        jQuery('.GroupForm').hide();
-        jQuery('.list-group-sortable').sortable(this.sortOptions);
-        jQuery('.list-group-sortable2').sortable(this.sortOptions);
-        jQuery('#nestable1').nestable(this.nest1Options);
-        jQuery('#nestable2').nestable(this.nest2Options);
-        jQuery(".list-group-sortable").sortable({
-            start: function (event, ui) {
-                oldIndex = ui.item.index() + 1;
-                jQuery(this).attr('data-previndex', ui.item[0].id);
-            },
-            update: function (e, ui) {
-                // gets the new and old index then removes the temporary attribute
-                var newIndex = ui.item.index() + 1;
-                var groupId = jQuery(this).attr('data-previndex');
-                jQuery.post("https://aprilappserverstaging.azurewebsites.net/responsemessage/sortingOfResponseMessages", {
-                    oldIndex: oldIndex,
-                    newIndex: newIndex,
-                    groupId: groupId
-                }, function (data, status) {
-                });
-                jQuery(this).removeAttr('data-previndex');
-            }
-        });
-        jQuery('.quickReplyClose').hover(function () {
-            alert('in');
-        }, function () {
-            alert('out');
-        });
-        //sorting of response messages
-        jQuery(".list-group-sortable2").sortable({
-            start: function (event, ui) {
-                oldIndex = ui.item.index() + 1;
-                var array = ui.item[0].childNodes;
-                var id;
-                array.forEach(function (entry) {
-                    if (entry.id !== undefined) {
-                        id = entry.id;
-                    }
-                });
-                jQuery(this).attr('data-previndex', id);
-                console.log(oldIndex);
-            },
-            update: function (e, ui) {
-                // gets the new and old index then removes the temporary attribute
-                var newIndex = ui.item.index() + 1;
-                var groupId = jQuery(this).attr('data-previndex');
-                jQuery.post("https://aprilappserverstaging.azurewebsites.net/responsemessage/sortingOfResponseMessages", {
-                    oldIndex: oldIndex,
-                    newIndex: newIndex,
-                    groupId: groupId
-                }, function (data, status) {
-                });
-                jQuery(this).removeAttr('data-previndex');
-            }
-        });
-    };
-    Generic.prototype.toggleDivs = function (val) {
-        var _this = this;
-        if (val == 1) {
-            jQuery('.GroupBtn').fadeOut("slow");
-            jQuery('.GroupForm').fadeIn("slow");
-        }
-        else {
-            jQuery('#emptyGroup').hide();
-            if (this.GroupText != "") {
-                this._botTrainingService.addGroup(this.GroupText, 'Generic').subscribe(function (a) {
-                    console.log(a);
-                    if (a.code == 200) {
-                        //this.populateGroups();
-                        var groupObj = new BlockGroupsModel_1.BlockGroupsModel(a.data, []);
-                        _this.blockGroupsModel.push(groupObj);
-                        _this.GroupText = "";
-                        jQuery('.GroupForm').fadeOut("slow");
-                        jQuery('.GroupBtn').fadeIn("slow");
-                    }
-                });
-            }
-            else {
-                jQuery('#emptyGroup').fadeIn("slow");
-            }
-        }
-    };
-    Generic.prototype.populateGroups = function () {
-        var _this = this;
-        this._botTrainingService.getAllGroups('Generic')
-            .subscribe(function (a) {
-            if (a.code == 200) {
-                _this.blockGroupsModel = a.data;
-                _this.blockGroupsModel.sort(function (a, b) {
-                    return a.group.order - b.group.order;
-                });
-                if (_this.blockGroupsModel.length != 0) {
-                    for (var i = 0; i < _this.blockGroupsModel.length; i++) {
-                        if (_this.blockGroupsModel[i].blocks.length > 0) {
-                            _this.popBlock = _this.blockGroupsModel[i].blocks[0];
-                            _this.popBlockId = _this.popBlock._id;
-                            break;
-                        }
-                    }
-                }
-                console.log(a);
-            }
-        });
-    };
-    Generic.prototype.deleteGroup = function (val) {
-        var _this = this;
-        this._botTrainingService.deleteGroup(val)
-            .subscribe(function (a) {
-            if (a.code == 200) {
-                //this.populateGroups();
-                for (var i = 0; i < _this.blockGroupsModel.length; i++) {
-                    if (_this.blockGroupsModel[i].group._id == val) {
-                        _this.blockGroupsModel.splice(i, 1);
-                        break;
-                    }
-                }
-            }
-        });
-    };
-    Generic.prototype.refreshTextBox = function () {
-        this.GroupText = "";
-    };
-    Generic.prototype.characterCount = function (cardId, Id) {
-        var textCount = jQuery('#textCardTitle' + cardId + Id).val();
-        var count = 320 - textCount.length;
-        jQuery('#textCardCount' + cardId + Id).html(count);
-        var height = textCount.length / 20;
-        var txt = jQuery('#textCardTitle' + cardId + Id).val();
-        var arraytxt = txt.split('\n');
-        console.log(arraytxt);
-        /*console.log(height);
-        console.log(jQuery('#textCardTitle'+cardId+Id).css('height'));
-        if(height < 1)
-        {
-            height = 1;
-        }
-        jQuery('#textCardTitle'+cardId+Id).css('height', 40*Math.floor(height) + 'px');*/
-    };
-    Generic.prototype.characterCountOfSingle = function (cardId) {
-        var textCount = jQuery('#textCardTitle' + cardId).val();
-        var count = 320 - textCount.length;
-        jQuery('#textCardCount' + cardId).html(count);
-        /*var height = textCount.length / 20;
-        console.log(height);
-        console.log(jQuery('#textCardTitle'+cardId).css('height'));
-        if(height < 1)
-        {
-            height = 1;
-        }
-        jQuery('#textCardTitle'+cardId).css('height', 40*Math.floor(height) + 'px');*/
-    };
-    Generic.prototype.dynamicHeight = function (el, cardId, Id) {
-        //el.style.cssText = 'height:' + el.scrollHeight + 'px';
-    };
-    Generic.prototype.editQR = function (_quickReplyId, _responseMessageId, _quickReplyName, _quickReplyBlockId) {
-        this.quickReplyId = _quickReplyId;
-        this.quickReplyBlockId = _quickReplyBlockId;
-        this.quickReplyBtnName = _quickReplyName;
-        this.quickReplyResponseMessageId = _responseMessageId;
-        this.EditQuickReplyName = this.quickReplyBtnName;
-        this.EditBlockQuickReply = this.quickReplyBlockId;
-        console.log(_quickReplyBlockId);
-        jQuery('#editQR-select').val(this.EditBlockQuickReply).change();
-    };
-    Generic.prototype.editQuickReplyBtns = function () {
-        var _this = this;
-        console.log(this.EditQuickReplyName);
-        this._botTrainingService.editQuickReply(this.EditQuickReplyName, this.quickReplyResponseMessageId, this.quickReplyId)
-            .subscribe(function (a) {
-            if (a.code == 200) {
-                _this.blockDetail(_this.popBlock._id);
-            }
-        });
-    };
-    __decorate([
-        core_1.ViewChild('myModal'), 
-        __metadata('design:type', (typeof (_a = typeof ng2_modal_1.Modal !== 'undefined' && ng2_modal_1.Modal) === 'function' && _a) || Object)
-    ], Generic.prototype, "modalComponent", void 0);
-    __decorate([
-        core_1.ViewChild('yourModal'), 
-        __metadata('design:type', (typeof (_b = typeof ng2_modal_1.Modal !== 'undefined' && ng2_modal_1.Modal) === 'function' && _b) || Object)
-    ], Generic.prototype, "modalComponent2", void 0);
-    __decorate([
-        core_2.Input(), 
-        __metadata('design:type', String)
-    ], Generic.prototype, "GroupText", void 0);
-    Generic = __decorate([
-        core_1.Component({
-            selector: '[generic]',
-            template: __webpack_require__("./src/app/generic/generic.component.html"),
-            providers: [BotTrainingService_1.BotTrainingService],
-            encapsulation: core_1.ViewEncapsulation.None,
-            styles: [__webpack_require__("./src/app/generic/generic.component.scss"), './../forms/elements/elements.style.css']
-        }), 
-        __metadata('design:paramtypes', [(typeof (_c = typeof BotTrainingService_1.BotTrainingService !== 'undefined' && BotTrainingService_1.BotTrainingService) === 'function' && _c) || Object, (typeof (_d = typeof core_1.ElementRef !== 'undefined' && core_1.ElementRef) === 'function' && _d) || Object])
-    ], Generic);
-    return Generic;
-    var _a, _b, _c, _d;
-}());
-exports.Generic = Generic;
-
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__("./node_modules/jquery/dist/jquery.js")))
-
-/***/ },
-
-/***/ "./src/app/generic/generic.module.ts":
-/***/ function(module, exports, __webpack_require__) {
-
-"use strict";
-"use strict";
-__webpack_require__("./node_modules/messenger/build/js/messenger.js");
-__webpack_require__("./node_modules/jquery-ui/ui/sortable.js");
-__webpack_require__("./node_modules/jquery.nestable/jquery.nestable.js");
-var common_1 = __webpack_require__("./node_modules/@angular/common/index.js");
-var forms_1 = __webpack_require__("./node_modules/@angular/forms/index.js");
-var core_1 = __webpack_require__("./node_modules/@angular/core/index.js");
-var router_1 = __webpack_require__("./node_modules/@angular/router/index.js");
-var ng2_bootstrap_1 = __webpack_require__("./node_modules/ng2-bootstrap/ng2-bootstrap.js");
-var ng2_bootstrap_2 = __webpack_require__("./node_modules/ng2-bootstrap/ng2-bootstrap.js");
-var ng2_bootstrap_3 = __webpack_require__("./node_modules/ng2-bootstrap/ng2-bootstrap.js");
-var ng2_modal_1 = __webpack_require__("./node_modules/ng2-modal/index.js");
-var generic_component_1 = __webpack_require__("./src/app/generic/generic.component.ts");
-var widget_module_1 = __webpack_require__("./src/app/layout/widget/widget.module.ts");
-var ng2_select2_1 = __webpack_require__("./node_modules/ng2-select2/ng2-select2.js");
-//import { CKEditorModule } from 'ng2-ckeditor';
-var quill_module_1 = __webpack_require__("./src/app/directory/quill/quill.module.ts");
-//import {Autosize} from 'angular2-autosize';
-exports.routes = [
-    { path: '', component: generic_component_1.Generic, pathMatch: 'full' }
-];
-var GenericModule = (function () {
-    function GenericModule() {
-    }
-    GenericModule.routes = exports.routes;
-    GenericModule = __decorate([
-        core_1.NgModule({
-            declarations: [
-                // Components / Directives/ Pipes
-                generic_component_1.Generic,
-            ],
-            imports: [
-                common_1.CommonModule,
-                forms_1.FormsModule,
-                router_1.RouterModule.forChild(exports.routes),
-                ng2_bootstrap_1.AlertModule,
-                widget_module_1.WidgetModule,
-                ng2_bootstrap_1.TooltipModule,
-                ng2_modal_1.ModalModule,
-                ng2_bootstrap_2.ButtonsModule,
-                ng2_bootstrap_2.DropdownModule,
-                ng2_bootstrap_3.TabsModule,
-                ng2_bootstrap_3.AccordionModule,
-                ng2_select2_1.Select2Module,
-                quill_module_1.QuillModule,
-            ]
-        }), 
-        __metadata('design:paramtypes', [])
-    ], GenericModule);
-    return GenericModule;
-}());
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.default = GenericModule;
-
-
-/***/ },
-
 /***/ "./src/app/layout/widget/widget.directive.ts":
 /***/ function(module, exports, __webpack_require__) {
 
@@ -18749,6 +17954,24 @@ var BotTrainingService = (function () {
         this.http = http;
         this.baseUrl = "https://aprilappserverstaging.azurewebsites.net/";
     }
+    BotTrainingService.prototype.updateBlockName = function (blockId, blockName) {
+        return this.http.get(this.baseUrl + 'blocks/updateBlockName/' + blockId + '/' + blockName)
+            .map(function (res) { return res.json(); });
+    };
+    BotTrainingService.prototype.updateAddBtns = function (responseMessageId, obj, type, responseMessageType) {
+        var body = JSON.stringify({ "responseMessageId": responseMessageId, "object": obj, "type": type, "responseMessageType": responseMessageType });
+        var headers = new http_1.Headers({ 'Content-Type': 'application/json' });
+        var options = new http_1.RequestOptions({ method: 'post', headers: headers });
+        return this.http.post(this.baseUrl + "responsemessagesroute/editTextCardAddBtn", body, options)
+            .map(function (res) { return res.json(); });
+    };
+    BotTrainingService.prototype.updateGalleryAddBtns = function (responseMessageId, cardId, obj, type, responseMessageType) {
+        var body = JSON.stringify({ "responseMessageId": responseMessageId, "cardId": cardId, "object": obj, "type": type, "responseMessageType": responseMessageType });
+        var headers = new http_1.Headers({ 'Content-Type': 'application/json' });
+        var options = new http_1.RequestOptions({ method: 'post', headers: headers });
+        return this.http.post(this.baseUrl + "responsemessagesroute/editGalleryCardAddBtn", body, options)
+            .map(function (res) { return res.json(); });
+    };
     BotTrainingService.prototype.getAllGroups = function (type) {
         return this.http.get(this.baseUrl + 'groups/getGroupsBlocks/' + type)
             .map(function (res) { return res.json(); });
@@ -18769,12 +17992,19 @@ var BotTrainingService = (function () {
         return this.http.get(this.baseUrl + 'groups/deleteOrderById/' + Id)
             .map(function (res) { return res.json(); });
     };
+    BotTrainingService.prototype.deleteOneGalleryCard = function (Id, indexId) {
+        return this.http.get(this.baseUrl + 'responsemessage/deleteOneGalleryCard/' + Id + '/' + indexId)
+            .map(function (res) { return res.json(); });
+    };
     BotTrainingService.prototype.updateTitleText = function (Id, Text, indexId, type) {
         return this.http.get(this.baseUrl + 'responsemessage/updateTitle/' + Id + '/' + indexId + '/' + type + '/' + Text)
             .map(function (res) { return res.json(); });
     };
     BotTrainingService.prototype.updateRandomTitleText = function (Id, text, indexId) {
-        return this.http.get(this.baseUrl + 'responsemessage/updateRandomTitle/' + Id + '/' + indexId + '/' + text)
+        var body = JSON.stringify({ "responseMessageId": Id, "titleText": text, "indexId": indexId });
+        var headers = new http_1.Headers({ 'Content-Type': 'application/json' });
+        var options = new http_1.RequestOptions({ method: 'post', headers: headers });
+        return this.http.post(this.baseUrl + "responsemessage/updateRandomTitle", body, options)
             .map(function (res) { return res.json(); });
     };
     BotTrainingService.prototype.updateArticleText = function (Id, Text) {
@@ -18881,6 +18111,802 @@ var BotTrainingService = (function () {
     var _a;
 }());
 exports.BotTrainingService = BotTrainingService;
+
+
+/***/ },
+
+/***/ "./src/app/specific/specific.component.html":
+/***/ function(module, exports) {
+
+module.exports = "<ol class=\"breadcrumb\">\r\n  <li class=\"breadcrumb-item\">YOU ARE HERE</li>\r\n  <li class=\"breadcrumb-item active\">Specific Groups and Topics</li>\r\n</ol>\r\n<h1 class=\"page-title\">Lists - <span class=\"fw-semi-bold\">Specific Groups for BOT</span></h1>\r\n<section class=\"widget widget2\" widget>\r\n  <header>\r\n    <h4>\r\n      Specific Group Lists\r\n    </h4>\r\n  </header>\r\n  <div class=\"widget-body\">\r\n    <div class=\"row\">\r\n      <div class=\"col-md-6 col-sm-12 col-lg-6 col-xs-12 divseparator\">\r\n        <ul class=\"list-group list-group-sortable mt-lg\">\r\n          <li class=\"list-group-item\" *ngFor=\"let blockGroups of blockGroupsModel\" (mouseenter)=\"mouseEnterGroup(blockGroups.group._id)\"\r\n                      (mouseleave)=\"mouseLeaveGroup(blockGroups.group._id)\" id={{blockGroups.group._id}}>\r\n            <i class=\"fa fa-sort\"></i>\r\n            <a class=\"close\" *ngIf=\"blockGroups.group.isLocked == true\"><i class=\"fa fa-lock\" aria-hidden=\"true\"></i></a>\r\n            <a href=\"#\" id=\"gr{{blockGroups.group._id}}\" class=\"groupClose\" *ngIf=\"blockGroups.group.isLocked == false\" (click)=\"deleteGroup(blockGroups.group._id)\" data-dismiss=\"alert\"\r\n              aria-hidden=\"true\"><i class=\"fa fa-trash-o\" aria-hidden=\"true\"></i></a> &nbsp;&nbsp;&nbsp; {{blockGroups.group.order}}\r\n            &nbsp;&nbsp;&nbsp; {{blockGroups.group.name}}\r\n            <div class=\"row blocksdiv\">\r\n              <div id=\"block{{block._id}}\" class=\"blockbtns\" (mouseenter)=\"mouseEnterBlock(block._id)\"\r\n                      (mouseleave)=\"mouseLeaveBlock(block._id)\" *ngFor=\"let block of blockGroups.blocks\" (click)=\"blockDetail(block._id)\">\r\n                <a href=\"#\" id=\"closeBlock{{block._id}}\" class=\"closeBlock\" (click)=\"deleteBlock(block._id)\" data-dismiss=\"alert\" *ngIf=\"blockGroups.group.isLocked == false\" aria-hidden=\"true\"><i class=\"fa fa-trash-o\" aria-hidden=\"true\"></i></a>\r\n                {{block.name}}\r\n              </div>\r\n              <div *ngIf=\"blockGroups.group.isLocked == false\" class=\"addBlock{{blockGroups.group._id}} blockbtns addBlock2\" (click)=\"addBlock(blockGroups.group._id)\">\r\n                <i class=\"fa fa-plus\" aria-hidden=\"true\"></i> Add Block\r\n              </div>\r\n              <div class=\"saveBlock{{blockGroups.group._id}}\" style=\"display:none\">\r\n                <div class=\"input-group\">\r\n                  <input id=\"blockText{{blockGroups.group._id}}\" type=\"text\" class=\"form-control\" [(ngModel)]=\"blockName\" placeholder=\"Block Name\"\r\n                  />\r\n                  <div class=\"input-group-btn\">\r\n                    <button type=\"button\" (click)=\"saveBlock(blockGroups.group._id)\" class=\"btn\"><i class=\"fa fa-plus\"></i></button>\r\n                  </div>\r\n                </div>\r\n              </div>\r\n            </div>\r\n          </li>\r\n\r\n        </ul>\r\n        <div class=\"row GroupBtn\">\r\n          <p>\r\n            <button type=\"button\" (click)=\"toggleDivs(1)\" class=\"btn btn-info btn-block\">Add Specific Group</button>\r\n          </p>\r\n        </div>\r\n        <div class=\"row GroupForm\">\r\n          <div class=\"form-group\">\r\n            <div class=\"input-group\">\r\n              <input type=\"text\" [(ngModel)]=\"GroupText\" class=\"form-control\" id=\"bar\">\r\n              <div class=\"input-group-btn\">\r\n                <button type=\"button\" (click)=\"toggleDivs(2)\" class=\"btn\"><i class=\"fa fa-plus\"></i></button>\r\n                <button type=\"button\" (click)=\"refreshTextBox()\" class=\"btn btn-primary\"><i class=\"fa fa-refresh\"></i></button>\r\n              </div>\r\n            </div>\r\n          </div>\r\n        </div>\r\n        <div id=\"emptyGroup\" style=\"display:none\" class=\"form-group\">\r\n          <div class=\"alert alert-danger alert-sm\">\r\n            <span class=\"fw-semi-bold\">Danger:</span> Please Enter Group Name.\r\n          </div>\r\n        </div>\r\n      </div>\r\n      <div class=\"col-md-6 col-sm-12 col-lg-6 col-xs-12 rmdiv\" style=\"display:none\">\r\n        <div class=\"row\">\r\n          <div class=\"col-md-12 col-lg-12 col-xs-12 col-sm-12\">\r\n            <h4>\r\n              {{popBlockName}}\r\n            </h4>\r\n            <input id=\"popBlockIdd\" type=\"text\" value=\"{{popBlockId}}\" style=\"visibility:hidden\" />\r\n\r\n          </div>\r\n        </div>\r\n        <ul class=\"list-group list-group-sortable2 mt-lg\">\r\n          <div *ngFor=\"let card of cardArray; let i = index\">\r\n            <li class=\"list-group-item\" [ngClass]=\"{errorRM: card.isCompleted == false}\" *ngIf=\"card.type == 'gallery'\" id=\"{{card._id}}\">\r\n              <a href=\"#\" class=\"close\" (click)=\"deleteResponseMessage(card._id)\" data-dismiss=\"alert\" aria-hidden=\"true\"><i class=\"fa fa-trash-o\" aria-hidden=\"true\"></i></a>\r\n              <div class=\"row table galleryHorizontalRow\">\r\n\r\n                <div class=\"galleryColumns galleryColumns{{card._id}}\" *ngFor=\"let galleryCard of card.data\">\r\n                  <div class=\"card\">\r\n                    <div class=\"image col-md-12 col-lg-12 col-xs-12 col-sm-1\">\r\n                      <div class=\"image-inner\">\r\n                        <input accept=\"image/*\" [(ngModel)]=\"galleryImageFile\" type=\"file\" id=\"galleryImage{{galleryCard.indexId}}\" (change)=\"populateGalleryImage($event, card._id, card._blockId, galleryCard.indexId)\"\r\n                          style=\"visibility: hidden;\" name=\"files\" title=\"Load File\" />\r\n                        <div id=\"galleryImageBtn{{galleryCard.indexId}}\" *ngIf=\"galleryCard.pictureUrl == ''\">\r\n                          <button (click)=\"openGalleryImage(galleryCard.indexId)\" class=\"button-image col-xs-12 col-sm-12 btn-gray button-image--replace button-image--replace-gallery\">\r\n                            <span class=\"button-image__title\"><i class=\"fa fa-camera\" aria-hidden=\"true\"></i><br/>Upload Image</span>\r\n                          </button>\r\n                        </div>\r\n                        <div id=\"galleryImageDiv{{galleryCard.indexId}}\" *ngIf=\"galleryCard.pictureUrl != ''\" (mouseenter)=\"mouseEnterGI(galleryCard.indexId)\" (mouseleave)=\"mouseLeaveGI(galleryCard.indexId)\" [ngStyle]=\"{ 'background-image': 'url(' + galleryCard.pictureUrl + ')'}\">\r\n                          <div class=\"galleryImageBGDiv\" id=\"galleryImageChangeBtn{{galleryCard.indexId}}\">\r\n                            <button class=\"btn\" (click)=\"openGalleryImage(galleryCard.indexId)\" style=\"background:transparent\">\r\n                              <i class=\"fa fa-camera\" aria-hidden=\"true\" style=\"color:white;font-size:24px;\"></i>\r\n                            </button>\r\n                          </div>\r\n                        </div>\r\n                      </div>\r\n                    </div>\r\n                    <div class=\"card-content col-md-12 col-lg-12 col-xs-12 col-sm-12\">\r\n                      <div class=\"contenttitle\">\r\n                        <textarea id=\"galleryCardTitle{{galleryCard.indexId}}\" maxlength=\"80\" placeholder=\"title\" (change)=\"updateTitleGalleryCard(card._id, galleryCard.indexId)\">{{galleryCard.title}}</textarea>\r\n                      </div>\r\n                      <div class=\"contentbody contenttitle\">\r\n                        <textarea id=\"galleryCardDescription{{galleryCard.indexId}}\" maxlength=\"80\" placeholder=\"description\" (change)=\"updateDescriptionGalleryCard(card._id, galleryCard.indexId)\">{{galleryCard.description}}</textarea>\r\n                      </div>\r\n                      <div class=\"contenturl contenttitle\">\r\n                        <input id=\"galleryCardUrl{{galleryCard.indexId}}\" value=\"{{galleryCard.url}}\" type=\"url\" placeholder=\"Url\" (change)=\"updateUrlGalleryCard(card._id, galleryCard.indexId)\"\r\n                        />\r\n                      </div>\r\n                      <div *ngFor=\"let addButton of galleryCard.cardAddButton\">\r\n                        <div class=\"addbuttonResultList\" (mouseenter)=\"mouseEnterGCAB(galleryCard.indexId)\" (mouseleave)=\"mouseLeaveGCAB(galleryCard.indexId)\">\r\n                          <a href=\"#\" id=\"galleryCardAddBtn{{galleryCard.indexId}}\" class=\"randomTextClose\" (click)=\"deleteAddButton(addButton._addButtonId, galleryCard.indexId, 'gallery')\" data-dismiss=\"alert\"\r\n                            aria-hidden=\"true\"><i class=\"fa fa-trash-o\" aria-hidden=\"true\"></i></a>\r\n                          <label>{{addButton.buttonname}}</label>\r\n                          <p>{{addButton.urlblockname}}</p>\r\n                        </div>\r\n                      </div>\r\n                      <div class=\"addbutton\" *ngIf=\"galleryCard.cardAddButton.length != 3\" (click)=\"myModal.open();addButton(galleryCard.indexId, 'gallery', 'addButton')\">\r\n                        <i class=\"fa fa-plus\" aria-hidden=\"true\"></i> Add Button\r\n                      </div>\r\n                    </div>\r\n                    <div class=\"top-buttons\">\r\n                      <div class=\"button-remove\">\r\n                        remove\r\n                      </div>\r\n                    </div>\r\n                  </div>\r\n                </div>\r\n                <div class=\"galleryColumns galleryColumns{{card._id}}\">\r\n                  <div class=\"card add\" (click)=\"addGalleryCard(card._id, card._blockId)\">\r\n\r\n                  </div>\r\n                </div>\r\n              </div>\r\n            </li>\r\n            <li class=\"list-group-item\" [ngClass]=\"{errorRM: card.isCompleted == false}\" *ngIf=\"card.type == 'text'\" id=\"{{card._id}}\">\r\n              <a href=\"#\" class=\"close\" (click)=\"deleteResponseMessage(card._id)\" data-dismiss=\"alert\" aria-hidden=\"true\"><i class=\"fa fa-trash-o\" aria-hidden=\"true\"></i></a>\r\n              <div class=\"row\">\r\n                <div class=\"col-md-6 col-lg-6 col-xs-12 col-sm-12\">\r\n                  <div class=\"card\">\r\n                    <div class=\"card-content col-md-12 col-lg-12 col-xs-12 col-sm-12\">\r\n                      <div class=\"contenttitle textcard randomTextCard\" *ngFor=\"let text of card.data.randomText; let j = index\" (mouseenter)=\"mouseEnterRTC(card._id,text.indexId)\"\r\n                      (mouseleave)=\"mouseLeaveRTC(card._id,text.indexId)\">\r\n                        <a href=\"#\" (click)=\"deleteRandomTextBox(text.indexId,card._id)\" id=\"randText{{card._id}}{{text.indexId}}\" class=\"randomTextClose\" *ngIf=\"j!=0\" data-dismiss=\"alert\"\r\n                          aria-hidden=\"true\"><i class=\"fa fa-trash-o\" aria-hidden=\"true\"></i></a>\r\n                        <span id=\"textCardCount{{card._id}}{{text.indexId}}\" *ngIf=\"j!=0\" class=\"textcardCharCount\">{{320 - text.text.length}}  </span><!-- (keydown)=\"characterCount(card._id, text.indexId);dynamicHeight($event, card._id, text.indexId)\" -->\r\n                        <textarea id=\"textCardTitle{{card._id}}{{text.indexId}}\" rows=\"0\"  *ngIf=\"j!=0\" maxlength=\"320\" placeholder=\"title\" (keydown)=\"characterCount(card._id, text.indexId)\" (change)=\"updateTitleRandomTextCard(card._id, text.indexId)\">{{text.text}}</textarea>\r\n                      </div>\r\n                      <div class=\"addbutton\" style=\"border-radius: 0px;\" (click)=\"addTextRandom(card._id)\">\r\n                        <i class=\"fa fa-plus\" aria-hidden=\"true\"></i> Add Text Box\r\n                      </div>\r\n                      <div *ngFor=\"let addButton of card.data.cardAddButton\">\r\n                        <div class=\"addbuttonResultList\" (mouseenter)=\"mouseEnterTCAB(card._id, addButton._addButtonId)\" (mouseleave)=\"mouseLeaveTCAB(card._id, addButton._addButtonId)\">\r\n                          <a href=\"#\" id=\"textCardAddBtn{{card._id}}{{addButton._addButtonId}}\" class=\"randomTextClose\" (click)=\"deleteAddButton(addButton._addButtonId, card._id, 'text')\" data-dismiss=\"alert\" aria-hidden=\"true\"><i class=\"fa fa-trash-o\" aria-hidden=\"true\"></i></a>\r\n                          <label>{{addButton.buttonname}}</label>\r\n                          <p>{{addButton.urlblockname}}</p>\r\n                        </div>\r\n                      </div>\r\n                      <div *ngIf=\"card.data.cardAddButton.length != 3\">\r\n                        <div class=\"addbutton\" *ngIf=\"card.data.quickReplyButton.length == 0\" (click)=\"myModal.open();addButton(card._id, 'text','addButton')\">\r\n                          <i class=\"fa fa-plus\" aria-hidden=\"true\"></i> Add Button\r\n                        </div>\r\n                      </div>\r\n                    </div>\r\n                    <div class=\"top-buttons\">\r\n                      <div class=\"button-remove\">\r\n                        remove\r\n                      </div>\r\n                    </div>\r\n                  </div>\r\n                </div>\r\n              </div>\r\n            </li>\r\n            <li class=\"list-group-item\" [ngClass]=\"{errorRM: card.isCompleted == false}\" *ngIf=\"card.type == 'singletext'\" id=\"{{card._id}}\">\r\n              <a href=\"#\" class=\"close\" (click)=\"deleteResponseMessage(card._id)\" data-dismiss=\"alert\" aria-hidden=\"true\"><i class=\"fa fa-trash-o\" aria-hidden=\"true\"></i></a>\r\n              <div class=\"row\">\r\n                <div class=\"col-md-6 col-lg-6 col-xs-12 col-sm-12\">\r\n                  <div class=\"card\">\r\n                    <div class=\"card-content col-md-12 col-lg-12 col-xs-12 col-sm-12\">\r\n                      <div class=\"contenttitle textcard randomTextCard\">\r\n                        <span id=\"textCardCount{{card._id}}\" class=\"textcardCharCount\">{{320 - card.data.text.length}}  </span><!-- (keydown)=\"characterCount(card._id, text.indexId);dynamicHeight($event, card._id, text.indexId)\" -->\r\n                        <textarea id=\"textCardTitle{{card._id}}\" rows=\"0\"  *ngIf=\"j!=0\" maxlength=\"320\" placeholder=\"title\" (keydown)=\"characterCountOfSingle(card._id)\" (change)=\"updateTitleTextCard(card._id)\">{{card.data.text}}</textarea>\r\n                      </div>\r\n                      <div *ngFor=\"let addButton of card.data.cardAddButton\">\r\n                        <div class=\"addbuttonResultList\" (mouseenter)=\"mouseEnterTCAB(card._id, addButton._addButtonId)\" (mouseleave)=\"mouseLeaveTCAB(card._id, addButton._addButtonId)\">\r\n                          <a href=\"#\" id=\"textCardAddBtn{{card._id}}{{addButton._addButtonId}}\" class=\"randomTextClose\" (click)=\"deleteAddButton(addButton._addButtonId, card._id, 'text')\" data-dismiss=\"alert\" aria-hidden=\"true\"><i class=\"fa fa-trash-o\" aria-hidden=\"true\"></i></a>\r\n                          <label>{{addButton.buttonname}}</label>\r\n                          <p>{{addButton.urlblockname}}</p>\r\n                        </div>\r\n                      </div>\r\n                      <div *ngIf=\"card.data.cardAddButton.length != 3\">\r\n                        <div class=\"addbutton\" (click)=\"myModal.open();addButton(card._id, 'text','addButton')\">\r\n                          <i class=\"fa fa-plus\" aria-hidden=\"true\"></i> Add Button\r\n                        </div>\r\n                      </div>\r\n                    </div>\r\n                    <div class=\"top-buttons\">\r\n                      <div class=\"button-remove\">\r\n                        remove\r\n                      </div>\r\n                    </div>\r\n                  </div>\r\n                </div>\r\n              </div>\r\n            </li>\r\n            <li class=\"list-group-item\" [ngClass]=\"{errorRM: card.isCompleted == false}\" *ngIf=\"card.type == 'image'\" id=\"{{card._id}}\">\r\n              <a href=\"#\" class=\"close\" (click)=\"deleteResponseMessage(card._id)\" data-dismiss=\"alert\" aria-hidden=\"true\"><i class=\"fa fa-trash-o\" aria-hidden=\"true\"></i></a>\r\n              <div class=\"row\">\r\n                <div class=\"col-md-6 col-lg-6 col-xs-12 col-sm-12\">\r\n                  <div class=\"card\">\r\n                    <div class=\"image col-md-12 col-lg-12 col-xs-12 col-sm-12\">\r\n                      <div class=\"image-inner2\">\r\n                        <input accept=\"image/*\" type=\"file\" id=\"singleImage{{card._id}}\" (change)=\"populateSingleImage($event, card._id, card._blockId)\"\r\n                          style=\"visibility: hidden;\" name=\"files\" title=\"Load File\" />\r\n                        <div id=\"singleImageBtn{{card._id}}\" *ngIf=\"card.data.pictureUrl == ''\">\r\n                          <button (click)=\"openSingleImage(card._id)\" class=\"button-image button-image2 col-xs-12 col-sm-12 btn-gray button-image--replace button-image--replace-gallery\">\r\n                            <span class=\"button-image__title\"><i class=\"fa fa-camera\" aria-hidden=\"true\"></i><br/>Upload Image</span>\r\n                          </button>\r\n                        </div>\r\n                        <div id=\"singleImageDiv{{card._id}}\" (mouseenter)=\"mouseEnterSI(card._id)\" (mouseleave)=\"mouseLeaveSI(card._id)\" *ngIf=\"card.data.pictureUrl != ''\" [ngStyle]=\"{ 'background-image': 'url(' + card.data.pictureUrl + ')'}\">\r\n                          <div class=\"singleImageBGDiv\" id=\"singleImageChangeBtn{{card._id}}\">\r\n                            <button class=\"btn\" (click)=\"openSingleImage(card._id)\" style=\"background:transparent\">\r\n                              <i class=\"fa fa-camera\" aria-hidden=\"true\" style=\"color:white;font-size:24px;\"></i>\r\n                            </button>\r\n                          </div>\r\n                        </div>\r\n                      </div>\r\n                    </div>\r\n                    <div class=\"top-buttons\">\r\n                      <div class=\"button-remove\">\r\n                        remove\r\n                      </div>\r\n                    </div>\r\n                  </div>\r\n                </div>\r\n              </div>\r\n            </li>\r\n            <li class=\"list-group-item\" [ngClass]=\"{errorRM: card.isCompleted == false}\" *ngIf=\"card.type == 'article'\" id=\"{{card._id}}\">\r\n              <a href=\"#\" class=\"close\" (click)=\"deleteResponseMessage(card._id)\" data-dismiss=\"alert\" aria-hidden=\"true\"><i class=\"fa fa-trash-o\" aria-hidden=\"true\"></i></a>\r\n              <div class=\"row\">\r\n                <div class=\"col-md-6 col-lg-6 col-xs-12 col-sm-12\">\r\n                  <!--<div class=\"card col-md-12 col-lg-12 col-xs-12 col-sm-12\">-->\r\n                  <div class=\"card-content col-md-12 col-lg-12 col-xs-12 col-sm-12\">\r\n                    <div class=\"image\">\r\n                      <div class=\"image-inner2\">\r\n                        <input accept=\"image/*\" type=\"file\" id=\"singleImage{{card._id}}\" (change)=\"populateSingleImage($event, card._id, card._blockId)\"\r\n                          style=\"visibility: hidden;\" name=\"files\" title=\"Load File\" />\r\n                        <div id=\"singleImageBtn{{card._id}}\" *ngIf=\"card.data.pictureUrl == ''\">\r\n                          <button (click)=\"openSingleImage(card._id)\" class=\"button-image button-image2 col-xs-12 col-sm-12 btn-gray button-image--replace button-image--replace-gallery\">\r\n                            <span class=\"button-image__title\"><i class=\"fa fa-camera\" aria-hidden=\"true\"></i><br/>Upload Image</span>\r\n                          </button>\r\n                        </div>\r\n                        <div id=\"singleImageDiv{{card._id}}\" (mouseenter)=\"mouseEnterSI(card._id)\" (mouseleave)=\"mouseLeaveSI(card._id)\" *ngIf=\"card.data.pictureUrl != ''\" [ngStyle]=\"{ 'background-image': 'url(' + card.data.pictureUrl + ')'}\">\r\n                          <div class=\"singleImageBGDiv\" id=\"singleImageChangeBtn{{card._id}}\">\r\n                            <button class=\"btn\" (click)=\"openSingleImage(card._id)\" style=\"background:transparent\">\r\n                              <i class=\"fa fa-camera\" aria-hidden=\"true\" style=\"color:white;font-size:24px;\"></i>\r\n                            </button>\r\n                          </div>\r\n                        </div>\r\n                      </div>\r\n                    </div>\r\n                    <div class=\"contenttitle textcard\" style=\"margin-top: 5px;\">\r\n                      <textarea id=\"articleCardTitle{{card._id}}\" maxlength=\"80\" placeholder=\"title\" (change)=\"updateTitleArticleCard(card._id)\">{{card.data.text}}</textarea>\r\n                    </div>\r\n                    <div class=\"addbutton\" (click)=\"openArticleText(card._id);articleModal.open()\">\r\n                      View Article\r\n                    </div>\r\n                  </div>\r\n                </div>\r\n                <!--</div>-->\r\n              </div>\r\n            </li>\r\n            <li class=\"list-group-item\" [ngClass]=\"{errorRM: card.isCompleted == false}\" *ngIf=\"card.type == 'quickreply'\" id=\"{{card._id}}\">\r\n              <a href=\"#\" class=\"close\" (click)=\"deleteResponseMessage(card._id)\" data-dismiss=\"alert\" aria-hidden=\"true\"><i class=\"fa fa-trash-o\" aria-hidden=\"true\"></i></a>\r\n              <div class=\"row\">\r\n                <!--id=\"block{{block._id}}\" *ngFor=\"let block of blockGroups.blocks\" (click)=\"blockDetail(block._id)\" -->\r\n                <div class=\"col-md-12 col-lg-12 col-xs-12 col-sm-12\">\r\n                  <div class=\"QuickReplyButtons qrbtns\" (click)=\"editQuickReplyModal.open();editQR(quickReply._addButtonId, card._id, quickReply.buttonname, quickReply._blockId)\" (mouseenter)=\"mouseEnter(quickReply._addButtonId) \" (mouseleave) =\"mouseLeave(quickReply._addButtonId)\" *ngFor=\"let quickReply of card.data.quickReplyBtns\">\r\n                    \r\n                    <div id=\"{{quickReply._addButtonId}}\" (click)=\"deleteQuickReply(quickReply._addButtonId, card._id)\" class=\"quickReplyClose\" data-dismiss=\"alert\" aria-hidden=\"true\"><i class=\"fa fa-trash-o quickReplyCloseBtn\" aria-hidden=\"true\"></i></div>\r\n                    {{quickReply.buttonname}}\r\n                  </div>\r\n                  <div class=\"QuickReplyButtons QuickReplyButtonsBlack\" (click)=\"yourModal.open();addQuickReplyBtn(card._id)\">\r\n                    <i class=\"fa fa-plus\" aria-hidden=\"true\"></i> Add Quick Reply\r\n                  </div>\r\n                </div>\r\n                <!--</div>-->\r\n              </div>\r\n            </li>\r\n          </div>\r\n        </ul>\r\n        <div class=\"row topmargin\">\r\n          <div class=\"col-md-3 col-lg-3\">\r\n            <legend>\r\n              <span>Add a Card</span>\r\n            </legend>\r\n          </div>\r\n        </div>\r\n        <div class=\"row\">\r\n          <div class=\"col-md-12 col-lg-12\">\r\n            <div class=\"btn-group\">\r\n              <button type=\"button\" (click)=\"addCard(1)\" class=\"btn width-100 mb-xs\"><i class=\"fa fa-picture-o\" aria-hidden=\"true\"></i><br/>Gallery</button>\r\n              <button type=\"button\" *ngIf=\"isLocked==false\" (click)=\"addCard(6)\" class=\"btn width-100 mb-xs\"><i class=\"fa fa-file-text-o\" aria-hidden=\"true\"></i><br/>Text Card</button>\r\n              <button type=\"button\" *ngIf=\"isLocked==true\" (click)=\"addCard(2)\" class=\"btn width-100 mb-xs\"><i class=\"fa fa-file-text-o\" aria-hidden=\"true\"></i><br/>Random Text</button>\r\n              <button type=\"button\" (click)=\"addCard(3)\" class=\"btn width-100 mb-xs\"><i class=\"fa fa-picture-o\" aria-hidden=\"true\"></i><br/>Image</button>\r\n              <button type=\"button\" (click)=\"addCard(4)\" class=\"btn width-100 mb-xs\"><i class=\"fa fa-info-circle\" aria-hidden=\"true\"></i><br/>Article</button>\r\n              <button type=\"button\" (click)=\"addCard(5)\" class=\"btn width-100 mb-xs\"><i class=\"fa fa-link\" aria-hidden=\"true\"></i><br/>Quick Reply</button>\r\n            </div>\r\n          </div>\r\n        </div>\r\n      </div>\r\n      <div class=\"col-md-6 col-sm-12 col-lg-6 col-xs-12 articleEditor\" style=\"display:none\">\r\n\r\n      </div>\r\n    </div>\r\n  </div>\r\n</section>\r\n<modal #myModal>\r\n  <modal-header>\r\n    <h4 class=\"modal-title text-xs-center fw-bold mt\" id=\"myModalLabel18\">Add Buttons to Response</h4>\r\n    <input id=\"buttonName\" type=\"text\" class=\"form-control\" [(ngModel)]=\"AddButtonName\" placeholder=\"Enter Button Name\" style=\"width:88%;margin-left:5%;\"\r\n    />\r\n  </modal-header>\r\n  <modal-content>\r\n    <div class=\"col-md-12 col-lg-12\">\r\n      <ul class=\"addButtonList\">\r\n        <li (click)=\"modalChangeTab(1)\" id=\"blockBtn\" class=\"addButtonListItem modalliactive\"><a class=\"modalliitem\">Blocks</a></li>\r\n        <li (click)=\"modalChangeTab(2)\" id=\"urlBtn\" class=\"addButtonListItem\"><a class=\"modalliitem\">Url</a></li>\r\n      </ul>\r\n      <div class=\"modalContent\">\r\n        <div id=\"blockContent\" class=\"row modalContentActive\">\r\n          <div class=\"col-md-12 col-xs-12\">\r\n            <div class=\"form-group row\">\r\n              <div class=\"col-md-12\">\r\n                <select class=\"form-control\" [(ngModel)]=\"AddButtonBlock\" name=\"blocksdd\" id=\"simple-select\">\r\n                  <option selected=\"selected\" value=\"0\">Select Block</option>\r\n                  <option *ngFor=\"let card of select2GroupedData\" value=\"{{card.id}}\">{{card.text}}</option>\r\n                  \r\n                </select>\r\n              </div>\r\n            </div>\r\n            <div class=\"row\">\r\n              <div class=\"col-md-12\">\r\n                <button type=\"button\" class=\"btn btn-success btn-block\" (click)=\"addButtonPost(1)\">Save</button>\r\n              </div>\r\n            </div>\r\n          </div>\r\n        </div>\r\n        <div id=\"urlContent\" class=\"row modalContentDeActive\">\r\n          <div class=\"col-md-12 col-xs-12\">\r\n            <div class=\"form-group row\">\r\n              <div class=\"col-md-12\">\r\n                <div class=\"input-group\">\r\n                  <span class=\"input-group-addon\">http://</span>\r\n                  <input id=\"urlContentData\" class=\"form-control\" type=\"text\" [(ngModel)]=\"AddButtonUrl\" placeholder=\"Enter Url\">\r\n                </div>\r\n                <!--<input id=\"urlContentData\" type=\"text\" class=\"form-control\" [(ngModel)]=\"AddButtonUrl\" placeholder=\"Enter Url\" />-->\r\n              </div>\r\n            </div>\r\n            <div class=\"row\">\r\n              <div class=\"col-md-12\">\r\n                <button type=\"button\" class=\"btn btn-success btn-block\" (click)=\"addButtonPost(2)\">Save</button>\r\n              </div>\r\n            </div>\r\n          </div>\r\n        </div>\r\n        <div id=\"articleContent\" class=\"row modalContentDeActive\">\r\n          <div class=\"col-md-12 col-xs-12\">\r\n            <div class=\"form-group row\">\r\n              <div class=\"col-md-12\">\r\n                <input id=\"urlContentData\" type=\"text\" class=\"form-control\" [(ngModel)]=\"AddButtonUrl\" placeholder=\"Enter Url\" />\r\n              </div>\r\n            </div>\r\n            <div class=\"row\">\r\n              <div class=\"col-md-12\">\r\n                <button type=\"button\" class=\"btn btn-success btn-block\" (click)=\"addButtonPost(2)\">Save</button>\r\n              </div>\r\n            </div>\r\n          </div>\r\n        </div>\r\n      </div>\r\n    </div>\r\n  </modal-content>\r\n  <modal-footer>\r\n  </modal-footer>\r\n</modal>\r\n<modal #yourModal>\r\n  <modal-header>\r\n    <h4 class=\"modal-title text-xs-center fw-bold mt\" id=\"myModalLabel18\">Add Quick Reply</h4>\r\n    <input id=\"buttonName\" type=\"text\" class=\"form-control\" [(ngModel)]=\"AddButtonName\" placeholder=\"Enter Button Name\" style=\"width:88%;margin-left:5%;\"\r\n    />\r\n  </modal-header>\r\n  <modal-content>\r\n    <div class=\"col-md-12 col-lg-12\">\r\n      <ul class=\"addButtonList\">\r\n        <li id=\"blockBtn\" class=\"addButtonListItem\"><a class=\"modalliitem\" style=\"padding: 0em 6em;\">Blocks</a></li>\r\n      </ul>\r\n      <div class=\"modalContent\">\r\n        <div id=\"blockContent\" class=\"row modalContentActive\">\r\n          <div class=\"col-md-12 col-xs-12\">\r\n            <div class=\"form-group row\">\r\n              <div class=\"col-md-12\">\r\n                <select class=\"form-control\" [(ngModel)]=\"AddButtonBlock\" name=\"blocksdd\" id=\"simple-select\">\r\n                  <option selected=\"selected\" value=\"0\">Select Block</option>\r\n                  <option *ngFor=\"let card of select2GroupedData\" value=\"{{card.id}}\">{{card.text}}</option>   \r\n                </select>\r\n              </div>\r\n            </div>\r\n            <div class=\"row\">\r\n              <div class=\"col-md-12\">\r\n                <button type=\"button\" class=\"btn btn-success btn-block\" (click)=\"submitQuickReplyBtns();yourModal.close()\">Save</button>\r\n              </div>\r\n            </div>\r\n          </div>\r\n        </div>\r\n      </div>\r\n    </div>\r\n  </modal-content>\r\n  <modal-footer>\r\n  </modal-footer>\r\n</modal>\r\n<modal #articleModal>\r\n  <modal-header>\r\n    <h4 class=\"modal-title text-xs-center fw-bold mt\" id=\"myModalLabel18\">Article for {{articleModalTitle}}</h4>\r\n  </modal-header>\r\n  <modal-content>\r\n    <div class=\"col-md-12 col-lg-12\">\r\n      <div class=\"modalContent\">\r\n        <quill-editor [(ngModel)]=\"ckeditorContent\"></quill-editor>\r\n      </div>\r\n      <div class=\"row\">\r\n        <div class=\"col-md-12\">\r\n          <button type=\"button\" class=\"btn btn-success btn-block\" (click)=\"submitArticleText();articleModal.close()\">Save</button>\r\n        </div>\r\n      </div>\r\n    </div>\r\n  </modal-content>\r\n  <modal-footer>\r\n  </modal-footer>\r\n</modal>\r\n<modal #editQuickReplyModal>\r\n  <modal-header>\r\n    <h4 class=\"modal-title text-xs-center fw-bold mt\" id=\"myModalLabel18\">Edit Quick Reply</h4>\r\n    <input id=\"buttonName\" type=\"text\" class=\"form-control\" [(ngModel)]=\"EditQuickReplyName\" placeholder=\"Enter Button Name\" style=\"width:88%;margin-left:5%;\"\r\n    />\r\n  </modal-header>\r\n  <modal-content>\r\n    <div class=\"col-md-12 col-lg-12\">\r\n      <!--<ul class=\"addButtonList\">\r\n        <li id=\"blockBtn\" class=\"addButtonListItem\"><a class=\"modalliitem\" style=\"padding: 0em 6em;\">Blocks</a></li>\r\n      </ul>-->\r\n      <div class=\"modalContent\">\r\n        <div id=\"blockContent\" class=\"row modalContentActive\">\r\n          <div class=\"col-md-12 col-xs-12\">\r\n            <!--<div class=\"form-group row\">\r\n              <div class=\"col-md-12\">\r\n                <select class=\"form-control\" [(ngModel)]=\"EditBlockQuickReply\" name=\"blocksdd\" id=\"editQR-select\">\r\n                  <option selected=\"selected\" value=\"0\">Select Block</option>\r\n                  <option *ngFor=\"let card of select2GroupedData\" [selected]=\"card.id == EditBlockQuickReply\" value=\"{{card.id}}\">{{card.text}}</option>   \r\n                </select>\r\n              </div>\r\n            </div>-->\r\n            <div class=\"row\">\r\n              <div class=\"col-md-12\">\r\n                <button type=\"button\" class=\"btn btn-success btn-block\" (click)=\"editQuickReplyBtns();editQuickReplyModal.close()\">Update</button>\r\n              </div>\r\n            </div>\r\n          </div>\r\n        </div>\r\n      </div>\r\n    </div>\r\n  </modal-content>\r\n  <modal-footer>\r\n  </modal-footer>\r\n</modal>"
+
+/***/ },
+
+/***/ "./src/app/specific/specific.component.scss":
+/***/ function(module, exports) {
+
+module.exports = "@charset \"UTF-8\";\n@import url(\"https://fonts.googleapis.com/css?family=Open+Sans\");\nbody {\n  overflow-x: visible; }\n\n/*! Select2 Bootstrap Theme v0.1.0-beta.9 | MIT License | github.com/select2/select2-bootstrap-theme */\n.select2-container--bootstrap {\n  display: block;\n  /*------------------------------------*      #COMMON STYLES\n  \\*------------------------------------*/\n  /**\n   * Search field in the Select2 dropdown.\n   */\n  /**\n   * No outline for all search fields - in the dropdown\n   * and inline in multi Select2s.\n   */\n  /**\n   * Adjust Select2's choices hover and selected styles to match\n   * Bootstrap 3's default dropdown styles.\n   *\n   * @see http://getbootstrap.com/components/#dropdowns\n   */\n  /**\n   * Clear the selection.\n   */\n  /**\n   * Address disabled Select2 styles.\n   *\n   * @see https://select2.github.io/examples.html#disabled\n   * @see http://getbootstrap.com/css/#forms-control-disabled\n   */\n  /*------------------------------------*      #DROPDOWN\n  \\*------------------------------------*/\n  /**\n   * Dropdown border color and box-shadow.\n   */\n  /**\n   * Limit the dropdown height.\n   */\n  /*------------------------------------*      #SINGLE SELECT2\n  \\*------------------------------------*/\n  /*------------------------------------*    #MULTIPLE SELECT2\n  \\*------------------------------------*/\n  /**\n   * Address Bootstrap control sizing classes\n   *\n   * 1. Reset Bootstrap defaults.\n   * 2. Adjust the dropdown arrow button icon position.\n   *\n   * @see http://getbootstrap.com/css/#forms-control-sizes\n   */\n  /* 1 */\n  /*------------------------------------*    #RTL SUPPORT\n  \\*------------------------------------*/ }\n  .select2-container--bootstrap .select2-selection {\n    box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);\n    background-color: #fff;\n    border: 1px solid rgba(0, 0, 0, 0.15);\n    border-radius: 0.25rem;\n    color: #555555;\n    font-size: 1rem;\n    outline: 0; }\n    .select2-container--bootstrap .select2-selection.form-control {\n      border-radius: 0.25rem; }\n  .select2-container--bootstrap .select2-search--dropdown .select2-search__field {\n    box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);\n    background-color: #fff;\n    border: 1px solid rgba(0, 0, 0, 0.15);\n    border-radius: 0.25rem;\n    color: #555555;\n    font-size: 1rem; }\n  .select2-container--bootstrap .select2-search__field {\n    outline: 0;\n    /* Firefox 18- */\n    /**\n     * Firefox 19+\n     *\n     * @see http://stackoverflow.com/questions/24236240/color-for-styled-placeholder-text-is-muted-in-firefox\n     */ }\n    .select2-container--bootstrap .select2-search__field::-webkit-input-placeholder {\n      color: #999; }\n    .select2-container--bootstrap .select2-search__field:-moz-placeholder {\n      color: #999; }\n    .select2-container--bootstrap .select2-search__field::-moz-placeholder {\n      color: #999;\n      opacity: 1; }\n    .select2-container--bootstrap .select2-search__field:-ms-input-placeholder {\n      color: #999; }\n  .select2-container--bootstrap .select2-results__option {\n    padding: 6px 12px;\n    /**\n     * Disabled results.\n     *\n     * @see https://select2.github.io/examples.html#disabled-results\n     */\n    /**\n     * Hover state.\n     */\n    /**\n     * Selected state.\n     */ }\n    .select2-container--bootstrap .select2-results__option[role=group] {\n      padding: 0; }\n    .select2-container--bootstrap .select2-results__option[aria-disabled=true] {\n      color: #999999;\n      cursor: not-allowed; }\n    .select2-container--bootstrap .select2-results__option[aria-selected=true] {\n      background-color: #f5f5f5;\n      color: #272727; }\n    .select2-container--bootstrap .select2-results__option--highlighted[aria-selected] {\n      background-color: #5d8fc2;\n      color: #fff; }\n    .select2-container--bootstrap .select2-results__option .select2-results__option {\n      padding: 6px 12px; }\n      .select2-container--bootstrap .select2-results__option .select2-results__option .select2-results__group {\n        padding-left: 0; }\n      .select2-container--bootstrap .select2-results__option .select2-results__option .select2-results__option {\n        margin-left: -12px;\n        padding-left: 24px; }\n        .select2-container--bootstrap .select2-results__option .select2-results__option .select2-results__option .select2-results__option {\n          margin-left: -24px;\n          padding-left: 36px; }\n          .select2-container--bootstrap .select2-results__option .select2-results__option .select2-results__option .select2-results__option .select2-results__option {\n            margin-left: -36px;\n            padding-left: 48px; }\n            .select2-container--bootstrap .select2-results__option .select2-results__option .select2-results__option .select2-results__option .select2-results__option .select2-results__option {\n              margin-left: -48px;\n              padding-left: 60px; }\n              .select2-container--bootstrap .select2-results__option .select2-results__option .select2-results__option .select2-results__option .select2-results__option .select2-results__option .select2-results__option {\n                margin-left: -60px;\n                padding-left: 72px; }\n  .select2-container--bootstrap .select2-results__group {\n    color: #999999;\n    display: block;\n    padding: 6px 12px;\n    font-size: 0.875rem;\n    line-height: 1.5;\n    white-space: nowrap; }\n  .select2-container--bootstrap.select2-container--focus .select2-selection, .select2-container--bootstrap.select2-container--open .select2-selection {\n    box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 8px rgba(77, 144, 254, 0.6);\n    transition: border-color ease-in-out 0.15s, box-shadow ease-in-out 0.15s;\n    border-color: #4D90FE; }\n  .select2-container--bootstrap.select2-container--open {\n    /**\n     * Make the dropdown arrow point up while the dropdown is visible.\n     */\n    /**\n     * Handle border radii of the container when the dropdown is showing.\n     */ }\n    .select2-container--bootstrap.select2-container--open .select2-selection .select2-selection__arrow b {\n      border-color: transparent transparent #999 transparent;\n      border-width: 0 4px 4px 4px; }\n    .select2-container--bootstrap.select2-container--open.select2-container--below .select2-selection {\n      border-bottom-right-radius: 0;\n      border-bottom-left-radius: 0;\n      border-bottom-color: transparent; }\n    .select2-container--bootstrap.select2-container--open.select2-container--above .select2-selection {\n      border-top-right-radius: 0;\n      border-top-left-radius: 0;\n      border-top-color: transparent; }\n  .select2-container--bootstrap .select2-selection__clear {\n    color: #999;\n    cursor: pointer;\n    float: right;\n    font-weight: bold;\n    margin-right: 10px; }\n    .select2-container--bootstrap .select2-selection__clear:hover {\n      color: #f8f8f8; }\n  .select2-container--bootstrap.select2-container--disabled .select2-selection {\n    border-color: rgba(0, 0, 0, 0.15);\n    box-shadow: none; }\n  .select2-container--bootstrap.select2-container--disabled .select2-selection,\n  .select2-container--bootstrap.select2-container--disabled .select2-search__field {\n    cursor: not-allowed; }\n  .select2-container--bootstrap.select2-container--disabled .select2-selection,\n  .select2-container--bootstrap.select2-container--disabled .select2-selection--multiple .select2-selection__choice {\n    background-color: #eeeeee; }\n  .select2-container--bootstrap.select2-container--disabled .select2-selection__clear,\n  .select2-container--bootstrap.select2-container--disabled .select2-selection--multiple .select2-selection__choice__remove {\n    display: none; }\n  .select2-container--bootstrap .select2-dropdown {\n    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.175);\n    border-color: #4D90FE;\n    overflow-x: hidden;\n    margin-top: -1px; }\n    .select2-container--bootstrap .select2-dropdown--above {\n      box-shadow: 0px -6px 12px rgba(0, 0, 0, 0.175);\n      margin-top: 1px; }\n  .select2-container--bootstrap .select2-results > .select2-results__options {\n    max-height: 200px;\n    overflow-y: auto; }\n  .select2-container--bootstrap .select2-selection--single {\n    height: 35px;\n    line-height: 1.5;\n    padding: 6px 24px 6px 12px;\n    /**\n     * Adjust the single Select2's dropdown arrow button appearance.\n     */ }\n    .select2-container--bootstrap .select2-selection--single .select2-selection__arrow {\n      position: absolute;\n      bottom: 0;\n      right: 12px;\n      top: 0;\n      width: 4px; }\n      .select2-container--bootstrap .select2-selection--single .select2-selection__arrow b {\n        border-color: #999 transparent transparent transparent;\n        border-style: solid;\n        border-width: 4px 4px 0 4px;\n        height: 0;\n        left: 0;\n        margin-left: -4px;\n        margin-top: -2px;\n        position: absolute;\n        top: 50%;\n        width: 0; }\n    .select2-container--bootstrap .select2-selection--single .select2-selection__rendered {\n      color: #555555;\n      padding: 0; }\n    .select2-container--bootstrap .select2-selection--single .select2-selection__placeholder {\n      color: #999; }\n  .select2-container--bootstrap .select2-selection--multiple {\n    min-height: 35px;\n    padding: 0;\n    height: auto;\n    /**\n     * Make Multi Select2's choices match Bootstrap 3's default button styles.\n     */\n    /**\n     * Minus 2px borders.\n     */\n    /**\n     * Clear the selection.\n     */ }\n    .select2-container--bootstrap .select2-selection--multiple .select2-selection__rendered {\n      box-sizing: border-box;\n      display: block;\n      line-height: 1.5;\n      list-style: none;\n      margin: 0;\n      overflow: hidden;\n      padding: 0;\n      width: 100%;\n      text-overflow: ellipsis;\n      white-space: nowrap; }\n    .select2-container--bootstrap .select2-selection--multiple .select2-selection__placeholder {\n      color: #999;\n      float: left;\n      margin-top: 5px; }\n    .select2-container--bootstrap .select2-selection--multiple .select2-selection__choice {\n      color: #555555;\n      background: #f8f8f8;\n      border: 1px solid transparent;\n      border-radius: 0.25rem;\n      cursor: default;\n      float: left;\n      margin: 5px 0 0 6px;\n      padding: 0 6px; }\n    .select2-container--bootstrap .select2-selection--multiple .select2-search--inline .select2-search__field {\n      background: transparent;\n      padding: 0 12px;\n      height: 33px;\n      line-height: 1.5;\n      margin-top: 0;\n      min-width: 5em; }\n    .select2-container--bootstrap .select2-selection--multiple .select2-selection__choice__remove {\n      color: #999;\n      cursor: pointer;\n      display: inline-block;\n      font-weight: bold;\n      margin-right: 3px; }\n      .select2-container--bootstrap .select2-selection--multiple .select2-selection__choice__remove:hover {\n        color: #f8f8f8; }\n    .select2-container--bootstrap .select2-selection--multiple .select2-selection__clear {\n      margin-top: 6px; }\n  .select2-container--bootstrap .select2-selection--single.input-sm,\n  .input-group-sm .select2-container--bootstrap .select2-selection--single,\n  .form-group-sm .select2-container--bootstrap .select2-selection--single {\n    border-radius: 0.2rem;\n    font-size: 0.875rem;\n    height: 1.8125rem;\n    line-height: 1.5;\n    padding: 5px 22px 5px 10px;\n    /* 2 */ }\n    .select2-container--bootstrap .select2-selection--single.input-sm .select2-selection__arrow b,\n    .input-group-sm .select2-container--bootstrap .select2-selection--single .select2-selection__arrow b,\n    .form-group-sm .select2-container--bootstrap .select2-selection--single .select2-selection__arrow b {\n      margin-left: -5px; }\n  .select2-container--bootstrap .select2-selection--multiple.input-sm,\n  .input-group-sm .select2-container--bootstrap .select2-selection--multiple,\n  .form-group-sm .select2-container--bootstrap .select2-selection--multiple {\n    min-height: 1.8125rem;\n    border-radius: 0.2rem; }\n    .select2-container--bootstrap .select2-selection--multiple.input-sm .select2-selection__choice,\n    .input-group-sm .select2-container--bootstrap .select2-selection--multiple .select2-selection__choice,\n    .form-group-sm .select2-container--bootstrap .select2-selection--multiple .select2-selection__choice {\n      font-size: 0.875rem;\n      line-height: 1.5;\n      margin: 4px 0 0 5px;\n      padding: 0 5px; }\n    .select2-container--bootstrap .select2-selection--multiple.input-sm .select2-search--inline .select2-search__field,\n    .input-group-sm .select2-container--bootstrap .select2-selection--multiple .select2-search--inline .select2-search__field,\n    .form-group-sm .select2-container--bootstrap .select2-selection--multiple .select2-search--inline .select2-search__field {\n      padding: 0 10px;\n      font-size: 0.875rem;\n      height: -0.1875rem;\n      line-height: 1.5; }\n    .select2-container--bootstrap .select2-selection--multiple.input-sm .select2-selection__clear,\n    .input-group-sm .select2-container--bootstrap .select2-selection--multiple .select2-selection__clear,\n    .form-group-sm .select2-container--bootstrap .select2-selection--multiple .select2-selection__clear {\n      margin-top: 5px; }\n  .select2-container--bootstrap .select2-selection--single.input-lg,\n  .input-group-lg .select2-container--bootstrap .select2-selection--single,\n  .form-group-lg .select2-container--bootstrap .select2-selection--single {\n    border-radius: 0.3rem;\n    font-size: 1.25rem;\n    height: 3.16667rem;\n    line-height: 1.33333;\n    padding: 10px 28px 10px 16px;\n    /* 1 */ }\n    .select2-container--bootstrap .select2-selection--single.input-lg .select2-selection__arrow,\n    .input-group-lg .select2-container--bootstrap .select2-selection--single .select2-selection__arrow,\n    .form-group-lg .select2-container--bootstrap .select2-selection--single .select2-selection__arrow {\n      width: 4px; }\n      .select2-container--bootstrap .select2-selection--single.input-lg .select2-selection__arrow b,\n      .input-group-lg .select2-container--bootstrap .select2-selection--single .select2-selection__arrow b,\n      .form-group-lg .select2-container--bootstrap .select2-selection--single .select2-selection__arrow b {\n        border-width: 4px 4px 0 4px;\n        margin-left: -4px;\n        margin-left: -10px;\n        margin-top: -2px; }\n  .select2-container--bootstrap .select2-selection--multiple.input-lg,\n  .input-group-lg .select2-container--bootstrap .select2-selection--multiple,\n  .form-group-lg .select2-container--bootstrap .select2-selection--multiple {\n    min-height: 3.16667rem;\n    border-radius: 0.3rem; }\n    .select2-container--bootstrap .select2-selection--multiple.input-lg .select2-selection__choice,\n    .input-group-lg .select2-container--bootstrap .select2-selection--multiple .select2-selection__choice,\n    .form-group-lg .select2-container--bootstrap .select2-selection--multiple .select2-selection__choice {\n      font-size: 1.25rem;\n      line-height: 1.33333;\n      border-radius: 0.25rem;\n      margin: 9px 0 0 8px;\n      padding: 0 10px; }\n    .select2-container--bootstrap .select2-selection--multiple.input-lg .select2-search--inline .select2-search__field,\n    .input-group-lg .select2-container--bootstrap .select2-selection--multiple .select2-search--inline .select2-search__field,\n    .form-group-lg .select2-container--bootstrap .select2-selection--multiple .select2-search--inline .select2-search__field {\n      padding: 0 16px;\n      font-size: 1.25rem;\n      height: 1.16667rem;\n      line-height: 1.33333; }\n    .select2-container--bootstrap .select2-selection--multiple.input-lg .select2-selection__clear,\n    .input-group-lg .select2-container--bootstrap .select2-selection--multiple .select2-selection__clear,\n    .form-group-lg .select2-container--bootstrap .select2-selection--multiple .select2-selection__clear {\n      margin-top: 10px; }\n  .select2-container--bootstrap .select2-selection.input-lg.select2-container--open .select2-selection--single {\n    /**\n     * Make the dropdown arrow point up while the dropdown is visible.\n     */ }\n    .select2-container--bootstrap .select2-selection.input-lg.select2-container--open .select2-selection--single .select2-selection__arrow b {\n      border-color: transparent transparent #999 transparent;\n      border-width: 0 4px 4px 4px; }\n  .input-group-lg .select2-container--bootstrap .select2-selection.select2-container--open .select2-selection--single {\n    /**\n     * Make the dropdown arrow point up while the dropdown is visible.\n     */ }\n    .input-group-lg .select2-container--bootstrap .select2-selection.select2-container--open .select2-selection--single .select2-selection__arrow b {\n      border-color: transparent transparent #999 transparent;\n      border-width: 0 4px 4px 4px; }\n  .select2-container--bootstrap[dir=\"rtl\"] {\n    /**\n     * Single Select2\n     *\n     * 1. Makes sure that .select2-selection__placeholder is positioned\n     *    correctly.\n     */\n    /**\n     * Multiple Select2\n     */ }\n    .select2-container--bootstrap[dir=\"rtl\"] .select2-selection--single {\n      padding-left: 24px;\n      padding-right: 12px; }\n      .select2-container--bootstrap[dir=\"rtl\"] .select2-selection--single .select2-selection__rendered {\n        padding-right: 0;\n        padding-left: 0;\n        text-align: right;\n        /* 1 */ }\n      .select2-container--bootstrap[dir=\"rtl\"] .select2-selection--single .select2-selection__clear {\n        float: left; }\n      .select2-container--bootstrap[dir=\"rtl\"] .select2-selection--single .select2-selection__arrow {\n        left: 12px;\n        right: auto; }\n        .select2-container--bootstrap[dir=\"rtl\"] .select2-selection--single .select2-selection__arrow b {\n          margin-left: 0; }\n    .select2-container--bootstrap[dir=\"rtl\"] .select2-selection--multiple .select2-selection__choice,\n    .select2-container--bootstrap[dir=\"rtl\"] .select2-selection--multiple .select2-selection__placeholder {\n      float: right; }\n    .select2-container--bootstrap[dir=\"rtl\"] .select2-selection--multiple .select2-selection__choice {\n      margin-left: 0;\n      margin-right: 6px; }\n    .select2-container--bootstrap[dir=\"rtl\"] .select2-selection--multiple .select2-selection__choice__remove {\n      margin-left: 2px;\n      margin-right: auto; }\n\n/*------------------------------------*  #ADDITIONAL GOODIES\n\\*------------------------------------*/\n/**\n * Address Bootstrap's validation states\n *\n * If a Select2 widget parent has one of Bootstrap's validation state modifier\n * classes, adjust Select2's border colors and focus states accordingly.\n * You may apply said classes to the Select2 dropdown (body > .select2-container)\n * via JavaScript match Bootstraps' to make its styles match.\n *\n * @see http://getbootstrap.com/css/#forms-control-validation\n */\n.has-warning .select2-dropdown,\n.has-warning .select2-selection {\n  border-color: #8a6d3b; }\n\n.has-warning .select2-container--focus .select2-selection,\n.has-warning .select2-container--open .select2-selection {\n  box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 6px #c0a16b;\n  border-color: #66512c; }\n\n.has-warning.select2-drop-active {\n  border-color: #66512c; }\n  .has-warning.select2-drop-active.select2-drop.select2-drop-above {\n    border-top-color: #66512c; }\n\n.has-error .select2-dropdown,\n.has-error .select2-selection {\n  border-color: #a94442; }\n\n.has-error .select2-container--focus .select2-selection,\n.has-error .select2-container--open .select2-selection {\n  box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 6px #ce8483;\n  border-color: #843534; }\n\n.has-error.select2-drop-active {\n  border-color: #843534; }\n  .has-error.select2-drop-active.select2-drop.select2-drop-above {\n    border-top-color: #843534; }\n\n.has-success .select2-dropdown,\n.has-success .select2-selection {\n  border-color: #3c763d; }\n\n.has-success .select2-container--focus .select2-selection,\n.has-success .select2-container--open .select2-selection {\n  box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 6px #67b168;\n  border-color: #2b542c; }\n\n.has-success.select2-drop-active {\n  border-color: #2b542c; }\n  .has-success.select2-drop-active.select2-drop.select2-drop-above {\n    border-top-color: #2b542c; }\n\n/**\n * Select2 widgets in Bootstrap Input Groups\n *\n * When Select2 widgets are combined with other elements using Bootstraps\n * \"Input Group\" component, we don't want specific edges of the Select2\n * container to have a border-radius.\n *\n * Use .select2-bootstrap-prepend and .select2-bootstrap-append on\n * a Bootstrap 3 .input-group to let the contained Select2 widget know which\n * edges should not be rounded as they are directly followed by another element.\n *\n * @see http://getbootstrap.com/components/#input-groups\n */\n/**\n * Mimick Bootstraps .input-group .form-control styles.\n *\n * @see https://github.com/twbs/bootstrap/blob/master/less/input-groups.less\n */\n.input-group .select2-container--bootstrap {\n  display: table;\n  table-layout: fixed;\n  position: relative;\n  z-index: 2;\n  float: left;\n  width: 100%;\n  margin-bottom: 0;\n  /**\n   * Adjust z-index like Bootstrap does to show the focus-box-shadow\n   * above appended buttons in .input-group and .form-group.\n   */ }\n  .input-group .select2-container--bootstrap.select2-container--open, .input-group .select2-container--bootstrap.select2-container--focus {\n    z-index: 3; }\n\n.input-group.select2-bootstrap-prepend .select2-container--bootstrap .select2-selection {\n  border-bottom-left-radius: 0;\n  border-top-left-radius: 0; }\n\n.input-group.select2-bootstrap-append .select2-container--bootstrap .select2-selection {\n  border-bottom-right-radius: 0;\n  border-top-right-radius: 0; }\n\n/**\n * Adjust alignment of Bootstrap buttons in Bootstrap Input Groups to address\n * Multi Select2's height which - depending on how many elements have been selected -\n * may grow taller than its initial size.\n *\n * @see http://getbootstrap.com/components/#input-groups\n */\n.select2-bootstrap-append .select2-container--bootstrap,\n.select2-bootstrap-append .input-group-btn,\n.select2-bootstrap-append .input-group-btn .btn,\n.select2-bootstrap-prepend .select2-container--bootstrap,\n.select2-bootstrap-prepend .input-group-btn,\n.select2-bootstrap-prepend .input-group-btn .btn {\n  vertical-align: top; }\n\n/**\n * Temporary fix for https://github.com/select2/select2-bootstrap-theme/issues/9\n *\n * Provides `!important` for certain properties of the class applied to the\n * original `<select>` element to hide it.\n *\n * @see https://github.com/select2/select2/pull/3301\n * @see https://github.com/fk/select2/commit/31830c7b32cb3d8e1b12d5b434dee40a6e753ada\n */\n.form-control.select2-hidden-accessible {\n  position: absolute !important;\n  width: 1px !important; }\n\n/**\n * Display override for inline forms\n */\n.form-inline .select2-container--bootstrap {\n  display: inline-block; }\n\n.md-editor {\n  display: block;\n  border: 1px solid #ddd; }\n\n.md-editor .md-footer, .md-editor > .md-header {\n  display: block;\n  padding: 6px 4px;\n  background: #f5f5f5; }\n\n.md-editor > .md-header {\n  margin: 0; }\n\n.md-editor > .md-preview {\n  background: #fff;\n  border-top: 1px dashed #ddd;\n  border-bottom: 1px dashed #ddd;\n  min-height: 10px;\n  overflow: auto; }\n\n.md-editor > textarea {\n  font-family: Menlo,Monaco,Consolas,\"Courier New\",monospace;\n  font-size: 14px;\n  outline: 0;\n  margin: 0;\n  display: block;\n  padding: 0;\n  width: 100%;\n  border: 0;\n  border-top: 1px dashed #ddd;\n  border-bottom: 1px dashed #ddd;\n  border-radius: 0;\n  box-shadow: none;\n  background: #eee; }\n\n.md-editor > textarea:focus {\n  box-shadow: none;\n  background: #fff; }\n\n.md-editor.active {\n  border-color: #66afe9;\n  outline: 0;\n  -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 8px rgba(102, 175, 233, 0.6);\n  box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 8px rgba(102, 175, 233, 0.6); }\n\n.md-editor .md-controls {\n  float: right;\n  padding: 3px; }\n\n.md-editor .md-controls .md-control {\n  right: 5px;\n  color: #bebebe;\n  padding: 3px 3px 3px 10px; }\n\n.md-editor .md-controls .md-control:hover {\n  color: #333; }\n\n.md-editor.md-fullscreen-mode {\n  width: 100%;\n  height: 100%;\n  position: fixed;\n  top: 0;\n  left: 0;\n  z-index: 99999;\n  padding: 60px 30px 15px;\n  background: #fff !important;\n  border: 0 !important; }\n\n.md-editor.md-fullscreen-mode .md-footer {\n  display: none; }\n\n.md-editor.md-fullscreen-mode .md-input, .md-editor.md-fullscreen-mode .md-preview {\n  margin: 0 auto !important;\n  height: 100% !important;\n  font-size: 20px !important;\n  padding: 20px !important;\n  color: #999;\n  line-height: 1.6em !important;\n  resize: none !important;\n  box-shadow: none !important;\n  background: #fff !important;\n  border: 0 !important; }\n\n.md-editor.md-fullscreen-mode .md-preview {\n  color: #333;\n  overflow: auto; }\n\n.md-editor.md-fullscreen-mode .md-input:focus, .md-editor.md-fullscreen-mode .md-input:hover {\n  color: #333;\n  background: #fff !important; }\n\n.md-editor.md-fullscreen-mode .md-header {\n  background: 0 0;\n  text-align: center;\n  position: fixed;\n  width: 100%;\n  top: 20px; }\n\n.md-editor.md-fullscreen-mode .btn-group {\n  float: none; }\n\n.md-editor.md-fullscreen-mode .btn {\n  border: 0;\n  background: 0 0;\n  color: #b3b3b3; }\n\n.md-editor.md-fullscreen-mode .btn.active, .md-editor.md-fullscreen-mode .btn:active, .md-editor.md-fullscreen-mode .btn:focus, .md-editor.md-fullscreen-mode .btn:hover {\n  box-shadow: none;\n  color: #333; }\n\n.md-editor.md-fullscreen-mode .md-fullscreen-controls {\n  position: absolute;\n  top: 20px;\n  right: 20px;\n  text-align: right;\n  z-index: 1002;\n  display: block; }\n\n.md-editor.md-fullscreen-mode .md-fullscreen-controls a {\n  color: #b3b3b3;\n  clear: right;\n  margin: 10px;\n  width: 30px;\n  height: 30px;\n  text-align: center; }\n\n.md-editor.md-fullscreen-mode .md-fullscreen-controls a:hover {\n  color: #333;\n  text-decoration: none; }\n\n.md-editor.md-fullscreen-mode .md-editor {\n  height: 100% !important;\n  position: relative; }\n\n.md-editor .md-fullscreen-controls {\n  display: none; }\n\n.md-nooverflow {\n  overflow: hidden;\n  position: fixed;\n  width: 100%; }\n\n/**\r\n * Nestable\r\n */\nhtml body {\n  font-family: 'Open Sans', sans-serif; }\n\n.widget2 {\n  background-color: #eeeeee !important; }\n\n.dd {\n  position: relative;\n  display: block;\n  margin: 0;\n  padding: 0;\n  max-width: 600px;\n  list-style: none;\n  font-size: 13px;\n  line-height: 20px; }\n\n.dd-list {\n  display: block;\n  position: relative;\n  margin: 0;\n  padding: 0;\n  list-style: none; }\n\n.dd-list .dd-list {\n  padding-left: 30px; }\n\n.dd-collapsed .dd-list {\n  display: none; }\n\n.dd-item,\n.dd-empty,\n.dd-placeholder {\n  display: block;\n  position: relative;\n  margin: 0;\n  padding: 0;\n  min-height: 20px;\n  font-size: 13px;\n  line-height: 20px; }\n\n.dd-handle {\n  display: block;\n  height: 30px;\n  margin: 5px 0;\n  padding: 5px 10px;\n  color: #555555;\n  text-decoration: none;\n  background: #fff;\n  border: 1px solid #ddd;\n  border-radius: 0.25rem;\n  box-sizing: border-box; }\n\n.dd-item > button {\n  display: block;\n  position: relative;\n  cursor: pointer;\n  float: left;\n  width: 25px;\n  height: 20px;\n  margin: 5px 0;\n  padding: 0;\n  text-indent: 100%;\n  white-space: nowrap;\n  overflow: hidden;\n  border: 0;\n  background: transparent;\n  font-size: 12px;\n  line-height: 1;\n  text-align: center;\n  font-weight: bold;\n  color: #555555; }\n  .dd-item > button:focus, .dd-item > button:active {\n    outline: 0; }\n\n.dd-item > button:before {\n  content: '+';\n  display: block;\n  position: absolute;\n  width: 100%;\n  text-align: center;\n  text-indent: 0; }\n\n.dd-item > button[data-action=\"collapse\"]:before {\n  content: '-'; }\n\n.dd-placeholder,\n.dd-empty {\n  margin: 5px 0;\n  padding: 0;\n  min-height: 30px;\n  background: #ddd;\n  border: 1px dashed #999999;\n  box-sizing: border-box;\n  border-radius: 0.25rem; }\n\n.dd-empty {\n  border: 1px dashed #999999;\n  min-height: 100px;\n  background-size: 60px 60px;\n  background-position: 0 0, 30px 30px;\n  background-image: -moz-linear-gradient(45deg, #fff 25%, transparent 25%, transparent 75%, #fff 75%, #fff), -moz-linear-gradient(45deg, #fff 25%, transparent 25%, transparent 75%, #fff 75%, #fff);\n  background-image: linear-gradient(45deg, #FFF 25%, transparent 25%, transparent 75%, #FFF 75%, #FFF), linear-gradient(45deg, #FFF 25%, transparent 25%, transparent 75%, #FFF 75%, #FFF); }\n\n.dd-dragel {\n  position: absolute;\n  pointer-events: none;\n  z-index: 9999; }\n\n.dd-dragel > .dd-item .dd-handle {\n  margin-top: 0; }\n\n.dd-dragel .dd-handle {\n  -webkit-box-shadow: 2px 4px 6px 0 rgba(0, 0, 0, 0.1);\n  box-shadow: 2px 4px 6px 0 rgba(0, 0, 0, 0.1); }\n\n/**\r\n * Nestable Extras\r\n */\n.nestable-lists {\n  display: block;\n  clear: both;\n  padding: 30px 0;\n  width: 100%;\n  border: 0;\n  border-top: 2px solid #ddd;\n  border-bottom: 2px solid #ddd; }\n\n@media only screen and (min-width: 700px) {\n  .dd + .dd {\n    margin-left: 2%; } }\n\n.dd-hover > .dd-handle {\n  background: #2ea8e5 !important; }\n\n/**\r\n * Nestable Draggable Handles\r\n */\n.dd3-content {\n  display: block;\n  height: 30px;\n  margin: 5px 0;\n  padding: 5px 10px 5px 40px;\n  color: #333;\n  text-decoration: none;\n  font-weight: bold;\n  border: 1px solid #ccc;\n  background: #fafafa;\n  background: linear-gradient(top, #fafafa 0%, #eee 100%);\n  border-radius: 3px;\n  box-sizing: border-box; }\n\n.dd3-content:hover {\n  color: #2ea8e5;\n  background: #fff; }\n\n.dd-dragel > .dd3-item > .dd3-content {\n  margin: 0; }\n\n.dd3-item > button {\n  margin-left: 30px; }\n\n.dd3-handle {\n  position: absolute;\n  margin: 0;\n  left: 0;\n  top: 0;\n  cursor: pointer;\n  width: 30px;\n  text-indent: 100%;\n  white-space: nowrap;\n  overflow: hidden;\n  border: 1px solid #aaa;\n  background: #ddd;\n  background: -webkit-linear-gradient(top, #ddd 0%, #bbb 100%);\n  background: -moz-linear-gradient(top, #ddd 0%, #bbb 100%);\n  background: linear-gradient(top, #ddd 0%, #bbb 100%);\n  border-top-right-radius: 0;\n  border-bottom-right-radius: 0; }\n\n.dd3-handle:before {\n  content: '≡';\n  display: block;\n  position: absolute;\n  left: 0;\n  top: 3px;\n  width: 100%;\n  text-align: center;\n  text-indent: 0;\n  color: #fff;\n  font-size: 20px;\n  font-weight: normal; }\n\n.button-ver2.trash-popup {\n  position: absolute;\n  z-index: 10000;\n  background-color: #fff;\n  color: black;\n  box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.07);\n  border: 1px solid rgba(0, 0, 0, 0.12);\n  border-radius: 50%;\n  transform: scale(0.3);\n  opacity: 0;\n  transition: transform 0.2s cubic-bezier(0.2, 0.7, 0.5, 1), opacity 0.2s cubic-bezier(0.2, 0.7, 0.5, 1); }\n\n.mini:hover {\n  display: block; }\n\n.trash-popup {\n  top: -6px;\n  right: -6px;\n  left: auto; }\n\n.button-ver2 {\n  width: 20px;\n  height: 20px; }\n\n.button-ver2 {\n  -webkit-user-select: none;\n  -moz-user-select: none;\n  -ms-user-select: none;\n  user-select: none;\n  cursor: pointer; }\n\n.blocksdiv {\n  padding-top: 2%;\n  padding-left: 15%; }\n\n.divseparator {\n  border-right: 1px solid #eeeeee; }\n\n.list-group-item {\n  font-weight: bold; }\n\nlegend {\n  border-bottom: 0px solid #e5e5e5; }\n\n.blockbtns {\n  font-size: 12px;\n  padding-top: 7px;\n  height: 35px;\n  margin-right: 2%;\n  width: 25%;\n  border: 1px solid #a6a6a6;\n  border-radius: 10%;\n  text-align: center;\n  background-color: #a6a6a6;\n  font-weight: normal;\n  color: white;\n  cursor: pointer;\n  margin-bottom: 2%;\n  position: relative;\n  white-space: nowrap;\n  text-overflow: ellipsis; }\n\n.dd3-handle:hover {\n  background: #ddd; }\n\n.GroupBtn {\n  padding-left: 3%;\n  padding-top: 3%; }\n\n.GroupForm {\n  padding-left: 3%;\n  padding-top: 3%; }\n\n/***********************************/\n/**      LIST GROUP SORTABLE      **/\n/***********************************/\n.list-group-sortable > .list-group-item {\n  margin-bottom: 0;\n  border-radius: 0.25rem; }\n  .list-group-sortable > .list-group-item + .list-group-item {\n    margin-top: 0.5rem; }\n\n.list-group-sortable > .list-group-item-placeholder {\n  border: 1px dashed #999999;\n  background-color: #ddd; }\n\n.list-group-sortable:last-of-type > .list-group-item:last-child {\n  border-bottom: 1px solid #ddd; }\n\n.list-group-sortable2 > .list-group-item {\n  margin-bottom: 0;\n  border-radius: 0.25rem; }\n  .list-group-sortable2 > .list-group-item + .list-group-item {\n    margin-top: 0.5rem; }\n\n.list-group-sortable2 > .list-group-item-placeholder {\n  border: 1px dashed #999999;\n  background-color: #ddd; }\n\n.list-group-sortable2:last-of-type > .list-group-item:last-child {\n  border-bottom: 1px solid #ddd; }\n\n.image-inner div {\n  height: 144px;\n  background-position: 50%;\n  background-repeat: no-repeat;\n  background-size: cover;\n  transition: opacity .1s;\n  background-color: #fff;\n  border-top-left-radius: 7px;\n  border-top-right-radius: 7px; }\n\n.card-content .content {\n  padding: 3px; }\n\n.contenttitle textarea {\n  height: auto;\n  font-size: 13px;\n  font-weight: 600;\n  line-height: 1.4;\n  top: -1px;\n  color: #1d1d1d;\n  padding: 2px 6px 0 !important; }\n\n.contenttitle textarea {\n  width: 100%;\n  display: block;\n  padding: 3px 6px 0;\n  background-color: #eee;\n  border: 1px solid transparent;\n  resize: none;\n  transition: border-color .1s;\n  margin: 0;\n  overflow: hidden;\n  white-space: inherit; }\n\n.contenttitle input {\n  width: 100%;\n  display: block;\n  padding: 3px 6px 0;\n  background-color: #eee;\n  border: 1px solid transparent;\n  resize: none;\n  transition: border-color .1s;\n  margin: 0;\n  overflow: hidden;\n  white-space: inherit;\n  font-weight: 600; }\n\ninput:focus {\n  outline: none !important;\n  border: 1px solid #5dc4bf;\n  box-shadow: 0 0 10px #719ECE;\n  border-radius: 7px; }\n\n.image-inner {\n  border-bottom: 1px solid #fff; }\n\n.image-inner2 div {\n  height: 144px;\n  background-position: 50%;\n  background-repeat: no-repeat;\n  background-size: cover;\n  transition: opacity .1s;\n  background-color: #fff;\n  border-radius: 7px; }\n\ntextarea:focus {\n  outline: none !important;\n  border: 1px solid #5dc4bf;\n  box-shadow: 0 0 10px #719ECE;\n  border-radius: 7px; }\n\n.addbutton {\n  background-color: #eee;\n  font-size: 14px;\n  font-weight: normal;\n  color: #a6a6a6;\n  text-align: center;\n  line-height: 48px;\n  height: 49px;\n  cursor: pointer;\n  text-transform: uppercase;\n  border-bottom-left-radius: 7px;\n  border-bottom-right-radius: 7px; }\n\n::-webkit-input-placeholder {\n  text-align: center; }\n\n.btn-gray {\n  background-color: #eee;\n  border-color: #fff;\n  color: #a6a6a6; }\n\n.list-group-sortable .list-group-item {\n  font-weight: normal;\n  color: #a6a6a6; }\n\n.button-image--replace {\n  background-color: #eee;\n  color: #a6a6a6;\n  font-weight: normal;\n  border-top-left-radius: 7px;\n  border-top-right-radius: 7px;\n  background-position: center 51px;\n  width: 100%;\n  height: 144px !important;\n  top: 0 !important;\n  margin: 0;\n  line-height: 65px !important;\n  display: inline-block !important;\n  padding: 0;\n  border: none;\n  outline: none; }\n\n.button-image__title {\n  color: #a6a6a6;\n  font-size: 16px;\n  position: static !important;\n  display: inline-block !important;\n  font-weight: normal;\n  text-align: center;\n  vertical-align: bottom;\n  line-height: 1.43; }\n\n:-moz-placeholder {\n  /* Firefox 18- */\n  text-align: center; }\n\n::-moz-placeholder {\n  /* Firefox 19+ */\n  text-align: center; }\n\n:-ms-input-placeholder {\n  text-align: center; }\n\n.topmargin {\n  margin-top: 5%; }\n\n.button-image:hover {\n  opacity: 1;\n  color: #555555;\n  background-color: #c4c4c4;\n  border-color: #fff; }\n\n.addbutton:hover {\n  opacity: 1;\n  color: #555555;\n  background-color: #c4c4c4;\n  border-color: #fff; }\n\n.contenturl {\n  border-bottom: 1px solid #fff; }\n\n.top-buttons {\n  position: absolute;\n  right: -8px;\n  top: -28px;\n  height: 27px;\n  width: 271px;\n  text-align: right;\n  opacity: 1;\n  transition: opacity .1s;\n  -webkit-transition: opacity .1s;\n  white-space: nowrap;\n  padding: 0 4px 0 0;\n  z-index: 10; }\n\n.button-remove {\n  top: 21px;\n  left: 238px;\n  position: absolute;\n  margin: 0;\n  width: 32px;\n  height: 32px;\n  background: #fff none;\n  box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.07);\n  border: 1px solid rgba(0, 0, 0, 0.1);\n  border-radius: 16px;\n  transform: scale(0.3);\n  opacity: 0;\n  transition: opacity 0.2s cubic-bezier(0.2, 0.7, 0.5, 1), transform 0.2s cubic-bezier(0.2, 0.7, 0.5, 1); }\n\n.top-buttons .button.remove::before {\n  content: \"\";\n  position: absolute;\n  background: url(assets/img/download.png) 50% no-repeat;\n  top: 0;\n  left: 0;\n  width: 30px;\n  height: 31px;\n  opacity: .3;\n  transition: opasity 60ms; }\n\n.card.add::after {\n  content: \" \";\n  width: 24px;\n  height: 24px;\n  display: inline-block;\n  vertical-align: middle;\n  background: url(assets/img/plus.png) no-repeat 50%;\n  opacity: .3; }\n\n.card.add {\n  width: 85%;\n  margin-top: 8%;\n  height: 333px;\n  line-height: 333px;\n  text-align: center;\n  cursor: pointer;\n  border: 1px solid;\n  border-color: #fff;\n  background-color: #eee; }\n\n.textcard textarea {\n  background-color: white;\n  border: 1px solid #a6a6a6;\n  border-radius: 7px;\n  margin-bottom: 5px; }\n\n.list-group-sortable2 .list-group-item {\n  cursor: move;\n  margin: 5px; }\n\n.or {\n  height: 24px;\n  font-size: 12px;\n  line-height: 24px;\n  text-align: center;\n  color: #a6a6a6;\n  text-transform: uppercase; }\n\n.addquickreply {\n  border-radius: 20px;\n  height: 40px;\n  line-height: 40px; }\n\n.addquickreply {\n  font-size: 14px;\n  font-weight: normal;\n  text-align: center;\n  padding: 0;\n  outline: none;\n  cursor: pointer;\n  -webkit-user-select: none;\n  -moz-user-select: none;\n  -ms-user-select: none;\n  user-select: none;\n  text-transform: uppercase;\n  border-bottom-color: rgba(0, 0, 0, 0.17);\n  box-shadow: 0 1px 3px -1px rgba(0, 0, 0, 0.13);\n  transition: box-shadow 80ms ease 0s,border-top-color 80ms ease 0s,border-right-color 80ms ease 0s,border-bottom-color 80ms ease 0s,border-left-color 80ms ease 0s,background-color 80ms ease 0s; }\n\n.button-image2 {\n  border-radius: 7px; }\n\n.addquickreply2 {\n  margin-top: 5%; }\n\n.btn-info {\n  background-color: #a6a6a6;\n  border-color: #a6a6a6; }\n\n.galleryHorizontalRow {\n  display: -webkit-inline-box;\n  overflow-x: scroll;\n  padding-bottom: 10%; }\n\n.galleryColumns {\n  width: 50%; }\n\n.galleryHorizontalRow::-webkit-scrollbar {\n  width: 2px;\n  height: 5px; }\n\n.galleryHorizontalRow::-webkit-scrollbar-track {\n  -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);\n  border-radius: 7px; }\n\n.galleryHorizontalRow::-webkit-scrollbar-thumb {\n  border-radius: 7px;\n  -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.5); }\n\n.list-group-item {\n  border-bottom: 1px solid #ddd !important; }\n\n.addBlock2 {\n  background-color: #eee;\n  border-color: #fff;\n  color: #a6a6a6; }\n\n.blockactive {\n  background-color: #053748; }\n\n.addButtonList {\n  padding: 0;\n  list-style: none;\n  display: table;\n  table-layout: fixed;\n  width: 100%; }\n\n.addButtonListItem {\n  display: inline;\n  display: table-cell;\n  padding: 0em 4.5em;\n  cursor: pointer; }\n\n.modalliactive {\n  border: 1px solid #ddd;\n  border-bottom: none;\n  border-top-left-radius: 5px;\n  border-top-right-radius: 5px;\n  background-color: #ddd; }\n\n.modalliitem {\n  font-weight: 600;\n  font-size: 14px;\n  color: #a6a6a6; }\n\n.modal-dialog {\n  max-width: 400px !important;\n  margin: 30px auto; }\n\n.modalContentActive {\n  display: block; }\n\n.modalContentDeActive {\n  display: none; }\n\n/**\r\n * select2\r\n */\n.select2-container .select2-choice abbr {\n  background: url(\"assets/select2/select2.png\") right top no-repeat; }\n\n.select2-container .select2-choice .select2-arrow b {\n  background: url(\"assets/select2/select2.png\") no-repeat 0 1px; }\n\n.select2-search input {\n  background: #fff url(\"assets/select2/select2.png\") no-repeat 100% -22px;\n  background: url(\"assets/select2/select2.png\") no-repeat 100% -22px, -webkit-gradient(linear, left bottom, left top, color-stop(0.85, #fff), color-stop(0.99, #eee));\n  background: url(\"assets/select2/select2.png\") no-repeat 100% -22px, -webkit-linear-gradient(center bottom, #fff 85%, #eee 99%);\n  background: url(\"assets/select2/select2.png\") no-repeat 100% -22px, -moz-linear-gradient(center bottom, #fff 85%, #eee 99%);\n  background: url(\"assets/select2/select2.png\") no-repeat 100% -22px, linear-gradient(to bottom, #fff 85%, #eee 99%) 0 0; }\n\nhtml[dir=\"rtl\"] .select2-search input {\n  background: #fff url(\"assets/select2/select2.png\") no-repeat -37px -22px;\n  background: url(\"assets/select2/select2.png\") no-repeat -37px -22px, -webkit-gradient(linear, left bottom, left top, color-stop(0.85, #fff), color-stop(0.99, #eee));\n  background: url(\"assets/select2/select2.png\") no-repeat -37px -22px, -webkit-linear-gradient(center bottom, #fff 85%, #eee 99%);\n  background: url(\"assets/select2/select2.png\") no-repeat -37px -22px, -moz-linear-gradient(center bottom, #fff 85%, #eee 99%);\n  background: url(\"assets/select2/select2.png\") no-repeat -37px -22px, linear-gradient(to bottom, #fff 85%, #eee 99%) 0 0; }\n\n.select2-search-choice-close {\n  background: url(\"assets/select2/select2.png\") right top no-repeat; }\n\n.select2-search input.select2-active {\n  background: #fff url(\"assets/select2/select2-spinner.gif\") no-repeat 100%;\n  background: url(\"assets/select2/select2-spinner.gif\") no-repeat 100%, -webkit-gradient(linear, left bottom, left top, color-stop(0.85, #fff), color-stop(0.99, #eee));\n  background: url(\"assets/select2/select2-spinner.gif\") no-repeat 100%, -webkit-linear-gradient(center bottom, #fff 85%, #eee 99%);\n  background: url(\"assets/select2/select2-spinner.gif\") no-repeat 100%, -moz-linear-gradient(center bottom, #fff 85%, #eee 99%);\n  background: url(\"assets/select2/select2-spinner.gif\") no-repeat 100%, linear-gradient(to bottom, #fff 85%, #eee 99%) 0 0; }\n\n.select2-more-results.select2-active {\n  background: #f4f4f4 url(\"assets/select2/select2-spinner.gif\") no-repeat 100%; }\n\n.select2-container-multi .select2-choices .select2-search-field input.select2-active {\n  background: #fff url(\"assets/select2/select2-spinner.gif\") no-repeat 100% !important; }\n\n.select2-container .select2-selection--single .select2-selection__rendered {\n  color: #555555;\n  padding: 0; }\n\n.addbuttonResultList {\n  background-color: #eeeeee;\n  text-align: center;\n  margin-bottom: -13px; }\n\n.addQuickReplyList {\n  background-color: #eeeeee;\n  text-align: center;\n  margin-bottom: -13px; }\n\n.modalError {\n  border: 1px solid red; }\n\n.addQuickReplyListDisplay {\n  padding: 3px 3% 0 3%;\n  height: 55px;\n  margin-right: 2%;\n  border: 1px solid #053748;\n  border-radius: 10%;\n  text-align: center;\n  font-weight: normal;\n  color: black;\n  cursor: pointer;\n  margin-bottom: 2%;\n  position: relative;\n  box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.12);\n  background-color: white;\n  transition: padding .1s; }\n\n.blocksdivAddQuickReply {\n  padding-top: 2%;\n  padding-left: 7%; }\n\n.articleEditor {\n  padding: 2%; }\n\n.md-editor > textarea {\n  background-color: white; }\n\n.QuickReplyButtons {\n  display: inline-block;\n  font-size: 12px;\n  padding-top: 7px;\n  padding-left: 2%;\n  padding-right: 2%;\n  height: 35px;\n  margin-right: 5%;\n  border: 1px solid #a6a6a6;\n  border-radius: 10%;\n  text-align: center;\n  font-weight: normal;\n  color: #a6a6a6;\n  cursor: pointer;\n  margin-bottom: 2%;\n  position: relative;\n  white-space: nowrap; }\n\n.QuickReplyButtonsBlack {\n  color: white;\n  background-color: #a6a6a6; }\n\n.quickReplyClose {\n  top: -14px;\n  position: absolute;\n  left: auto;\n  right: -14px;\n  font-size: 1.5rem;\n  font-weight: bold;\n  line-height: 1;\n  color: #000;\n  text-shadow: 0 1px 0 #fff;\n  background-color: white;\n  border-radius: 50%;\n  width: 28px;\n  height: 28px;\n  border: 1px solid black;\n  display: none; }\n\n.quickReplyCloseBtn {\n  color: black;\n  font-size: 18px; }\n\n.singleImageBGDiv {\n  background: rgba(0, 0, 0, 0.2);\n  height: 144px;\n  width: 100%;\n  background-color: rgba(0, 0, 0, 0.8) !important;\n  padding: 32%;\n  display: none; }\n\n.galleryImageBGDiv {\n  background: rgba(0, 0, 0, 0.2);\n  height: 144px;\n  width: 100%;\n  background-color: rgba(0, 0, 0, 0.8) !important;\n  padding: 32%;\n  padding-left: 36%;\n  display: none; }\n\n.randomTextClose {\n  position: absolute;\n  left: auto;\n  right: 8px;\n  font-size: 1.5rem;\n  font-weight: bold;\n  line-height: 1;\n  color: #000;\n  text-shadow: 0 1px 0 #fff;\n  display: none; }\n\n.closeBlock {\n  top: -10px;\n  position: absolute;\n  left: auto;\n  right: -8px;\n  font-size: 1.5rem;\n  font-weight: bold;\n  line-height: 1;\n  color: #000;\n  text-shadow: 0 1px 0 #fff;\n  display: none;\n  padding-top: 2px;\n  width: 28px;\n  height: 28px;\n  background-color: white;\n  border: 1px solid black;\n  border-radius: 50%; }\n\n.closeBlock {\n  top: -10px;\n  position: absolute;\n  left: auto;\n  right: -8px;\n  font-size: 1.5rem;\n  font-weight: bold;\n  line-height: 1;\n  color: #000;\n  text-shadow: 0 1px 0 #fff;\n  display: none;\n  padding-top: 2px;\n  width: 28px;\n  height: 28px;\n  background-color: white;\n  border: 1px solid black;\n  border-radius: 50%; }\n\n.groupClose {\n  top: -10px;\n  position: absolute;\n  left: auto;\n  right: -8px;\n  font-size: 1.5rem;\n  font-weight: bold;\n  line-height: 1;\n  color: #000;\n  text-shadow: 0 1px 0 #fff;\n  display: none;\n  padding-top: 2px;\n  width: 28px;\n  height: 28px;\n  background-color: white;\n  border: 1px solid black;\n  border-radius: 50%;\n  padding-left: 1%; }\n\n.errorRM {\n  border: 1px solid red;\n  border-bottom: 1px solid red !important; }\n\n.textcardCharCount {\n  background-color: #5dc991;\n  border-radius: 30px;\n  font-size: 12px;\n  width: 30px;\n  height: 15px;\n  position: absolute;\n  left: -14px;\n  color: white;\n  padding-left: 5px; }\n"
+
+/***/ },
+
+/***/ "./src/app/specific/specific.component.ts":
+/***/ function(module, exports, __webpack_require__) {
+
+"use strict";
+/* WEBPACK VAR INJECTION */(function(jQuery) {"use strict";
+var core_1 = __webpack_require__("./node_modules/@angular/core/index.js");
+var BotTrainingService_1 = __webpack_require__("./src/app/services/BotTrainingService.ts");
+var BlockGroupsModel_1 = __webpack_require__("./src/app/models/BlockGroupsModel.ts");
+var Card_1 = __webpack_require__("./src/app/models/Card.ts");
+var ImageCard_1 = __webpack_require__("./src/app/models/ImageCard.ts");
+var TextCard_1 = __webpack_require__("./src/app/models/TextCard.ts");
+var GalleryCard_1 = __webpack_require__("./src/app/models/GalleryCard.ts");
+var CardAddButton_1 = __webpack_require__("./src/app/models/CardAddButton.ts");
+var ArticleCard_1 = __webpack_require__("./src/app/models/ArticleCard.ts");
+var QuickReplyCard_1 = __webpack_require__("./src/app/models/QuickReplyCard.ts");
+var core_2 = __webpack_require__("./node_modules/@angular/core/index.js");
+var ng2_modal_1 = __webpack_require__("./node_modules/ng2-modal/index.js");
+//select2GroupedData: Select2OptionData[] = [];
+var Specific = (function () {
+    function Specific(_botTrainingService, _rootNode) {
+        this._botTrainingService = _botTrainingService;
+        this._rootNode = _rootNode;
+        this.baseUrl = "https://aprilappserverstaging.azurewebsites.net/";
+        this.select2GroupedData = [];
+        this.GroupText = "";
+        this.groups = [];
+        this.blockGroupsModel = [];
+        this.popBlockName = "Block Name";
+        this.AddButtonBlock = "";
+        this.AddButtonName = "";
+        this.AddButtonUrl = "";
+        this.addButtonResponseMessageType = "";
+        this.articleText = "";
+        this.ckeditorContent = "";
+        this.articleModalTitle = "";
+        this.articleResponseId = "";
+        this.quickResponseMessageId = "";
+        this.sortOptions = {
+            placeholder: 'list-group-item list-group-item-placeholder',
+            forcePlaceholderSize: true
+        };
+        this.nest1Options = { group: 1 };
+        this.nest2Options = { group: 1 };
+        this.galleryCardArray = [];
+        this.cardArray = [];
+        this.populateGroups();
+        this.populateBlocksDropdown();
+    }
+    //Delete UI Buttons Hovering and Image Changing
+    Specific.prototype.mouseEnter = function (id) {
+        jQuery('#' + id).show();
+    };
+    Specific.prototype.mouseLeave = function (id) {
+        jQuery('#' + id).hide();
+    };
+    Specific.prototype.mouseEnterRTC = function (id, i) {
+        jQuery('#randText' + id + i).show();
+    };
+    Specific.prototype.mouseLeaveRTC = function (id, i) {
+        jQuery('#randText' + id + i).hide();
+    };
+    Specific.prototype.mouseEnterGI = function (id) {
+        jQuery('#galleryImageChangeBtn' + id).show();
+    };
+    Specific.prototype.mouseLeaveGI = function (id) {
+        jQuery('#galleryImageChangeBtn' + id).hide();
+    };
+    Specific.prototype.mouseEnterSI = function (id) {
+        jQuery('#singleImageChangeBtn' + id).show();
+    };
+    Specific.prototype.mouseLeaveSI = function (id) {
+        jQuery('#singleImageChangeBtn' + id).hide();
+    };
+    Specific.prototype.mouseEnterTCAB = function (id, addBtnId) {
+        jQuery('#textCardAddBtn' + id + addBtnId).show();
+    };
+    Specific.prototype.mouseLeaveTCAB = function (id, addBtnId) {
+        jQuery('#textCardAddBtn' + id + addBtnId).hide();
+    };
+    Specific.prototype.mouseEnterGCAB = function (id, i) {
+        jQuery('#galleryCardAddBtn' + id).show();
+    };
+    Specific.prototype.mouseLeaveGCAB = function (id, i) {
+        jQuery('#galleryCardAddBtn' + id).hide();
+    };
+    Specific.prototype.mouseEnterBlock = function (id) {
+        jQuery('#closeBlock' + id).show();
+    };
+    Specific.prototype.mouseLeaveBlock = function (id) {
+        jQuery('#closeBlock' + id).hide();
+    };
+    Specific.prototype.mouseEnterGroup = function (id) {
+        jQuery('#gr' + id).show();
+    };
+    Specific.prototype.mouseLeaveGroup = function (id) {
+        jQuery('#gr' + id).hide();
+    };
+    ///////////////////////////////////////////////
+    Specific.prototype.updateTitleRandomTextCard = function (responseMessageId, i) {
+        var _this = this;
+        this._botTrainingService.updateRandomTitleText(responseMessageId, jQuery('#textCardTitle' + responseMessageId + i).val(), i).subscribe(function (a) {
+            if (a.code == 200) {
+                _this.blockDetail(_this.popBlock._id);
+            }
+        });
+    };
+    Specific.prototype.addTextRandom = function (responseMessageId) {
+        var _this = this;
+        var count = jQuery('.randomTextCard').length + 1;
+        this._botTrainingService.addRandomText(responseMessageId, count).subscribe(function (a) {
+            if (a.code == 200) {
+                _this.blockDetail(_this.popBlock._id);
+            }
+        });
+    };
+    Specific.prototype.deleteQuickReply = function (addButtonId, parentId) {
+        var _this = this;
+        this._botTrainingService.deleteQuickReply(addButtonId, parentId).subscribe(function (a) {
+            if (a.code == 200) {
+                _this.blockDetail(_this.popBlock._id);
+            }
+        });
+    };
+    Specific.prototype.deleteRandomTextBox = function (addButtonId, parentId) {
+        var _this = this;
+        this._botTrainingService.deleteRandomText(addButtonId, parentId).subscribe(function (a) {
+            if (a.code == 200) {
+                _this.blockDetail(_this.popBlock._id);
+            }
+        });
+    };
+    Specific.prototype.deleteAddButton = function (addButtonId, parentId, type) {
+        var _this = this;
+        this._botTrainingService.deleteAddButton(addButtonId, parentId, type).subscribe(function (a) {
+            if (a.code == 200) {
+                _this.blockDetail(_this.popBlock._id);
+            }
+        });
+    };
+    Specific.prototype.deleteResponseMessage = function (resMesId) {
+        var _this = this;
+        this._botTrainingService.deleteResponseMessage(resMesId).subscribe(function (a) {
+            if (a.code == 200) {
+                for (var i = 0; i < _this.cardArray.length; i++) {
+                    var obj = _this.cardArray[i];
+                    if (obj._id == resMesId) {
+                        _this.cardArray.splice(i, 1);
+                    }
+                }
+            }
+        });
+    };
+    Specific.prototype.populateBlocksDropdown = function () {
+        var _this = this;
+        this._botTrainingService.getAllGroups('Specific').subscribe(function (a) {
+            if (a.code == 200) {
+                for (var i = 0; i < _this.blockGroupsModel.length; i++) {
+                    if (_this.blockGroupsModel[i].blocks.length > 0) {
+                        for (var j = 0; j < _this.blockGroupsModel[i].blocks.length; j++) {
+                            _this.select2GroupedData.push({ id: _this.blockGroupsModel[i].blocks[j]._id, text: _this.blockGroupsModel[i].blocks[j].name });
+                        }
+                    }
+                }
+            }
+        });
+    };
+    Specific.prototype.addButtonPost = function (val) {
+        var _this = this;
+        if (val == 1) {
+            var count = 0;
+            var blockname = "";
+            for (var i = 0; i < this.select2GroupedData.length; i++) {
+                if (this.select2GroupedData[i].id == this.AddButtonBlock) {
+                    blockname = this.select2GroupedData[i].text;
+                }
+            }
+            if (this.responseMessageDiff == 'addButton') {
+                var cardAddButton = new CardAddButton_1.CardAddButton(this.AddButtonName, blockname, this.AddButtonBlock, "");
+                count = jQuery('.addbuttonResultList').length;
+                console.log(count);
+            }
+            else {
+                //Add Quick Reply
+                var cardAddButton = new CardAddButton_1.CardAddButton(this.AddButtonName, blockname, this.AddButtonBlock, "");
+                count = jQuery('.addQuickReplyList').length;
+            }
+            if (this.AddButtonBlock != "" && this.AddButtonName != "") {
+                jQuery('#buttonName').removeClass('modalError');
+                jQuery('#simple-select').removeClass('modalError');
+                if (this.responseMessageDiff == 'addButton') {
+                    this._botTrainingService.addAddButton(this.addButtonResponseMessageId, cardAddButton, this.addButtonResponseMessageType, count).subscribe(function (a) {
+                        if (a.code == 200) {
+                            _this.AddButtonName = "";
+                            _this.AddButtonBlock = "";
+                            _this.blockDetail(_this.popBlock._id);
+                            _this.modalComponent.close();
+                        }
+                    });
+                }
+                else {
+                }
+            }
+            else {
+                jQuery('#buttonName').addClass('modalError');
+                jQuery('#simple-select').addClass('modalError');
+            }
+        }
+        else {
+            this.AddButtonUrl = 'http://' + this.AddButtonUrl;
+            var cardAddButton = new CardAddButton_1.CardAddButton(this.AddButtonName, this.AddButtonUrl, "", "");
+            if (this.AddButtonUrl != "" && this.AddButtonName != "") {
+                jQuery('#buttonName').removeClass('modalError');
+                jQuery('#urlContentData').removeClass('modalError');
+                this._botTrainingService.addAddButton(this.addButtonResponseMessageId, cardAddButton, this.addButtonResponseMessageType, jQuery('.addbuttonResultList').length).subscribe(function (a) {
+                    if (a.code == 200) {
+                        _this.AddButtonName = "";
+                        _this.AddButtonUrl = "";
+                        _this.blockDetail(_this.popBlock._id);
+                        _this.modalComponent.close();
+                    }
+                });
+            }
+            else {
+                jQuery('#buttonName').addClass('modalError');
+                jQuery('#urlContentData').addClass('modalError');
+            }
+        }
+    };
+    Specific.prototype.addButton = function (responseMessageId, type, diff) {
+        this.responseMessageDiff = diff;
+        if (diff == 'addButton') {
+            jQuery('#blockContent').css('display', 'block');
+            jQuery('#quickReplyContent').css('display', 'none');
+        }
+        else {
+            jQuery('#blockContent').css('display', 'none');
+            jQuery('#quickReplyContent').css('display', 'block');
+        }
+        this.addButtonResponseMessageType = type;
+        this.addButtonResponseMessageId = responseMessageId;
+    };
+    Specific.prototype.getSelect2DefaultList = function () {
+        return this.select2GroupedData;
+    };
+    Specific.prototype.modalChangeTab = function (val) {
+        if (val == 2) {
+            jQuery('#blockBtn').removeClass('modalliactive');
+            jQuery('#urlBtn').addClass('modalliactive');
+            jQuery('#blockContent').removeClass('modalContentActive');
+            jQuery('#blockContent').addClass('modalContentDeActive');
+            jQuery('#urlContent').addClass('modalContentActive');
+            jQuery('#urlContent').removeClass('modalContentDeActive');
+        }
+        else {
+            jQuery('#blockBtn').addClass('modalliactive');
+            jQuery('#urlBtn').removeClass('modalliactive');
+            jQuery('#blockContent').addClass('modalContentActive');
+            jQuery('#blockContent').removeClass('modalContentDeActive');
+            jQuery('#urlContent').removeClass('modalContentActive');
+            jQuery('#urlContent').addClass('modalContentDeActive');
+        }
+    };
+    //Card Functions
+    Specific.prototype.addQuickReplyBtn = function (Id) {
+        this.quickResponseMessageId = Id;
+    };
+    Specific.prototype.submitQuickReplyBtns = function () {
+        var _this = this;
+        console.log(this.quickResponseMessageId);
+        console.log(this.AddButtonName);
+        console.log(this.AddButtonBlock);
+        var count = jQuery('.qrbtns').length;
+        this._botTrainingService.addQuickReply(this.quickResponseMessageId, this.AddButtonName, this.AddButtonBlock, count).subscribe(function (a) {
+            if (a.code == 200) {
+                _this.blockDetail(_this.popBlock._id);
+            }
+        });
+    };
+    Specific.prototype.submitArticleText = function () {
+        var _this = this;
+        if (this.ckeditorContent !== undefined && this.ckeditorContent != "" && this.ckeditorContent != null) {
+            this._botTrainingService.updateArticleText(this.articleResponseId, this.ckeditorContent).subscribe(function (a) {
+                if (a.code == 200) {
+                    _this.blockDetail(_this.popBlock._id);
+                }
+            });
+        }
+    };
+    Specific.prototype.openArticleText = function (Id) {
+        this.articleResponseId = Id;
+        for (var j = 0; j < this.cardArray.length; j++) {
+            if (this.cardArray[j]._id == Id) {
+                var text = this.cardArray[j].data.articleText;
+                this.ckeditorContent = text;
+                this.articleModalTitle = this.cardArray[j].data.text;
+                break;
+            }
+        }
+    };
+    Specific.prototype.updateTitleArticleCard = function (responseMessageId) {
+        this._botTrainingService.updateTitleText(responseMessageId, jQuery('#articleCardTitle' + responseMessageId).val(), 0, 'article').subscribe(function (a) {
+            if (a.code == 200) {
+            }
+        });
+    };
+    Specific.prototype.updateTitleTextCard = function (responseMessageId) {
+        var _this = this;
+        this._botTrainingService.updateTitleText(responseMessageId, jQuery('#textCardTitle' + responseMessageId).val(), 0, 'text').subscribe(function (a) {
+            if (a.code == 200) {
+                _this.blockDetail(_this.popBlock._id);
+            }
+        });
+    };
+    Specific.prototype.updateTitleGalleryCard = function (responseMessageId, indexId) {
+        var _this = this;
+        this._botTrainingService.updateTitleText(responseMessageId, jQuery('#galleryCardTitle' + indexId).val(), indexId, 'gallery').subscribe(function (a) {
+            if (a.code == 200) {
+                _this.blockDetail(_this.popBlock._id);
+            }
+        });
+    };
+    Specific.prototype.updateDescriptionGalleryCard = function (responseMessageId, indexId) {
+        this._botTrainingService.updateDescriptionText(responseMessageId, jQuery('#galleryCardDescription' + indexId).val(), indexId).subscribe(function (a) {
+            if (a.code == 200) {
+            }
+        });
+    };
+    Specific.prototype.updateUrlGalleryCard = function (responseMessageId, indexId) {
+        this._botTrainingService.updateUrlText(responseMessageId, jQuery('#galleryCardUrl' + indexId).val(), indexId).subscribe(function (a) {
+            if (a.code == 200) {
+            }
+        });
+    };
+    Specific.prototype.openGalleryImage = function (Id) {
+        jQuery('#galleryImage' + Id).click();
+    };
+    Specific.prototype.openSingleImage = function (Id) {
+        jQuery('#singleImage' + Id).click();
+    };
+    Specific.prototype.populateGalleryImage = function (event, responseMessageId, blockId, indexId) {
+        var _this = this;
+        var file = event.target.files[0];
+        this._botTrainingService.getPictureUrl(file, responseMessageId, "gallery", indexId).subscribe(function (a) {
+            if (a.code == 200) {
+                _this.blockDetail(blockId);
+            }
+        });
+    };
+    Specific.prototype.populateSingleImage = function (event, responseMessageId, blockId) {
+        var _this = this;
+        var file = event.target.files[0];
+        this._botTrainingService.getPictureUrl(file, responseMessageId, "image", -1).subscribe(function (a) {
+            if (a.code == 200) {
+                _this.blockDetail(blockId);
+            }
+        });
+    };
+    ///
+    Specific.prototype.addBlock = function (Id) {
+        jQuery('.addBlock' + Id).hide();
+        jQuery('.saveBlock' + Id).show();
+    };
+    Specific.prototype.addGalleryCard = function (resMesId, blockId) {
+        var _this = this;
+        this.galleryCard = new GalleryCard_1.GalleryCard("", "", "", "", [], jQuery('.galleryColumns' + resMesId).length);
+        //this.card = new Card("gallery", this.galleryCard);
+        this._botTrainingService.addGalleryCard(this.galleryCard, resMesId).subscribe(function (a) {
+            if (a.code == 200) {
+                _this.blockDetail(blockId);
+            }
+        });
+    };
+    Specific.prototype.saveBlock = function (Id) {
+        var _this = this;
+        jQuery('#blockText' + Id).css('border', '1px solid rgba(0, 0, 0, 0.15);');
+        if (this.blockName != "" && this.blockName !== undefined) {
+            this._botTrainingService.addBlocks(this.blockName, 'Specific', Id).subscribe(function (a) {
+                if (a.code == 200) {
+                    jQuery('.addBlock' + Id).show();
+                    jQuery('.saveBlock' + Id).hide();
+                    _this.blockName = "";
+                    _this.addedBlock = a.data;
+                    for (var i = 0; i < _this.blockGroupsModel.length; i++) {
+                        if (_this.blockGroupsModel[i].group._id == Id) {
+                            _this.blockGroupsModel[i].blocks.push(_this.addedBlock);
+                            break;
+                        }
+                    }
+                }
+            });
+        }
+        else {
+            jQuery('#blockText' + Id).css('border', '1px solid red');
+        }
+    };
+    Specific.prototype.deleteBlock = function (Id) {
+        var _this = this;
+        jQuery('.rmdiv').hide();
+        this._botTrainingService.deleteBlock(Id)
+            .subscribe(function (a) {
+            if (a.code == 200) {
+                for (var i = 0; i < _this.blockGroupsModel.length; i++) {
+                    for (var j = 0; j < _this.blockGroupsModel[i].blocks.length; j++) {
+                        if (_this.blockGroupsModel[i].blocks[j]._id == Id) {
+                            _this.blockGroupsModel[i].blocks.splice(j, 1);
+                            break;
+                        }
+                    }
+                }
+            }
+        });
+    };
+    Specific.prototype.blockDetail = function (Id) {
+        jQuery('.blockbtns').removeClass("blockactive");
+        jQuery('#block' + Id).addClass("blockactive");
+        this.populateResponseMessages(Id);
+    };
+    Specific.prototype.populateResponseMessages = function (Id) {
+        var _this = this;
+        this._botTrainingService.getAllResponseMessages(Id).subscribe(function (a) {
+            if (a.code == 200) {
+                _this.cardArray = [];
+                _this.popBlock = a.data.block;
+                _this.cardArray = a.data.responseMessages;
+                _this.popBlockName = _this.popBlock.name;
+                _this.isLocked = _this.popBlock.isLocked;
+                console.log(_this.cardArray);
+                jQuery('.rmdiv').show();
+            }
+        });
+    };
+    Specific.prototype.addCard = function (val) {
+        var _this = this;
+        if (val == 1) {
+            //Gallery
+            this.galleryCard = new GalleryCard_1.GalleryCard("", "", "", "", [], 1);
+            this.card = new Card_1.Card("gallery", this.galleryCard);
+            var galleryCardArray = [];
+            galleryCardArray.push(this.galleryCard);
+            this._botTrainingService.addResponseMessage(galleryCardArray, "gallery", this.popBlock._id).subscribe(function (a) {
+                if (a.code == 200) {
+                    _this.cardArray.push(a.data);
+                }
+            });
+        }
+        else if (val == 2) {
+            //Random TextCard
+            var obj = {
+                'indexId': 1,
+                'text': ''
+            };
+            var tempArray = [];
+            tempArray.push(obj);
+            this.textCard = new TextCard_1.TextCard(tempArray, [], []);
+            this.card = new Card_1.Card("text", this.textCard);
+            this._botTrainingService.addResponseMessage(this.textCard, "text", this.popBlock._id).subscribe(function (a) {
+                if (a.code == 200) {
+                    _this.cardArray.push(a.data);
+                }
+            });
+        }
+        else if (val == 6) {
+            //singleText Card
+            //this.imageCard = new ImageCard("", []);
+            var singleTextObj = {
+                'text': '',
+                'cardAddButton': []
+            };
+            this.card = new Card_1.Card("singletext", singleTextObj);
+            this._botTrainingService.addResponseMessage(singleTextObj, "singletext", this.popBlock._id).subscribe(function (a) {
+                if (a.code == 200) {
+                    _this.cardArray.push(a.data);
+                }
+            });
+        }
+        else if (val == 3) {
+            //Image
+            this.imageCard = new ImageCard_1.ImageCard("", []);
+            this.card = new Card_1.Card("image", this.imageCard);
+            this._botTrainingService.addResponseMessage(this.imageCard, "image", this.popBlock._id).subscribe(function (a) {
+                if (a.code == 200) {
+                    _this.cardArray.push(a.data);
+                }
+            });
+        }
+        else if (val == 4) {
+            //Article
+            this.articleCard = new ArticleCard_1.ArticleCard("", "", "");
+            this.card = new Card_1.Card("image", this.articleCard);
+            this._botTrainingService.addResponseMessage(this.articleCard, "article", this.popBlock._id).subscribe(function (a) {
+                if (a.code == 200) {
+                    _this.cardArray.push(a.data);
+                }
+            });
+        }
+        else if (val == 5) {
+            //Quick Reply
+            this.quickReplyCard = new QuickReplyCard_1.QuickReplyCard([]);
+            this.card = new Card_1.Card("quickreply", this.quickReplyCard);
+            this._botTrainingService.addResponseMessage(this.quickReplyCard, "quickreply", this.popBlock._id).subscribe(function (a) {
+                if (a.code == 200) {
+                    _this.cardArray.push(a.data);
+                }
+            });
+        }
+    };
+    Specific.prototype.ngOnInit = function () {
+        jQuery('.nav-tabs').on('shown.bs.tab', 'a', function (e) {
+            if (e.relatedTarget) {
+                jQuery(e.relatedTarget).removeClass('active');
+            }
+        });
+        var oldIndex;
+        jQuery('#popover2').popover();
+        jQuery('.GroupBtn').show();
+        jQuery('.GroupForm').hide();
+        jQuery('.list-group-sortable').sortable(this.sortOptions);
+        jQuery('.list-group-sortable2').sortable(this.sortOptions);
+        jQuery('#nestable1').nestable(this.nest1Options);
+        jQuery('#nestable2').nestable(this.nest2Options);
+        jQuery(".list-group-sortable").sortable({
+            start: function (event, ui) {
+                oldIndex = ui.item.index() + 1;
+                jQuery(this).attr('data-previndex', ui.item[0].id);
+            },
+            update: function (e, ui) {
+                // gets the new and old index then removes the temporary attribute
+                var newIndex = ui.item.index() + 1;
+                var groupId = jQuery(this).attr('data-previndex');
+                jQuery.post("https://aprilappserverstaging.azurewebsites.net/responsemessage/sortingOfResponseMessages", {
+                    oldIndex: oldIndex,
+                    newIndex: newIndex,
+                    groupId: groupId
+                }, function (data, status) {
+                });
+                jQuery(this).removeAttr('data-previndex');
+            }
+        });
+        jQuery('.quickReplyClose').hover(function () {
+            alert('in');
+        }, function () {
+            alert('out');
+        });
+        //sorting of response messages
+        jQuery(".list-group-sortable2").sortable({
+            start: function (event, ui) {
+                oldIndex = ui.item.index() + 1;
+                var array = ui.item[0].childNodes;
+                var id;
+                array.forEach(function (entry) {
+                    if (entry.id !== undefined) {
+                        id = entry.id;
+                    }
+                });
+                jQuery(this).attr('data-previndex', id);
+                console.log(oldIndex);
+            },
+            update: function (e, ui) {
+                // gets the new and old index then removes the temporary attribute
+                var newIndex = ui.item.index() + 1;
+                var groupId = jQuery(this).attr('data-previndex');
+                jQuery.post("https://aprilappserverstaging.azurewebsites.net/responsemessage/sortingOfResponseMessages", {
+                    oldIndex: oldIndex,
+                    newIndex: newIndex,
+                    groupId: groupId
+                }, function (data, status) {
+                });
+                jQuery(this).removeAttr('data-previndex');
+            }
+        });
+    };
+    Specific.prototype.toggleDivs = function (val) {
+        var _this = this;
+        if (val == 1) {
+            jQuery('.GroupBtn').fadeOut("slow");
+            jQuery('.GroupForm').fadeIn("slow");
+        }
+        else {
+            jQuery('#emptyGroup').hide();
+            if (this.GroupText != "") {
+                this._botTrainingService.addGroup(this.GroupText, 'Specific').subscribe(function (a) {
+                    console.log(a);
+                    if (a.code == 200) {
+                        //this.populateGroups();
+                        var groupObj = new BlockGroupsModel_1.BlockGroupsModel(a.data, []);
+                        _this.blockGroupsModel.push(groupObj);
+                        _this.GroupText = "";
+                        jQuery('.GroupForm').fadeOut("slow");
+                        jQuery('.GroupBtn').fadeIn("slow");
+                    }
+                });
+            }
+            else {
+                jQuery('#emptyGroup').fadeIn("slow");
+            }
+        }
+    };
+    Specific.prototype.populateGroups = function () {
+        var _this = this;
+        this._botTrainingService.getAllGroups('Specific')
+            .subscribe(function (a) {
+            if (a.code == 200) {
+                _this.blockGroupsModel = a.data;
+                _this.blockGroupsModel.sort(function (a, b) {
+                    return a.group.order - b.group.order;
+                });
+                if (_this.blockGroupsModel.length != 0) {
+                    for (var i = 0; i < _this.blockGroupsModel.length; i++) {
+                        if (_this.blockGroupsModel[i].blocks.length > 0) {
+                            _this.popBlock = _this.blockGroupsModel[i].blocks[0];
+                            _this.popBlockId = _this.popBlock._id;
+                            break;
+                        }
+                    }
+                }
+                console.log(a);
+            }
+        });
+    };
+    Specific.prototype.deleteGroup = function (val) {
+        var _this = this;
+        this._botTrainingService.deleteGroup(val)
+            .subscribe(function (a) {
+            if (a.code == 200) {
+                //this.populateGroups();
+                for (var i = 0; i < _this.blockGroupsModel.length; i++) {
+                    if (_this.blockGroupsModel[i].group._id == val) {
+                        _this.blockGroupsModel.splice(i, 1);
+                        break;
+                    }
+                }
+            }
+        });
+    };
+    Specific.prototype.refreshTextBox = function () {
+        this.GroupText = "";
+    };
+    Specific.prototype.characterCount = function (cardId, Id) {
+        var textCount = jQuery('#textCardTitle' + cardId + Id).val();
+        var count = 320 - textCount.length;
+        jQuery('#textCardCount' + cardId + Id).html(count);
+        var height = textCount.length / 20;
+        var txt = jQuery('#textCardTitle' + cardId + Id).val();
+        var arraytxt = txt.split('\n');
+        console.log(arraytxt);
+        var lines = textCount.split(/\r|\r\n|\n/);
+        console.log(lines.length);
+        /*console.log(height);
+        console.log(jQuery('#textCardTitle'+cardId+Id).css('height'));
+        if(height < 1)
+        {
+            height = 1;
+        }
+        jQuery('#textCardTitle'+cardId+Id).css('height', 40*Math.floor(height) + 'px');*/
+    };
+    Specific.prototype.characterCountOfSingle = function (cardId) {
+        var textCount = jQuery('#textCardTitle' + cardId).val();
+        var count = 320 - textCount.length;
+        jQuery('#textCardCount' + cardId).html(count);
+        /*var height = textCount.length / 20;
+        console.log(height);
+        console.log(jQuery('#textCardTitle'+cardId).css('height'));
+        if(height < 1)
+        {
+            height = 1;
+        }
+        jQuery('#textCardTitle'+cardId).css('height', 40*Math.floor(height) + 'px');*/
+    };
+    Specific.prototype.dynamicHeight = function (el, cardId, Id) {
+        //el.style.cssText = 'height:' + el.scrollHeight + 'px';
+    };
+    Specific.prototype.editQR = function (_quickReplyId, _responseMessageId, _quickReplyName, _quickReplyBlockId) {
+        this.quickReplyId = _quickReplyId;
+        this.quickReplyBlockId = _quickReplyBlockId;
+        this.quickReplyBtnName = _quickReplyName;
+        this.quickReplyResponseMessageId = _responseMessageId;
+        this.EditQuickReplyName = this.quickReplyBtnName;
+        this.EditBlockQuickReply = this.quickReplyBlockId;
+        console.log(_quickReplyBlockId);
+        jQuery('#editQR-select').val(this.EditBlockQuickReply).change();
+    };
+    Specific.prototype.editQuickReplyBtns = function () {
+        var _this = this;
+        console.log(this.EditQuickReplyName);
+        this._botTrainingService.editQuickReply(this.EditQuickReplyName, this.quickReplyResponseMessageId, this.quickReplyId)
+            .subscribe(function (a) {
+            if (a.code == 200) {
+                _this.blockDetail(_this.popBlock._id);
+            }
+        });
+    };
+    __decorate([
+        core_1.ViewChild('myModal'), 
+        __metadata('design:type', (typeof (_a = typeof ng2_modal_1.Modal !== 'undefined' && ng2_modal_1.Modal) === 'function' && _a) || Object)
+    ], Specific.prototype, "modalComponent", void 0);
+    __decorate([
+        core_1.ViewChild('yourModal'), 
+        __metadata('design:type', (typeof (_b = typeof ng2_modal_1.Modal !== 'undefined' && ng2_modal_1.Modal) === 'function' && _b) || Object)
+    ], Specific.prototype, "modalComponent2", void 0);
+    __decorate([
+        core_2.Input(), 
+        __metadata('design:type', String)
+    ], Specific.prototype, "GroupText", void 0);
+    Specific = __decorate([
+        core_1.Component({
+            selector: '[specific]',
+            template: __webpack_require__("./src/app/specific/specific.component.html"),
+            providers: [BotTrainingService_1.BotTrainingService],
+            encapsulation: core_1.ViewEncapsulation.None,
+            styles: [__webpack_require__("./src/app/specific/specific.component.scss"), './../forms/elements/elements.style.css']
+        }), 
+        __metadata('design:paramtypes', [(typeof (_c = typeof BotTrainingService_1.BotTrainingService !== 'undefined' && BotTrainingService_1.BotTrainingService) === 'function' && _c) || Object, (typeof (_d = typeof core_1.ElementRef !== 'undefined' && core_1.ElementRef) === 'function' && _d) || Object])
+    ], Specific);
+    return Specific;
+    var _a, _b, _c, _d;
+}());
+exports.Specific = Specific;
+
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__("./node_modules/jquery/dist/jquery.js")))
+
+/***/ },
+
+/***/ "./src/app/specific/specific.module.ts":
+/***/ function(module, exports, __webpack_require__) {
+
+"use strict";
+"use strict";
+__webpack_require__("./node_modules/messenger/build/js/messenger.js");
+__webpack_require__("./node_modules/jquery-ui/ui/sortable.js");
+__webpack_require__("./node_modules/jquery.nestable/jquery.nestable.js");
+var common_1 = __webpack_require__("./node_modules/@angular/common/index.js");
+var forms_1 = __webpack_require__("./node_modules/@angular/forms/index.js");
+var core_1 = __webpack_require__("./node_modules/@angular/core/index.js");
+var router_1 = __webpack_require__("./node_modules/@angular/router/index.js");
+var ng2_bootstrap_1 = __webpack_require__("./node_modules/ng2-bootstrap/ng2-bootstrap.js");
+var ng2_bootstrap_2 = __webpack_require__("./node_modules/ng2-bootstrap/ng2-bootstrap.js");
+var ng2_bootstrap_3 = __webpack_require__("./node_modules/ng2-bootstrap/ng2-bootstrap.js");
+var ng2_modal_1 = __webpack_require__("./node_modules/ng2-modal/index.js");
+var specific_component_1 = __webpack_require__("./src/app/specific/specific.component.ts");
+var widget_module_1 = __webpack_require__("./src/app/layout/widget/widget.module.ts");
+var ng2_select2_1 = __webpack_require__("./node_modules/ng2-select2/ng2-select2.js");
+//import { CKEditorModule } from 'ng2-ckeditor';
+var quill_module_1 = __webpack_require__("./src/app/directory/quill/quill.module.ts");
+exports.routes = [
+    { path: '', component: specific_component_1.Specific, pathMatch: 'full' }
+];
+var UiElementsModule = (function () {
+    function UiElementsModule() {
+    }
+    UiElementsModule.routes = exports.routes;
+    UiElementsModule = __decorate([
+        core_1.NgModule({
+            declarations: [
+                // Components / Directives/ Pipes
+                specific_component_1.Specific
+            ],
+            imports: [
+                common_1.CommonModule,
+                forms_1.FormsModule,
+                router_1.RouterModule.forChild(exports.routes),
+                ng2_bootstrap_1.AlertModule,
+                widget_module_1.WidgetModule,
+                ng2_bootstrap_1.TooltipModule,
+                ng2_modal_1.ModalModule,
+                ng2_bootstrap_2.ButtonsModule,
+                ng2_bootstrap_2.DropdownModule,
+                ng2_bootstrap_3.TabsModule,
+                ng2_bootstrap_3.AccordionModule,
+                ng2_select2_1.Select2Module,
+                quill_module_1.QuillModule
+            ]
+        }), 
+        __metadata('design:paramtypes', [])
+    ], UiElementsModule);
+    return UiElementsModule;
+}());
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.default = UiElementsModule;
 
 
 /***/ }
