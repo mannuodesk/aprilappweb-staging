@@ -5209,6 +5209,10 @@ var BotTrainingService = (function () {
         return this.http.get(this.baseUrl + 'blocks/updateBlockName/' + blockId + '/' + blockName)
             .map(function (res) { return res.json(); });
     };
+    BotTrainingService.prototype.updateGroupName = function (groupId, groupName) {
+        return this.http.get(this.baseUrl + 'groups/updateGroupName/' + groupId + '/' + groupName)
+            .map(function (res) { return res.json(); });
+    };
     BotTrainingService.prototype.updateAddBtns = function (responseMessageId, obj, type, responseMessageType) {
         var body = JSON.stringify({ "responseMessageId": responseMessageId, "object": obj, "type": type, "responseMessageType": responseMessageType });
         var headers = new http_1.Headers({ 'Content-Type': 'application/json' });
@@ -5350,8 +5354,8 @@ var BotTrainingService = (function () {
         return this.http.post(this.baseUrl + "usercode/uploadPicture", formData, options)
             .map(function (res) { return res.json(); });
     };
-    BotTrainingService.prototype.editQuickReply = function (buttonName, responseMessageId, _quickReplyId) {
-        return this.http.get(this.baseUrl + 'responsemessagesroute/editQuickReply/' + buttonName + '/' + responseMessageId + '/' + _quickReplyId)
+    BotTrainingService.prototype.editQuickReply = function (buttonName, _blockId, responseMessageId, _quickReplyId) {
+        return this.http.get(this.baseUrl + 'responsemessagesroute/editQuickReply/' + buttonName + '/' + _blockId + '/' + responseMessageId + '/' + _quickReplyId)
             .map(function (res) { return res.json(); });
     };
     BotTrainingService = __decorate([

@@ -17407,7 +17407,7 @@ return /******/ (function(modules) { // webpackBootstrap
 /***/ "./src/app/directory/directory.component.html":
 /***/ function(module, exports) {
 
-module.exports = "<ol class=\"breadcrumb\">\r\n    <li class=\"breadcrumb-item\">YOU ARE HERE</li>\r\n    <li class=\"breadcrumb-item active\">Directory</li>\r\n</ol>\r\n<h1 class=\"page-title\">Directory</h1>\r\n\r\n<div class=\"row\">\r\n\r\n    <div class=\"col-lg-12 col-xs-12\">\r\n        <div class=\"panel-group\" id=\"accordion\">\r\n            <div *ngFor=\"let item of directoryList; let i = index\">\r\n                <div class=\"panel panel-default\">\r\n                    <div class=\"panel-heading\">\r\n                        <span class=\"deleteDirectory\" (click)=\"deleteDirectory(item._id)\"><i class=\"fa fa-trash-o\"></i></span>\r\n                        <h4 class=\"panel-title\">\r\n                            <a data-toggle=\"collapse\" data-parent=\"#accordion\" href=\"#item{{item._id}}\">{{item.title}}</a>\r\n                        </h4>\r\n                    </div>\r\n                    <div id=\"item{{item._id}}\" class=\"panel-collapse collapse\">\r\n                        <div class=\"panel-body\">\r\n                            <quill-editor class=\"form-control\" [(ngModel)]=\"ckeditorContent[i]\" (onEditorCreated)=\"onEditorCreated($event, i, item._id)\" (writeValue)=\"item.content\"\r\n                              (onContentChanged)=\"onBlur($event, item._id, i);\"  ></quill-editor>\r\n                                <!--(onContentChanged)=\"onBlur($event, , item._id, i);\"-->\r\n                            <br/>\r\n                        </div>\r\n                    </div>\r\n                </div>\r\n            </div>\r\n        </div>\r\n    </div>\r\n</div>\r\n<div class=\"row page-title\">\r\n    <h4><strong>Add Directory</strong></h4>\r\n</div>\r\n<section class=\"AddDirectory\">\r\n    <div class=\"row\">\r\n        <div class=\"col-lg-6 offset-lg-3 col-xs-12 col-sm-12\">\r\n\r\n            <div class=\"form-group row\">\r\n                <label class=\"col-md-3\" for=\"tooltip-enabled\">Directory Title</label>\r\n                <div class=\"col-md-7 \">\r\n                    <input type=\"text\" [(ngModel)]=\"directoryTitle\" id=\"tooltip-enabled\" class=\"form-control\" tooltipPlacement=\"top\" tooltip=\"Some explanation text here\"\r\n                        placeholder=\"Directory Title..\">\r\n                </div>\r\n            </div>\r\n            <quill-editor class=\"form-control\" [(ngModel)]=\"addDirectoryContent\" (onEditorCreated)=\"onEditorCreated($event)\" (onContentChanged)=\"logChange($event);\"></quill-editor>\r\n            <br/>\r\n            <div class=\"row\">\r\n                <button type=\"button\" (click)=\"addDirectory()\" class=\"btn btn-info btn-block submitBtn col-lg-6 offset-lg-3 col-xs-6\">Submit</button>\r\n            </div>\r\n        </div>\r\n    </div>\r\n</section>"
+module.exports = "<ol class=\"breadcrumb\">\r\n    <li class=\"breadcrumb-item\">YOU ARE HERE</li>\r\n    <li class=\"breadcrumb-item active\">Directory</li>\r\n</ol>\r\n<h1 class=\"page-title\">Directory</h1>\r\n<div class=\"row page-title\">\r\n    <h4><strong>Add Directory</strong></h4>\r\n</div>\r\n<section class=\"AddDirectory\">\r\n    <div class=\"row\">\r\n        <div class=\"col-lg-6 offset-lg-3 col-xs-12 col-sm-12\">\r\n\r\n            <div class=\"form-group row\">\r\n                <label class=\"col-md-3\" for=\"tooltip-enabled\">Directory Title</label>\r\n                <div class=\"col-md-7 \">\r\n                    <input type=\"text\" [(ngModel)]=\"directoryTitle\" id=\"tooltip-enabled\" class=\"form-control\" tooltipPlacement=\"top\" tooltip=\"Some explanation text here\"\r\n                        placeholder=\"Directory Title..\">\r\n                </div>\r\n            </div>\r\n            <quill-editor class=\"form-control\" [(ngModel)]=\"addDirectoryContent\" (onEditorCreated)=\"onEditorCreated($event)\" (onContentChanged)=\"logChange($event);\"></quill-editor>\r\n            <br/>\r\n            <div class=\"row\">\r\n                <button type=\"button\" (click)=\"saveModal.open()\" class=\"btn btn-info btn-block submitBtn col-lg-6 offset-lg-3 col-xs-6\">Submit</button>\r\n            </div>\r\n        </div>\r\n    </div>\r\n</section>\r\n<div class=\"row\">\r\n\r\n    <div class=\"col-lg-12 col-xs-12\">\r\n        <div class=\"panel-group\" id=\"accordion\">\r\n            <div *ngFor=\"let item of directoryList; let i = index\">\r\n                <div class=\"panel panel-default\">\r\n                    <div class=\"panel-heading\">\r\n                        <span class=\"deleteDirectory\" (click)=\"delete(item._id);myModal.open()\"><i class=\"fa fa-trash-o\"></i></span>\r\n                        <h4 class=\"panel-title\">\r\n                            <a data-toggle=\"collapse\" data-parent=\"#accordion\" href=\"#item{{item._id}}\">{{item.title}}</a>\r\n                        </h4>\r\n                    </div>\r\n                    <div id=\"item{{item._id}}\" class=\"panel-collapse collapse\">\r\n                        <div class=\"panel-body\">\r\n                            <quill-editor class=\"form-control\" [(ngModel)]=\"ckeditorContent[i]\" (onEditorCreated)=\"onEditorCreated($event, i, item._id)\" (writeValue)=\"item.content\"\r\n                              (onContentChanged)=\"onBlur($event, item._id, i);\"  ></quill-editor>\r\n                                <!--(onContentChanged)=\"onBlur($event, , item._id, i);\"-->\r\n                            <br/>\r\n                        </div>\r\n                    </div>\r\n                </div>\r\n            </div>\r\n        </div>\r\n    </div>\r\n</div>\r\n<modal #myModal>\r\n  <modal-header>\r\n    <h4 class=\"modal-title text-xs-center fw-bold mt\" id=\"myModalLabel18\">Confirmation</h4>\r\n    <p class=\"text-xs-center fs-mini text-muted mt-sm\">\r\n      Do you really want to remove the User?\r\n    </p>\r\n  </modal-header>\r\n  <modal-content>\r\n    <form>\r\n      <div class=\"row\">\r\n        <div class=\"col-lg-6 col-xs-12\">\r\n          <button type=\"button\" class=\"btn btn-success pull-right\" (click)=\"deleteDirectory();myModal.close()\">Yes</button>\r\n        </div>\r\n        <div class=\"col-lg-6 col-xs-12\">\r\n          <button type=\"button\" class=\"btn btn-danger pull-left\" (click)=\"myModal.close()\">No</button>\r\n        </div>\r\n      </div>\r\n    </form>\r\n  </modal-content>\r\n</modal>\r\n<modal #saveModal>\r\n  <modal-header>\r\n    <h4 class=\"modal-title text-xs-center fw-bold mt\" id=\"myModalLabel18\">Confirmation</h4>\r\n    <p class=\"text-xs-center fs-mini text-muted mt-sm\">\r\n      Do you want to save this?\r\n    </p>\r\n  </modal-header>\r\n  <modal-content>\r\n    <form>\r\n      <div class=\"row\">\r\n        <div class=\"col-lg-6 col-xs-12\">\r\n          <button type=\"button\" class=\"btn btn-success pull-right\" (click)=\"addDirectory();saveModal.close()\">Yes</button>\r\n        </div>\r\n        <div class=\"col-lg-6 col-xs-12\">\r\n          <button type=\"button\" class=\"btn btn-danger pull-left\" (click)=\"saveModal.close()\">No</button>\r\n        </div>\r\n      </div>\r\n    </form>\r\n  </modal-content>\r\n</modal>\r\n"
 
 /***/ },
 
@@ -17485,15 +17485,38 @@ var Directory = (function () {
             if (a.code == 200) {
                 _this.addDirectoryContent = "";
                 _this.directoryTitle = "";
+                _this._miscService.getAlldirectory().subscribe(function (a) {
+                    if (a.code == 200) {
+                        _this.directoryList = a.data;
+                        console.log(_this.directoryList);
+                        for (var j = 0; j < _this.directoryList.length; j++) {
+                            var text = _this.directoryList[j].content;
+                            _this.ckeditorContent[j] = text;
+                        }
+                    }
+                });
             }
         });
     };
-    Directory.prototype.deleteDirectory = function (Id) {
+    Directory.prototype.delete = function (Id) {
+        this.deleteId = Id;
+    };
+    Directory.prototype.deleteDirectory = function () {
         var _this = this;
-        this._miscService.deleteDirectory(Id).subscribe(function (a) {
+        this._miscService.deleteDirectory(this.deleteId).subscribe(function (a) {
             if (a.code == 200) {
                 _this.addDirectoryContent = "";
                 _this.directoryTitle = "";
+                _this._miscService.getAlldirectory().subscribe(function (a) {
+                    if (a.code == 200) {
+                        _this.directoryList = a.data;
+                        console.log(_this.directoryList);
+                        for (var j = 0; j < _this.directoryList.length; j++) {
+                            var text = _this.directoryList[j].content;
+                            _this.ckeditorContent[j] = text;
+                        }
+                    }
+                });
             }
         });
     };
