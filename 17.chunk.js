@@ -17574,14 +17574,14 @@ exports.QuillModule = QuillModule;
 /***/ "./src/app/faqs/faqs.component.html":
 /***/ function(module, exports) {
 
-module.exports = "<ol class=\"breadcrumb\">\n    <li class=\"breadcrumb-item\">YOU ARE HERE</li>\n    <li class=\"breadcrumb-item active\">Frequently Asked Questions</li>\n</ol>\n<h1 class=\"page-title\">Frequently Asked<span class=\"fw-semi-bold\"> Questions</span></h1>\n\n<div class=\"row\">\n\n    <div class=\"col-lg-12 col-xs-12\">\n        <div class=\"panel-group\" id=\"accordion\">\n            <div *ngFor=\"let item of directoryList; let i = index\">\n                <div class=\"panel panel-default\">\n                    <div class=\"panel-heading\">\n                        <span class=\"deleteDirectory\" (click)=\"deleteDirectory(item._id)\"><i class=\"fa fa-trash-o\"></i></span>\n                        <h4 class=\"panel-title\">\n                            <a data-toggle=\"collapse\" data-parent=\"#accordion\" href=\"#item{{item._id}}\">{{item.title}}</a>\n                        </h4>\n                    </div>\n                    <div id=\"item{{item._id}}\" class=\"panel-collapse collapse\">\n                        <div class=\"panel-body\">\n                            <quill-editor class=\"form-control\" [(ngModel)]=\"ckeditorContent[i]\" (onEditorCreated)=\"onEditorCreated($event, i, item._id)\" (writeValue)=\"item.content\"\n                              (onContentChanged)=\"onBlur($event, item._id, i);\"  ></quill-editor>\n                                <!--(onContentChanged)=\"onBlur($event, , item._id, i);\"-->\n                            <br/>\n                        </div>\n                    </div>\n                </div>\n            </div>\n        </div>\n    </div>\n</div>\n<div class=\"row page-title\">\n    <h4><strong>Add FAQ</strong></h4>\n</div>\n<section class=\"AddDirectory\">\n    <div class=\"row\">\n        <div class=\"col-lg-6 offset-lg-3 col-xs-12 col-sm-12\">\n\n            <div class=\"form-group row\">\n                <label class=\"col-md-3\" for=\"tooltip-enabled\">FAQ Title</label>\n                <div class=\"col-md-7 \">\n                    <input type=\"text\" [(ngModel)]=\"directoryTitle\" id=\"tooltip-enabled\" class=\"form-control\" tooltipPlacement=\"top\" tooltip=\"Some explanation text here\"\n                        placeholder=\"FAQ Title..\">\n                </div>\n            </div>\n            <quill-editor class=\"form-control\" [(ngModel)]=\"addDirectoryContent\" (onEditorCreated)=\"onEditorCreated($event)\" (onContentChanged)=\"logChange($event);\"></quill-editor>\n            <br/>\n            <div class=\"row\">\n                <button type=\"button\" (click)=\"addDirectory()\" class=\"btn btn-info btn-block submitBtn col-lg-6 offset-lg-3 col-xs-6\">Submit</button>\n            </div>\n        </div>\n    </div>\n</section>"
+module.exports = "<ol class=\"breadcrumb\">\n    <li class=\"breadcrumb-item\">YOU ARE HERE</li>\n    <li class=\"breadcrumb-item active\">Frequently Asked Questions</li>\n</ol>\n<h1 class=\"page-title\">Frequently Asked<span class=\"fw-semi-bold\"> Questions</span></h1>\n\n<div class=\"row\">\n\n    <div class=\"col-lg-12 col-xs-12\">\n        <div class=\"panel-group\" id=\"accordion\">\n            <div *ngFor=\"let item of directoryList; let i = index\">\n                <div class=\"panel panel-default\">\n                    <div class=\"panel-heading\">\n                        <span class=\"deleteDirectory\" (click)=\"myModal.open()\"><i class=\"fa fa-trash-o\"></i></span>\n                        <h4 class=\"panel-title\">\n                            <a data-toggle=\"collapse\" data-parent=\"#accordion\" href=\"#item{{item._id}}\">{{item.title}}</a>\n                        </h4>\n                    </div>\n                    <div id=\"item{{item._id}}\" class=\"panel-collapse collapse\">\n                        <div class=\"panel-body\">\n                            <quill-editor class=\"form-control\" [(ngModel)]=\"ckeditorContent[i]\" (onEditorCreated)=\"onEditorCreated($event, i, item._id)\" (writeValue)=\"item.content\"\n                              (onContentChanged)=\"onBlur($event, item._id, i);\"  ></quill-editor>\n                                <!--(onContentChanged)=\"onBlur($event, , item._id, i);\"-->\n                            <br/>\n                        </div>\n                    </div>\n                </div>\n            </div>\n        </div>\n    </div>\n</div>\n<div class=\"row page-title\">\n    <h4><strong>Add FAQ</strong></h4>\n</div>\n<section class=\"AddDirectory\">\n    <div class=\"row\">\n        <div class=\"col-lg-6 offset-lg-3 col-xs-12 col-sm-12\">\n\n            <div class=\"form-group row\">\n                <label class=\"col-md-3\" for=\"tooltip-enabled\">FAQ Title</label>\n                <div class=\"col-md-7 \">\n                    <input type=\"text\" [(ngModel)]=\"directoryTitle\" id=\"tooltip-enabled\" class=\"form-control\" tooltipPlacement=\"top\" tooltip=\"Some explanation text here\"\n                        placeholder=\"FAQ Title..\">\n                </div>\n            </div>\n            <quill-editor class=\"form-control\" [(ngModel)]=\"addDirectoryContent\" (onEditorCreated)=\"onEditorCreated($event)\" (onContentChanged)=\"logChange($event);\"></quill-editor>\n            <br/>\n            <div class=\"row\">\n                <button type=\"button\" (click)=\"saveModal.open()\" class=\"btn btn-info btn-block submitBtn col-lg-6 offset-lg-3 col-xs-6\">Submit</button>\n            </div>\n        </div>\n    </div>\n</section>\n<modal #myModal>\n  <modal-header>\n    <h4 class=\"modal-title text-xs-center fw-bold mt\" id=\"myModalLabel18\">Confirmation</h4>\n    <p class=\"text-xs-center fs-mini text-muted mt-sm\">\n      Do you really want to remove the FAQ?\n    </p>\n  </modal-header>\n  <modal-content>\n    <form>\n      <div class=\"row\">\n        <div class=\"col-lg-6 col-xs-12\">\n          <button type=\"button\" class=\"btn btn-success pull-right\" (click)=\"deleteDirectory();myModal.close()\">Yes</button>\n        </div>\n        <div class=\"col-lg-6 col-xs-12\">\n          <button type=\"button\" class=\"btn btn-danger pull-left\" (click)=\"myModal.close()\">No</button>\n        </div>\n      </div>\n    </form>\n  </modal-content>\n</modal>\n<modal #saveModal>\n  <modal-header>\n    <h4 class=\"modal-title text-xs-center fw-bold mt\" id=\"myModalLabel18\">Confirmation</h4>\n    <p class=\"text-xs-center fs-mini text-muted mt-sm\">\n      Do you want to save this?\n    </p>\n  </modal-header>\n  <modal-content>\n    <form>\n      <div class=\"row\">\n        <div class=\"col-lg-6 col-xs-12\">\n          <button type=\"button\" class=\"btn btn-success pull-right\" (click)=\"addDirectory();saveModal.close()\">Yes</button>\n        </div>\n        <div class=\"col-lg-6 col-xs-12\">\n          <button type=\"button\" class=\"btn btn-danger pull-left\" (click)=\"saveModal.close()\">No</button>\n        </div>\n      </div>\n    </form>\n  </modal-content>\n</modal>"
 
 /***/ },
 
 /***/ "./src/app/faqs/faqs.component.scss":
 /***/ function(module, exports) {
 
-module.exports = ".widget2 {\n  background-color: #eeeeee !important; }\n\n.AddGroupBtn {\n  margin-left: 1.5%; }\n\n.btn-red {\n  background-color: #e9604a;\n  color: white;\n  border-radius: 7px; }\n\n.rowcolor {\n  background-color: white;\n  margin-left: 0.1%;\n  border-radius: 7px;\n  margin-bottom: 2%; }\n\n.title {\n  text-transform: uppercase;\n  font-size: 13px;\n  line-height: 2.15;\n  color: #767676;\n  margin: 0 0 8px;\n  padding: 2%; }\n\n.rightborder {\n  border-right: 1px solid #eeeeee; }\n\n.art-baloons-input {\n  position: relative;\n  min-height: 36px;\n  border-radius: 7px;\n  box-shadow: inset 0 1px 3px 0 rgba(0, 0, 0, 0.08);\n  border: 1px solid rgba(0, 0, 0, 0.2);\n  background-color: rgba(0, 0, 0, 0.01);\n  transition: box-shadow .1s,border-color .1s;\n  cursor: text;\n  padding: 4px 0 0 8px;\n  line-height: 26px; }\n\n.paddingrow {\n  padding: 0 2.5% 2.5%; }\n\n.green {\n  display: inline-block;\n  position: relative;\n  vertical-align: top;\n  line-height: 26px;\n  min-height: 26px;\n  max-width: 98.5%;\n  word-wrap: break-word;\n  border-radius: 18px;\n  background-color: #45c195;\n  padding: 0 8px;\n  font-size: 16px;\n  color: #fff;\n  margin: 0 8px 4px 0; }\n\n.dropdownBtnColor {\n  background-color: #a6a6a6 !important;\n  border-color: #a6a6a6 !important; }\n\n.closeBuild {\n  position: absolute;\n  z-index: 1000;\n  right: -2px;\n  display: none;\n  border-radius: 50%;\n  width: 28px;\n  height: 28px;\n  border: 1px solid black;\n  background-color: white;\n  padding: 0.3% 0.5%; }\n\n.closePhrase {\n  position: absolute;\n  z-index: 1000;\n  right: -4px;\n  top: -9px;\n  display: none; }\n\n.quickReplyCloseBtn {\n  color: black;\n  font-size: 18px; }\n\n.phraseFont {\n  font-size: 12px !important; }\n\n.replySelectionDropdown {\n  display: inline-block;\n  color: #448af1;\n  cursor: pointer; }\n\n.replySelectionUL {\n  list-style: none;\n  position: absolute;\n  margin: 0;\n  padding: 0;\n  top: -2px;\n  float: right;\n  left: 136px;\n  z-index: 100000;\n  overflow: hidden;\n  border-radius: 7px;\n  background-color: #fff;\n  box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.12);\n  border: 1px solid rgba(0, 0, 0, 0.24); }\n\n.replySelectionLI {\n  display: block;\n  height: 28px;\n  line-height: 28px;\n  padding: 0 12px;\n  margin: 0;\n  cursor: pointer;\n  white-space: nowrap;\n  color: #000; }\n\n/**\r\n * Switchery.\r\n */\n.switch {\n  box-sizing: content-box; }\n\n.switch input {\n  display: none; }\n\n.switch i {\n  display: inline-block;\n  cursor: pointer;\n  padding-right: 10px;\n  transition: all ease 0.2s;\n  -webkit-transition: all ease 0.2s;\n  border-radius: 20px;\n  box-shadow: inset 0 0 1px rgba(0, 0, 0, 0.5); }\n\n.switch i:before {\n  display: block;\n  content: '';\n  width: 15px;\n  height: 15px;\n  padding: 1px;\n  border-radius: 20px;\n  background: white;\n  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.5); }\n\n.switch :checked + i {\n  padding-right: 0;\n  padding-left: 10px;\n  background: #64bd63; }\n\n.switcheryToggle {\n  float: right;\n  display: none; }\n\n/*.close:hover{\r\n    display: block !important;\r\n}*/\n"
+module.exports = ".AddDirectory {\n  background-color: white;\n  padding: 3%; }\n\n.submitBtn {\n  background-color: #053748; }\n\n.accordionBtn {\n  background-color: #a6a6a6; }\n\n.accordionBtn:hover {\n  background-color: #053748; }\n\n.accordionBtn:active {\n  background-color: #053748; }\n\n.deleteDirectory {\n  cursor: pointer;\n  font-size: 22px;\n  float: right;\n  display: inline;\n  margin-top: -10px; }\n"
 
 /***/ },
 
@@ -17595,12 +17595,22 @@ var MiscServices_1 = __webpack_require__("./src/app/services/MiscServices.ts");
 var Quill = __webpack_require__("./node_modules/quill/dist/quill.js");
 var Faqs = (function () {
     function Faqs(_miscService) {
-        var _this = this;
         this._miscService = _miscService;
         this.addDirectoryContent = "";
         this.directoryTitle = "";
         this.directoryList = [];
         this.ckeditorContent = [];
+        this.populate();
+    }
+    Faqs.prototype.ngOnInit = function () {
+        jQuery('.nav-tabs').on('shown.bs.tab', 'a', function (e) {
+            if (e.relatedTarget) {
+                jQuery(e.relatedTarget).removeClass('active');
+            }
+        });
+    };
+    Faqs.prototype.populate = function () {
+        var _this = this;
         this._miscService.getAllFaqs().subscribe(function (a) {
             if (a.code == 200) {
                 _this.directoryList = a.data;
@@ -17609,13 +17619,6 @@ var Faqs = (function () {
                     var text = _this.directoryList[j].content;
                     _this.ckeditorContent[j] = text;
                 }
-            }
-        });
-    }
-    Faqs.prototype.ngOnInit = function () {
-        jQuery('.nav-tabs').on('shown.bs.tab', 'a', function (e) {
-            if (e.relatedTarget) {
-                jQuery(e.relatedTarget).removeClass('active');
             }
         });
     };
@@ -17648,12 +17651,15 @@ var Faqs = (function () {
     };
     Faqs.prototype.addDirectory = function () {
         var _this = this;
-        this._miscService.addFaqs(this.directoryTitle, this.addDirectoryContent).subscribe(function (a) {
-            if (a.code == 200) {
-                _this.addDirectoryContent = "";
-                _this.directoryTitle = "";
-            }
-        });
+        if (this.directoryTitle != "" && this.addDirectoryContent != "") {
+            this._miscService.addFaqs(this.directoryTitle, this.addDirectoryContent).subscribe(function (a) {
+                if (a.code == 200) {
+                    _this.addDirectoryContent = "";
+                    _this.directoryTitle = "";
+                    _this.populate();
+                }
+            });
+        }
     };
     Faqs.prototype.deleteDirectory = function (Id) {
         var _this = this;
@@ -17661,6 +17667,7 @@ var Faqs = (function () {
             if (a.code == 200) {
                 _this.addDirectoryContent = "";
                 _this.directoryTitle = "";
+                _this.populate();
             }
         });
     };
