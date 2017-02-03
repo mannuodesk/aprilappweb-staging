@@ -17414,7 +17414,7 @@ module.exports = "<ol class=\"breadcrumb\">\r\n    <li class=\"breadcrumb-item\"
 /***/ "./src/app/directory/directory.component.scss":
 /***/ function(module, exports) {
 
-module.exports = ".AddDirectory {\n  background-color: white;\n  padding: 3%; }\n\n.submitBtn {\n  background-color: #053748; }\n\n.accordionBtn {\n  background-color: #a6a6a6; }\n\n.accordionBtn:hover {\n  background-color: #053748; }\n\n.accordionBtn:active {\n  background-color: #053748; }\n\n.deleteDirectory {\n  cursor: pointer;\n  font-size: 22px;\n  float: right;\n  display: inline;\n  margin-top: -10px; }\n"
+module.exports = ".AddDirectory {\n  background-color: white;\n  padding: 3%; }\n\n.submitBtn {\n  background-color: #053748; }\n\n.accordionBtn {\n  background-color: #a6a6a6; }\n\n.accordionBtn:hover {\n  background-color: #053748; }\n\n.accordionBtn:active {\n  background-color: #053748; }\n\n.deleteDirectory {\n  cursor: pointer;\n  font-size: 22px;\n  float: right;\n  display: inline;\n  margin-top: -10px; }\n\n.modalError {\n  border: 1px solid red; }\n"
 
 /***/ },
 
@@ -17481,22 +17481,28 @@ var Directory = (function () {
     };
     Directory.prototype.addDirectory = function () {
         var _this = this;
-        this._miscService.addDirectory(this.directoryTitle, this.addDirectoryContent).subscribe(function (a) {
-            if (a.code == 200) {
-                _this.addDirectoryContent = "";
-                _this.directoryTitle = "";
-                _this._miscService.getAlldirectory().subscribe(function (a) {
-                    if (a.code == 200) {
-                        _this.directoryList = a.data;
-                        console.log(_this.directoryList);
-                        for (var j = 0; j < _this.directoryList.length; j++) {
-                            var text = _this.directoryList[j].content;
-                            _this.ckeditorContent[j] = text;
+        if (this.directoryTitle != "") {
+            jQuery('#tooltip-enabled').removeClass('modalError');
+            this._miscService.addDirectory(this.directoryTitle, this.addDirectoryContent).subscribe(function (a) {
+                if (a.code == 200) {
+                    _this.addDirectoryContent = "";
+                    _this.directoryTitle = "";
+                    _this._miscService.getAlldirectory().subscribe(function (a) {
+                        if (a.code == 200) {
+                            _this.directoryList = a.data;
+                            console.log(_this.directoryList);
+                            for (var j = 0; j < _this.directoryList.length; j++) {
+                                var text = _this.directoryList[j].content;
+                                _this.ckeditorContent[j] = text;
+                            }
                         }
-                    }
-                });
-            }
-        });
+                    });
+                }
+            });
+        }
+        else {
+            jQuery('#tooltip-enabled').addClass('modalError');
+        }
     };
     Directory.prototype.delete = function (Id) {
         this.deleteId = Id;

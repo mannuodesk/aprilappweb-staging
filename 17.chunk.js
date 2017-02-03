@@ -17581,7 +17581,7 @@ module.exports = "<ol class=\"breadcrumb\">\n    <li class=\"breadcrumb-item\">Y
 /***/ "./src/app/faqs/faqs.component.scss":
 /***/ function(module, exports) {
 
-module.exports = ".AddDirectory {\n  background-color: white;\n  padding: 3%; }\n\n.submitBtn {\n  background-color: #053748; }\n\n.accordionBtn {\n  background-color: #a6a6a6; }\n\n.accordionBtn:hover {\n  background-color: #053748; }\n\n.accordionBtn:active {\n  background-color: #053748; }\n\n.deleteDirectory {\n  cursor: pointer;\n  font-size: 22px;\n  float: right;\n  display: inline;\n  margin-top: -10px; }\n"
+module.exports = ".AddDirectory {\n  background-color: white;\n  padding: 3%; }\n\n.submitBtn {\n  background-color: #053748; }\n\n.accordionBtn {\n  background-color: #a6a6a6; }\n\n.accordionBtn:hover {\n  background-color: #053748; }\n\n.accordionBtn:active {\n  background-color: #053748; }\n\n.deleteDirectory {\n  cursor: pointer;\n  font-size: 22px;\n  float: right;\n  display: inline;\n  margin-top: -10px; }\n\n.modalError {\n  border: 1px solid red; }\n"
 
 /***/ },
 
@@ -17652,6 +17652,7 @@ var Faqs = (function () {
     Faqs.prototype.addDirectory = function () {
         var _this = this;
         if (this.directoryTitle != "" && this.addDirectoryContent != "") {
+            jQuery('#tooltip-enabled').removeClass('modalError');
             this._miscService.addFaqs(this.directoryTitle, this.addDirectoryContent).subscribe(function (a) {
                 if (a.code == 200) {
                     _this.addDirectoryContent = "";
@@ -17659,6 +17660,9 @@ var Faqs = (function () {
                     _this.populate();
                 }
             });
+        }
+        else {
+            jQuery('#tooltip-enabled').addClass('modalError');
         }
     };
     Faqs.prototype.deleteId = function (Id) {

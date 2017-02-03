@@ -18122,7 +18122,7 @@ exports.BotTrainingService = BotTrainingService;
 /***/ "./src/app/specific/specific.component.html":
 /***/ function(module, exports) {
 
-module.exports = "<ol class=\"breadcrumb\">\r\n  <li class=\"breadcrumb-item\">YOU ARE HERE</li>\r\n  <li class=\"breadcrumb-item active\">Specific Groups and Topics</li>\r\n</ol>\r\n<h1 class=\"page-title\">Lists - <span class=\"fw-semi-bold\">Specific Groups for BOT</span></h1>\r\n<section class=\"widget widget2\" widget>\r\n  <header>\r\n    <h4>\r\n      Specific Group Lists\r\n    </h4>\r\n  </header>\r\n  <div class=\"widget-body\">\r\n    <div class=\"row\">\r\n      <div class=\"col-md-6 col-sm-12 col-lg-6 col-xs-12 divseparator\">\r\n        <ul class=\"list-group list-group-sortable mt-lg\">\r\n          <li class=\"list-group-item\" *ngFor=\"let blockGroups of blockGroupsModel\" (mouseenter)=\"mouseEnterGroup(blockGroups.group._id)\"\r\n            (mouseleave)=\"mouseLeaveGroup(blockGroups.group._id)\" id={{blockGroups.group._id}}>\r\n            <i class=\"fa fa-sort\"></i>\r\n            <a class=\"close\" *ngIf=\"blockGroups.group.isLocked == true\"><i class=\"fa fa-lock\" aria-hidden=\"true\"></i></a>\r\n            <a href=\"#\" id=\"gr{{blockGroups.group._id}}\" class=\"groupClose\" *ngIf=\"blockGroups.group.isLocked == false\" (click)=\"deleteGroup(blockGroups.group._id)\"\r\n              data-dismiss=\"alert\" aria-hidden=\"true\"><i class=\"fa fa-trash-o\" aria-hidden=\"true\"></i></a>\r\n            <div id=\"GroupNameDiv{{blockGroups.group._id}}\" class=\"GroupName\" (click)=\"changeGroupName(blockGroups.group._id)\">\r\n              {{blockGroups.group.name}}\r\n            </div>\r\n            <input id=\"groupNameChange{{blockGroups.group._id}}\" maxlength=\"14\" (change)=\"editGroupName(blockGroups.group._id)\" style=\"display: none\" type=\"text\" class=\"blockNameDiv form-control\" value=\"{{blockGroups.group.name}}\"/>\r\n<div class=\"row blocksdiv\">\r\n  <div  id=\"block{{block._id}}\" *ngFor=\"let block of blockGroups.blocks\" class=\"blockbtns\" (mouseenter)=\"mouseEnterBlock(block._id)\" (mouseleave)=\"mouseLeaveBlock(block._id)\" (click)=\"blockDetail(block._id)\">\r\n  <a href=\"#\" id=\"closeBlock{{block._id}}\" class=\"closeBlock\" (click)=\"deleteBlock(block._id)\" data-dismiss=\"alert\" *ngIf=\"blockGroups.group.isLocked == false\"\r\n      aria-hidden=\"true\"><i class=\"fa fa-trash-o\" aria-hidden=\"true\"></i></a>\r\n  <div class=\"blockBtnTxt\">\r\n    \r\n    <!--<span class=\"blockIsCompleted\"></span>--> {{block.name}}\r\n  </div>\r\n  </div>\r\n  <div *ngIf=\"blockGroups.group.isLocked == false\" class=\"addBlock{{blockGroups.group._id}} blockbtns addBlock2\" (click)=\"addBlock(blockGroups.group._id)\">\r\n    <i class=\"fa fa-plus\" aria-hidden=\"true\"></i> Add Block\r\n  </div>\r\n  <div class=\"saveBlock{{blockGroups.group._id}}\" style=\"display:none\">\r\n<div class=\"input-group\">\r\n  <input id=\"blockText{{blockGroups.group._id}}\" maxlength=\"50\" type=\"text\" class=\"form-control\" [(ngModel)]=\"blockName\" placeholder=\"Block Name\"\r\n  />\r\n  <div class=\"input-group-btn\">\r\n    <button type=\"button\" (click)=\"saveBlock(blockGroups.group._id)\" class=\"btn\"><i class=\"fa fa-plus\"></i></button>\r\n  </div>\r\n</div>\r\n</div>\r\n</div>\r\n</li>\r\n\r\n</ul>\r\n<div class=\"row GroupBtn\">\r\n  <p>\r\n    <button type=\"button\" (click)=\"toggleDivs(1)\" class=\"btn btn-info btn-block\">Add Specific Group</button>\r\n  </p>\r\n</div>\r\n<div class=\"row GroupForm\">\r\n  <div class=\"form-group\">\r\n    <div class=\"input-group\">\r\n      <input type=\"text\" [(ngModel)]=\"GroupText\"  maxlength=\"14\" class=\"form-control\" id=\"bar\">\r\n      <div class=\"input-group-btn\">\r\n        <button type=\"button\" (click)=\"toggleDivs(2)\" class=\"btn\"><i class=\"fa fa-plus\"></i></button>\r\n        <button type=\"button\" (click)=\"refreshTextBox()\" class=\"btn btn-primary\"><i class=\"fa fa-refresh\"></i></button>\r\n      </div>\r\n    </div>\r\n  </div>\r\n</div>\r\n<div id=\"emptyGroup\" style=\"display:none\" class=\"form-group\">\r\n<div class=\"alert alert-danger alert-sm\">\r\n  <span class=\"fw-semi-bold\">Danger:</span> Please Enter Group Name.\r\n</div>\r\n</div>\r\n</div>\r\n<div class=\"col-md-6 col-sm-12 col-lg-6 col-xs-12 rmdiv\" style=\"display:none\">\r\n<div class=\"row\">\r\n  <div class=\"col-md-12 col-lg-12 col-xs-12 col-sm-12\">\r\n    <h4 id=\"blockNameHeading\" class=\"blockNameDiv2\" (click)=\"changeBlockName()\">\r\n      {{popBlockName}}\r\n    </h4>\r\n    <input id=\"blockNameChange\" maxlength=\"50\" (change)=\"editBlockName(popBlockId)\" style=\"display: none\" type=\"text\" class=\"blockNameDiv form-control\" value=\"{{popBlockName}}\"/>\r\n<input id=\"popBlockIdd\" type=\"text\" value=\"{{popBlockId}}\" style=\"visibility:hidden\" />\r\n\r\n</div>\r\n</div>\r\n<ul class=\"list-group list-group-sortable2 mt-lg\">\r\n  <div *ngFor=\"let card of cardArray; let i = index\">\r\n    <li class=\"list-group-item\" [ngClass]=\"{errorRM: card.isCompleted == false}\" *ngIf=\"card.type == 'gallery'\" id=\"{{card._id}}\">\r\n      <a href=\"#\" class=\"close\" (click)=\"deleteResponseMessage(card._id)\" data-dismiss=\"alert\" aria-hidden=\"true\"><i class=\"fa fa-trash-o\" aria-hidden=\"true\"></i></a>\r\n      <div class=\"row table galleryHorizontalRow\">\r\n\r\n        <div class=\"galleryColumns galleryColumns{{card._id}}\" (mouseenter)=\"mouseEnterOneGalleryCard(galleryCard.indexId)\" (mouseleave)=\"mouseLeaveOneGalleryCard(galleryCard.indexId)\"\r\n          *ngFor=\"let galleryCard of card.data\">\r\n          <div class=\"card\">\r\n            <a href=\"#\" id=\"galleryRemoveBtn{{galleryCard.indexId}}\" class=\"randomGalleryTextClose\" (click)=\"deleteGalleryCardBtn(card._id, galleryCard.indexId)\"\r\n              data-dismiss=\"alert\" aria-hidden=\"true\"><i class=\"fa fa-trash-o\" aria-hidden=\"true\"></i></a>\r\n            <div class=\"image col-md-12 col-lg-12 col-xs-12 col-sm-1\">\r\n              <div class=\"image-inner\">\r\n                <input accept=\"image/*\" [(ngModel)]=\"galleryImageFile\" type=\"file\" id=\"galleryImage{{galleryCard.indexId}}\" (change)=\"populateGalleryImage($event, card._id, card._blockId, galleryCard.indexId)\"\r\n                  style=\"visibility: hidden;\" name=\"files\" title=\"Load File\" />\r\n<div id=\"galleryImageBtn{{galleryCard.indexId}}\" *ngIf=\"galleryCard.pictureUrl == ''\">\r\n  <button (click)=\"openGalleryImage(galleryCard.indexId)\" class=\"button-image col-xs-12 col-sm-12 btn-gray button-image--replace button-image--replace-gallery\">\r\n                            <span class=\"button-image__title\"><i class=\"fa fa-camera\" aria-hidden=\"true\"></i><br/>Upload Image</span>\r\n                          </button>\r\n</div>\r\n<div id=\"galleryImageDiv{{galleryCard.indexId}}\" *ngIf=\"galleryCard.pictureUrl != ''\" (mouseenter)=\"mouseEnterGI(galleryCard.indexId)\"\r\n  (mouseleave)=\"mouseLeaveGI(galleryCard.indexId)\" [ngStyle]=\"{ 'background-image': 'url(' + galleryCard.pictureUrl + ')'}\">\r\n  <div class=\"galleryImageBGDiv\" id=\"galleryImageChangeBtn{{galleryCard.indexId}}\">\r\n    <button class=\"btn\" (click)=\"openGalleryImage(galleryCard.indexId)\" style=\"background:transparent\">\r\n<i class=\"fa fa-camera\" aria-hidden=\"true\" style=\"color:white;font-size:24px;\"></i>\r\n</button>\r\n</div>\r\n</div>\r\n</div>\r\n</div>\r\n<div class=\"card-content col-md-12 col-lg-12 col-xs-12 col-sm-12\">\r\n  <div class=\"contenttitle\">\r\n    <textarea id=\"galleryCardTitle{{galleryCard.indexId}}\" maxlength=\"80\" placeholder=\"title\" (change)=\"updateTitleGalleryCard(card._id, galleryCard.indexId)\">{{galleryCard.title}}</textarea>\r\n  </div>\r\n  <div class=\"contentbody contenttitle\">\r\n    <textarea id=\"galleryCardDescription{{galleryCard.indexId}}\" maxlength=\"80\" placeholder=\"description\" (change)=\"updateDescriptionGalleryCard(card._id, galleryCard.indexId)\">{{galleryCard.description}}</textarea>\r\n  </div>\r\n  <div class=\"contenturl contenttitle\">\r\n    <input id=\"galleryCardUrl{{galleryCard.indexId}}\" value=\"{{galleryCard.url}}\" type=\"url\" placeholder=\"Url\" (change)=\"updateUrlGalleryCard(card._id, galleryCard.indexId)\"\r\n    />\r\n  </div>\r\n  <div *ngFor=\"let addButton of galleryCard.cardAddButton\" style=\"cursor: pointer\" (click)=\"editAddBtnModal.open();editButton(card._id, addButton._addButtonId, 'gallery','addButton', galleryCard.indexId)\">\r\n<div class=\"addbuttonResultList\" (mouseenter)=\"mouseEnterGCAB(galleryCard.indexId)\" (mouseleave)=\"mouseLeaveGCAB(galleryCard.indexId)\">\r\n  <a href=\"#\" id=\"galleryCardAddBtn{{galleryCard.indexId}}\" class=\"randomTextClose\" (click)=\"deleteAddButton(addButton._addButtonId, galleryCard.indexId, 'gallery')\"\r\n    data-dismiss=\"alert\" aria-hidden=\"true\"><i class=\"fa fa-trash-o\" aria-hidden=\"true\"></i></a>\r\n  <label>{{addButton.buttonname}}</label>\r\n  <p>{{addButton.urlblockname}}</p>\r\n</div>\r\n</div>\r\n<div class=\"addbutton\" *ngIf=\"galleryCard.cardAddButton.length != 3\" (click)=\"myModal.open();addButton(galleryCard.indexId, 'gallery', 'addButton')\">\r\n  <i class=\"fa fa-plus\" aria-hidden=\"true\"></i> Add Button\r\n</div>\r\n</div>\r\n<div class=\"top-buttons\">\r\n  <div class=\"button-remove\">\r\n    remove\r\n  </div>\r\n</div>\r\n</div>\r\n</div>\r\n<div class=\"galleryColumns galleryColumns{{card._id}}\">\r\n  <div class=\"card add\" (click)=\"addGalleryCard(card._id, card._blockId)\">\r\n\r\n  </div>\r\n</div>\r\n</div>\r\n</li>\r\n<li class=\"list-group-item\" [ngClass]=\"{errorRM: card.isCompleted == false}\" *ngIf=\"card.type == 'text'\" id=\"{{card._id}}\">\r\n  <a href=\"#\" class=\"close\" (click)=\"deleteResponseMessage(card._id)\" data-dismiss=\"alert\" aria-hidden=\"true\"><i class=\"fa fa-trash-o\" aria-hidden=\"true\"></i></a>\r\n\r\n  <div class=\"row\">\r\n    <div class=\"col-md-6 col-lg-6 col-xs-12 col-sm-12\">\r\n      <div class=\"card\">\r\n\r\n        <div class=\"card-content col-md-12 col-lg-12 col-xs-12 col-sm-12\">\r\n          <!--autogrow form-control transition-height-->\r\n          <div class=\"randomTextCard\" *ngFor=\"let text of card.data.randomText; let j = index\" (mouseenter)=\"mouseEnterRTC(card._id,text.indexId)\"\r\n            (mouseleave)=\"mouseLeaveRTC(card._id,text.indexId)\">\r\n            <a href=\"#\" (click)=\"deleteRandomTextBox(text.indexId,card._id)\" id=\"randText{{card._id}}{{text.indexId}}\" class=\"randomTextClose\"\r\n              *ngIf=\"j!=0\" data-dismiss=\"alert\" aria-hidden=\"true\"><i class=\"fa fa-trash-o\" aria-hidden=\"true\"></i></a>\r\n            <span id=\"textCardCount{{card._id}}{{text.indexId}}\" *ngIf=\"j!=0\" class=\"textcardCharCount\">{{320 - text.text.length}}  </span>\r\n            <!-- (keydown)=\"characterCount(card._id, text.indexId);dynamicHeight($event, card._id, text.indexId)\" -->\r\n\r\n            <textarea id=\"textCardTitle{{card._id}}{{text.indexId}}\" class=\"autogrow form-control transition-height\" rows=\"3\" autosize\r\n              *ngIf=\"j!=0\" maxlength=\"320\" placeholder=\"title\" (keydown)=\"characterCount(card._id, text.indexId)\" (change)=\"updateTitleRandomTextCard(card._id, text.indexId)\">{{text.text}}</textarea>\r\n\r\n          </div>\r\n          <div class=\"addbutton\" style=\"border-radius: 0px;\" (click)=\"addTextRandom(card._id)\">\r\n<i class=\"fa fa-plus\" aria-hidden=\"true\"></i> Add Text Box\r\n</div>\r\n<div *ngFor=\"let addButton of card.data.cardAddButton\" style=\"cursor: pointer\" (click)=\"editAddBtnModal.open();editButton(card._id, addButton._addButtonId, 'text','addButton')\">\r\n<div class=\"addbuttonResultList\" (mouseenter)=\"mouseEnterTCAB(card._id, addButton._addButtonId)\" (mouseleave)=\"mouseLeaveTCAB(card._id, addButton._addButtonId)\">\r\n  <a href=\"#\" id=\"textCardAddBtn{{card._id}}{{addButton._addButtonId}}\" class=\"randomTextClose\" (click)=\"deleteAddButton(addButton._addButtonId, card._id, 'text')\"\r\n    data-dismiss=\"alert\" aria-hidden=\"true\"><i class=\"fa fa-trash-o\" aria-hidden=\"true\"></i></a>\r\n  <label>{{addButton.buttonname}}</label>\r\n  <p>{{addButton.urlblockname}}</p>\r\n</div>\r\n</div>\r\n<div *ngIf=\"card.data.cardAddButton.length != 3\">\r\n  <div class=\"addbutton\" *ngIf=\"card.data.quickReplyButton.length == 0\" (click)=\"myModal.open();addButton(card._id, 'text','addButton')\">\r\n    <i class=\"fa fa-plus\" aria-hidden=\"true\"></i> Add Button\r\n  </div>\r\n</div>\r\n</div>\r\n<div class=\"top-buttons\">\r\n  <div class=\"button-remove\">\r\n    remove\r\n  </div>\r\n</div>\r\n</div>\r\n</div>\r\n</div>\r\n</li>\r\n<li class=\"list-group-item\" [ngClass]=\"{errorRM: card.isCompleted == false}\" *ngIf=\"card.type == 'singletext'\" id=\"{{card._id}}\">\r\n  <a href=\"#\" class=\"close\" (click)=\"deleteResponseMessage(card._id)\" data-dismiss=\"alert\" aria-hidden=\"true\"><i class=\"fa fa-trash-o\" aria-hidden=\"true\"></i></a>\r\n  <div class=\"row\">\r\n    <div class=\"col-md-6 col-lg-6 col-xs-12 col-sm-12\">\r\n      <div class=\"card\">\r\n        <div class=\"card-content col-md-12 col-lg-12 col-xs-12 col-sm-12\">\r\n          <div class=\"contenttitle textcard randomTextCard\">\r\n            <span id=\"textCardCount{{card._id}}\" class=\"textcardCharCount\">{{320 - card.data.text.length}}  </span>\r\n            <!-- (keydown)=\"characterCount(card._id, text.indexId);dynamicHeight($event, card._id, text.indexId)\" -->\r\n            <textarea id=\"textCardTitle{{card._id}}\" rows=\"3\" autosize *ngIf=\"j!=0\" maxlength=\"320\" placeholder=\"title\" (keydown)=\"characterCountOfSingle(card._id)\"\r\n              (change)=\"updateTitleTextCard(card._id)\">{{card.data.text}}</textarea>\r\n          </div>\r\n          <div *ngFor=\"let addButton of card.data.cardAddButton\" style=\"cursor: pointer\" (click)=\"editAddBtnModal.open();editButton(card._id, addButton._addButtonId, 'text','addButton')\">\r\n<div class=\"addbuttonResultList\" (mouseenter)=\"mouseEnterTCAB(card._id, addButton._addButtonId)\" (mouseleave)=\"mouseLeaveTCAB(card._id, addButton._addButtonId)\">\r\n  <a href=\"#\" id=\"textCardAddBtn{{card._id}}{{addButton._addButtonId}}\" class=\"randomTextClose\" (click)=\"deleteAddButton(addButton._addButtonId, card._id, 'text')\"\r\n    data-dismiss=\"alert\" aria-hidden=\"true\"><i class=\"fa fa-trash-o\" aria-hidden=\"true\"></i></a>\r\n  <label>{{addButton.buttonname}}</label>\r\n  <p>{{addButton.urlblockname}}</p>\r\n</div>\r\n</div>\r\n<div *ngIf=\"card.data.cardAddButton.length != 3\">\r\n  <div class=\"addbutton\" (click)=\"myModal.open();addButton(card._id, 'text','addButton')\">\r\n    <i class=\"fa fa-plus\" aria-hidden=\"true\"></i> Add Button\r\n  </div>\r\n</div>\r\n</div>\r\n<div class=\"top-buttons\">\r\n  <div class=\"button-remove\">\r\n    remove\r\n  </div>\r\n</div>\r\n</div>\r\n</div>\r\n</div>\r\n</li>\r\n<li class=\"list-group-item\" [ngClass]=\"{errorRM: card.isCompleted == false}\" *ngIf=\"card.type == 'image'\" id=\"{{card._id}}\">\r\n  <a href=\"#\" class=\"close\" (click)=\"deleteResponseMessage(card._id)\" data-dismiss=\"alert\" aria-hidden=\"true\"><i class=\"fa fa-trash-o\" aria-hidden=\"true\"></i></a>\r\n  <div class=\"row\">\r\n    <div class=\"col-md-6 col-lg-6 col-xs-12 col-sm-12\">\r\n      <div class=\"card\">\r\n        <div class=\"image col-md-12 col-lg-12 col-xs-12 col-sm-12\">\r\n          <div class=\"image-inner2\">\r\n            <input accept=\"image/*\" type=\"file\" id=\"singleImage{{card._id}}\" (change)=\"populateSingleImage($event, card._id, card._blockId)\"\r\n              style=\"visibility: hidden;\" name=\"files\" title=\"Load File\" />\r\n<div id=\"singleImageBtn{{card._id}}\" *ngIf=\"card.data.pictureUrl == ''\">\r\n  <button (click)=\"openSingleImage(card._id)\" class=\"button-image button-image2 col-xs-12 col-sm-12 btn-gray button-image--replace button-image--replace-gallery\">\r\n                            <span class=\"button-image__title\"><i class=\"fa fa-camera\" aria-hidden=\"true\"></i><br/>Upload Image</span>\r\n                          </button>\r\n</div>\r\n<div id=\"singleImageDiv{{card._id}}\" (mouseenter)=\"mouseEnterSI(card._id)\" (mouseleave)=\"mouseLeaveSI(card._id)\" *ngIf=\"card.data.pictureUrl != ''\"\r\n  [ngStyle]=\"{ 'background-image': 'url(' + card.data.pictureUrl + ')'}\">\r\n  <div class=\"singleImageBGDiv\" id=\"singleImageChangeBtn{{card._id}}\">\r\n    <button class=\"btn\" (click)=\"openSingleImage(card._id)\" style=\"background:transparent\">\r\n<i class=\"fa fa-camera\" aria-hidden=\"true\" style=\"color:white;font-size:24px;\"></i>\r\n</button>\r\n</div>\r\n</div>\r\n</div>\r\n</div>\r\n<div class=\"top-buttons\">\r\n  <div class=\"button-remove\">\r\n    remove\r\n  </div>\r\n</div>\r\n</div>\r\n</div>\r\n</div>\r\n</li>\r\n<li class=\"list-group-item\" [ngClass]=\"{errorRM: card.isCompleted == false}\" *ngIf=\"card.type == 'article'\" id=\"{{card._id}}\">\r\n  <a href=\"#\" class=\"close\" (click)=\"deleteResponseMessage(card._id)\" data-dismiss=\"alert\" aria-hidden=\"true\"><i class=\"fa fa-trash-o\" aria-hidden=\"true\"></i></a>\r\n  <div class=\"row\">\r\n    <div class=\"col-md-6 col-lg-6 col-xs-12 col-sm-12\">\r\n      <!--<div class=\"card col-md-12 col-lg-12 col-xs-12 col-sm-12\">-->\r\n      <div class=\"card-content col-md-12 col-lg-12 col-xs-12 col-sm-12\">\r\n        <div class=\"image\">\r\n          <div class=\"image-inner2\">\r\n            <input accept=\"image/*\" type=\"file\" id=\"singleImage{{card._id}}\" (change)=\"populateSingleImage($event, card._id, card._blockId)\"\r\n              style=\"visibility: hidden;\" name=\"files\" title=\"Load File\" />\r\n<div id=\"singleImageBtn{{card._id}}\" *ngIf=\"card.data.pictureUrl == ''\">\r\n  <button (click)=\"openSingleImage(card._id)\" class=\"button-image button-image2 col-xs-12 col-sm-12 btn-gray button-image--replace button-image--replace-gallery\">\r\n                            <span class=\"button-image__title\"><i class=\"fa fa-camera\" aria-hidden=\"true\"></i><br/>Upload Image</span>\r\n                          </button>\r\n</div>\r\n<div id=\"singleImageDiv{{card._id}}\" (mouseenter)=\"mouseEnterSI(card._id)\" (mouseleave)=\"mouseLeaveSI(card._id)\" *ngIf=\"card.data.pictureUrl != ''\"\r\n  [ngStyle]=\"{ 'background-image': 'url(' + card.data.pictureUrl + ')'}\">\r\n  <div class=\"singleImageBGDiv\" id=\"singleImageChangeBtn{{card._id}}\">\r\n    <button class=\"btn\" (click)=\"openSingleImage(card._id)\" style=\"background:transparent\">\r\n<i class=\"fa fa-camera\" aria-hidden=\"true\" style=\"color:white;font-size:24px;\"></i>\r\n</button>\r\n</div>\r\n</div>\r\n</div>\r\n</div>\r\n<div class=\"contenttitle textcard\" style=\"margin-top: 5px;\">\r\n<textarea id=\"articleCardTitle{{card._id}}\" maxlength=\"80\" placeholder=\"title\" (change)=\"updateTitleArticleCard(card._id)\">{{card.data.text}}</textarea>\r\n</div>\r\n<div class=\"addbutton\" (click)=\"openArticleText(card._id);articleModal.open()\">\r\n  View Article\r\n</div>\r\n</div>\r\n</div>\r\n<!--</div>-->\r\n</div>\r\n</li>\r\n<li class=\"list-group-item\" [ngClass]=\"{errorRM: card.isCompleted == false}\" *ngIf=\"card.type == 'quickreply'\" id=\"{{card._id}}\">\r\n  <a href=\"#\" class=\"close\" (click)=\"deleteResponseMessage(card._id)\" data-dismiss=\"alert\" aria-hidden=\"true\"><i class=\"fa fa-trash-o\" aria-hidden=\"true\"></i></a>\r\n  <div class=\"row\">\r\n    <!--id=\"block{{block._id}}\" *ngFor=\"let block of blockGroups.blocks\" (click)=\"blockDetail(block._id)\" -->\r\n    <div class=\"col-md-12 col-lg-12 col-xs-12 col-sm-12\">\r\n      <div class=\"QuickReplyButtons qrbtns\" (mouseenter)=\"mouseEnter(quickReply._addButtonId) \" (mouseleave)=\"mouseLeave(quickReply._addButtonId)\" *ngFor=\"let quickReply of card.data.quickReplyBtns\">\r\n      <a id=\"{{quickReply._addButtonId}}\" (click)=\"deleteQuickReply(quickReply._addButtonId, card._id)\" class=\"quickReplyClose\"\r\n          data-dismiss=\"alert\" aria-hidden=\"true\"><i class=\"fa fa-trash-o quickReplyCloseBtn\" aria-hidden=\"true\"></i></a>\r\n      <div (click)=\"editQuickReplyModal.open();editQR(quickReply._addButtonId, card._id, quickReply.buttonname, quickReply._blockId)\"\r\n        >\r\n\r\n        \r\n        {{quickReply.buttonname}}\r\n      </div>\r\n      </div>\r\n      <div class=\"QuickReplyButtons QuickReplyButtonsBlack\" (click)=\"yourModal.open();addQuickReplyBtn(card._id)\">\r\n        <i class=\"fa fa-plus\" aria-hidden=\"true\"></i> Add Quick Reply\r\n      </div>\r\n    </div>\r\n    <!--</div>-->\r\n  </div>\r\n</li>\r\n</div>\r\n</ul>\r\n<div class=\"row topmargin\">\r\n  <div class=\"col-md-3 col-lg-3\">\r\n    <legend>\r\n      <span>Add a Card</span>\r\n    </legend>\r\n  </div>\r\n</div>\r\n<div class=\"row\">\r\n  <div class=\"col-md-12 col-lg-12\">\r\n    <div class=\"btn-group\">\r\n      <button type=\"button\" (click)=\"addCard(1)\" class=\"btn width-100 mb-xs\"><i class=\"fa fa-picture-o\" aria-hidden=\"true\"></i><br/>Gallery</button>\r\n      <button type=\"button\" *ngIf=\"isLocked==false\" (click)=\"addCard(6)\" class=\"btn width-100 mb-xs\"><i class=\"fa fa-file-text-o\" aria-hidden=\"true\"></i><br/>Text Card</button>\r\n      <button type=\"button\" *ngIf=\"isLocked==true\" (click)=\"addCard(2)\" class=\"btn width-100 mb-xs\"><i class=\"fa fa-file-text-o\" aria-hidden=\"true\"></i><br/>Random Text</button>\r\n      <button type=\"button\" (click)=\"addCard(3)\" class=\"btn width-100 mb-xs\"><i class=\"fa fa-picture-o\" aria-hidden=\"true\"></i><br/>Image</button>\r\n      <button type=\"button\" (click)=\"addCard(4)\" class=\"btn width-100 mb-xs\"><i class=\"fa fa-info-circle\" aria-hidden=\"true\"></i><br/>Article</button>\r\n      <button type=\"button\" (click)=\"addCard(5)\" class=\"btn width-100 mb-xs\"><i class=\"fa fa-link\" aria-hidden=\"true\"></i><br/>Quick Reply</button>\r\n    </div>\r\n  </div>\r\n</div>\r\n</div>\r\n<div class=\"col-md-6 col-sm-12 col-lg-6 col-xs-12 articleEditor\" style=\"display:none\">\r\n\r\n</div>\r\n</div>\r\n</div>\r\n</section>\r\n<modal #myModal>\r\n  <modal-header>\r\n    <h4 class=\"modal-title text-xs-center fw-bold mt\" id=\"myModalLabel18\">Add Buttons to Response</h4>\r\n    <input id=\"buttonName\" type=\"text\" class=\"form-control\" [(ngModel)]=\"AddButtonName\" placeholder=\"Enter Button Name\" style=\"width:88%;margin-left:5%;\" />\r\n</modal-header>\r\n<modal-content>\r\n  <div class=\"col-md-12 col-lg-12\">\r\n    <ul class=\"addButtonList\">\r\n      <li (click)=\"modalChangeTab(1)\" id=\"blockBtn\" class=\"addButtonListItem modalliactive\"><a class=\"modalliitem\">Blocks</a></li>\r\n      <li (click)=\"modalChangeTab(2)\" id=\"urlBtn\" class=\"addButtonListItem\"><a class=\"modalliitem\">Url</a></li>\r\n    </ul>\r\n    <div class=\"modalContent\">\r\n      <div id=\"blockContent\" class=\"row modalContentActive\">\r\n        <div class=\"col-md-12 col-xs-12\">\r\n          <div class=\"form-group row\">\r\n            <div class=\"col-md-12\">\r\n              <select class=\"form-control\" [(ngModel)]=\"AddButtonBlock\" name=\"blocksdd\" id=\"simple-select\">\r\n                  <option selected=\"selected\" value=\"0\">Select Block</option>\r\n                  <option *ngFor=\"let card of select2GroupedData\" value=\"{{card.id}}\">{{card.text}}</option>\r\n                  \r\n                </select>\r\n            </div>\r\n          </div>\r\n          <div class=\"row\">\r\n            <div class=\"col-md-12\">\r\n              <button type=\"button\" class=\"btn btn-success btn-block\" (click)=\"addButtonPost(1)\">Save</button>\r\n            </div>\r\n          </div>\r\n        </div>\r\n      </div>\r\n      <div id=\"urlContent\" class=\"row modalContentDeActive\">\r\n        <div class=\"col-md-12 col-xs-12\">\r\n          <div class=\"form-group row\">\r\n            <div class=\"col-md-12\">\r\n              <div class=\"input-group\">\r\n                <span class=\"input-group-addon\">http://</span>\r\n                <input id=\"urlContentData\" class=\"form-control\" type=\"text\" [(ngModel)]=\"AddButtonUrl\" placeholder=\"Enter Url\">\r\n              </div>\r\n              <!--<input id=\"urlContentData\" type=\"text\" class=\"form-control\" [(ngModel)]=\"AddButtonUrl\" placeholder=\"Enter Url\" />-->\r\n            </div>\r\n          </div>\r\n          <div class=\"row\">\r\n            <div class=\"col-md-12\">\r\n              <button type=\"button\" class=\"btn btn-success btn-block\" (click)=\"addButtonPost(2)\">Save</button>\r\n            </div>\r\n          </div>\r\n        </div>\r\n      </div>\r\n      <div id=\"articleContent\" class=\"row modalContentDeActive\">\r\n        <div class=\"col-md-12 col-xs-12\">\r\n          <div class=\"form-group row\">\r\n            <div class=\"col-md-12\">\r\n              <input id=\"urlContentData\" type=\"text\" class=\"form-control\" [(ngModel)]=\"AddButtonUrl\" placeholder=\"Enter Url\" />\r\n            </div>\r\n          </div>\r\n          <div class=\"row\">\r\n            <div class=\"col-md-12\">\r\n              <button type=\"button\" class=\"btn btn-success btn-block\" (click)=\"addButtonPost(2)\">Save</button>\r\n            </div>\r\n          </div>\r\n        </div>\r\n      </div>\r\n    </div>\r\n  </div>\r\n</modal-content>\r\n<modal-footer>\r\n</modal-footer>\r\n</modal>\r\n<modal #yourModal>\r\n  <modal-header>\r\n    <h4 class=\"modal-title text-xs-center fw-bold mt\" id=\"myModalLabel18\">Add Quick Reply</h4>\r\n    <input id=\"buttonNameQR\" type=\"text\" class=\"form-control\" [(ngModel)]=\"AddButtonName\" placeholder=\"Enter Button Name\" style=\"width:88%;margin-left:5%;\" />\r\n</modal-header>\r\n<modal-content>\r\n  <div class=\"col-md-12 col-lg-12\">\r\n    <ul class=\"addButtonList\">\r\n      <li id=\"blockBtn\" class=\"addButtonListItem\">\r\n        <a class=\"modalliitem\" style=\"padding: 0em 6em;\">Blocks</a>\r\n</li>\r\n</ul>\r\n<div class=\"modalContent\">\r\n  <div id=\"blockContent\" class=\"row modalContentActive\">\r\n    <div class=\"col-md-12 col-xs-12\">\r\n      <div class=\"form-group row\">\r\n        <div class=\"col-md-12\">\r\n          <select class=\"form-control\" [(ngModel)]=\"AddButtonBlock\" name=\"blocksdd\" id=\"simple-select\">\r\n                  <option selected=\"selected\" value=\"0\">Select Block</option>\r\n                  <option *ngFor=\"let card of select2GroupedData\" value=\"{{card.id}}\">{{card.text}}</option>   \r\n                </select>\r\n        </div>\r\n      </div>\r\n      <div class=\"row\">\r\n        <div class=\"col-md-12\">\r\n          <button type=\"button\" class=\"btn btn-success btn-block\" (click)=\"submitQuickReplyBtns();\">Save</button>\r\n        </div>\r\n      </div>\r\n    </div>\r\n  </div>\r\n</div>\r\n</div>\r\n</modal-content>\r\n<modal-footer>\r\n</modal-footer>\r\n</modal>\r\n<modal #articleModal>\r\n  <modal-header>\r\n    <h4 class=\"modal-title text-xs-center fw-bold mt\" id=\"myModalLabel18\">Article for {{articleModalTitle}}</h4>\r\n  </modal-header>\r\n  <modal-content>\r\n    <div class=\"col-md-12 col-lg-12\">\r\n      <div class=\"modalContent\">\r\n        <quill-editor [(ngModel)]=\"ckeditorContent\"></quill-editor>\r\n      </div>\r\n      <div class=\"row\">\r\n        <div class=\"col-md-12\">\r\n          <button type=\"button\" class=\"btn btn-success btn-block\" (click)=\"submitArticleText();articleModal.close()\">Save</button>\r\n        </div>\r\n      </div>\r\n    </div>\r\n  </modal-content>\r\n  <modal-footer>\r\n  </modal-footer>\r\n</modal>\r\n<modal #editQuickReplyModal>\r\n  <modal-header>\r\n    <h4 class=\"modal-title text-xs-center fw-bold mt\" id=\"myModalLabel18\">Edit Quick Reply</h4>\r\n    <input id=\"buttonName\" type=\"text\" class=\"form-control\" [(ngModel)]=\"EditQuickReplyName\" placeholder=\"Enter Button Name\"\r\n      style=\"width:88%;margin-left:5%;\" />\r\n</modal-header>\r\n<modal-content>\r\n  <div class=\"col-md-12 col-lg-12\">\r\n    <!--<ul class=\"addButtonList\">\r\n        <li id=\"blockBtn\" class=\"addButtonListItem\"><a class=\"modalliitem\" style=\"padding: 0em 6em;\">Blocks</a></li>\r\n      </ul>-->\r\n    <div class=\"modalContent\">\r\n      <div id=\"blockContent\" class=\"row modalContentActive\">\r\n        <div class=\"col-md-12 col-xs-12\">\r\n          <div class=\"form-group row\">\r\n              <div class=\"col-md-12\">\r\n                <select class=\"form-control\" [(ngModel)]=\"EditBlockQuickReply\" name=\"blocksdd\" id=\"editQR-select\">\r\n                  <option selected=\"selected\" value=\"0\">Select Block</option>\r\n                  <option *ngFor=\"let card of select2GroupedData\" [selected]=\"card.id == EditBlockQuickReply\" value=\"{{card.id}}\">{{card.text}}</option>   \r\n                </select>\r\n              </div>\r\n            </div>\r\n          <div class=\"row\">\r\n            <div class=\"col-md-12\">\r\n              <button type=\"button\" class=\"btn btn-success btn-block\" (click)=\"editQuickReplyBtns();editQuickReplyModal.close()\">Update</button>\r\n            </div>\r\n          </div>\r\n        </div>\r\n      </div>\r\n    </div>\r\n  </div>\r\n</modal-content>\r\n<modal-footer>\r\n</modal-footer>\r\n</modal>\r\n<modal #editAddBtnModal>\r\n  <modal-header>\r\n    <h4 class=\"modal-title text-xs-center fw-bold mt\" id=\"myModalLabel18\">Edit Buttons to Response</h4>\r\n    <input id=\"buttonName\" type=\"text\" class=\"form-control\" [(ngModel)]=\"EditButtonName\" placeholder=\"Enter Button Name\" style=\"width:88%;margin-left:5%;\" />\r\n</modal-header>\r\n<modal-content>\r\n  <div class=\"col-md-12 col-lg-12\">\r\n    <ul class=\"addButtonList\">\r\n      <li (click)=\"modalChangeTab(1)\" id=\"blockBtn\" class=\"addButtonListItem modalliactive\"><a class=\"modalliitem\">Blocks</a></li>\r\n      <li (click)=\"modalChangeTab(2)\" id=\"urlBtn\" class=\"addButtonListItem\"><a class=\"modalliitem\">Url</a></li>\r\n    </ul>\r\n    <div class=\"modalContent\">\r\n      <div id=\"blockContent\" class=\"row modalContentActive\">\r\n        <div class=\"col-md-12 col-xs-12\">\r\n          \r\n<div class=\"form-group row\">\r\n  <div class=\"col-md-12\">\r\n    <select class=\"form-control\" [(ngModel)]=\"EditButtonBlock\" name=\"blocksdd\" id=\"simple-select\">\r\n                  <option selected=\"selected\" value=\"0\">Select Block</option>\r\n                  <option *ngFor=\"let card of select2GroupedData\" value=\"{{card.id}}\">{{card.text}}</option>\r\n                  \r\n                </select>\r\n  </div>\r\n</div>\r\n<div class=\"row\">\r\n  <div class=\"col-md-12\">\r\n    <button type=\"button\" class=\"btn btn-success btn-block\" (click)=\"editButtonPost(1);editAddBtnModal.close()\">Update</button>\r\n  </div>\r\n</div>\r\n</div>\r\n</div>\r\n<div id=\"urlContent\" class=\"row modalContentDeActive\">\r\n  <div class=\"col-md-12 col-xs-12\">\r\n    <div class=\"form-group row\">\r\n\r\n      <div class=\"col-md-12\">\r\n        <div class=\"input-group\">\r\n          <span class=\"input-group-addon\">http://</span>\r\n          <input id=\"urlContentData\" class=\"form-control\" type=\"text\" [(ngModel)]=\"EditButtonUrl\" placeholder=\"Enter Url\">\r\n        </div>\r\n        <!--<input id=\"urlContentData\" type=\"text\" class=\"form-control\" [(ngModel)]=\"AddButtonUrl\" placeholder=\"Enter Url\" />-->\r\n      </div>\r\n    </div>\r\n    <div class=\"row\">\r\n      <div class=\"col-md-12\">\r\n        <button type=\"button\" class=\"btn btn-success btn-block\" (click)=\"editButtonPost(2);editAddBtnModal.close()\">Update</button>\r\n      </div>\r\n    </div>\r\n  </div>\r\n</div>\r\n</div>\r\n</div>\r\n</modal-content>\r\n<modal-footer>\r\n</modal-footer>\r\n</modal>"
+module.exports = "<ol class=\"breadcrumb\">\r\n  <li class=\"breadcrumb-item\">YOU ARE HERE</li>\r\n  <li class=\"breadcrumb-item active\">Specific Groups and Topics</li>\r\n</ol>\r\n<h1 class=\"page-title\">Lists - <span class=\"fw-semi-bold\">Specific Groups for BOT</span></h1>\r\n<section class=\"widget widget2\" widget>\r\n  <header>\r\n    <h4>\r\n      Specific Group Lists\r\n    </h4>\r\n  </header>\r\n  <div class=\"widget-body\">\r\n    <div class=\"row\">\r\n      <div class=\"col-md-6 col-sm-12 col-lg-6 col-xs-12 divseparator\">\r\n        <ul class=\"list-group list-group-sortable mt-lg\">\r\n          <li class=\"list-group-item\" *ngFor=\"let blockGroups of blockGroupsModel\" (mouseenter)=\"mouseEnterGroup(blockGroups.group._id)\"\r\n            (mouseleave)=\"mouseLeaveGroup(blockGroups.group._id)\" id={{blockGroups.group._id}}>\r\n            <i class=\"fa fa-sort\"></i>\r\n            <a class=\"close\" *ngIf=\"blockGroups.group.isLocked == true\"><i class=\"fa fa-lock\" aria-hidden=\"true\"></i></a>\r\n            <a href=\"#\" id=\"gr{{blockGroups.group._id}}\" class=\"groupClose\" *ngIf=\"blockGroups.group.isLocked == false\" (click)=\"deleteGroup(blockGroups.group._id)\"\r\n              data-dismiss=\"alert\" aria-hidden=\"true\"><i class=\"fa fa-trash-o\" aria-hidden=\"true\"></i></a>\r\n            <div id=\"GroupNameDiv{{blockGroups.group._id}}\" class=\"GroupName\" (click)=\"changeGroupName(blockGroups.group._id)\">\r\n              {{blockGroups.group.name}}\r\n            </div>\r\n            <input id=\"groupNameChange{{blockGroups.group._id}}\" maxlength=\"14\" (change)=\"editGroupName(blockGroups.group._id)\" style=\"display: none\" type=\"text\" class=\"blockNameDiv form-control\" value=\"{{blockGroups.group.name}}\"/>\r\n<div class=\"row blocksdiv\">\r\n  <div  id=\"block{{block._id}}\" *ngFor=\"let block of blockGroups.blocks\" class=\"blockbtns\" (mouseenter)=\"mouseEnterBlock(block._id)\" (mouseleave)=\"mouseLeaveBlock(block._id)\" (click)=\"blockDetail(block._id)\">\r\n  <a href=\"#\" id=\"closeBlock{{block._id}}\" class=\"closeBlock\" (click)=\"deleteBlock(block._id)\" data-dismiss=\"alert\" *ngIf=\"blockGroups.group.isLocked == false\"\r\n      aria-hidden=\"true\"><i class=\"fa fa-trash-o\" aria-hidden=\"true\"></i></a>\r\n  <div class=\"blockBtnTxt\">\r\n    \r\n    <span class=\"blockIsCompleted\" *ngIf=\"block.isCompleted == false\"></span> {{block.name}}\r\n  </div>\r\n  </div>\r\n  <div *ngIf=\"blockGroups.group.isLocked == false\" class=\"addBlock{{blockGroups.group._id}} blockbtns addBlock2\" (click)=\"addBlock(blockGroups.group._id)\">\r\n    <i class=\"fa fa-plus\" aria-hidden=\"true\"></i> Add Block\r\n  </div>\r\n  <div class=\"saveBlock{{blockGroups.group._id}}\" style=\"display:none\">\r\n<div class=\"input-group\">\r\n  <input id=\"blockText{{blockGroups.group._id}}\" maxlength=\"50\" type=\"text\" class=\"form-control\" [(ngModel)]=\"blockName\" placeholder=\"Block Name\"\r\n  />\r\n  <div class=\"input-group-btn\">\r\n    <button type=\"button\" (click)=\"saveBlock(blockGroups.group._id)\" class=\"btn\"><i class=\"fa fa-plus\"></i></button>\r\n  </div>\r\n</div>\r\n</div>\r\n</div>\r\n</li>\r\n\r\n</ul>\r\n<div class=\"row GroupBtn\">\r\n  <p>\r\n    <button type=\"button\" (click)=\"toggleDivs(1)\" class=\"btn btn-info btn-block\">Add Specific Group</button>\r\n  </p>\r\n</div>\r\n<div class=\"row GroupForm\">\r\n  <div class=\"form-group\">\r\n    <div class=\"input-group\">\r\n      <input type=\"text\" [(ngModel)]=\"GroupText\"  maxlength=\"14\" class=\"form-control\" id=\"bar\">\r\n      <div class=\"input-group-btn\">\r\n        <button type=\"button\" (click)=\"toggleDivs(2)\" class=\"btn\"><i class=\"fa fa-plus\"></i></button>\r\n        <button type=\"button\" (click)=\"refreshTextBox()\" class=\"btn btn-primary\"><i class=\"fa fa-refresh\"></i></button>\r\n      </div>\r\n    </div>\r\n  </div>\r\n</div>\r\n<div id=\"emptyGroup\" style=\"display:none\" class=\"form-group\">\r\n<div class=\"alert alert-danger alert-sm\">\r\n  <span class=\"fw-semi-bold\">Danger:</span> Please Enter Group Name.\r\n</div>\r\n</div>\r\n</div>\r\n<div class=\"col-md-6 col-sm-12 col-lg-6 col-xs-12 rmdiv\" style=\"display:none\">\r\n<div class=\"row\">\r\n  <div class=\"col-md-12 col-lg-12 col-xs-12 col-sm-12\">\r\n    <h4 id=\"blockNameHeading\" class=\"blockNameDiv2\" (click)=\"changeBlockName()\">\r\n      {{popBlockName}}\r\n    </h4>\r\n    <input id=\"blockNameChange\" maxlength=\"50\" (change)=\"editBlockName(popBlockId)\" style=\"display: none\" type=\"text\" class=\"blockNameDiv form-control\" value=\"{{popBlockName}}\"/>\r\n<input id=\"popBlockIdd\" type=\"text\" value=\"{{popBlockId}}\" style=\"visibility:hidden\" />\r\n\r\n</div>\r\n</div>\r\n<ul class=\"list-group list-group-sortable2 mt-lg\">\r\n  <div *ngFor=\"let card of cardArray; let i = index\">\r\n    <li class=\"list-group-item\" [ngClass]=\"{errorRM: card.isCompleted == false}\" *ngIf=\"card.type == 'gallery'\" id=\"{{card._id}}\">\r\n      <a href=\"#\" class=\"close\" (click)=\"deleteResponseMessage(card._id)\" data-dismiss=\"alert\" aria-hidden=\"true\"><i class=\"fa fa-trash-o\" aria-hidden=\"true\"></i></a>\r\n      <div class=\"row table galleryHorizontalRow\">\r\n\r\n        <div class=\"galleryColumns galleryColumns{{card._id}}\" (mouseenter)=\"mouseEnterOneGalleryCard(galleryCard.indexId)\" (mouseleave)=\"mouseLeaveOneGalleryCard(galleryCard.indexId)\"\r\n          *ngFor=\"let galleryCard of card.data\">\r\n          <div class=\"card\">\r\n            <a href=\"#\" id=\"galleryRemoveBtn{{galleryCard.indexId}}\" class=\"randomGalleryTextClose\" (click)=\"deleteGalleryCardBtn(card._id, galleryCard.indexId)\"\r\n              data-dismiss=\"alert\" aria-hidden=\"true\"><i class=\"fa fa-trash-o\" aria-hidden=\"true\"></i></a>\r\n            <div class=\"image col-md-12 col-lg-12 col-xs-12 col-sm-1\">\r\n              <div class=\"image-inner\">\r\n                <input accept=\"image/*\" [(ngModel)]=\"galleryImageFile\" type=\"file\" id=\"galleryImage{{galleryCard.indexId}}\" (change)=\"populateGalleryImage($event, card._id, card._blockId, galleryCard.indexId)\"\r\n                  style=\"visibility: hidden;\" name=\"files\" title=\"Load File\" />\r\n<div id=\"galleryImageBtn{{galleryCard.indexId}}\" *ngIf=\"galleryCard.pictureUrl == ''\">\r\n  <button (click)=\"openGalleryImage(galleryCard.indexId)\" class=\"button-image col-xs-12 col-sm-12 btn-gray button-image--replace button-image--replace-gallery\">\r\n                            <span class=\"button-image__title\"><i class=\"fa fa-camera\" aria-hidden=\"true\"></i><br/>Upload Image</span>\r\n                          </button>\r\n</div>\r\n<div id=\"galleryImageDiv{{galleryCard.indexId}}\" *ngIf=\"galleryCard.pictureUrl != ''\" (mouseenter)=\"mouseEnterGI(galleryCard.indexId)\"\r\n  (mouseleave)=\"mouseLeaveGI(galleryCard.indexId)\" [ngStyle]=\"{ 'background-image': 'url(' + galleryCard.pictureUrl + ')'}\">\r\n  <div class=\"galleryImageBGDiv\" id=\"galleryImageChangeBtn{{galleryCard.indexId}}\">\r\n    <button class=\"btn\" (click)=\"openGalleryImage(galleryCard.indexId)\" style=\"background:transparent\">\r\n<i class=\"fa fa-camera\" aria-hidden=\"true\" style=\"color:white;font-size:24px;\"></i>\r\n</button>\r\n</div>\r\n</div>\r\n</div>\r\n</div>\r\n<div class=\"card-content col-md-12 col-lg-12 col-xs-12 col-sm-12\">\r\n  <div class=\"contenttitle\">\r\n    <textarea id=\"galleryCardTitle{{galleryCard.indexId}}\" maxlength=\"80\" placeholder=\"title\" (change)=\"updateTitleGalleryCard(card._id, galleryCard.indexId)\">{{galleryCard.title}}</textarea>\r\n  </div>\r\n  <div class=\"contentbody contenttitle\">\r\n    <textarea id=\"galleryCardDescription{{galleryCard.indexId}}\" maxlength=\"80\" placeholder=\"description\" (change)=\"updateDescriptionGalleryCard(card._id, galleryCard.indexId)\">{{galleryCard.description}}</textarea>\r\n  </div>\r\n  <div class=\"contenturl contenttitle\">\r\n    <input id=\"galleryCardUrl{{galleryCard.indexId}}\" value=\"{{galleryCard.url}}\" type=\"url\" placeholder=\"Url\" (change)=\"updateUrlGalleryCard(card._id, galleryCard.indexId)\"\r\n    />\r\n  </div>\r\n  <div *ngFor=\"let addButton of galleryCard.cardAddButton\" style=\"cursor: pointer\" (mouseenter)=\"mouseEnterGCAB(galleryCard.indexId)\" (mouseleave)=\"mouseLeaveGCAB(galleryCard.indexId)\">\r\n    <a href=\"#\" id=\"galleryCardAddBtn{{galleryCard.indexId}}\" class=\"randomTextClose\" (click)=\"deleteAddButton(addButton._addButtonId, galleryCard.indexId, 'gallery')\"\r\n    data-dismiss=\"alert\" aria-hidden=\"true\"><i class=\"fa fa-trash-o\" aria-hidden=\"true\"></i></a>\r\n<div class=\"addbuttonResultList\"  (click)=\"editAddBtnModal.open();editButton(card._id, addButton._addButtonId, 'gallery','addButton', galleryCard.indexId)\">\r\n  \r\n  <label>{{addButton.buttonname}}</label>\r\n  <p>{{addButton.urlblockname}}</p>\r\n</div>\r\n</div>\r\n<div class=\"addbutton\" *ngIf=\"galleryCard.cardAddButton.length != 3\" (click)=\"myModal.open();addButton(galleryCard.indexId, 'gallery', 'addButton')\">\r\n  <i class=\"fa fa-plus\" aria-hidden=\"true\"></i> Add Button\r\n</div>\r\n</div>\r\n<div class=\"top-buttons\">\r\n  <div class=\"button-remove\">\r\n    remove\r\n  </div>\r\n</div>\r\n</div>\r\n</div>\r\n<div class=\"galleryColumns galleryColumns{{card._id}}\">\r\n  <div class=\"card add\" (click)=\"addGalleryCard(card._id, card._blockId)\">\r\n\r\n  </div>\r\n</div>\r\n</div>\r\n</li>\r\n<li class=\"list-group-item\" [ngClass]=\"{errorRM: card.isCompleted == false}\" *ngIf=\"card.type == 'text'\" id=\"{{card._id}}\">\r\n  <a href=\"#\" class=\"close\" (click)=\"deleteResponseMessage(card._id)\" data-dismiss=\"alert\" aria-hidden=\"true\"><i class=\"fa fa-trash-o\" aria-hidden=\"true\"></i></a>\r\n\r\n  <div class=\"row\">\r\n    <div class=\"col-md-6 col-lg-6 col-xs-12 col-sm-12\">\r\n      <div class=\"card\">\r\n\r\n        <div class=\"card-content col-md-12 col-lg-12 col-xs-12 col-sm-12\">\r\n          <!--autogrow form-control transition-height-->\r\n          <div class=\"randomTextCard\" *ngFor=\"let text of card.data.randomText; let j = index\" (mouseenter)=\"mouseEnterRTC(card._id,text.indexId)\"\r\n            (mouseleave)=\"mouseLeaveRTC(card._id,text.indexId)\">\r\n            <a href=\"#\" (click)=\"deleteRandomTextBox(text.indexId,card._id)\" id=\"randText{{card._id}}{{text.indexId}}\" class=\"randomTextClose\"\r\n              *ngIf=\"j!=0\" data-dismiss=\"alert\" aria-hidden=\"true\"><i class=\"fa fa-trash-o\" aria-hidden=\"true\"></i></a>\r\n            <span id=\"textCardCount{{card._id}}{{text.indexId}}\" *ngIf=\"j!=0\" class=\"textcardCharCount\">{{320 - text.text.length}}  </span>\r\n            <!-- (keydown)=\"characterCount(card._id, text.indexId);dynamicHeight($event, card._id, text.indexId)\" -->\r\n\r\n            <textarea id=\"textCardTitle{{card._id}}{{text.indexId}}\" class=\"autogrow form-control transition-height\" rows=\"3\" autosize\r\n              *ngIf=\"j!=0\" maxlength=\"320\" placeholder=\"title\" (keydown)=\"characterCount(card._id, text.indexId)\" (change)=\"updateTitleRandomTextCard(card._id, text.indexId)\">{{text.text}}</textarea>\r\n\r\n          </div>\r\n          <div class=\"addbutton\" style=\"border-radius: 0px;\" (click)=\"addTextRandom(card._id)\">\r\n<i class=\"fa fa-plus\" aria-hidden=\"true\"></i> Add Text Box\r\n</div>\r\n<div *ngFor=\"let addButton of card.data.cardAddButton\" style=\"cursor: pointer\" (mouseenter)=\"mouseEnterTCAB(card._id, addButton._addButtonId)\" (mouseleave)=\"mouseLeaveTCAB(card._id, addButton._addButtonId)\">\r\n  <a href=\"#\" id=\"textCardAddBtn{{card._id}}{{addButton._addButtonId}}\" class=\"randomTextClose\" (click)=\"deleteAddButton(addButton._addButtonId, card._id, 'text')\"\r\n    data-dismiss=\"alert\" aria-hidden=\"true\"><i class=\"fa fa-trash-o\" aria-hidden=\"true\"></i></a>\r\n<div class=\"addbuttonResultList\"  (click)=\"editAddBtnModal.open();editButton(card._id, addButton._addButtonId, 'text','addButton')\" >\r\n  \r\n  <label>{{addButton.buttonname}}</label>\r\n  <p>{{addButton.urlblockname}}</p>\r\n</div>\r\n</div>\r\n<div *ngIf=\"card.data.cardAddButton.length != 3\">\r\n  <div class=\"addbutton\" *ngIf=\"card.data.quickReplyButton.length == 0\" (click)=\"myModal.open();addButton(card._id, 'text','addButton')\">\r\n    <i class=\"fa fa-plus\" aria-hidden=\"true\"></i> Add Button\r\n  </div>\r\n</div>\r\n</div>\r\n<div class=\"top-buttons\">\r\n  <div class=\"button-remove\">\r\n    remove\r\n  </div>\r\n</div>\r\n</div>\r\n</div>\r\n</div>\r\n</li>\r\n<li class=\"list-group-item\" [ngClass]=\"{errorRM: card.isCompleted == false}\" *ngIf=\"card.type == 'singletext'\" id=\"{{card._id}}\">\r\n  <a href=\"#\" class=\"close\" (click)=\"deleteResponseMessage(card._id)\" data-dismiss=\"alert\" aria-hidden=\"true\"><i class=\"fa fa-trash-o\" aria-hidden=\"true\"></i></a>\r\n  <div class=\"row\">\r\n    <div class=\"col-md-6 col-lg-6 col-xs-12 col-sm-12\">\r\n      <div class=\"card\">\r\n        <div class=\"card-content col-md-12 col-lg-12 col-xs-12 col-sm-12\">\r\n          <div class=\"contenttitle textcard randomTextCard\">\r\n            <span id=\"textCardCount{{card._id}}\" class=\"textcardCharCount\">{{320 - card.data.text.length}}  </span>\r\n            <!-- (keydown)=\"characterCount(card._id, text.indexId);dynamicHeight($event, card._id, text.indexId)\" -->\r\n            <textarea id=\"textCardTitle{{card._id}}\" rows=\"3\" autosize *ngIf=\"j!=0\" maxlength=\"320\" placeholder=\"title\" (keydown)=\"characterCountOfSingle(card._id)\"\r\n              (change)=\"updateTitleTextCard(card._id)\">{{card.data.text}}</textarea>\r\n          </div>\r\n          <div *ngFor=\"let addButton of card.data.cardAddButton\" style=\"cursor: pointer\" (mouseenter)=\"mouseEnterTCAB(card._id, addButton._addButtonId)\" (mouseleave)=\"mouseLeaveTCAB(card._id, addButton._addButtonId)\">\r\n            <a href=\"#\" id=\"textCardAddBtn{{card._id}}{{addButton._addButtonId}}\" class=\"randomTextClose\" (click)=\"deleteAddButton(addButton._addButtonId, card._id, 'text')\"\r\n    data-dismiss=\"alert\" aria-hidden=\"true\"><i class=\"fa fa-trash-o\" aria-hidden=\"true\"></i></a>\r\n<div class=\"addbuttonResultList\"  (click)=\"editAddBtnModal.open();editButton(card._id, addButton._addButtonId, 'text','addButton')\">\r\n  \r\n  <label>{{addButton.buttonname}}</label>\r\n  <p>{{addButton.urlblockname}}</p>\r\n</div>\r\n</div>\r\n<div *ngIf=\"card.data.cardAddButton.length != 3\">\r\n  <div class=\"addbutton\" (click)=\"myModal.open();addButton(card._id, 'text','addButton')\">\r\n    <i class=\"fa fa-plus\" aria-hidden=\"true\"></i> Add Button\r\n  </div>\r\n</div>\r\n</div>\r\n<div class=\"top-buttons\">\r\n  <div class=\"button-remove\">\r\n    remove\r\n  </div>\r\n</div>\r\n</div>\r\n</div>\r\n</div>\r\n</li>\r\n<li class=\"list-group-item\" [ngClass]=\"{errorRM: card.isCompleted == false}\" *ngIf=\"card.type == 'image'\" id=\"{{card._id}}\">\r\n  <a href=\"#\" class=\"close\" (click)=\"deleteResponseMessage(card._id)\" data-dismiss=\"alert\" aria-hidden=\"true\"><i class=\"fa fa-trash-o\" aria-hidden=\"true\"></i></a>\r\n  <div class=\"row\">\r\n    <div class=\"col-md-6 col-lg-6 col-xs-12 col-sm-12\">\r\n      <div class=\"card\">\r\n        <div class=\"image col-md-12 col-lg-12 col-xs-12 col-sm-12\">\r\n          <div class=\"image-inner2\">\r\n            <input accept=\"image/*\" type=\"file\" id=\"singleImage{{card._id}}\" (change)=\"populateSingleImage($event, card._id, card._blockId)\"\r\n              style=\"visibility: hidden;\" name=\"files\" title=\"Load File\" />\r\n<div id=\"singleImageBtn{{card._id}}\" *ngIf=\"card.data.pictureUrl == ''\">\r\n  <button (click)=\"openSingleImage(card._id)\" class=\"button-image button-image2 col-xs-12 col-sm-12 btn-gray button-image--replace button-image--replace-gallery\">\r\n                            <span class=\"button-image__title\"><i class=\"fa fa-camera\" aria-hidden=\"true\"></i><br/>Upload Image</span>\r\n                          </button>\r\n</div>\r\n<div id=\"singleImageDiv{{card._id}}\" (mouseenter)=\"mouseEnterSI(card._id)\" (mouseleave)=\"mouseLeaveSI(card._id)\" *ngIf=\"card.data.pictureUrl != ''\"\r\n  [ngStyle]=\"{ 'background-image': 'url(' + card.data.pictureUrl + ')'}\">\r\n  <div class=\"singleImageBGDiv\" id=\"singleImageChangeBtn{{card._id}}\">\r\n    <button class=\"btn\" (click)=\"openSingleImage(card._id)\" style=\"background:transparent\">\r\n<i class=\"fa fa-camera\" aria-hidden=\"true\" style=\"color:white;font-size:24px;\"></i>\r\n</button>\r\n</div>\r\n</div>\r\n</div>\r\n</div>\r\n<div class=\"top-buttons\">\r\n  <div class=\"button-remove\">\r\n    remove\r\n  </div>\r\n</div>\r\n</div>\r\n</div>\r\n</div>\r\n</li>\r\n<li class=\"list-group-item\" [ngClass]=\"{errorRM: card.isCompleted == false}\" *ngIf=\"card.type == 'article'\" id=\"{{card._id}}\">\r\n  <a href=\"#\" class=\"close\" (click)=\"deleteResponseMessage(card._id)\" data-dismiss=\"alert\" aria-hidden=\"true\"><i class=\"fa fa-trash-o\" aria-hidden=\"true\"></i></a>\r\n  <div class=\"row\">\r\n    <div class=\"col-md-6 col-lg-6 col-xs-12 col-sm-12\">\r\n      <!--<div class=\"card col-md-12 col-lg-12 col-xs-12 col-sm-12\">-->\r\n      <div class=\"card-content col-md-12 col-lg-12 col-xs-12 col-sm-12\">\r\n        <div class=\"image\">\r\n          <div class=\"image-inner2\">\r\n            <input accept=\"image/*\" type=\"file\" id=\"singleImage{{card._id}}\" (change)=\"populateSingleImage($event, card._id, card._blockId)\"\r\n              style=\"visibility: hidden;\" name=\"files\" title=\"Load File\" />\r\n<div id=\"singleImageBtn{{card._id}}\" *ngIf=\"card.data.pictureUrl == ''\">\r\n  <button (click)=\"openSingleImage(card._id)\" class=\"button-image button-image2 col-xs-12 col-sm-12 btn-gray button-image--replace button-image--replace-gallery\">\r\n                            <span class=\"button-image__title\"><i class=\"fa fa-camera\" aria-hidden=\"true\"></i><br/>Upload Image</span>\r\n                          </button>\r\n</div>\r\n<div id=\"singleImageDiv{{card._id}}\" (mouseenter)=\"mouseEnterSI(card._id)\" (mouseleave)=\"mouseLeaveSI(card._id)\" *ngIf=\"card.data.pictureUrl != ''\"\r\n  [ngStyle]=\"{ 'background-image': 'url(' + card.data.pictureUrl + ')'}\">\r\n  <div class=\"singleImageBGDiv\" id=\"singleImageChangeBtn{{card._id}}\">\r\n    <button class=\"btn\" (click)=\"openSingleImage(card._id)\" style=\"background:transparent\">\r\n<i class=\"fa fa-camera\" aria-hidden=\"true\" style=\"color:white;font-size:24px;\"></i>\r\n</button>\r\n</div>\r\n</div>\r\n</div>\r\n</div>\r\n<div class=\"contenttitle textcard\" style=\"margin-top: 5px;\">\r\n<textarea id=\"articleCardTitle{{card._id}}\" maxlength=\"80\" placeholder=\"title\" (change)=\"updateTitleArticleCard(card._id)\">{{card.data.text}}</textarea>\r\n</div>\r\n<div class=\"addbutton\" (click)=\"openArticleText(card._id);articleModal.open()\">\r\n  View Article\r\n</div>\r\n</div>\r\n</div>\r\n<!--</div>-->\r\n</div>\r\n</li>\r\n<li class=\"list-group-item\" [ngClass]=\"{errorRM: card.isCompleted == false}\" *ngIf=\"card.type == 'quickreply'\" id=\"{{card._id}}\">\r\n  <a href=\"#\" class=\"close\" (click)=\"deleteResponseMessage(card._id)\" data-dismiss=\"alert\" aria-hidden=\"true\"><i class=\"fa fa-trash-o\" aria-hidden=\"true\"></i></a>\r\n  <div class=\"row\">\r\n    <!--id=\"block{{block._id}}\" *ngFor=\"let block of blockGroups.blocks\" (click)=\"blockDetail(block._id)\" -->\r\n    <div class=\"col-md-12 col-lg-12 col-xs-12 col-sm-12\">\r\n      <div class=\"QuickReplyButtons qrbtns\" (mouseenter)=\"mouseEnter(quickReply._addButtonId) \" (mouseleave)=\"mouseLeave(quickReply._addButtonId)\" *ngFor=\"let quickReply of card.data.quickReplyBtns\">\r\n      <a id=\"{{quickReply._addButtonId}}\" (click)=\"deleteQuickReply(quickReply._addButtonId, card._id)\" class=\"quickReplyClose\"\r\n          data-dismiss=\"alert\" aria-hidden=\"true\"><i class=\"fa fa-trash-o quickReplyCloseBtn\" aria-hidden=\"true\"></i></a>\r\n      <div (click)=\"editQuickReplyModal.open();editQR(quickReply._addButtonId, card._id, quickReply.buttonname, quickReply._blockId)\"\r\n        >\r\n\r\n        \r\n        {{quickReply.buttonname}}\r\n      </div>\r\n      </div>\r\n      <div class=\"QuickReplyButtons QuickReplyButtonsBlack\" (click)=\"yourModal.open();addQuickReplyBtn(card._id)\">\r\n        <i class=\"fa fa-plus\" aria-hidden=\"true\"></i> Add Quick Reply\r\n      </div>\r\n    </div>\r\n    <!--</div>-->\r\n  </div>\r\n</li>\r\n</div>\r\n</ul>\r\n<div class=\"row topmargin\">\r\n  <div class=\"col-md-3 col-lg-3\">\r\n    <legend>\r\n      <span>Add a Card</span>\r\n    </legend>\r\n  </div>\r\n</div>\r\n<div class=\"row\">\r\n  <div class=\"col-md-12 col-lg-12\">\r\n    <div class=\"btn-group\">\r\n      <button type=\"button\" (click)=\"addCard(1)\" class=\"btn width-100 mb-xs\"><i class=\"fa fa-picture-o\" aria-hidden=\"true\"></i><br/>Gallery</button>\r\n      <button type=\"button\" *ngIf=\"isLocked==false\" (click)=\"addCard(6)\" class=\"btn width-100 mb-xs\"><i class=\"fa fa-file-text-o\" aria-hidden=\"true\"></i><br/>Text Card</button>\r\n      <button type=\"button\" *ngIf=\"isLocked==true\" (click)=\"addCard(2)\" class=\"btn width-100 mb-xs\"><i class=\"fa fa-file-text-o\" aria-hidden=\"true\"></i><br/>Random Text</button>\r\n      <button type=\"button\" (click)=\"addCard(3)\" class=\"btn width-100 mb-xs\"><i class=\"fa fa-picture-o\" aria-hidden=\"true\"></i><br/>Image</button>\r\n      <button type=\"button\" (click)=\"addCard(4)\" class=\"btn width-100 mb-xs\"><i class=\"fa fa-info-circle\" aria-hidden=\"true\"></i><br/>Article</button>\r\n      <button type=\"button\" (click)=\"addCard(5)\" class=\"btn width-100 mb-xs\"><i class=\"fa fa-link\" aria-hidden=\"true\"></i><br/>Quick Reply</button>\r\n    </div>\r\n  </div>\r\n</div>\r\n</div>\r\n<div class=\"col-md-6 col-sm-12 col-lg-6 col-xs-12 articleEditor\" style=\"display:none\">\r\n\r\n</div>\r\n</div>\r\n</div>\r\n</section>\r\n<modal #myModal>\r\n  <modal-header>\r\n    <h4 class=\"modal-title text-xs-center fw-bold mt\" id=\"myModalLabel18\">Add Buttons to Response</h4>\r\n    <input id=\"buttonName\" type=\"text\" class=\"form-control\" maxlength=\"20\" [(ngModel)]=\"AddButtonName\" placeholder=\"Enter Button Name\" style=\"width:88%;margin-left:5%;\" />\r\n</modal-header>\r\n<modal-content>\r\n  <div class=\"col-md-12 col-lg-12\">\r\n    <ul class=\"addButtonList\">\r\n      <li (click)=\"modalChangeTab(1)\" id=\"blockBtn\" class=\"addButtonListItem modalliactive\"><a class=\"modalliitem\">Blocks</a></li>\r\n      <li (click)=\"modalChangeTab(2)\" id=\"urlBtn\" class=\"addButtonListItem\"><a class=\"modalliitem\">Url</a></li>\r\n    </ul>\r\n    <div class=\"modalContent\">\r\n      <div id=\"blockContent\" class=\"row modalContentActive\">\r\n        <div class=\"col-md-12 col-xs-12\">\r\n          <div class=\"form-group row\">\r\n            <div class=\"col-md-12\">\r\n              <select class=\"form-control\" [(ngModel)]=\"AddButtonBlock\" name=\"blocksdd\" id=\"simple-select\">\r\n                  <option selected=\"selected\" value=\"0\">Select Block</option>\r\n                  <option *ngFor=\"let card of select2GroupedData\" value=\"{{card.id}}\">{{card.text}}</option>\r\n                  \r\n                </select>\r\n            </div>\r\n          </div>\r\n          <div class=\"row\">\r\n            <div class=\"col-md-12\">\r\n              <button type=\"button\" class=\"btn btn-success btn-block\" (click)=\"addButtonPost(1)\">Save</button>\r\n            </div>\r\n          </div>\r\n        </div>\r\n      </div>\r\n      <div id=\"urlContent\" class=\"row modalContentDeActive\">\r\n        <div class=\"col-md-12 col-xs-12\">\r\n          <div class=\"form-group row\">\r\n            <div class=\"col-md-12\">\r\n              <div class=\"input-group\">\r\n                <span class=\"input-group-addon\">http://</span>\r\n                <input id=\"urlContentData\" class=\"form-control\" type=\"text\" [(ngModel)]=\"AddButtonUrl\" placeholder=\"Enter Url\">\r\n              </div>\r\n              <!--<input id=\"urlContentData\" type=\"text\" class=\"form-control\" [(ngModel)]=\"AddButtonUrl\" placeholder=\"Enter Url\" />-->\r\n            </div>\r\n          </div>\r\n          <div class=\"row\">\r\n            <div class=\"col-md-12\">\r\n              <button type=\"button\" class=\"btn btn-success btn-block\" (click)=\"addButtonPost(2)\">Save</button>\r\n            </div>\r\n          </div>\r\n        </div>\r\n      </div>\r\n      <div id=\"articleContent\" class=\"row modalContentDeActive\">\r\n        <div class=\"col-md-12 col-xs-12\">\r\n          <div class=\"form-group row\">\r\n            <div class=\"col-md-12\">\r\n              <input id=\"urlContentData\" type=\"text\" class=\"form-control\" [(ngModel)]=\"AddButtonUrl\" placeholder=\"Enter Url\" />\r\n            </div>\r\n          </div>\r\n          <div class=\"row\">\r\n            <div class=\"col-md-12\">\r\n              <button type=\"button\" class=\"btn btn-success btn-block\" (click)=\"addButtonPost(2)\">Save</button>\r\n            </div>\r\n          </div>\r\n        </div>\r\n      </div>\r\n    </div>\r\n  </div>\r\n</modal-content>\r\n<modal-footer>\r\n</modal-footer>\r\n</modal>\r\n<modal #yourModal>\r\n  <modal-header>\r\n    <h4 class=\"modal-title text-xs-center fw-bold mt\" id=\"myModalLabel18\">Add Quick Reply</h4>\r\n    <input id=\"buttonNameQR\" type=\"text\" class=\"form-control\" maxlength=\"20\" [(ngModel)]=\"AddButtonName\" placeholder=\"Enter Button Name\" style=\"width:88%;margin-left:5%;\" />\r\n</modal-header>\r\n<modal-content>\r\n  <div class=\"col-md-12 col-lg-12\">\r\n    <ul class=\"addButtonList\">\r\n      <li id=\"blockBtn\" class=\"addButtonListItem\">\r\n        <a class=\"modalliitem\" style=\"padding: 0em 6em;\">Blocks</a>\r\n</li>\r\n</ul>\r\n<div class=\"modalContent\">\r\n  <div id=\"blockContent\" class=\"row modalContentActive\">\r\n    <div class=\"col-md-12 col-xs-12\">\r\n      <div class=\"form-group row\">\r\n        <div class=\"col-md-12\">\r\n          <select class=\"form-control\" [(ngModel)]=\"AddButtonBlock\" name=\"blocksdd\" id=\"simple-select\">\r\n                  <option selected=\"selected\" value=\"0\">Select Block</option>\r\n                  <option *ngFor=\"let card of select2GroupedData\" value=\"{{card.id}}\">{{card.text}}</option>   \r\n                </select>\r\n        </div>\r\n      </div>\r\n      <div class=\"row\">\r\n        <div class=\"col-md-12\">\r\n          <button type=\"button\" class=\"btn btn-success btn-block\" (click)=\"submitQuickReplyBtns();\">Save</button>\r\n        </div>\r\n      </div>\r\n    </div>\r\n  </div>\r\n</div>\r\n</div>\r\n</modal-content>\r\n<modal-footer>\r\n</modal-footer>\r\n</modal>\r\n<modal #articleModal>\r\n  <modal-header>\r\n    <h4 class=\"modal-title text-xs-center fw-bold mt\" id=\"myModalLabel18\">Article for {{articleModalTitle}}</h4>\r\n  </modal-header>\r\n  <modal-content>\r\n    <div class=\"col-md-12 col-lg-12\">\r\n      <div class=\"modalContent\">\r\n        <quill-editor [(ngModel)]=\"ckeditorContent\"></quill-editor>\r\n      </div>\r\n      <div class=\"row\">\r\n        <div class=\"col-md-12\">\r\n          <button type=\"button\" class=\"btn btn-success btn-block\" (click)=\"submitArticleText();articleModal.close()\">Save</button>\r\n        </div>\r\n      </div>\r\n    </div>\r\n  </modal-content>\r\n  <modal-footer>\r\n  </modal-footer>\r\n</modal>\r\n<modal #editQuickReplyModal>\r\n  <modal-header>\r\n    <h4 class=\"modal-title text-xs-center fw-bold mt\" id=\"myModalLabel18\">Edit Quick Reply</h4>\r\n    <input id=\"buttonName\" type=\"text\" class=\"form-control\" maxlength=\"20\" [(ngModel)]=\"EditQuickReplyName\" placeholder=\"Enter Button Name\"\r\n      style=\"width:88%;margin-left:5%;\" />\r\n</modal-header>\r\n<modal-content>\r\n  <div class=\"col-md-12 col-lg-12\">\r\n    <!--<ul class=\"addButtonList\">\r\n        <li id=\"blockBtn\" class=\"addButtonListItem\"><a class=\"modalliitem\" style=\"padding: 0em 6em;\">Blocks</a></li>\r\n      </ul>-->\r\n    <div class=\"modalContent\">\r\n      <div id=\"blockContent\" class=\"row modalContentActive\">\r\n        <div class=\"col-md-12 col-xs-12\">\r\n          <div class=\"form-group row\">\r\n              <div class=\"col-md-12\">\r\n                <select class=\"form-control\" [(ngModel)]=\"EditBlockQuickReply\" name=\"blocksdd\" id=\"editQR-select\">\r\n                  <option selected=\"selected\" value=\"0\">Select Block</option>\r\n                  <option *ngFor=\"let card of select2GroupedData\" [selected]=\"card.id == EditBlockQuickReply\" value=\"{{card.id}}\">{{card.text}}</option>   \r\n                </select>\r\n              </div>\r\n            </div>\r\n          <div class=\"row\">\r\n            <div class=\"col-md-12\">\r\n              <button type=\"button\" class=\"btn btn-success btn-block\" (click)=\"editQuickReplyBtns();editQuickReplyModal.close()\">Update</button>\r\n            </div>\r\n          </div>\r\n        </div>\r\n      </div>\r\n    </div>\r\n  </div>\r\n</modal-content>\r\n<modal-footer>\r\n</modal-footer>\r\n</modal>\r\n<modal #editAddBtnModal>\r\n  <modal-header>\r\n    <h4 class=\"modal-title text-xs-center fw-bold mt\" id=\"myModalLabel18\">Edit Buttons to Response</h4>\r\n    <input id=\"buttonName\" type=\"text\" class=\"form-control\" maxlength=\"20\" [(ngModel)]=\"EditButtonName\" placeholder=\"Enter Button Name\" style=\"width:88%;margin-left:5%;\" />\r\n</modal-header>\r\n<modal-content>\r\n  <div class=\"col-md-12 col-lg-12\">\r\n    <ul class=\"addButtonList\">\r\n      <li (click)=\"modalChangeTab(1)\" id=\"blockBtn\" class=\"addButtonListItem modalliactive\"><a class=\"modalliitem\">Blocks</a></li>\r\n      <li (click)=\"modalChangeTab(2)\" id=\"urlBtn\" class=\"addButtonListItem\"><a class=\"modalliitem\">Url</a></li>\r\n    </ul>\r\n    <div class=\"modalContent\">\r\n      <div id=\"blockContent\" class=\"row modalContentActive\">\r\n        <div class=\"col-md-12 col-xs-12\">\r\n          \r\n<div class=\"form-group row\">\r\n  <div class=\"col-md-12\">\r\n    <select class=\"form-control\" [(ngModel)]=\"EditButtonBlock\" name=\"blocksdd\" id=\"simple-select\">\r\n                  <option selected=\"selected\" value=\"0\">Select Block</option>\r\n                  <option *ngFor=\"let card of select2GroupedData\" value=\"{{card.id}}\">{{card.text}}</option>\r\n                  \r\n                </select>\r\n  </div>\r\n</div>\r\n<div class=\"row\">\r\n  <div class=\"col-md-12\">\r\n    <button type=\"button\" class=\"btn btn-success btn-block\" (click)=\"editButtonPost(1);editAddBtnModal.close()\">Update</button>\r\n  </div>\r\n</div>\r\n</div>\r\n</div>\r\n<div id=\"urlContent\" class=\"row modalContentDeActive\">\r\n  <div class=\"col-md-12 col-xs-12\">\r\n    <div class=\"form-group row\">\r\n\r\n      <div class=\"col-md-12\">\r\n        <div class=\"input-group\">\r\n          <span class=\"input-group-addon\">http://</span>\r\n          <input id=\"urlContentData\" class=\"form-control\" type=\"text\" [(ngModel)]=\"EditButtonUrl\" placeholder=\"Enter Url\">\r\n        </div>\r\n        <!--<input id=\"urlContentData\" type=\"text\" class=\"form-control\" [(ngModel)]=\"AddButtonUrl\" placeholder=\"Enter Url\" />-->\r\n      </div>\r\n    </div>\r\n    <div class=\"row\">\r\n      <div class=\"col-md-12\">\r\n        <button type=\"button\" class=\"btn btn-success btn-block\" (click)=\"editButtonPost(2);editAddBtnModal.close()\">Update</button>\r\n      </div>\r\n    </div>\r\n  </div>\r\n</div>\r\n</div>\r\n</div>\r\n</modal-content>\r\n<modal-footer>\r\n</modal-footer>\r\n</modal>"
 
 /***/ },
 
@@ -18170,6 +18170,7 @@ var Specific = (function () {
         this.articleModalTitle = "";
         this.articleResponseId = "";
         this.quickResponseMessageId = "";
+        this.addBtnflag = true;
         this.addBlockFlag = false;
         this.sortOptions = {
             placeholder: 'list-group-item list-group-item-placeholder',
@@ -18245,6 +18246,12 @@ var Specific = (function () {
         this._botTrainingService.updateRandomTitleText(responseMessageId, jQuery('#textCardTitle' + responseMessageId + i).val(), i).subscribe(function (a) {
             if (a.code == 200) {
                 _this.blockDetail(_this.popBlock._id);
+                if (a.data == true) {
+                    _this.blockIsCompletedStatusChange(_this.popBlock._id, true);
+                }
+                else {
+                    _this.blockIsCompletedStatusChange(_this.popBlock._id, false);
+                }
             }
         });
     };
@@ -18254,14 +18261,30 @@ var Specific = (function () {
         this._botTrainingService.addRandomText(responseMessageId, count).subscribe(function (a) {
             if (a.code == 200) {
                 _this.blockDetail(_this.popBlock._id);
+                if (a.data == true) {
+                    _this.blockIsCompletedStatusChange(_this.popBlock._id, false);
+                }
+                else {
+                    _this.blockIsCompletedStatusChange(_this.popBlock._id, true);
+                }
             }
         });
     };
     Specific.prototype.deleteQuickReply = function (addButtonId, parentId) {
         var _this = this;
+        var count = 0;
         this._botTrainingService.deleteQuickReply(addButtonId, parentId).subscribe(function (a) {
             if (a.code == 200) {
                 _this.blockDetail(_this.popBlock._id);
+                for (var i = 0; i < _this.cardArray.length; i++) {
+                    if (_this.cardArray[i]._id == parentId) {
+                        console.log(_this.cardArray[i]);
+                        if (_this.cardArray[i].data.quickReplyBtns.length < 2) {
+                            _this.blockIsCompletedStatusChange(_this.popBlock._id, false);
+                            break;
+                        }
+                    }
+                }
             }
         });
     };
@@ -18270,6 +18293,12 @@ var Specific = (function () {
         this._botTrainingService.deleteRandomText(addButtonId, parentId).subscribe(function (a) {
             if (a.code == 200) {
                 _this.blockDetail(_this.popBlock._id);
+                if (a.data == true) {
+                    _this.blockIsCompletedStatusChange(_this.popBlock._id, true);
+                }
+                else {
+                    _this.blockIsCompletedStatusChange(_this.popBlock._id, false);
+                }
             }
         });
     };
@@ -18284,11 +18313,24 @@ var Specific = (function () {
     Specific.prototype.deleteResponseMessage = function (resMesId) {
         var _this = this;
         this._botTrainingService.deleteResponseMessage(resMesId).subscribe(function (a) {
-            if (a.code == 200) {
+            for (var i = 0; i < _this.cardArray.length; i++) {
+                var obj = _this.cardArray[i];
+                if (obj._id == resMesId) {
+                    _this.cardArray.splice(i, 1);
+                }
+            }
+            if (_this.cardArray.length == 0) {
+                _this.blockIsCompletedStatusChange(obj._blockId, true);
+            }
+            else {
                 for (var i = 0; i < _this.cardArray.length; i++) {
                     var obj = _this.cardArray[i];
-                    if (obj._id == resMesId) {
-                        _this.cardArray.splice(i, 1);
+                    if (obj.isCompleted == true) {
+                        _this.blockIsCompletedStatusChange(obj._blockId, true);
+                    }
+                    else {
+                        _this.blockIsCompletedStatusChange(obj._blockId, false);
+                        break;
                     }
                 }
             }
@@ -18310,63 +18352,69 @@ var Specific = (function () {
     };
     Specific.prototype.addButtonPost = function (val) {
         var _this = this;
-        if (val == 1) {
-            var count = 0;
-            var blockname = "";
-            for (var i = 0; i < this.select2GroupedData.length; i++) {
-                if (this.select2GroupedData[i].id == this.AddButtonBlock) {
-                    blockname = this.select2GroupedData[i].text;
+        if (this.addBtnflag == true) {
+            if (val == 1) {
+                this.addBtnflag = false;
+                var count = 0;
+                var blockname = "";
+                for (var i = 0; i < this.select2GroupedData.length; i++) {
+                    if (this.select2GroupedData[i].id == this.AddButtonBlock) {
+                        blockname = this.select2GroupedData[i].text;
+                    }
+                }
+                if (this.responseMessageDiff == 'addButton') {
+                    var cardAddButton = new CardAddButton_1.CardAddButton(this.AddButtonName, blockname, this.AddButtonBlock, "");
+                    count = jQuery('.addbuttonResultList').length;
+                    console.log(count);
+                }
+                else {
+                    //Add Quick Reply
+                    var cardAddButton = new CardAddButton_1.CardAddButton(this.AddButtonName, blockname, this.AddButtonBlock, "");
+                    count = jQuery('.addQuickReplyList').length;
+                }
+                if (this.AddButtonBlock != "" && this.AddButtonName != "") {
+                    jQuery('#buttonName').removeClass('modalError');
+                    jQuery('#simple-select').removeClass('modalError');
+                    if (this.responseMessageDiff == 'addButton') {
+                        this._botTrainingService.addAddButton(this.addButtonResponseMessageId, cardAddButton, this.addButtonResponseMessageType, count).subscribe(function (a) {
+                            if (a.code == 200) {
+                                _this.addBtnflag = true;
+                                _this.AddButtonName = "";
+                                _this.AddButtonBlock = "";
+                                _this.blockDetail(_this.popBlock._id);
+                                _this.modalComponent.close();
+                            }
+                        });
+                    }
+                    else {
+                    }
+                }
+                else {
+                    jQuery('#buttonName').addClass('modalError');
+                    jQuery('#simple-select').addClass('modalError');
                 }
             }
-            if (this.responseMessageDiff == 'addButton') {
-                var cardAddButton = new CardAddButton_1.CardAddButton(this.AddButtonName, blockname, this.AddButtonBlock, "");
-                count = jQuery('.addbuttonResultList').length;
-                console.log(count);
-            }
             else {
-                //Add Quick Reply
-                var cardAddButton = new CardAddButton_1.CardAddButton(this.AddButtonName, blockname, this.AddButtonBlock, "");
-                count = jQuery('.addQuickReplyList').length;
-            }
-            if (this.AddButtonBlock != "" && this.AddButtonName != "") {
-                jQuery('#buttonName').removeClass('modalError');
-                jQuery('#simple-select').removeClass('modalError');
-                if (this.responseMessageDiff == 'addButton') {
-                    this._botTrainingService.addAddButton(this.addButtonResponseMessageId, cardAddButton, this.addButtonResponseMessageType, count).subscribe(function (a) {
+                this.addBtnflag = false;
+                this.AddButtonUrl = 'http://' + this.AddButtonUrl;
+                var cardAddButton = new CardAddButton_1.CardAddButton(this.AddButtonName, this.AddButtonUrl, "", "");
+                if (this.AddButtonUrl != "" && this.AddButtonName != "") {
+                    jQuery('#buttonName').removeClass('modalError');
+                    jQuery('#urlContentData').removeClass('modalError');
+                    this._botTrainingService.addAddButton(this.addButtonResponseMessageId, cardAddButton, this.addButtonResponseMessageType, jQuery('.addbuttonResultList').length).subscribe(function (a) {
                         if (a.code == 200) {
+                            _this.addBtnflag = true;
                             _this.AddButtonName = "";
-                            _this.AddButtonBlock = "";
+                            _this.AddButtonUrl = "";
                             _this.blockDetail(_this.popBlock._id);
                             _this.modalComponent.close();
                         }
                     });
                 }
                 else {
+                    jQuery('#buttonName').addClass('modalError');
+                    jQuery('#urlContentData').addClass('modalError');
                 }
-            }
-            else {
-                jQuery('#buttonName').addClass('modalError');
-                jQuery('#simple-select').addClass('modalError');
-            }
-        }
-        else {
-            this.AddButtonUrl = 'http://' + this.AddButtonUrl;
-            var cardAddButton = new CardAddButton_1.CardAddButton(this.AddButtonName, this.AddButtonUrl, "", "");
-            if (this.AddButtonUrl != "" && this.AddButtonName != "") {
-                jQuery('#buttonName').removeClass('modalError');
-                jQuery('#urlContentData').removeClass('modalError');
-                this._botTrainingService.addAddButton(this.addButtonResponseMessageId, cardAddButton, this.addButtonResponseMessageType, jQuery('.addbuttonResultList').length).subscribe(function (a) {
-                    if (a.code == 200) {
-                        _this.AddButtonName = "";
-                        _this.AddButtonUrl = "";
-                        _this.blockDetail(_this.popBlock._id);
-                        _this.modalComponent.close();
-                    }
-                });
-            }
-            else {
-                jQuery('#buttonName').addClass('modalError');
-                jQuery('#urlContentData').addClass('modalError');
             }
         }
     };
@@ -18413,15 +18461,28 @@ var Specific = (function () {
         console.log(this.quickResponseMessageId);
         console.log(this.AddButtonName);
         console.log(this.AddButtonBlock);
+        var count = 0;
         jQuery('#simple-select').removeClass('modalError');
         jQuery('#buttonNameQR').removeClass('modalError');
-        var count = jQuery('.qrbtns').length;
+        var counts = jQuery('.qrbtns').length;
         if (this.AddButtonName != "" && this.AddButtonBlock != "") {
-            this._botTrainingService.addQuickReply(this.quickResponseMessageId, this.AddButtonName, this.AddButtonBlock, count).subscribe(function (a) {
+            this._botTrainingService.addQuickReply(this.quickResponseMessageId, this.AddButtonName, this.AddButtonBlock, counts).subscribe(function (a) {
                 if (a.code == 200) {
                     _this.modalComponent2.close();
                     _this.AddButtonName = "";
                     _this.AddButtonBlock = "";
+                    for (var i = 0; i < _this.cardArray.length; i++) {
+                        if (_this.cardArray[i].isCompleted == false && _this.cardArray[i]._id != _this.quickResponseMessageId) {
+                            _this.blockIsCompletedStatusChange(_this.popBlock._id, false);
+                            break;
+                        }
+                        else {
+                            count = count + 1;
+                        }
+                    }
+                    if (count == _this.cardArray.length) {
+                        _this.blockIsCompletedStatusChange(_this.popBlock._id, true);
+                    }
                     _this.blockDetail(_this.popBlock._id);
                 }
             });
@@ -18437,6 +18498,12 @@ var Specific = (function () {
             this._botTrainingService.updateArticleText(this.articleResponseId, this.ckeditorContent).subscribe(function (a) {
                 if (a.code == 200) {
                     _this.blockDetail(_this.popBlock._id);
+                    if (a.data == true) {
+                        _this.blockIsCompletedStatusChange(_this.popBlock._id, true);
+                    }
+                    else {
+                        _this.blockIsCompletedStatusChange(_this.popBlock._id, false);
+                    }
                 }
             });
         }
@@ -18453,16 +18520,37 @@ var Specific = (function () {
         }
     };
     Specific.prototype.updateTitleArticleCard = function (responseMessageId) {
+        var _this = this;
         this._botTrainingService.updateTitleText(responseMessageId, jQuery('#articleCardTitle' + responseMessageId).val(), 0, 'article').subscribe(function (a) {
             if (a.code == 200) {
+                if (a.data == true) {
+                    _this.blockIsCompletedStatusChange(_this.popBlock._id, true);
+                }
+                else {
+                    _this.blockIsCompletedStatusChange(_this.popBlock._id, false);
+                }
+                _this.blockDetail(_this.popBlock._id);
             }
         });
     };
     Specific.prototype.updateTitleTextCard = function (responseMessageId) {
         var _this = this;
+        var count = 0;
         this._botTrainingService.updateTitleText(responseMessageId, jQuery('#textCardTitle' + responseMessageId).val(), 0, 'text').subscribe(function (a) {
             if (a.code == 200) {
                 _this.blockDetail(_this.popBlock._id);
+                for (var i = 0; i < _this.cardArray.length; i++) {
+                    if (_this.cardArray[i].isCompleted == false && _this.cardArray[i]._id != responseMessageId) {
+                        _this.blockIsCompletedStatusChange(_this.popBlock._id, false);
+                        break;
+                    }
+                    else {
+                        count = count + 1;
+                    }
+                }
+                if (count == _this.cardArray.length) {
+                    _this.blockIsCompletedStatusChange(_this.popBlock._id, true);
+                }
             }
         });
     };
@@ -18470,6 +18558,12 @@ var Specific = (function () {
         var _this = this;
         this._botTrainingService.updateTitleText(responseMessageId, jQuery('#galleryCardTitle' + indexId).val(), indexId, 'gallery').subscribe(function (a) {
             if (a.code == 200) {
+                if (a.data == true) {
+                    _this.blockIsCompletedStatusChange(_this.popBlock._id, true);
+                }
+                else {
+                    _this.blockIsCompletedStatusChange(_this.popBlock._id, false);
+                }
                 _this.blockDetail(_this.popBlock._id);
             }
         });
@@ -18504,9 +18598,22 @@ var Specific = (function () {
     Specific.prototype.populateSingleImage = function (event, responseMessageId, blockId) {
         var _this = this;
         var file = event.target.files[0];
+        var count = 0;
         this._botTrainingService.getPictureUrl(file, responseMessageId, "image", -1).subscribe(function (a) {
             if (a.code == 200) {
                 _this.blockDetail(blockId);
+                for (var i = 0; i < _this.cardArray.length; i++) {
+                    if (_this.cardArray[i].isCompleted == false && _this.cardArray[i]._id != responseMessageId) {
+                        _this.blockIsCompletedStatusChange(blockId, false);
+                        break;
+                    }
+                    else {
+                        count = count + 1;
+                    }
+                }
+                if (count == _this.cardArray.length) {
+                    _this.blockIsCompletedStatusChange(blockId, true);
+                }
             }
         });
     };
@@ -18521,6 +18628,12 @@ var Specific = (function () {
         //this.card = new Card("gallery", this.galleryCard);
         this._botTrainingService.addGalleryCard(this.galleryCard, resMesId).subscribe(function (a) {
             if (a.code == 200) {
+                if (a.data == true) {
+                    _this.blockIsCompletedStatusChange(_this.popBlock._id, true);
+                }
+                else {
+                    _this.blockIsCompletedStatusChange(_this.popBlock._id, false);
+                }
                 _this.blockDetail(blockId);
             }
         });
@@ -18586,6 +18699,16 @@ var Specific = (function () {
             }
         });
     };
+    Specific.prototype.blockIsCompletedStatusChange = function (_blockId, status) {
+        for (var i = 0; i < this.blockGroupsModel.length; i++) {
+            for (var j = 0; j < this.blockGroupsModel[i].blocks.length; j++) {
+                if (this.blockGroupsModel[i].blocks[j]._id == _blockId) {
+                    this.blockGroupsModel[i].blocks[j].isCompleted = status;
+                    break;
+                }
+            }
+        }
+    };
     Specific.prototype.addCard = function (val) {
         var _this = this;
         if (val == 1) {
@@ -18596,6 +18719,7 @@ var Specific = (function () {
             galleryCardArray.push(this.galleryCard);
             this._botTrainingService.addResponseMessage(galleryCardArray, "gallery", this.popBlock._id).subscribe(function (a) {
                 if (a.code == 200) {
+                    _this.blockIsCompletedStatusChange(a.data._blockId, false);
                     _this.cardArray.push(a.data);
                 }
             });
@@ -18612,6 +18736,7 @@ var Specific = (function () {
             this.card = new Card_1.Card("text", this.textCard);
             this._botTrainingService.addResponseMessage(this.textCard, "text", this.popBlock._id).subscribe(function (a) {
                 if (a.code == 200) {
+                    _this.blockIsCompletedStatusChange(a.data._blockId, false);
                     _this.cardArray.push(a.data);
                 }
             });
@@ -18626,6 +18751,7 @@ var Specific = (function () {
             this.card = new Card_1.Card("singletext", singleTextObj);
             this._botTrainingService.addResponseMessage(singleTextObj, "singletext", this.popBlock._id).subscribe(function (a) {
                 if (a.code == 200) {
+                    _this.blockIsCompletedStatusChange(a.data._blockId, false);
                     _this.cardArray.push(a.data);
                 }
             });
@@ -18636,6 +18762,7 @@ var Specific = (function () {
             this.card = new Card_1.Card("image", this.imageCard);
             this._botTrainingService.addResponseMessage(this.imageCard, "image", this.popBlock._id).subscribe(function (a) {
                 if (a.code == 200) {
+                    _this.blockIsCompletedStatusChange(a.data._blockId, false);
                     _this.cardArray.push(a.data);
                 }
             });
@@ -18646,6 +18773,7 @@ var Specific = (function () {
             this.card = new Card_1.Card("image", this.articleCard);
             this._botTrainingService.addResponseMessage(this.articleCard, "article", this.popBlock._id).subscribe(function (a) {
                 if (a.code == 200) {
+                    _this.blockIsCompletedStatusChange(a.data._blockId, false);
                     _this.cardArray.push(a.data);
                 }
             });
@@ -18656,6 +18784,7 @@ var Specific = (function () {
             this.card = new Card_1.Card("quickreply", this.quickReplyCard);
             this._botTrainingService.addResponseMessage(this.quickReplyCard, "quickreply", this.popBlock._id).subscribe(function (a) {
                 if (a.code == 200) {
+                    _this.blockIsCompletedStatusChange(a.data._blockId, false);
                     _this.cardArray.push(a.data);
                 }
             });
@@ -18873,6 +19002,12 @@ var Specific = (function () {
         var _this = this;
         this._botTrainingService.deleteOneGalleryCard(cardId, indexId)
             .subscribe(function (a) {
+            if (a.data == true) {
+                _this.blockIsCompletedStatusChange(_this.popBlock._id, true);
+            }
+            else {
+                _this.blockIsCompletedStatusChange(_this.popBlock._id, false);
+            }
             _this.blockDetail(_this.popBlock._id);
         });
     };
