@@ -13259,7 +13259,7 @@ __webpack_require__("./node_modules/rxjs/add/operator/map.js");
 var UsersService = (function () {
     function UsersService(http) {
         this.http = http;
-        this.baseUrl = "https://aprilappserverstaging.azurewebsites.net/";
+        this.baseUrl = "https://aprilappserver.azurewebsites.net/";
     }
     UsersService.prototype.getUsers = function () {
         return this.http.get(this.baseUrl + 'users/getAllUsers')
