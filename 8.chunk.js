@@ -17666,7 +17666,7 @@ var Generic = (function () {
     function Generic(_botTrainingService, _rootNode) {
         this._botTrainingService = _botTrainingService;
         this._rootNode = _rootNode;
-        this.baseUrl = "https://aprilappserverstaging.azurewebsites.net/";
+        this.baseUrl = "https://aprilappserver.azurewebsites.net/";
         this.select2GroupedData = [];
         this.GroupText = "";
         this.groups = [];
@@ -17897,10 +17897,9 @@ var Generic = (function () {
                             }
                         });
                     }
-                    else {
-                    }
                 }
                 else {
+                    this.addBtnflag = true;
                     jQuery('#buttonName').addClass('modalError');
                     jQuery('#simple-select').addClass('modalError');
                 }
@@ -17923,6 +17922,7 @@ var Generic = (function () {
                     });
                 }
                 else {
+                    this.addBtnflag = true;
                     jQuery('#buttonName').addClass('modalError');
                     jQuery('#urlContentData').addClass('modalError');
                 }
@@ -18332,7 +18332,7 @@ var Generic = (function () {
                 // gets the new and old index then removes the temporary attribute
                 var newIndex = ui.item.index() + 1;
                 var groupId = jQuery(this).attr('data-previndex');
-                jQuery.post("https://aprilappserverstaging.azurewebsites.net/responsemessage/sortingOfResponseMessages", {
+                jQuery.post("https://aprilappserver.azurewebsites.net/responsemessage/sortingOfResponseMessages", {
                     oldIndex: oldIndex,
                     newIndex: newIndex,
                     groupId: groupId
@@ -18364,7 +18364,7 @@ var Generic = (function () {
                 // gets the new and old index then removes the temporary attribute
                 var newIndex = ui.item.index() + 1;
                 var groupId = jQuery(this).attr('data-previndex');
-                jQuery.post("https://aprilappserverstaging.azurewebsites.net/responsemessage/sortingOfResponseMessages", {
+                jQuery.post("https://aprilappserver.azurewebsites.net/responsemessage/sortingOfResponseMessages", {
                     oldIndex: oldIndex,
                     newIndex: newIndex,
                     groupId: groupId
