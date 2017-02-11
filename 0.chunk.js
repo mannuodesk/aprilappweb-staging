@@ -12878,9 +12878,9 @@ var routes = [
             { path: 'ui', loadChildren: function () { return __webpack_require__.e/* System.import */(11).then(__webpack_require__.bind(null, "./src/app/ui-elements/ui-elements.module.ts")).then(function (mod) { return (mod.__esModule && mod.default) ? mod.default : mod; }); } },
             { path: 'extra', loadChildren: function () { return __webpack_require__.e/* System.import */(5).then(__webpack_require__.bind(null, "./src/app/extra/extra.module.ts")).then(function (mod) { return (mod.__esModule && mod.default) ? mod.default : mod; }); } },
             { path: 'tables', loadChildren: function () { return __webpack_require__.e/* System.import */(13).then(__webpack_require__.bind(null, "./src/app/tables/tables.module.ts")).then(function (mod) { return (mod.__esModule && mod.default) ? mod.default : mod; }); } },
-            { path: 'users', loadChildren: function () { return __webpack_require__.e/* System.import */(9).then(__webpack_require__.bind(null, "./src/app/users/users.module.ts")).then(function (mod) { return (mod.__esModule && mod.default) ? mod.default : mod; }); } },
-            { path: 'generic', loadChildren: function () { return __webpack_require__.e/* System.import */(8).then(__webpack_require__.bind(null, "./src/app/generic/generic.module.ts")).then(function (mod) { return (mod.__esModule && mod.default) ? mod.default : mod; }); } },
-            { path: 'specific', loadChildren: function () { return __webpack_require__.e/* System.import */(10).then(__webpack_require__.bind(null, "./src/app/specific/specific.module.ts")).then(function (mod) { return (mod.__esModule && mod.default) ? mod.default : mod; }); } },
+            { path: 'users', loadChildren: function () { return __webpack_require__.e/* System.import */(10).then(__webpack_require__.bind(null, "./src/app/users/users.module.ts")).then(function (mod) { return (mod.__esModule && mod.default) ? mod.default : mod; }); } },
+            { path: 'generic', loadChildren: function () { return __webpack_require__.e/* System.import */(9).then(__webpack_require__.bind(null, "./src/app/generic/generic.module.ts")).then(function (mod) { return (mod.__esModule && mod.default) ? mod.default : mod; }); } },
+            { path: 'specific', loadChildren: function () { return __webpack_require__.e/* System.import */(8).then(__webpack_require__.bind(null, "./src/app/specific/specific.module.ts")).then(function (mod) { return (mod.__esModule && mod.default) ? mod.default : mod; }); } },
             { path: 'buildai', loadChildren: function () { return __webpack_require__.e/* System.import */(19).then(__webpack_require__.bind(null, "./src/app/buildai/buildai.module.ts")).then(function (mod) { return (mod.__esModule && mod.default) ? mod.default : mod; }); } },
             { path: 'directory', loadChildren: function () { return __webpack_require__.e/* System.import */(14).then(__webpack_require__.bind(null, "./src/app/directory/directory.module.ts")).then(function (mod) { return (mod.__esModule && mod.default) ? mod.default : mod; }); } },
             { path: 'aboutapril', loadChildren: function () { return __webpack_require__.e/* System.import */(18).then(__webpack_require__.bind(null, "./src/app/aboutapril/aboutapril.module.ts")).then(function (mod) { return (mod.__esModule && mod.default) ? mod.default : mod; }); } },
@@ -12925,17 +12925,22 @@ var Navbar = (function () {
         this.config = config.getConfig();
         this.router = router;
         //Populating Admin Data
-        this._userService.getAdminData(this.userId).subscribe(function (a) {
-            if (a.code == 200) {
-                _this.pictureUrl = a.data.pictureUrl;
-                _this.name = a.data.name;
-                _this.firstname = _this.name.split(' ')[0];
-                _this.lastname = _this.name.split(' ')[1];
-            }
-            else {
-                console.log(a.message);
-            }
-        });
+        if (this.userId != null) {
+            this._userService.getAdminData(this.userId).subscribe(function (a) {
+                if (a.code == 200) {
+                    _this.pictureUrl = a.data.pictureUrl;
+                    _this.name = a.data.name;
+                    _this.firstname = _this.name.split(' ')[0];
+                    _this.lastname = _this.name.split(' ')[1];
+                }
+                else {
+                    console.log(a.message);
+                }
+            });
+        }
+        else {
+            this.router.navigate(['/']);
+        }
     }
     Navbar.prototype.toggleSidebar = function (state) {
         this.toggleSidebarEvent.emit(state);

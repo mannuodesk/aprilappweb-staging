@@ -17659,6 +17659,20 @@ var MiscServices = (function () {
         return this.http.get(this.baseUrl + 'termsofservice/getTermsOfService')
             .map(function (res) { return res.json(); });
     };
+    MiscServices.prototype.updateDirectoryTitle = function (Id, title) {
+        var body = JSON.stringify({ 'title': title, '_directoryId': Id });
+        var headers = new http_1.Headers({ 'Content-Type': 'application/json' });
+        var options = new http_1.RequestOptions({ method: 'post', headers: headers });
+        return this.http.post(this.baseUrl + "directory/updateDirectoryTitle", body, options)
+            .map(function (res) { return res.json(); });
+    };
+    MiscServices.prototype.updateFAQTitle = function (Id, title) {
+        var body = JSON.stringify({ 'title': title, '_faqsId': Id });
+        var headers = new http_1.Headers({ 'Content-Type': 'application/json' });
+        var options = new http_1.RequestOptions({ method: 'post', headers: headers });
+        return this.http.post(this.baseUrl + "faqs/updateFaqsTitle", body, options)
+            .map(function (res) { return res.json(); });
+    };
     MiscServices.prototype.getAlldirectory = function () {
         return this.http.get(this.baseUrl + 'directory/getAllDirectory')
             .map(function (res) { return res.json(); });
@@ -17748,7 +17762,7 @@ exports.MiscServices = MiscServices;
 /***/ "./src/app/termsofservice/termsofservice.component.html":
 /***/ function(module, exports) {
 
-module.exports = "<ol class=\"breadcrumb\">\r\n    <li class=\"breadcrumb-item\">YOU ARE HERE</li>\r\n    <li class=\"breadcrumb-item active\">Terms Of Service</li>\r\n</ol>\r\n<h1 class=\"page-title\">Terms Of Service</h1>\r\n\r\n<section>\r\n    <div class=\"row\">\r\n        <div class=\"col-lg-12 col-xs-12\">\r\n            <quill-editor class=\"form-control\" [(ngModel)]=\"termsOfServiceContent\" (onEditorCreated)=\"onEditorCreated($event)\" (onContentChanged)=\"logChange($event);\"></quill-editor>\r\n        </div>\r\n    </div>\r\n    <br/>\r\n    <div class=\"row\">\r\n        <div class=\"offset-lg-4 col-lg-4\">\r\n        <button class=\"btn btn-block btn-success\" (click)=\"addDirectory()\">\r\n            Submit\r\n        </button>\r\n        </div>\r\n    </div>\r\n</section>"
+module.exports = "<ol class=\"breadcrumb\">\r\n    <li class=\"breadcrumb-item\">YOU ARE HERE</li>\r\n    <li class=\"breadcrumb-item\">Miscellaneous</li>\r\n    <li class=\"breadcrumb-item active\">Terms of Service</li>\r\n</ol>\r\n<h1 class=\"page-title\">Terms of Service</h1>\r\n\r\n<section>\r\n    <div class=\"row\">\r\n        <div class=\"col-lg-12 col-xs-12\">\r\n            <quill-editor class=\"form-control\" [(ngModel)]=\"termsOfServiceContent\" (onEditorCreated)=\"onEditorCreated($event)\" (onContentChanged)=\"logChange($event);\"></quill-editor>\r\n        </div>\r\n    </div>\r\n    <br/>\r\n    <div class=\"row\">\r\n        <div class=\"offset-lg-4 col-lg-4\">\r\n        <button class=\"btn btn-block btn-success\" (click)=\"addDirectory()\">\r\n            Submit\r\n        </button>\r\n        </div>\r\n    </div>\r\n</section>"
 
 /***/ },
 

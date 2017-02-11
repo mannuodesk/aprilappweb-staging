@@ -17407,7 +17407,7 @@ return /******/ (function(modules) { // webpackBootstrap
 /***/ "./src/app/aboutapril/aboutapril.component.html":
 /***/ function(module, exports) {
 
-module.exports = "<ol class=\"breadcrumb\">\r\n    <li class=\"breadcrumb-item\">YOU ARE HERE</li>\r\n    <li class=\"breadcrumb-item active\">About April</li>\r\n</ol>\r\n<h1 class=\"page-title\">About April</h1>\r\n\r\n<section>\r\n    <div class=\"row\">\r\n        <div class=\"col-lg-12 col-xs-12\">\r\n            <quill-editor class=\"form-control\" [(ngModel)]=\"aboutAprilContent\" (onEditorCreated)=\"onEditorCreated($event)\" (onContentChanged)=\"logChange($event);\"></quill-editor>\r\n        </div>\r\n    </div>\r\n    <br/>\r\n    <div class=\"row\">\r\n        <div class=\"offset-lg-4 col-lg-4\">\r\n        <button class=\"btn btn-block btn-success\" (click)=\"addDirectory()\">\r\n            Submit\r\n        </button>\r\n        </div>\r\n    </div>\r\n</section>"
+module.exports = "<ol class=\"breadcrumb\">\r\n    <li class=\"breadcrumb-item\">YOU ARE HERE</li>\r\n    <li class=\"breadcrumb-item\">Miscellaneous</li>\r\n    <li class=\"breadcrumb-item active\">About April</li>\r\n</ol>\r\n<h1 class=\"page-title\">About April</h1>\r\n\r\n<section>\r\n    <div class=\"row\">\r\n        <div class=\"col-lg-12 col-xs-12\">\r\n            <quill-editor class=\"form-control\" [(ngModel)]=\"aboutAprilContent\" (onEditorCreated)=\"onEditorCreated($event)\" (onContentChanged)=\"logChange($event);\"></quill-editor>\r\n        </div>\r\n    </div>\r\n    <br/>\r\n    <div class=\"row\">\r\n        <div class=\"offset-lg-4 col-lg-4\">\r\n        <button class=\"btn btn-block btn-success\" (click)=\"addDirectory()\">\r\n            Submit\r\n        </button>\r\n        </div>\r\n    </div>\r\n</section>"
 
 /***/ },
 
@@ -17796,6 +17796,20 @@ var MiscServices = (function () {
     };
     MiscServices.prototype.getTermsOfService = function () {
         return this.http.get(this.baseUrl + 'termsofservice/getTermsOfService')
+            .map(function (res) { return res.json(); });
+    };
+    MiscServices.prototype.updateDirectoryTitle = function (Id, title) {
+        var body = JSON.stringify({ 'title': title, '_directoryId': Id });
+        var headers = new http_1.Headers({ 'Content-Type': 'application/json' });
+        var options = new http_1.RequestOptions({ method: 'post', headers: headers });
+        return this.http.post(this.baseUrl + "directory/updateDirectoryTitle", body, options)
+            .map(function (res) { return res.json(); });
+    };
+    MiscServices.prototype.updateFAQTitle = function (Id, title) {
+        var body = JSON.stringify({ 'title': title, '_faqsId': Id });
+        var headers = new http_1.Headers({ 'Content-Type': 'application/json' });
+        var options = new http_1.RequestOptions({ method: 'post', headers: headers });
+        return this.http.post(this.baseUrl + "faqs/updateFaqsTitle", body, options)
             .map(function (res) { return res.json(); });
     };
     MiscServices.prototype.getAlldirectory = function () {

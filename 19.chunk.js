@@ -5308,7 +5308,10 @@ var BotTrainingService = (function () {
             .map(function (res) { return res.json(); });
     };
     BotTrainingService.prototype.updateTitleText = function (Id, Text, indexId, type) {
-        return this.http.get(this.baseUrl + 'responsemessage/updateTitle/' + Id + '/' + indexId + '/' + type + '/' + Text)
+        var body = JSON.stringify({ "responseMessageId": Id, "titleText": Text, "indexId": indexId, "type": type });
+        var headers = new http_1.Headers({ 'Content-Type': 'application/json' });
+        var options = new http_1.RequestOptions({ method: 'post', headers: headers });
+        return this.http.post(this.baseUrl + "responsemessage/updateTitle", body, options)
             .map(function (res) { return res.json(); });
     };
     BotTrainingService.prototype.updateRandomTitleText = function (Id, text, indexId) {
