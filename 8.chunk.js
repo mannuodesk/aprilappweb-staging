@@ -17630,6 +17630,34 @@ exports.QuillModule = QuillModule;
 
 /***/ },
 
+/***/ "./src/app/generic/auto/autosize.module.ts":
+/***/ function(module, exports, __webpack_require__) {
+
+"use strict";
+"use strict";
+var core_1 = __webpack_require__("./node_modules/@angular/core/index.js");
+var angular2_autosize_1 = __webpack_require__("./node_modules/angular2-autosize/angular2-autosize.ts");
+var AutoModule = (function () {
+    function AutoModule() {
+    }
+    AutoModule = __decorate([
+        core_1.NgModule({
+            declarations: [
+                angular2_autosize_1.Autosize
+            ],
+            imports: [],
+            exports: [angular2_autosize_1.Autosize],
+            providers: []
+        }), 
+        __metadata('design:paramtypes', [])
+    ], AutoModule);
+    return AutoModule;
+}());
+exports.AutoModule = AutoModule;
+
+
+/***/ },
+
 /***/ "./src/app/layout/widget/widget.directive.ts":
 /***/ function(module, exports, __webpack_require__) {
 
@@ -18871,7 +18899,7 @@ var Specific = (function () {
                     jQuery(this).removeAttr('data-previndex');
                 },
             });
-            jQuery('.addBlock2').sortable('cancel');
+            //jQuery('.addBlock2').sortable('cancel');
         });
     };
     Specific.prototype.ngOnInit = function () {
@@ -19582,7 +19610,8 @@ var specific_component_1 = __webpack_require__("./src/app/specific/specific.comp
 var widget_module_1 = __webpack_require__("./src/app/layout/widget/widget.module.ts");
 var ng2_select2_1 = __webpack_require__("./node_modules/ng2-select2/ng2-select2.js");
 var quill_module_1 = __webpack_require__("./src/app/directory/quill/quill.module.ts");
-var angular2_autosize_1 = __webpack_require__("./node_modules/angular2-autosize/angular2-autosize.ts");
+//import {Autosize} from 'angular2-autosize';
+var autosize_module_1 = __webpack_require__("./src/app/generic/auto/autosize.module.ts");
 //import { AutoModule } from './../generic/auto/autosize.module';
 exports.routes = [
     { path: '', component: specific_component_1.Specific, pathMatch: 'full' }
@@ -19595,10 +19624,10 @@ var SpecificModule = (function () {
         core_1.NgModule({
             declarations: [
                 // Components / Directives/ Pipes
-                angular2_autosize_1.Autosize,
                 specific_component_1.Specific,
             ],
             imports: [
+                autosize_module_1.AutoModule,
                 common_1.CommonModule,
                 forms_1.FormsModule,
                 router_1.RouterModule.forChild(exports.routes),
