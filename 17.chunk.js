@@ -17574,7 +17574,7 @@ exports.QuillModule = QuillModule;
 /***/ "./src/app/faqs/faqs.component.html":
 /***/ function(module, exports) {
 
-module.exports = "<ol class=\"breadcrumb\">\n    <li class=\"breadcrumb-item\">YOU ARE HERE</li>\n    <li class=\"breadcrumb-item\">Miscellaneous</li>\n    <li class=\"breadcrumb-item active\">Frequently Asked Questions</li>\n</ol>\n<h1 class=\"page-title\">Frequently Asked<span class=\"fw-semi-bold\"> Questions</span></h1>\n\n<div class=\"row page-title\">\n    <h4><strong>Add FAQ</strong></h4>\n</div>\n<section class=\"AddDirectory\">\n    <div class=\"row\">\n        <div class=\"col-lg-6 offset-lg-3 col-xs-12 col-sm-12\">\n\n            <div class=\"form-group row\">\n                <label class=\"col-md-3\" for=\"tooltip-enabled\">FAQ Title</label>\n                <div class=\"col-md-7 \">\n                    <input type=\"text\" [(ngModel)]=\"directoryTitle\" id=\"tooltip-enabled\" class=\"form-control\" tooltipPlacement=\"top\" tooltip=\"Some explanation text here\"\n                        placeholder=\"Title\">\n                </div>\n            </div>\n            <quill-editor class=\"form-control\" [(ngModel)]=\"addDirectoryContent\" (onEditorCreated)=\"onEditorCreated($event)\" (onContentChanged)=\"logChange($event);\"></quill-editor>\n            <br/>\n            <div class=\"row\">\n                <button type=\"button\" (click)=\"saveModal.open()\" class=\"btn btn-success col-lg-6 offset-lg-3 col-xs-6\">Save</button>\n            </div>\n        </div>\n    </div>\n</section>\n<div class=\"row\">\n\n    <div class=\"col-lg-12 col-xs-12\">\n        <div class=\"panel-group\" id=\"accordion\">\n            <div class=\"directoryListElement\" *ngFor=\"let item of directoryList; let i = index\">\n                <div class=\"panel panel-default\">\n                    <div class=\"panel-heading\">\n                        <span class=\"deleteDirectory\" (click)=\"deleteId(item._id);myModal.open()\"><i class=\"fa fa-trash-o\"></i></span>\n                        <h4 class=\"panel-title\">\n                            <a data-toggle=\"collapse\" data-parent=\"#accordion\" href=\"#item{{item._id}}\">{{item.title}}</a>\n                        </h4>\n                    </div>\n                    <div id=\"item{{item._id}}\" class=\"panel-collapse collapse\">\n                        <div class=\"panel-body\">\n                            <div class=\"row bottomMargin\">\n                                <div class=\"offset-md-4 col-md-4 col-xs-12 col-lg-4 col-sm-12\">\n                                    <input type=\"text\" (change)=\"updateTitle(item._id)\" id=\"directoryTitle{{item._id}}\" value=\"{{item.title}}\" class=\"form-control\"\n                                        placeholder=\"Title\">\n                                </div> \n                            </div>\n                            <quill-editor class=\"form-control\" [(ngModel)]=\"ckeditorContent[i]\" (onEditorCreated)=\"onEditorCreated($event, i, item._id)\" (writeValue)=\"item.content\"\n                              (onContentChanged)=\"onBlur($event, item._id, i);\"  ></quill-editor>\n                                <!--(onContentChanged)=\"onBlur($event, , item._id, i);\"-->\n                            <br/>\n                        </div>\n                    </div>\n                </div>\n            </div>\n        </div>\n    </div>\n</div>\n<modal #myModal>\n  <modal-header>\n    <h4 class=\"modal-title text-xs-center fw-bold mt\" id=\"myModalLabel18\">Confirmation</h4>\n    <p class=\"text-xs-center fs-mini text-muted mt-sm\">\n      Do you really want to remove the FAQ?\n    </p>\n  </modal-header>\n  <modal-content>\n    <form>\n      <div class=\"row\">\n        <div class=\"col-lg-6 col-xs-12\">\n          <button type=\"button\" class=\"btn btn-success pull-right\" (click)=\"deleteDirectory();myModal.close()\">Yes</button>\n        </div>\n        <div class=\"col-lg-6 col-xs-12\">\n          <button type=\"button\" class=\"btn btn-danger pull-left\" (click)=\"myModal.close()\">No</button>\n        </div>\n      </div>\n    </form>\n  </modal-content>\n</modal>\n<modal #saveModal>\n  <modal-header>\n    <h4 class=\"modal-title text-xs-center fw-bold mt\" id=\"myModalLabel18\">Confirmation</h4>\n    <p class=\"text-xs-center fs-mini text-muted mt-sm\">\n      Do you want to save this?\n    </p>\n  </modal-header>\n  <modal-content>\n    <form>\n      <div class=\"row\">\n        <div class=\"col-lg-6 col-xs-12\">\n          <button type=\"button\" class=\"btn btn-success pull-right\" (click)=\"addDirectory();saveModal.close()\">Yes</button>\n        </div>\n        <div class=\"col-lg-6 col-xs-12\">\n          <button type=\"button\" class=\"btn btn-danger pull-left\" (click)=\"saveModal.close()\">No</button>\n        </div>\n      </div>\n    </form>\n  </modal-content>\n</modal>"
+module.exports = "<ol class=\"breadcrumb\">\n    <li class=\"breadcrumb-item\">YOU ARE HERE</li>\n    <li class=\"breadcrumb-item\">Miscellaneous</li>\n    <li class=\"breadcrumb-item active\">Frequently Asked Questions</li>\n</ol>\n<h1 class=\"page-title\">Frequently Asked<span class=\"fw-semi-bold\"> Questions</span></h1>\n\n<div class=\"row page-title\">\n    <h4><strong>Add FAQ</strong></h4>\n</div>\n<section class=\"AddDirectory\">\n    <div class=\"row\">\n        <div class=\"col-lg-6 offset-lg-3 col-xs-12 col-sm-12\">\n\n            <div class=\"form-group row\">\n                <label class=\"col-md-3\" for=\"tooltip-enabled\">FAQ Title</label>\n                <div class=\"col-md-7 \">\n                    <input type=\"text\" [(ngModel)]=\"directoryTitle\" id=\"tooltip-enabled\" class=\"form-control\" tooltipPlacement=\"top\" tooltip=\"Some explanation text here\"\n                        placeholder=\"Title\">\n                </div>\n            </div>\n            <quill-editor class=\"form-control\" [(ngModel)]=\"addDirectoryContent\" (onEditorCreated)=\"onEditorCreated($event)\" (onContentChanged)=\"logChange($event);\"></quill-editor>\n            <br/>\n            <div class=\"row\">\n                <button type=\"button\" (click)=\"checkErrors()\" class=\"btn btn-success col-lg-6 offset-lg-3 col-xs-6\">Save</button>\n            </div>\n        </div>\n    </div>\n</section>\n<div class=\"row\">\n\n    <div class=\"col-lg-12 col-xs-12\">\n        <div class=\"panel-group\" id=\"accordion\">\n            <div class=\"directoryListElement\" *ngFor=\"let item of directoryList; let i = index\">\n                <div class=\"panel panel-default\">\n                    <div class=\"panel-heading\">\n                        <span class=\"deleteDirectory\" (click)=\"deleteId(item._id);myModal.open()\"><i class=\"fa fa-trash-o\"></i></span>\n                        <h4 class=\"panel-title\">\n                            <a data-toggle=\"collapse\" data-parent=\"#accordion\" href=\"#item{{item._id}}\">{{item.title}}</a>\n                        </h4>\n                    </div>\n                    <div id=\"item{{item._id}}\" class=\"panel-collapse collapse\">\n                        <div class=\"panel-body\">\n                            <div class=\"row bottomMargin\">\n                                <div class=\"offset-md-4 col-md-4 col-xs-12 col-lg-4 col-sm-12\">\n                                    <input type=\"text\" (change)=\"updateTitle(item._id)\" id=\"directoryTitle{{item._id}}\" value=\"{{item.title}}\" class=\"form-control\"\n                                        placeholder=\"Title\">\n                                </div> \n                            </div>\n                            <quill-editor class=\"form-control\" [(ngModel)]=\"ckeditorContent[i]\" (onEditorCreated)=\"onEditorCreated($event, i, item._id)\" (writeValue)=\"item.content\"\n                              (onContentChanged)=\"onBlur($event, item._id, i);\"  ></quill-editor>\n                                <!--(onContentChanged)=\"onBlur($event, , item._id, i);\"-->\n                            <br/>\n                        </div>\n                    </div>\n                </div>\n            </div>\n        </div>\n    </div>\n</div>\n<modal #myModal>\n  <modal-header>\n    <h4 class=\"modal-title text-xs-center fw-bold mt\" id=\"myModalLabel18\">Confirmation</h4>\n    <p class=\"text-xs-center fs-mini text-muted mt-sm\">\n      Do you really want to remove the FAQ?\n    </p>\n  </modal-header>\n  <modal-content>\n    <form>\n      <div class=\"row\">\n        <div class=\"col-lg-6 col-xs-12\">\n          <button type=\"button\" class=\"btn btn-success pull-right\" (click)=\"deleteDirectory();myModal.close()\">Yes</button>\n        </div>\n        <div class=\"col-lg-6 col-xs-12\">\n          <button type=\"button\" class=\"btn btn-danger pull-left\" (click)=\"myModal.close()\">No</button>\n        </div>\n      </div>\n    </form>\n  </modal-content>\n</modal>\n<modal #saveModal>\n  <modal-header>\n    <h4 class=\"modal-title text-xs-center fw-bold mt\" id=\"myModalLabel18\">Confirmation</h4>\n    <p class=\"text-xs-center fs-mini text-muted mt-sm\">\n      Do you want to save this?\n    </p>\n  </modal-header>\n  <modal-content>\n    <form>\n      <div class=\"row\">\n        <div class=\"col-lg-6 col-xs-12\">\n          <button type=\"button\" class=\"btn btn-success pull-right\" (click)=\"addDirectory();saveModal.close()\">Yes</button>\n        </div>\n        <div class=\"col-lg-6 col-xs-12\">\n          <button type=\"button\" class=\"btn btn-danger pull-left\" (click)=\"saveModal.close()\">No</button>\n        </div>\n      </div>\n    </form>\n  </modal-content>\n</modal>"
 
 /***/ },
 
@@ -17592,6 +17592,7 @@ module.exports = ".AddDirectory {\n  background-color: white;\n  padding: 3%; }\
 /* WEBPACK VAR INJECTION */(function(jQuery) {"use strict";
 var core_1 = __webpack_require__("./node_modules/@angular/core/index.js");
 var MiscServices_1 = __webpack_require__("./src/app/services/MiscServices.ts");
+var ng2_modal_1 = __webpack_require__("./node_modules/ng2-modal/index.js");
 var Quill = __webpack_require__("./node_modules/quill/dist/quill.js");
 var Faqs = (function () {
     function Faqs(_miscService) {
@@ -17651,7 +17652,7 @@ var Faqs = (function () {
     };
     Faqs.prototype.addDirectory = function () {
         var _this = this;
-        if (this.directoryTitle != "" && this.addDirectoryContent != "") {
+        if (this.directoryTitle != "") {
             jQuery('#tooltip-enabled').removeClass('modalError');
             this._miscService.addFaqs(this.directoryTitle, this.addDirectoryContent).subscribe(function (a) {
                 if (a.code == 200) {
@@ -17678,6 +17679,14 @@ var Faqs = (function () {
             }
         });
     };
+    Faqs.prototype.checkErrors = function () {
+        if (this.directoryTitle != "" && this.directoryTitle.replace(/\s/g, '').length != 0) {
+            this.saveModal.open();
+        }
+        else {
+            jQuery('#tooltip-enabled').addClass('modalError');
+        }
+    };
     Faqs.prototype.updateTitle = function (Id) {
         var _this = this;
         var title = jQuery('#directoryTitle' + Id).val();
@@ -17693,6 +17702,10 @@ var Faqs = (function () {
             jQuery('#directoryTitle' + Id).addClass('modalError');
         }
     };
+    __decorate([
+        core_1.ViewChild('saveModal'), 
+        __metadata('design:type', (typeof (_a = typeof ng2_modal_1.Modal !== 'undefined' && ng2_modal_1.Modal) === 'function' && _a) || Object)
+    ], Faqs.prototype, "saveModal", void 0);
     Faqs = __decorate([
         core_1.Component({
             selector: '[faqs]',
@@ -17701,10 +17714,10 @@ var Faqs = (function () {
             providers: [MiscServices_1.MiscServices],
             styles: [__webpack_require__("./src/app/faqs/faqs.component.scss")]
         }), 
-        __metadata('design:paramtypes', [(typeof (_a = typeof MiscServices_1.MiscServices !== 'undefined' && MiscServices_1.MiscServices) === 'function' && _a) || Object])
+        __metadata('design:paramtypes', [(typeof (_b = typeof MiscServices_1.MiscServices !== 'undefined' && MiscServices_1.MiscServices) === 'function' && _b) || Object])
     ], Faqs);
     return Faqs;
-    var _a;
+    var _a, _b;
 }());
 exports.Faqs = Faqs;
 
