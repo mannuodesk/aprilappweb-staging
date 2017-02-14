@@ -12915,12 +12915,18 @@ var app_config_1 = __webpack_require__("./src/app/app.config.ts");
 var UsersService_1 = __webpack_require__("./src/app/services/UsersService.ts");
 var LocalStorageEmitter_1 = __webpack_require__("./node_modules/angular2-localstorage/LocalStorageEmitter.ts");
 var WebStorage_1 = __webpack_require__("./node_modules/angular2-localstorage/WebStorage.ts");
+var AIService_1 = __webpack_require__("./src/app/services/AIService.ts");
+var BotTrainingService_1 = __webpack_require__("./src/app/services/BotTrainingService.ts");
 var Navbar = (function () {
-    function Navbar(el, config, router, _userService, storageService) {
+    function Navbar(el, config, router, _userService, storageService, _aiService, _botTrainingService) {
         var _this = this;
         this._userService = _userService;
+        this._aiService = _aiService;
+        this._botTrainingService = _botTrainingService;
         this.toggleSidebarEvent = new core_1.EventEmitter();
         this.toggleChatEvent = new core_1.EventEmitter();
+        this.blockGroupsModel = [];
+        this.dataArray = [];
         this.$el = jQuery(el.nativeElement);
         this.config = config.getConfig();
         this.router = router;
@@ -12952,6 +12958,7 @@ var Navbar = (function () {
         this.router.navigate(['/app', 'extra', 'search'], { queryParams: { search: f.value.search } });
     };
     Navbar.prototype.ngOnInit = function () {
+        var _this = this;
         setTimeout(function () {
             var $chatNotification = jQuery('#chat-notification');
             $chatNotification.removeClass('hide').addClass('animated fadeIn')
@@ -12971,6 +12978,46 @@ var Navbar = (function () {
         this.$el.find('.input-group-addon + .form-control').on('blur focus', function (e) {
             jQuery(this).parents('.input-group')[e.type === 'focus' ? 'addClass' : 'removeClass']('focus');
         });
+        var blockObj = {
+            id: '',
+            text: ''
+        };
+        var groupObj = {
+            'id': '',
+            'text': '',
+            'children': []
+        };
+        blockObj.id = '-1';
+        blockObj.text = 'Select a Block';
+        groupObj.id = '0';
+        groupObj.text = 'Block Mapping';
+        groupObj.children.push(blockObj);
+        this.dataArray.push(groupObj);
+        this._botTrainingService.getAllGroups2('-1').subscribe(function (a) {
+            if (a.code == 200) {
+                _this.blockGroupsModel = a.data;
+                for (var i = 0; i < _this.blockGroupsModel.length; i++) {
+                    groupObj = {
+                        'id': '',
+                        'text': '',
+                        'children': []
+                    };
+                    groupObj.id = _this.blockGroupsModel[i].group._id;
+                    groupObj.text = _this.blockGroupsModel[i].group.name;
+                    groupObj.children = [];
+                    for (var j = 0; j < _this.blockGroupsModel[i].blocks.length; j++) {
+                        blockObj = {
+                            id: '',
+                            text: ''
+                        };
+                        blockObj.id = _this.blockGroupsModel[i].blocks[j]._id;
+                        blockObj.text = _this.blockGroupsModel[i].blocks[j].name;
+                        groupObj.children.push(blockObj);
+                    }
+                    _this.dataArray.push(groupObj);
+                }
+            }
+        });
     };
     __decorate([
         core_1.Output(), 
@@ -12982,18 +13029,22 @@ var Navbar = (function () {
     ], Navbar.prototype, "toggleChatEvent", void 0);
     __decorate([
         WebStorage_1.SessionStorage(), 
+        __metadata('design:type', Object)
+    ], Navbar.prototype, "dataArray", void 0);
+    __decorate([
+        WebStorage_1.SessionStorage(), 
         __metadata('design:type', String)
     ], Navbar.prototype, "userId", void 0);
     Navbar = __decorate([
         core_1.Component({
             selector: '[navbar]',
-            providers: [UsersService_1.UsersService, LocalStorageEmitter_1.LocalStorageService],
+            providers: [UsersService_1.UsersService, LocalStorageEmitter_1.LocalStorageService, AIService_1.AIService, BotTrainingService_1.BotTrainingService],
             template: __webpack_require__("./src/app/layout/navbar/navbar.template.html")
         }), 
-        __metadata('design:paramtypes', [(typeof (_c = typeof core_1.ElementRef !== 'undefined' && core_1.ElementRef) === 'function' && _c) || Object, (typeof (_d = typeof app_config_1.AppConfig !== 'undefined' && app_config_1.AppConfig) === 'function' && _d) || Object, (typeof (_e = typeof router_1.Router !== 'undefined' && router_1.Router) === 'function' && _e) || Object, (typeof (_f = typeof UsersService_1.UsersService !== 'undefined' && UsersService_1.UsersService) === 'function' && _f) || Object, (typeof (_g = typeof LocalStorageEmitter_1.LocalStorageService !== 'undefined' && LocalStorageEmitter_1.LocalStorageService) === 'function' && _g) || Object])
+        __metadata('design:paramtypes', [(typeof (_c = typeof core_1.ElementRef !== 'undefined' && core_1.ElementRef) === 'function' && _c) || Object, (typeof (_d = typeof app_config_1.AppConfig !== 'undefined' && app_config_1.AppConfig) === 'function' && _d) || Object, (typeof (_e = typeof router_1.Router !== 'undefined' && router_1.Router) === 'function' && _e) || Object, (typeof (_f = typeof UsersService_1.UsersService !== 'undefined' && UsersService_1.UsersService) === 'function' && _f) || Object, (typeof (_g = typeof LocalStorageEmitter_1.LocalStorageService !== 'undefined' && LocalStorageEmitter_1.LocalStorageService) === 'function' && _g) || Object, (typeof (_h = typeof AIService_1.AIService !== 'undefined' && AIService_1.AIService) === 'function' && _h) || Object, (typeof (_j = typeof BotTrainingService_1.BotTrainingService !== 'undefined' && BotTrainingService_1.BotTrainingService) === 'function' && _j) || Object])
     ], Navbar);
     return Navbar;
-    var _a, _b, _c, _d, _e, _f, _g;
+    var _a, _b, _c, _d, _e, _f, _g, _h, _j;
 }());
 exports.Navbar = Navbar;
 
@@ -13250,6 +13301,284 @@ exports.Sidebar = Sidebar;
 /***/ function(module, exports) {
 
 module.exports = "<div class=\"js-sidebar-content\">\r\n  <header class=\"logo hidden-sm-down\">\r\n    <a href=\"index.html\"><img src=\"assets/img/angular-logo.png\" style=\"width:60%\" alt=\"...\"></a>\r\n  </header>\r\n  <div class=\"sidebar-status hidden-md-up\">\r\n    <a href=\"#\" class=\"dropdown-toggle\" data-toggle=\"dropdown\">\r\n              <span class=\"thumb-sm avatar pull-xs-right\">\r\n        <img class=\"img-circle\" src=\"assets/img/people/a5.jpg\" alt=\"...\">\r\n              </span>\r\n      <!-- .circle is a pretty cool way to add a bit of beauty to raw data.\r\n           should be used with bg-* and text-* classes for colors -->\r\n              <span class=\"circle bg-warning fw-bold text-gray-dark\">\r\n                  13\r\n              </span>\r\n      &nbsp;\r\n      Philip <strong>Smith</strong>\r\n      <b class=\"caret\"></b>\r\n    </a>\r\n    <!-- #notifications-dropdown-menu goes here when screen collapsed to xs or sm -->\r\n  </div>\r\n  <!-- main notification links are placed inside of .sidebar-nav -->\r\n  <ul class=\"sidebar-nav\">\r\n    <li>\r\n      <a [routerLink]=\" ['dashboard'] \">\r\n          <span class=\"icon\">\r\n            <i class=\"fa fa-desktop\"></i>\r\n          </span>\r\n        Dashboard\r\n      </a>\r\n    </li>\r\n    <li>\r\n      <a class=\"collapsed\" data-target=\"#users-dashboard\" data-toggle=\"collapse\" data-parent=\"#sidebar\">\r\n          <span class=\"icon\">\r\n            <i class=\"fa fa-user\"></i>\r\n          </span>\r\n        Users\r\n        <i class=\"toggle fa fa-angle-down\"></i>\r\n      </a>\r\n      <ul id=\"users-dashboard\" class=\"collapse\">\r\n        <li><a [routerLink]=\" ['users'] \">List</a></li>\r\n      </ul>\r\n    </li>\r\n    <li>\r\n      <a [routerLink]=\" ['buildai'] \">\r\n          <span class=\"icon\">\r\n            <i class=\"fa fa-envelope\"></i>\r\n          </span>\r\n        Build AI\r\n      </a>\r\n    </li>\r\n    <li>\r\n      <a [routerLink]=\" ['generic'] \">\r\n          <span class=\"icon\">\r\n            <i class=\"glyphicon glyphicon-user\"></i>\r\n          </span>\r\n        Generic Topics\r\n      </a>\r\n    </li>\r\n    \r\n    <li>\r\n      <a [routerLink]=\" ['specific'] \">\r\n          <span class=\"icon\">\r\n            <i class=\"fa fa-comments\"></i>\r\n          </span>\r\n        Specific Topics\r\n      </a>\r\n    </li>\r\n    <li>\r\n      <a class=\"collapsed\" data-target=\"#miscellaneous\" data-toggle=\"collapse\" data-parent=\"#sidebar\">\r\n          <span class=\"icon\">\r\n            <i class=\"glyphicon glyphicon-tree-conifer\"></i>\r\n          </span>\r\n        Miscellaneous\r\n        <i class=\"toggle fa fa-angle-down\"></i>\r\n      </a>\r\n      <ul id=\"miscellaneous\" class=\"collapse\">\r\n        <li><a [routerLink]=\" ['directory'] \">Directory</a></li>\r\n        <li><a [routerLink]=\" ['aboutapril'] \">About April</a></li>\r\n        <li><a [routerLink]=\" ['termsofservice'] \">Terms of Service</a></li>\r\n        <li><a [routerLink]=\" ['faqs'] \">Frequently Asked Questions</a></li>\r\n      </ul>\r\n    </li>\r\n    <!--<li>\r\n      <a [routerLink]=\" ['inbox'] \">\r\n          <span class=\"icon\">\r\n            <i class=\"fa fa-envelope\"></i>\r\n          </span>\r\n        Email\r\n          <span class=\"tag tag-danger\">\r\n            9\r\n          </span>\r\n      </a>\r\n    </li>\r\n    <li>\r\n      <a [routerLink]=\" ['charts'] \">\r\n          <span class=\"icon\">\r\n            <i class=\"glyphicon glyphicon-stats\"></i>\r\n          </span>\r\n        Charts\r\n      </a>\r\n    </li>\r\n    <li>\r\n      <a [routerLink]=\" ['profile'] \">\r\n          <span class=\"icon\">\r\n            <i class=\"glyphicon glyphicon-user\"></i>\r\n          </span>\r\n        Profile\r\n        <sup class=\"text-warning fw-semi-bold\">\r\n          new\r\n        </sup>\r\n      </a>\r\n    </li>\r\n  </ul>\r\n   every .sidebar-nav may have a title -->\r\n  <!--<h5 class=\"sidebar-nav-title\">Template <a class=\"action-link\" href=\"#\"><i class=\"glyphicon glyphicon-refresh\"></i></a></h5>\r\n  <ul class=\"sidebar-nav\">\r\n    <li>\r\n       an example of nested submenu. basic bootstrap collapse component \r\n      <a class=\"collapsed\" data-target=\"#sidebar-forms\" data-toggle=\"collapse\" data-parent=\"#sidebar\">\r\n          <span class=\"icon\">\r\n            <i class=\"glyphicon glyphicon-align-right\"></i>\r\n          </span>\r\n        Forms\r\n        <i class=\"toggle fa fa-angle-down\"></i>\r\n      </a>\r\n      <ul id=\"sidebar-forms\" class=\"collapse\">\r\n        <li><a [routerLink]=\" ['forms/elements'] \">Form Elements</a></li>\r\n        <li><a [routerLink]=\" ['forms/validation'] \">Form Validation</a></li>\r\n        <li><a [routerLink]=\" ['forms/wizard'] \">Form Wizard</a></li>\r\n      </ul>\r\n    </li>\r\n    <li>\r\n      <a class=\"collapsed\" data-target=\"#sidebar-ui\" data-toggle=\"collapse\" data-parent=\"#sidebar\">\r\n          <span class=\"icon\">\r\n            <i class=\"glyphicon glyphicon-tree-conifer\"></i>\r\n          </span>\r\n        UI Elements\r\n        <i class=\"toggle fa fa-angle-down\"></i>\r\n      </a>\r\n      <ul id=\"sidebar-ui\" class=\"collapse\">\r\n        <li><a [routerLink]=\" ['ui/components'] \">Components</a></li>\r\n        <li><a [routerLink]=\" ['ui/notifications'] \">Notifications</a></li>\r\n        <li><a [routerLink]=\" ['ui/icons'] \">Icons</a></li>\r\n        <li><a [routerLink]=\" ['ui/buttons'] \">Buttons</a></li>\r\n        <li><a [routerLink]=\" ['ui/tabs-accordion'] \">Tabs & Accordion</a></li>\r\n        <li><a [routerLink]=\" ['ui/list-groups'] \">List Groups</a></li>\r\n      </ul>\r\n    </li>\r\n    <li>\r\n      <a [routerLink]=\" ['grid'] \">\r\n          <span class=\"icon\">\r\n            <i class=\"glyphicon glyphicon-th\"></i>\r\n          </span>\r\n        Grid\r\n      </a>\r\n    </li>\r\n    <li>\r\n      <a class=\"collapsed\" data-target=\"#sidebar-maps\" data-toggle=\"collapse\" data-parent=\"#sidebar\">\r\n          <span class=\"icon\">\r\n            <i class=\"glyphicon glyphicon-map-marker\"></i>\r\n          </span>\r\n        Maps\r\n        <i class=\"toggle fa fa-angle-down\"></i>\r\n      </a>\r\n      <ul id=\"sidebar-maps\" class=\"collapse\">\r\n        <li><a [routerLink]=\" ['maps/google'] \">Google Maps</a></li>\r\n        <li><a [routerLink]=\" ['maps/vector'] \">Vector Maps</a></li>\r\n      </ul>\r\n    </li>\r\n    <li>\r\n       an example of nested submenu. basic bootstrap collapse component \r\n      <a class=\"collapsed\" data-target=\"#sidebar-tables\" data-toggle=\"collapse\" data-parent=\"#sidebar\">\r\n          <span class=\"icon\">\r\n            <i class=\"fa fa-table\"></i>\r\n          </span>\r\n        Tables\r\n        <i class=\"toggle fa fa-angle-down\"></i>\r\n      </a>\r\n      <ul id=\"sidebar-tables\" class=\"collapse\">\r\n        <li><a [routerLink]=\" ['tables/basic'] \">Tables Basic</a></li>\r\n        <li><a [routerLink]=\" ['tables/dynamic'] \">Tables Dynamic <sup class=\"bg-transparent text-danger fs-sm fw-bold\">ng2</sup></a></li>\r\n      </ul>\r\n    </li>\r\n    <li>\r\n      <a class=\"collapsed\" data-target=\"#sidebar-extra\" data-toggle=\"collapse\" data-parent=\"#sidebar\">\r\n          <span class=\"icon\">\r\n            <i class=\"fa fa-leaf\"></i>\r\n          </span>\r\n        Extra\r\n        <i class=\"toggle fa fa-angle-down\"></i>\r\n      </a>\r\n      <ul id=\"sidebar-extra\" class=\"collapse\">\r\n        <li><a [routerLink]=\" ['extra/calendar'] \">Calendar <sup class=\"bg-transparent text-danger fs-sm fw-bold\">ng2</sup></a></li>\r\n        <li><a [routerLink]=\" ['extra/invoice'] \">Invoice</a></li>\r\n        <li><a [routerLink]=\" ['/login'] \">Login Page</a></li>\r\n        <li><a [routerLink]=\" ['/error'] \">Error Page</a></li>\r\n        <li><a [routerLink]=\" ['extra/gallery'] \">Gallery <sup class=\"bg-transparent text-danger fs-sm fw-bold\">ng2</sup></a></li>\r\n        <li><a [routerLink]=\" ['extra/search'] \">Search Results</a></li>\r\n        <li><a [routerLink]=\" ['extra/timeline'] \">Time Line</a></li>\r\n      </ul>\r\n    </li>\r\n    <li>\r\n      <a class=\"collapsed\" data-target=\"#sidebar-levels\" data-toggle=\"collapse\" data-parent=\"#sidebar\">\r\n          <span class=\"icon\">\r\n            <i class=\"fa fa-folder-open\"></i>\r\n          </span>\r\n        Menu Levels\r\n        <i class=\"toggle fa fa-angle-down\"></i>\r\n      </a>\r\n      <ul id=\"sidebar-levels\" class=\"collapse\">\r\n        <li><a href>Level 1</a></li>\r\n        <li>\r\n          <a class=\"collapsed\" data-target=\"#sidebar-sub-levels\" data-toggle=\"collapse\" data-parent=\"#sidebar-levels\">\r\n            Level 2\r\n            <i class=\"toggle fa fa-angle-down\"></i>\r\n          </a>\r\n          <ul id=\"sidebar-sub-levels\" class=\"collapse\">\r\n            <li><a href>Level 3</a></li>\r\n            <li><a href>Level 3</a></li>\r\n          </ul>\r\n        </li>\r\n      </ul>\r\n    </li>-->\r\n  </ul>\r\n  <!--<h5 class=\"sidebar-nav-title\">Labels <a class=\"action-link\" href=\"#\"><i class=\"glyphicon glyphicon-plus\"></i></a></h5>\r\n   some styled links in sidebar. ready to use as links to email folders, projects, groups, etc \r\n  <ul class=\"sidebar-labels\">\r\n    <li>\r\n      <a href=\"#\">\r\n         yep, .circle again \r\n        <i class=\"fa fa-circle text-warning mr-xs\"></i>\r\n        <span class=\"label-name\">My Recent</span>\r\n      </a>\r\n    </li>\r\n    <li>\r\n      <a href=\"#\">\r\n        <i class=\"fa fa-circle text-gray mr-xs\"></i>\r\n        <span class=\"label-name\">Starred</span>\r\n      </a>\r\n    </li>\r\n    <li>\r\n      <a href=\"#\">\r\n        <i class=\"fa fa-circle text-danger mr-xs\"></i>\r\n        <span class=\"label-name\">Background</span>\r\n      </a>\r\n    </li>\r\n  </ul>\r\n  <h5 class=\"sidebar-nav-title\">Projects</h5>\r\n   A place for sidebar notifications & alerts \r\n  <div class=\"sidebar-alerts\">\r\n    <div class=\"alert fade in\">\r\n      <a href=\"#\" class=\"close\" data-dismiss=\"alert\" aria-hidden=\"true\">&times;</a>\r\n      <span class=\"text-white fw-semi-bold\">Sales Report</span> <br>\r\n      <div class=\"bg-gray-transparent progress-bar\">\r\n        <progress class=\"progress progress-xs progress-bar-gray-light mt-xs mb-0\" value=\"100\" max=\"100\" style=\"width: 16%\"></progress>\r\n      </div>\r\n      <small>Calculating x-axis bias... 65%</small>\r\n    </div>\r\n    <div class=\"alert fade in\">\r\n      <a href=\"#\" class=\"close\" data-dismiss=\"alert\" aria-hidden=\"true\">&times;</a>\r\n      <span class=\"text-white fw-semi-bold\">Personal Responsibility</span> <br>\r\n      <div class=\"bg-gray-transparent progress-bar\">\r\n        <progress class=\"progress progress-xs progress-danger mt-xs mb-0\" value=\"100\" max=\"100\" style=\"width: 23%\"></progress>\r\n      </div>\r\n      <small>Provide required notes</small>\r\n    </div>\r\n  </div>\r\n</div>-->\r\n"
+
+/***/ },
+
+/***/ "./src/app/services/AIService.ts":
+/***/ function(module, exports, __webpack_require__) {
+
+"use strict";
+"use strict";
+var core_1 = __webpack_require__("./node_modules/@angular/core/index.js");
+var http_1 = __webpack_require__("./node_modules/@angular/http/index.js");
+__webpack_require__("./node_modules/rxjs/add/operator/map.js");
+var AIService = (function () {
+    //baseUrl:string = "http://localhost/";
+    function AIService(http) {
+        this.http = http;
+        this.baseUrl = "https://aprilappserver.azurewebsites.net/";
+    }
+    AIService.prototype.getAllphrases = function () {
+        return this.http.get(this.baseUrl + 'phrases/getAllphrases')
+            .map(function (res) { return res.json(); });
+    };
+    AIService.prototype.deleteBlockPhraseGroup = function (Id, indexId) {
+        return this.http.get(this.baseUrl + 'phrasegroup/deletePhraseGroupBlock/' + Id + '/' + indexId)
+            .map(function (res) { return res.json(); });
+    };
+    AIService.prototype.deleteTextBoxPhraseGroup = function (phraseGroupId, index) {
+        return this.http.get(this.baseUrl + 'phrasegroup/deleteTextBoxPhraseGroup/' + phraseGroupId + '/' + index)
+            .map(function (res) { return res.json(); });
+    };
+    AIService.prototype.addPhrase = function (phraseText, _phraseGroupId) {
+        var body = JSON.stringify({ "phraseText": phraseText, '_phraseGroupId': _phraseGroupId });
+        var headers = new http_1.Headers({ 'Content-Type': 'application/json' });
+        var options = new http_1.RequestOptions({ method: 'post', headers: headers });
+        return this.http.post(this.baseUrl + "phrases/addPhrase", body, options)
+            .map(function (res) { return res.json(); });
+    };
+    AIService.prototype.updatePhrase = function (phraseText, phraseId) {
+        var body = JSON.stringify({ "phraseText": phraseText, 'phraseId': phraseId });
+        var headers = new http_1.Headers({ 'Content-Type': 'application/json' });
+        var options = new http_1.RequestOptions({ method: 'post', headers: headers });
+        return this.http.post(this.baseUrl + "phrases/updatePhrase", body, options)
+            .map(function (res) { return res.json(); });
+    };
+    AIService.prototype.updatePhraseGroup = function (_blockId, _phraseGroupId) {
+        var body = JSON.stringify({ "_blockId": _blockId, '_phraseGroupId': _phraseGroupId });
+        var headers = new http_1.Headers({ 'Content-Type': 'application/json' });
+        var options = new http_1.RequestOptions({ method: 'post', headers: headers });
+        return this.http.post(this.baseUrl + "phrasegroup/updatePhraseGroup", body, options)
+            .map(function (res) { return res.json(); });
+    };
+    AIService.prototype.deleteUsers = function (Id) {
+        return this.http.get(this.baseUrl + 'users/deleteUser/' + Id)
+            .map(function (res) { return res.json(); });
+    };
+    AIService.prototype.deletePhraseGroup = function (Id) {
+        return this.http.get(this.baseUrl + 'phrasegroup/deletePhraseGroup/' + Id)
+            .map(function (res) { return res.json(); });
+    };
+    AIService.prototype.deletePhrase = function (Id) {
+        return this.http.get(this.baseUrl + 'phrases/deletePhrases/' + Id)
+            .map(function (res) { return res.json(); });
+    };
+    AIService.prototype.changePhraseGroupType = function (Id, type) {
+        return this.http.get(this.baseUrl + 'phrasegroup/changePhraseGroup/' + Id + '/' + type)
+            .map(function (res) { return res.json(); });
+    };
+    AIService.prototype.addTextBoxPhraseGroup = function (Id) {
+        return this.http.get(this.baseUrl + 'phrasegroup/addTextBoxPhraseGroup/' + Id)
+            .map(function (res) { return res.json(); });
+    };
+    AIService.prototype.editTextBoxPhraseGroup = function (Id, indexId, text) {
+        return this.http.get(this.baseUrl + 'phrasegroup/editTextBoxPhraseGroup/' + Id + '/' + indexId + '/' + text)
+            .map(function (res) { return res.json(); });
+    };
+    AIService.prototype.postPhrasesGroups = function () {
+        var body = JSON.stringify({ 'id': 0 });
+        var headers = new http_1.Headers({ 'Content-Type': 'application/json' });
+        var options = new http_1.RequestOptions({ method: 'post', headers: headers });
+        return this.http.post(this.baseUrl + "phrasegroup/addPhraseGroup", body, options)
+            .map(function (res) { return res.json(); });
+    };
+    AIService = __decorate([
+        core_1.Injectable(), 
+        __metadata('design:paramtypes', [(typeof (_a = typeof http_1.Http !== 'undefined' && http_1.Http) === 'function' && _a) || Object])
+    ], AIService);
+    return AIService;
+    var _a;
+}());
+exports.AIService = AIService;
+
+
+/***/ },
+
+/***/ "./src/app/services/BotTrainingService.ts":
+/***/ function(module, exports, __webpack_require__) {
+
+"use strict";
+"use strict";
+var core_1 = __webpack_require__("./node_modules/@angular/core/index.js");
+var http_1 = __webpack_require__("./node_modules/@angular/http/index.js");
+__webpack_require__("./node_modules/rxjs/add/operator/map.js");
+var BotTrainingService = (function () {
+    //baseUrl:string = "http://localhost/";
+    function BotTrainingService(http) {
+        this.http = http;
+        this.baseUrl = "https://aprilappserver.azurewebsites.net/";
+    }
+    BotTrainingService.prototype.updateBlockName = function (blockId, blockName) {
+        return this.http.get(this.baseUrl + 'blocks/updateBlockName/' + blockId + '/' + blockName)
+            .map(function (res) { return res.json(); });
+    };
+    BotTrainingService.prototype.updateGroupName = function (groupId, groupName) {
+        return this.http.get(this.baseUrl + 'groups/updateGroupName/' + groupId + '/' + groupName)
+            .map(function (res) { return res.json(); });
+    };
+    BotTrainingService.prototype.updateAddBtns = function (responseMessageId, obj, type, responseMessageType) {
+        var body = JSON.stringify({ "responseMessageId": responseMessageId, "object": obj, "type": type, "responseMessageType": responseMessageType });
+        var headers = new http_1.Headers({ 'Content-Type': 'application/json' });
+        var options = new http_1.RequestOptions({ method: 'post', headers: headers });
+        return this.http.post(this.baseUrl + "responsemessagesroute/editTextCardAddBtn", body, options)
+            .map(function (res) { return res.json(); });
+    };
+    BotTrainingService.prototype.updateGalleryAddBtns = function (responseMessageId, cardId, obj, type, responseMessageType) {
+        var body = JSON.stringify({ "responseMessageId": responseMessageId, "cardId": cardId, "object": obj, "type": type, "responseMessageType": responseMessageType });
+        var headers = new http_1.Headers({ 'Content-Type': 'application/json' });
+        var options = new http_1.RequestOptions({ method: 'post', headers: headers });
+        return this.http.post(this.baseUrl + "responsemessagesroute/editGalleryCardAddBtn", body, options)
+            .map(function (res) { return res.json(); });
+    };
+    BotTrainingService.prototype.getAllGroups = function (type) {
+        return this.http.get(this.baseUrl + 'groups/getGroupsBlocks/' + type)
+            .map(function (res) { return res.json(); });
+    };
+    BotTrainingService.prototype.getAllGroups2 = function (type) {
+        return this.http.get(this.baseUrl + 'groups/getGroupsBlocks2/' + type)
+            .map(function (res) { return res.json(); });
+    };
+    BotTrainingService.prototype.getAlBlocks = function () {
+        return this.http.get(this.baseUrl + 'blocks/getAllBlocks')
+            .map(function (res) { return res.json(); });
+    };
+    BotTrainingService.prototype.getAllResponseMessages = function (blockId) {
+        return this.http.get(this.baseUrl + 'blocks/getResponseMessagesOfBlock/' + blockId)
+            .map(function (res) { return res.json(); });
+    };
+    BotTrainingService.prototype.deleteGroup = function (Id) {
+        return this.http.get(this.baseUrl + 'groups/deleteOrderById/' + Id)
+            .map(function (res) { return res.json(); });
+    };
+    BotTrainingService.prototype.deleteOneGalleryCard = function (Id, indexId) {
+        return this.http.get(this.baseUrl + 'responsemessage/deleteOneGalleryCard/' + Id + '/' + indexId)
+            .map(function (res) { return res.json(); });
+    };
+    BotTrainingService.prototype.updateTitleText = function (Id, Text, indexId, type) {
+        var body = JSON.stringify({ "responseMessageId": Id, "titleText": Text, "indexId": indexId, "type": type });
+        var headers = new http_1.Headers({ 'Content-Type': 'application/json' });
+        var options = new http_1.RequestOptions({ method: 'post', headers: headers });
+        return this.http.post(this.baseUrl + "responsemessage/updateTitle", body, options)
+            .map(function (res) { return res.json(); });
+    };
+    BotTrainingService.prototype.updateRandomTitleText = function (Id, text, indexId) {
+        var body = JSON.stringify({ "responseMessageId": Id, "titleText": text, "indexId": indexId });
+        var headers = new http_1.Headers({ 'Content-Type': 'application/json' });
+        var options = new http_1.RequestOptions({ method: 'post', headers: headers });
+        return this.http.post(this.baseUrl + "responsemessage/updateRandomTitle", body, options)
+            .map(function (res) { return res.json(); });
+    };
+    BotTrainingService.prototype.updateArticleText = function (Id, Text) {
+        var body = JSON.stringify({ "responseMessageId": Id, "text": Text });
+        var headers = new http_1.Headers({ 'Content-Type': 'application/json' });
+        var options = new http_1.RequestOptions({ method: 'post', headers: headers });
+        return this.http.post(this.baseUrl + "responsemessage/updateArticle", body, options)
+            .map(function (res) { return res.json(); });
+    };
+    BotTrainingService.prototype.updateDescriptionText = function (Id, Text, indexId) {
+        return this.http.get(this.baseUrl + 'responsemessage/updateDescription/' + Id + '/' + indexId + '/' + Text)
+            .map(function (res) { return res.json(); });
+    };
+    BotTrainingService.prototype.updateUrlText = function (Id, Text, indexId) {
+        var body = JSON.stringify({ "responseMessageId": Id, "indexId": indexId, "urlText": Text });
+        var headers = new http_1.Headers({ 'Content-Type': 'application/json' });
+        var options = new http_1.RequestOptions({ method: 'post', headers: headers });
+        return this.http.post(this.baseUrl + "responsemessage/updateUrl", body, options)
+            .map(function (res) { return res.json(); });
+    };
+    BotTrainingService.prototype.deleteBlock = function (Id) {
+        return this.http.get(this.baseUrl + 'blocks/deleteBlock/' + Id)
+            .map(function (res) { return res.json(); });
+    };
+    BotTrainingService.prototype.deleteResponseMessage = function (Id) {
+        return this.http.get(this.baseUrl + 'responsemessage/deleteResponseMessage/' + Id)
+            .map(function (res) { return res.json(); });
+    };
+    BotTrainingService.prototype.deleteAddButton = function (AddButtonId, ParentId, type) {
+        return this.http.get(this.baseUrl + 'responsemessage/deleteAddButton/' + ParentId + '/' + AddButtonId + '/' + type)
+            .map(function (res) { return res.json(); });
+    };
+    BotTrainingService.prototype.deleteQuickReply = function (AddButtonId, ParentId) {
+        return this.http.get(this.baseUrl + 'responsemessage/deleteQuickReply/' + ParentId + '/' + AddButtonId)
+            .map(function (res) { return res.json(); });
+    };
+    BotTrainingService.prototype.deleteRandomText = function (AddButtonId, ParentId) {
+        return this.http.get(this.baseUrl + 'responsemessage/deleteRandomText/' + ParentId + '/' + AddButtonId)
+            .map(function (res) { return res.json(); });
+    };
+    BotTrainingService.prototype.addRandomText = function (Id, count) {
+        return this.http.get(this.baseUrl + 'responsemessage/addTextRandom/' + Id + '/' + count)
+            .map(function (res) { return res.json(); });
+    };
+    BotTrainingService.prototype.addGroup = function (group, type) {
+        var body = JSON.stringify({ "name": group, "type": type, "description": group });
+        var headers = new http_1.Headers({ 'Content-Type': 'application/json' });
+        var options = new http_1.RequestOptions({ method: 'post', headers: headers });
+        return this.http.post(this.baseUrl + "groups/addGroup", body, options)
+            .map(function (res) { return res.json(); });
+    };
+    BotTrainingService.prototype.addBlocks = function (block, type, groupId) {
+        var body = JSON.stringify({ "name": block, "type": type, "description": block, "_groupId": groupId });
+        var headers = new http_1.Headers({ 'Content-Type': 'application/json' });
+        var options = new http_1.RequestOptions({ method: 'post', headers: headers });
+        return this.http.post(this.baseUrl + "blocks/addBlock", body, options)
+            .map(function (res) { return res.json(); });
+    };
+    BotTrainingService.prototype.addResponseMessage = function (data, type, blockId) {
+        var body = JSON.stringify({ "data": data, "type": type, "_blockId": blockId });
+        var headers = new http_1.Headers({ 'Content-Type': 'application/json' });
+        var options = new http_1.RequestOptions({ method: 'post', headers: headers });
+        return this.http.post(this.baseUrl + "responsemessage/addResponseMessage", body, options)
+            .map(function (res) { return res.json(); });
+    };
+    BotTrainingService.prototype.addGalleryCard = function (data, responseMessageId) {
+        var body = JSON.stringify({ "data": data, "responseMessageId": responseMessageId });
+        var headers = new http_1.Headers({ 'Content-Type': 'application/json' });
+        var options = new http_1.RequestOptions({ method: 'post', headers: headers });
+        return this.http.post(this.baseUrl + "responsemessage/addGalleryCard", body, options)
+            .map(function (res) { return res.json(); });
+    };
+    BotTrainingService.prototype.addAddButton = function (responseMessageId, data, type, index) {
+        var body = JSON.stringify({ "data": data, "responseMessageId": responseMessageId, "type": type, "index": index });
+        var headers = new http_1.Headers({ 'Content-Type': 'application/json' });
+        var options = new http_1.RequestOptions({ method: 'post', headers: headers });
+        return this.http.post(this.baseUrl + "responsemessage/addAddButton", body, options)
+            .map(function (res) { return res.json(); });
+    };
+    BotTrainingService.prototype.addQuickReply = function (responseMessageId, buttonName, _blockId, count) {
+        var body = JSON.stringify({ "buttonName": buttonName, "responseMessageId": responseMessageId, "_blockId": _blockId, "count": count });
+        var headers = new http_1.Headers({ 'Content-Type': 'application/json' });
+        var options = new http_1.RequestOptions({ method: 'post', headers: headers });
+        return this.http.post(this.baseUrl + "responsemessage/addQuickReply", body, options)
+            .map(function (res) { return res.json(); });
+    };
+    BotTrainingService.prototype.getPictureUrl = function (file, Id, type, indexId) {
+        var formData = new FormData();
+        formData.append("file", file, file.name);
+        formData.append("responseMessageId", Id);
+        formData.append("type", type);
+        formData.append("indexId", indexId);
+        //let body = JSON.stringify({ "name":group, "type":type, "description":group });
+        var options = new http_1.RequestOptions({ method: 'post' });
+        return this.http.post(this.baseUrl + "usercode/uploadPicture", formData, options)
+            .map(function (res) { return res.json(); });
+    };
+    BotTrainingService.prototype.editQuickReply = function (buttonName, _blockId, responseMessageId, _quickReplyId) {
+        var body = JSON.stringify({ "buttonName": buttonName, "responseMessageId": responseMessageId, "_blockId": _blockId, "_quickReplyId": _quickReplyId });
+        var headers = new http_1.Headers({ 'Content-Type': 'application/json' });
+        var options = new http_1.RequestOptions({ method: 'post', headers: headers });
+        return this.http.post(this.baseUrl + "responsemessagesroute/editQuickReply", body, options)
+            .map(function (res) { return res.json(); });
+    };
+    BotTrainingService = __decorate([
+        core_1.Injectable(), 
+        __metadata('design:paramtypes', [(typeof (_a = typeof http_1.Http !== 'undefined' && http_1.Http) === 'function' && _a) || Object])
+    ], BotTrainingService);
+    return BotTrainingService;
+    var _a;
+}());
+exports.BotTrainingService = BotTrainingService;
+
 
 /***/ },
 

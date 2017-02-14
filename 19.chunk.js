@@ -4731,6 +4731,7 @@ module.exports = ".widget2 {\n  background-color: #eeeeee !important; }\n\n.AddG
 var core_1 = __webpack_require__("./node_modules/@angular/core/index.js");
 var AIService_1 = __webpack_require__("./src/app/services/AIService.ts");
 var BotTrainingService_1 = __webpack_require__("./src/app/services/BotTrainingService.ts");
+var WebStorage_1 = __webpack_require__("./node_modules/angular2-localstorage/WebStorage.ts");
 var BuildAI = (function () {
     function BuildAI(_aiService, _botTrainingService) {
         this._aiService = _aiService;
@@ -4741,51 +4742,9 @@ var BuildAI = (function () {
         this.dataArray = [];
     }
     BuildAI.prototype.ngOnInit = function () {
-        var _this = this;
-        var blockObj = {
-            id: '',
-            text: ''
-        };
-        var groupObj = {
-            'id': '',
-            'text': '',
-            'children': []
-        };
-        blockObj.id = '-1';
-        blockObj.text = 'Select a Block';
-        groupObj.id = '0';
-        groupObj.text = 'Block Mapping';
-        groupObj.children.push(blockObj);
-        this.dataArray.push(groupObj);
-        this._botTrainingService.getAllGroups2('-1').subscribe(function (a) {
-            if (a.code == 200) {
-                _this.blockGroupsModel = a.data;
-                for (var i = 0; i < _this.blockGroupsModel.length; i++) {
-                    groupObj = {
-                        'id': '',
-                        'text': '',
-                        'children': []
-                    };
-                    groupObj.id = _this.blockGroupsModel[i].group._id;
-                    groupObj.text = _this.blockGroupsModel[i].group.name;
-                    groupObj.children = [];
-                    for (var j = 0; j < _this.blockGroupsModel[i].blocks.length; j++) {
-                        blockObj = {
-                            id: '',
-                            text: ''
-                        };
-                        blockObj.id = _this.blockGroupsModel[i].blocks[j]._id;
-                        blockObj.text = _this.blockGroupsModel[i].blocks[j].name;
-                        groupObj.children.push(blockObj);
-                    }
-                    _this.dataArray.push(groupObj);
-                }
-                _this.phraseGroups = [];
-                _this.populate();
-                _this.populateBlocks();
-                return _this.dataArray;
-            }
-        });
+        this.phraseGroups = [];
+        this.populate();
+        this.populateBlocks();
     };
     BuildAI.prototype.updatePhrase = function (Id) {
         console.log(Id);
@@ -5003,6 +4962,10 @@ var BuildAI = (function () {
             }
         });
     };
+    __decorate([
+        WebStorage_1.SessionStorage(), 
+        __metadata('design:type', Object)
+    ], BuildAI.prototype, "dataArray", void 0);
     BuildAI = __decorate([
         core_1.Component({
             selector: '[buildai]',
@@ -5141,284 +5104,6 @@ var WidgetModule = (function () {
     return WidgetModule;
 }());
 exports.WidgetModule = WidgetModule;
-
-
-/***/ },
-
-/***/ "./src/app/services/AIService.ts":
-/***/ function(module, exports, __webpack_require__) {
-
-"use strict";
-"use strict";
-var core_1 = __webpack_require__("./node_modules/@angular/core/index.js");
-var http_1 = __webpack_require__("./node_modules/@angular/http/index.js");
-__webpack_require__("./node_modules/rxjs/add/operator/map.js");
-var AIService = (function () {
-    //baseUrl:string = "http://localhost/";
-    function AIService(http) {
-        this.http = http;
-        this.baseUrl = "https://aprilappserver.azurewebsites.net/";
-    }
-    AIService.prototype.getAllphrases = function () {
-        return this.http.get(this.baseUrl + 'phrases/getAllphrases')
-            .map(function (res) { return res.json(); });
-    };
-    AIService.prototype.deleteBlockPhraseGroup = function (Id, indexId) {
-        return this.http.get(this.baseUrl + 'phrasegroup/deletePhraseGroupBlock/' + Id + '/' + indexId)
-            .map(function (res) { return res.json(); });
-    };
-    AIService.prototype.deleteTextBoxPhraseGroup = function (phraseGroupId, index) {
-        return this.http.get(this.baseUrl + 'phrasegroup/deleteTextBoxPhraseGroup/' + phraseGroupId + '/' + index)
-            .map(function (res) { return res.json(); });
-    };
-    AIService.prototype.addPhrase = function (phraseText, _phraseGroupId) {
-        var body = JSON.stringify({ "phraseText": phraseText, '_phraseGroupId': _phraseGroupId });
-        var headers = new http_1.Headers({ 'Content-Type': 'application/json' });
-        var options = new http_1.RequestOptions({ method: 'post', headers: headers });
-        return this.http.post(this.baseUrl + "phrases/addPhrase", body, options)
-            .map(function (res) { return res.json(); });
-    };
-    AIService.prototype.updatePhrase = function (phraseText, phraseId) {
-        var body = JSON.stringify({ "phraseText": phraseText, 'phraseId': phraseId });
-        var headers = new http_1.Headers({ 'Content-Type': 'application/json' });
-        var options = new http_1.RequestOptions({ method: 'post', headers: headers });
-        return this.http.post(this.baseUrl + "phrases/updatePhrase", body, options)
-            .map(function (res) { return res.json(); });
-    };
-    AIService.prototype.updatePhraseGroup = function (_blockId, _phraseGroupId) {
-        var body = JSON.stringify({ "_blockId": _blockId, '_phraseGroupId': _phraseGroupId });
-        var headers = new http_1.Headers({ 'Content-Type': 'application/json' });
-        var options = new http_1.RequestOptions({ method: 'post', headers: headers });
-        return this.http.post(this.baseUrl + "phrasegroup/updatePhraseGroup", body, options)
-            .map(function (res) { return res.json(); });
-    };
-    AIService.prototype.deleteUsers = function (Id) {
-        return this.http.get(this.baseUrl + 'users/deleteUser/' + Id)
-            .map(function (res) { return res.json(); });
-    };
-    AIService.prototype.deletePhraseGroup = function (Id) {
-        return this.http.get(this.baseUrl + 'phrasegroup/deletePhraseGroup/' + Id)
-            .map(function (res) { return res.json(); });
-    };
-    AIService.prototype.deletePhrase = function (Id) {
-        return this.http.get(this.baseUrl + 'phrases/deletePhrases/' + Id)
-            .map(function (res) { return res.json(); });
-    };
-    AIService.prototype.changePhraseGroupType = function (Id, type) {
-        return this.http.get(this.baseUrl + 'phrasegroup/changePhraseGroup/' + Id + '/' + type)
-            .map(function (res) { return res.json(); });
-    };
-    AIService.prototype.addTextBoxPhraseGroup = function (Id) {
-        return this.http.get(this.baseUrl + 'phrasegroup/addTextBoxPhraseGroup/' + Id)
-            .map(function (res) { return res.json(); });
-    };
-    AIService.prototype.editTextBoxPhraseGroup = function (Id, indexId, text) {
-        return this.http.get(this.baseUrl + 'phrasegroup/editTextBoxPhraseGroup/' + Id + '/' + indexId + '/' + text)
-            .map(function (res) { return res.json(); });
-    };
-    AIService.prototype.postPhrasesGroups = function () {
-        var body = JSON.stringify({ 'id': 0 });
-        var headers = new http_1.Headers({ 'Content-Type': 'application/json' });
-        var options = new http_1.RequestOptions({ method: 'post', headers: headers });
-        return this.http.post(this.baseUrl + "phrasegroup/addPhraseGroup", body, options)
-            .map(function (res) { return res.json(); });
-    };
-    AIService = __decorate([
-        core_1.Injectable(), 
-        __metadata('design:paramtypes', [(typeof (_a = typeof http_1.Http !== 'undefined' && http_1.Http) === 'function' && _a) || Object])
-    ], AIService);
-    return AIService;
-    var _a;
-}());
-exports.AIService = AIService;
-
-
-/***/ },
-
-/***/ "./src/app/services/BotTrainingService.ts":
-/***/ function(module, exports, __webpack_require__) {
-
-"use strict";
-"use strict";
-var core_1 = __webpack_require__("./node_modules/@angular/core/index.js");
-var http_1 = __webpack_require__("./node_modules/@angular/http/index.js");
-__webpack_require__("./node_modules/rxjs/add/operator/map.js");
-var BotTrainingService = (function () {
-    //baseUrl:string = "http://localhost/";
-    function BotTrainingService(http) {
-        this.http = http;
-        this.baseUrl = "https://aprilappserver.azurewebsites.net/";
-    }
-    BotTrainingService.prototype.updateBlockName = function (blockId, blockName) {
-        return this.http.get(this.baseUrl + 'blocks/updateBlockName/' + blockId + '/' + blockName)
-            .map(function (res) { return res.json(); });
-    };
-    BotTrainingService.prototype.updateGroupName = function (groupId, groupName) {
-        return this.http.get(this.baseUrl + 'groups/updateGroupName/' + groupId + '/' + groupName)
-            .map(function (res) { return res.json(); });
-    };
-    BotTrainingService.prototype.updateAddBtns = function (responseMessageId, obj, type, responseMessageType) {
-        var body = JSON.stringify({ "responseMessageId": responseMessageId, "object": obj, "type": type, "responseMessageType": responseMessageType });
-        var headers = new http_1.Headers({ 'Content-Type': 'application/json' });
-        var options = new http_1.RequestOptions({ method: 'post', headers: headers });
-        return this.http.post(this.baseUrl + "responsemessagesroute/editTextCardAddBtn", body, options)
-            .map(function (res) { return res.json(); });
-    };
-    BotTrainingService.prototype.updateGalleryAddBtns = function (responseMessageId, cardId, obj, type, responseMessageType) {
-        var body = JSON.stringify({ "responseMessageId": responseMessageId, "cardId": cardId, "object": obj, "type": type, "responseMessageType": responseMessageType });
-        var headers = new http_1.Headers({ 'Content-Type': 'application/json' });
-        var options = new http_1.RequestOptions({ method: 'post', headers: headers });
-        return this.http.post(this.baseUrl + "responsemessagesroute/editGalleryCardAddBtn", body, options)
-            .map(function (res) { return res.json(); });
-    };
-    BotTrainingService.prototype.getAllGroups = function (type) {
-        return this.http.get(this.baseUrl + 'groups/getGroupsBlocks/' + type)
-            .map(function (res) { return res.json(); });
-    };
-    BotTrainingService.prototype.getAllGroups2 = function (type) {
-        return this.http.get(this.baseUrl + 'groups/getGroupsBlocks2/' + type)
-            .map(function (res) { return res.json(); });
-    };
-    BotTrainingService.prototype.getAlBlocks = function () {
-        return this.http.get(this.baseUrl + 'blocks/getAllBlocks')
-            .map(function (res) { return res.json(); });
-    };
-    BotTrainingService.prototype.getAllResponseMessages = function (blockId) {
-        return this.http.get(this.baseUrl + 'blocks/getResponseMessagesOfBlock/' + blockId)
-            .map(function (res) { return res.json(); });
-    };
-    BotTrainingService.prototype.deleteGroup = function (Id) {
-        return this.http.get(this.baseUrl + 'groups/deleteOrderById/' + Id)
-            .map(function (res) { return res.json(); });
-    };
-    BotTrainingService.prototype.deleteOneGalleryCard = function (Id, indexId) {
-        return this.http.get(this.baseUrl + 'responsemessage/deleteOneGalleryCard/' + Id + '/' + indexId)
-            .map(function (res) { return res.json(); });
-    };
-    BotTrainingService.prototype.updateTitleText = function (Id, Text, indexId, type) {
-        var body = JSON.stringify({ "responseMessageId": Id, "titleText": Text, "indexId": indexId, "type": type });
-        var headers = new http_1.Headers({ 'Content-Type': 'application/json' });
-        var options = new http_1.RequestOptions({ method: 'post', headers: headers });
-        return this.http.post(this.baseUrl + "responsemessage/updateTitle", body, options)
-            .map(function (res) { return res.json(); });
-    };
-    BotTrainingService.prototype.updateRandomTitleText = function (Id, text, indexId) {
-        var body = JSON.stringify({ "responseMessageId": Id, "titleText": text, "indexId": indexId });
-        var headers = new http_1.Headers({ 'Content-Type': 'application/json' });
-        var options = new http_1.RequestOptions({ method: 'post', headers: headers });
-        return this.http.post(this.baseUrl + "responsemessage/updateRandomTitle", body, options)
-            .map(function (res) { return res.json(); });
-    };
-    BotTrainingService.prototype.updateArticleText = function (Id, Text) {
-        var body = JSON.stringify({ "responseMessageId": Id, "text": Text });
-        var headers = new http_1.Headers({ 'Content-Type': 'application/json' });
-        var options = new http_1.RequestOptions({ method: 'post', headers: headers });
-        return this.http.post(this.baseUrl + "responsemessage/updateArticle", body, options)
-            .map(function (res) { return res.json(); });
-    };
-    BotTrainingService.prototype.updateDescriptionText = function (Id, Text, indexId) {
-        return this.http.get(this.baseUrl + 'responsemessage/updateDescription/' + Id + '/' + indexId + '/' + Text)
-            .map(function (res) { return res.json(); });
-    };
-    BotTrainingService.prototype.updateUrlText = function (Id, Text, indexId) {
-        var body = JSON.stringify({ "responseMessageId": Id, "indexId": indexId, "urlText": Text });
-        var headers = new http_1.Headers({ 'Content-Type': 'application/json' });
-        var options = new http_1.RequestOptions({ method: 'post', headers: headers });
-        return this.http.post(this.baseUrl + "responsemessage/updateUrl", body, options)
-            .map(function (res) { return res.json(); });
-    };
-    BotTrainingService.prototype.deleteBlock = function (Id) {
-        return this.http.get(this.baseUrl + 'blocks/deleteBlock/' + Id)
-            .map(function (res) { return res.json(); });
-    };
-    BotTrainingService.prototype.deleteResponseMessage = function (Id) {
-        return this.http.get(this.baseUrl + 'responsemessage/deleteResponseMessage/' + Id)
-            .map(function (res) { return res.json(); });
-    };
-    BotTrainingService.prototype.deleteAddButton = function (AddButtonId, ParentId, type) {
-        return this.http.get(this.baseUrl + 'responsemessage/deleteAddButton/' + ParentId + '/' + AddButtonId + '/' + type)
-            .map(function (res) { return res.json(); });
-    };
-    BotTrainingService.prototype.deleteQuickReply = function (AddButtonId, ParentId) {
-        return this.http.get(this.baseUrl + 'responsemessage/deleteQuickReply/' + ParentId + '/' + AddButtonId)
-            .map(function (res) { return res.json(); });
-    };
-    BotTrainingService.prototype.deleteRandomText = function (AddButtonId, ParentId) {
-        return this.http.get(this.baseUrl + 'responsemessage/deleteRandomText/' + ParentId + '/' + AddButtonId)
-            .map(function (res) { return res.json(); });
-    };
-    BotTrainingService.prototype.addRandomText = function (Id, count) {
-        return this.http.get(this.baseUrl + 'responsemessage/addTextRandom/' + Id + '/' + count)
-            .map(function (res) { return res.json(); });
-    };
-    BotTrainingService.prototype.addGroup = function (group, type) {
-        var body = JSON.stringify({ "name": group, "type": type, "description": group });
-        var headers = new http_1.Headers({ 'Content-Type': 'application/json' });
-        var options = new http_1.RequestOptions({ method: 'post', headers: headers });
-        return this.http.post(this.baseUrl + "groups/addGroup", body, options)
-            .map(function (res) { return res.json(); });
-    };
-    BotTrainingService.prototype.addBlocks = function (block, type, groupId) {
-        var body = JSON.stringify({ "name": block, "type": type, "description": block, "_groupId": groupId });
-        var headers = new http_1.Headers({ 'Content-Type': 'application/json' });
-        var options = new http_1.RequestOptions({ method: 'post', headers: headers });
-        return this.http.post(this.baseUrl + "blocks/addBlock", body, options)
-            .map(function (res) { return res.json(); });
-    };
-    BotTrainingService.prototype.addResponseMessage = function (data, type, blockId) {
-        var body = JSON.stringify({ "data": data, "type": type, "_blockId": blockId });
-        var headers = new http_1.Headers({ 'Content-Type': 'application/json' });
-        var options = new http_1.RequestOptions({ method: 'post', headers: headers });
-        return this.http.post(this.baseUrl + "responsemessage/addResponseMessage", body, options)
-            .map(function (res) { return res.json(); });
-    };
-    BotTrainingService.prototype.addGalleryCard = function (data, responseMessageId) {
-        var body = JSON.stringify({ "data": data, "responseMessageId": responseMessageId });
-        var headers = new http_1.Headers({ 'Content-Type': 'application/json' });
-        var options = new http_1.RequestOptions({ method: 'post', headers: headers });
-        return this.http.post(this.baseUrl + "responsemessage/addGalleryCard", body, options)
-            .map(function (res) { return res.json(); });
-    };
-    BotTrainingService.prototype.addAddButton = function (responseMessageId, data, type, index) {
-        var body = JSON.stringify({ "data": data, "responseMessageId": responseMessageId, "type": type, "index": index });
-        var headers = new http_1.Headers({ 'Content-Type': 'application/json' });
-        var options = new http_1.RequestOptions({ method: 'post', headers: headers });
-        return this.http.post(this.baseUrl + "responsemessage/addAddButton", body, options)
-            .map(function (res) { return res.json(); });
-    };
-    BotTrainingService.prototype.addQuickReply = function (responseMessageId, buttonName, _blockId, count) {
-        var body = JSON.stringify({ "buttonName": buttonName, "responseMessageId": responseMessageId, "_blockId": _blockId, "count": count });
-        var headers = new http_1.Headers({ 'Content-Type': 'application/json' });
-        var options = new http_1.RequestOptions({ method: 'post', headers: headers });
-        return this.http.post(this.baseUrl + "responsemessage/addQuickReply", body, options)
-            .map(function (res) { return res.json(); });
-    };
-    BotTrainingService.prototype.getPictureUrl = function (file, Id, type, indexId) {
-        var formData = new FormData();
-        formData.append("file", file, file.name);
-        formData.append("responseMessageId", Id);
-        formData.append("type", type);
-        formData.append("indexId", indexId);
-        //let body = JSON.stringify({ "name":group, "type":type, "description":group });
-        var options = new http_1.RequestOptions({ method: 'post' });
-        return this.http.post(this.baseUrl + "usercode/uploadPicture", formData, options)
-            .map(function (res) { return res.json(); });
-    };
-    BotTrainingService.prototype.editQuickReply = function (buttonName, _blockId, responseMessageId, _quickReplyId) {
-        var body = JSON.stringify({ "buttonName": buttonName, "responseMessageId": responseMessageId, "_blockId": _blockId, "_quickReplyId": _quickReplyId });
-        var headers = new http_1.Headers({ 'Content-Type': 'application/json' });
-        var options = new http_1.RequestOptions({ method: 'post', headers: headers });
-        return this.http.post(this.baseUrl + "responsemessagesroute/editQuickReply", body, options)
-            .map(function (res) { return res.json(); });
-    };
-    BotTrainingService = __decorate([
-        core_1.Injectable(), 
-        __metadata('design:paramtypes', [(typeof (_a = typeof http_1.Http !== 'undefined' && http_1.Http) === 'function' && _a) || Object])
-    ], BotTrainingService);
-    return BotTrainingService;
-    var _a;
-}());
-exports.BotTrainingService = BotTrainingService;
 
 
 /***/ }
