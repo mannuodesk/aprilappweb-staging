@@ -18270,6 +18270,7 @@ var Specific = (function () {
         this.addBtnflag = true;
         this.QuickReplyButtonName = "";
         this.QuickReplyButtonBlock = "";
+        this.quickReplyBtnFlag = false;
         this.addBlockFlag = false;
         this.addGroupFlag = false;
         this.galleryCardArray = [];
@@ -18527,7 +18528,8 @@ var Specific = (function () {
         if (this.QuickReplyButtonName.match(/[a-z]/i)) {
             specialCharacterFlag = false;
         }
-        if (this.QuickReplyButtonName != "" && this.QuickReplyButtonBlock != "" && specialCharacterFlag == false) {
+        if (this.QuickReplyButtonName != "" && this.QuickReplyButtonBlock != "" && specialCharacterFlag == false && this.quickReplyBtnFlag == false) {
+            this.quickReplyBtnFlag = true;
             this._botTrainingService.addQuickReply(this.quickResponseMessageId, this.QuickReplyButtonName, this.QuickReplyButtonBlock, counts).subscribe(function (a) {
                 if (a.code == 200) {
                     _this.modalComponent2.close();
@@ -18546,15 +18548,18 @@ var Specific = (function () {
                         _this.blockIsCompletedStatusChange(_this.popBlock._id, true);
                     }
                     _this.blockDetail(_this.popBlock._id);
+                    _this.quickReplyBtnFlag = false;
                 }
             });
         }
         else if (specialCharacterFlag == true) {
             jQuery('#buttonNameQR').addClass('modalError');
+            this.quickReplyBtnFlag = false;
         }
         else {
             jQuery('#simple-select').addClass('modalError');
             jQuery('#buttonNameQR').addClass('modalError');
+            this.quickReplyBtnFlag = false;
         }
     };
     Specific.prototype.submitArticleText = function () {
@@ -18772,6 +18777,7 @@ var Specific = (function () {
                 _this.popBlockName = _this.popBlock.name;
                 _this.isLocked = _this.popBlock.isLocked;
                 jQuery('.rmdiv').show();
+                console.log(a.data);
             }
         });
     };
@@ -18873,6 +18879,8 @@ var Specific = (function () {
         this.QuickReplyButtonName = "";
         this.QuickReplyButtonBlock = "";
         this.ckeditorContent = "";
+        jQuery('#buttonName').removeClass('modalError');
+        jQuery('#simple-select').removeClass('modalError');
     };
     Specific.prototype.RenderSortable = function () {
         var oldIndex;
@@ -19016,6 +19024,9 @@ var Specific = (function () {
         else if (val == 3) {
             jQuery('.GroupBtn').show();
             jQuery('.GroupForm').hide();
+            jQuery('#emptyGroup').hide();
+            jQuery('#duplicateGroup').hide();
+            jQuery('#specialCharactersGroup').hide();
             this.GroupText = "";
         }
         else {
@@ -19068,7 +19079,7 @@ var Specific = (function () {
     };
     Specific.prototype.populateGroups = function () {
         var _this = this;
-        this._botTrainingService.getAllGroups('Specific')
+        this._botTrainingService.getAllGroups('Generic')
             .subscribe(function (a) {
             if (a.code == 200) {
                 _this.blockGroupsModel = a.data;
@@ -19084,6 +19095,7 @@ var Specific = (function () {
                         }
                     }
                 }
+                console.log(a.data);
                 _this.RenderSortable();
             }
         });
