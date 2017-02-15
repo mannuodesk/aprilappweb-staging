@@ -17956,6 +17956,8 @@ var Generic = (function () {
     };
     //Card Functions
     Generic.prototype.addQuickReplyBtn = function (Id) {
+        jQuery('#simple-select').removeClass('modalError');
+        jQuery('#buttonNameQR').removeClass('modalError');
         this.quickResponseMessageId = Id;
     };
     Generic.prototype.submitQuickReplyBtns = function () {
@@ -17976,6 +17978,7 @@ var Generic = (function () {
             this._botTrainingService.addQuickReply(this.quickResponseMessageId, this.QuickReplyButtonName, this.QuickReplyButtonBlock, counts).subscribe(function (a) {
                 if (a.code == 200) {
                     _this.modalComponent2.close();
+                    _this.quickReplyBtnFlag = false;
                     _this.QuickReplyButtonName = "";
                     _this.QuickReplyButtonBlock = "";
                     for (var i = 0; i < _this.cardArray.length; i++) {
@@ -17991,7 +17994,6 @@ var Generic = (function () {
                         _this.blockIsCompletedStatusChange(_this.popBlock._id, true);
                     }
                     _this.blockDetail(_this.popBlock._id);
-                    _this.quickReplyBtnFlag = false;
                 }
             });
         }
