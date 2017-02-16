@@ -4712,7 +4712,7 @@ exports.Select2Component = Select2Component;
 /***/ "./src/app/buildai/buildai.component.html":
 /***/ function(module, exports) {
 
-module.exports = "<ol class=\"breadcrumb\">\n    <li class=\"breadcrumb-item\">YOU ARE HERE</li>\n    <li class=\"breadcrumb-item active\">Build AI</li>\n</ol>\n<h1 class=\"page-title\">Build<span class=\"fw-semi-bold\"> AI</span></h1>\n<section class=\"widget widget2\" widget>\n    <header>\n        <h4>\n            Build AI\n        </h4>\n    </header>\n    <div class=\"widget-body\">\n        <div class=\"row\">\n            <div class=\"AddGroupBtn\">\n                <button type=\"button\" (click)=\"addAiRule()\" class=\"btn btn-red\"><i class=\"fa fa-plus\" aria-hidden=\"true\"></i> Add AI Rule</button>\n            </div>\n        </div>\n        <br/>\n        <div *ngFor=\"let phraseGroup of phraseGroups\" class=\"row rowcolor\" (mouseenter)=\"mouseEnterPG(phraseGroup.phraseGroup._id)\"\n            (mouseleave)=\"mouseLeavePG(phraseGroup.phraseGroup._id)\">\n            <a id=\"phraseGrp{{phraseGroup.phraseGroup._id}}\" (click)=\"deletePhraseGroup(phraseGroup.phraseGroup._id)\" href=\"#\" class=\"closeBuild\" data-dismiss=\"alert\" aria-hidden=\"true\"><i class=\"fa fa-trash-o quickReplyCloseBtn\" aria-hidden=\"true\"></i></a>\n            <div class=\"col-md-6 rightborder\">\n                <div class=\"title\">\n                    IF USER SAYS SOMETHING SIMILAR TO:\n                </div>\n                <div class=\"paddingrow\">\n                    <input type=\"text\" id=\"phraseText{{phraseGroup.phraseGroup._id}}\" (keyup)=\"onKey($event, phraseGroup.phraseGroup._id)\" class=\"form-control\"\n                        placeholder=\"Press Enter to add more Phrases\" />\n                </div>\n                <div class=\"paddingrow\">\n                    <span id=\"{{phraseGroup2._id}}\" class=\"green\" (blur)=\"updatePhrase(phraseGroup2._id)\" contenteditable=\"true\" *ngFor=\"let phraseGroup2 of phraseGroup.phrases\" (mouseenter)=\"mouseEnterPhrase(phraseGroup2._id)\"\n                    (mouseleave)=\"mouseLeavePhrase(phraseGroup2._id)\">\n                        <a id=\"deletePhrase{{phraseGroup2._id}}\" (click)=\"deletePhrase(phraseGroup2._id)\" href=\"#\" class=\"closePhrase\" data-dismiss=\"alert\" aria-hidden=\"true\"><i class=\"fa fa-trash-o quickReplyCloseBtn\" aria-hidden=\"true\"></i></a>\n                        {{phraseGroup2.phrase}}\n                    </span>\n                </div>\n            </div>\n            <div class=\"col-md-6\">\n                <div class=\"title\">\n                    Bot Replies with\n                    <span id=\"replySelectionText{{phraseGroup.phraseGroup._id}}\" class=\"replySelectionDropdown\" (click)=\"openReplyUL(phraseGroup.phraseGroup._id)\">\n                        {{phraseGroup.phraseGroup.phraseGroupType}} <i class=\"fa fa-arrow-down\" aria-hidden=\"true\"></i>\n                    </span>\n                    <ul id=\"replyUL{{phraseGroup.phraseGroup._id}}\" class=\"replySelectionUL\" style=\"display:none\">\n                        <li class=\"replySelectionLI\" (click)=\"selectReplyUL(phraseGroup.phraseGroup._id, 'block')\">BLOCK</li>\n                        <li class=\"replySelectionLI\" (click)=\"selectReplyUL(phraseGroup.phraseGroup._id, 'text')\">TEXT</li>\n                    </ul>\n                    <!--<div id=\"checkbox-ios{{phraseGroup.phraseGroup._id}}\" class=\"display-inline-block checkbox-ios switcheryToggle\">\n                        <label htmlFor=\"{{phraseGroup.phraseGroup._id}}\" class=\"switch\">\n                            <input type=\"checkbox\" class=\"ios\" checked id=\"{{phraseGroup.phraseGroup._id}}\"><i></i>\n                        </label>\n                    </div>-->\n                </div>\n                <div class=\"paddingrow\">\n                    <div class=\"dropdown{{phraseGroup.phraseGroup._id}} attr\" [hidden]=\"phraseGroup.phraseGroup.phraseGroupType == 'text'\">\n                        <!--<button id=\"block{{phraseGroup.phraseGroup._id}}\" *ngIf=\"phraseGroup.phraseGroup._blockId != undefined\" class=\"btn btn-primary btn-block dropdown-toggle dropdownBtnColor\"\n                            type=\"button\" data-toggle=\"dropdown\">{{phraseGroup.phraseGroup._blockId.name}}\n                            \n                        <span class=\"caret\"></span></button>\n                        <button id=\"block{{phraseGroup.phraseGroup._id}}\" *ngIf=\"phraseGroup.phraseGroup._blockId == undefined\" class=\"btn btn-primary btn-block dropdown-toggle dropdownBtnColor\"\n                            type=\"button\" data-toggle=\"dropdown\">Select Block to Map\n                            \n                        <span class=\"caret\"></span></button>\n                        <ul class=\"dropdown-menu\">\n                            <li><a style=\"cursor:pointer\" *ngFor=\"let p of select2GroupedData\" class=\"btn btn-block\" (click)=\"changeDropdown(p.id, phraseGroup.phraseGroup._id)\">{{p.text}}</a></li>\n                        </ul>-->\n                        \n                        \n                        <select2 id=\"grouped-select{{phraseGroup.phraseGroup._id}}\" style=\"margin-top:5px;\" class=\"dropdownBtnColor\" class=\"col-md-12 btn btn-primary dropdownBtnColor\"\n                         (valueChanged)=\"changeDropdown($event, phraseGroup.phraseGroup._id)\" [data]=\"dataArray\"></select2>\n                        <!--<select2 id=\"grouped-select{{phraseGroup.phraseGroup._id}}\" *ngIf=\"phraseGroup.phraseGroup._blockId != undefined\" [value]=\"phraseGroup.phraseGroup._blockId._id\" class=\"dropdownBtnColor\" class=\"col-md-12 btn btn-primary btn-block dropdown-toggle dropdownBtnColor\"\n                         (valueChanged)=\"changeDropdown($event, phraseGroup.phraseGroup._id)\" [data]=\"dataArray\"></select2>-->\n                         <div class=\"row\">\n                             <br/>\n                        </div>\n                         <div class=\"blockNameDiv3\" *ngFor=\"let block of phraseGroup.phraseGroup._blockId; let i = index\">\n                            <a id=\"delTextPhraseGrp\" (click)=\"deletePhraseGroupBlock(phraseGroup.phraseGroup._id,i)\" href=\"#\" class=\"closeBlockName\" data-dismiss=\"alert\" aria-hidden=\"true\"><i class=\"fa fa-trash-o quickReplyCloseBtn\" aria-hidden=\"true\"></i></a>\n                            <div class=\"blockNameText\">\n                                {{block.blockName}}\n                            </div>\n                        </div>\n                    </div>\n                    <div class=\"textbox{{phraseGroup.phraseGroup._id}} attr\" [hidden]=\"phraseGroup.phraseGroup.phraseGroupType == 'block'\">\n                        <div *ngFor=\"let obj of phraseGroup.phraseGroup.textArray;let i = index\">\n                            <a id=\"delTextPhraseGrp{{phraseGroup.phraseGroup._id}}{{i}}\" (click)=\"deleteTextBox(phraseGroup.phraseGroup._id, i)\" href=\"#\" class=\"closeTextBoxDel\" data-dismiss=\"alert\" aria-hidden=\"true\"><i class=\"fa fa-trash-o quickReplyCloseBtn\" aria-hidden=\"true\"></i></a>\n                            <input type=\"text\" (mouseenter)=\"mouseEnterTD(phraseGroup.phraseGroup._id, i)\"  mouseLeaveTD=\"mouseLeaveTD(phraseGroup.phraseGroup._id, i)\"  (change)=\"textOfTextBox(phraseGroup.phraseGroup._id, i, $event)\" class=\"form-control textBoxBtn\" value=\"{{obj}}\" placeholder=\"Enter Text\"/>\n                        </div>\n                        <div class=\"addAnswerBtn\" (click)=\"addTextBox(phraseGroup.phraseGroup._id)\">\n                            <i class=\"fa fa-plus\" aria-hidden=\"true\"></i>\n                            Add Answer\n                        </div>\n                    </div>\n                </div>\n            </div>\n        </div>\n    </div>\n</section>\n"
+module.exports = "<ol class=\"breadcrumb\">\n    <li class=\"breadcrumb-item\">YOU ARE HERE</li>\n    <li class=\"breadcrumb-item active\">Build AI</li>\n</ol>\n<h1 class=\"page-title\">Build<span class=\"fw-semi-bold\"> AI</span></h1>\n<section class=\"widget widget2\" widget>\n    <div class=\"widget-body\">\n        <div class=\"row\">\n            <div class=\"AddGroupBtn\">\n                <button type=\"button\" (click)=\"addAiRule()\" class=\"btn btn-red\"><i class=\"fa fa-plus\" aria-hidden=\"true\"></i> Add AI Rule</button>\n            </div>\n        </div>\n        <br/>\n        <div *ngFor=\"let phraseGroup of phraseGroups\" class=\"row rowcolor\" (mouseenter)=\"mouseEnterPG(phraseGroup.phraseGroup._id)\"\n            (mouseleave)=\"mouseLeavePG(phraseGroup.phraseGroup._id)\">\n            <a id=\"phraseGrp{{phraseGroup.phraseGroup._id}}\" (click)=\"deletePhraseGroup(phraseGroup.phraseGroup._id)\" href=\"#\" class=\"closeBuild\" data-dismiss=\"alert\" aria-hidden=\"true\"><i class=\"fa fa-trash-o quickReplyCloseBtn\" aria-hidden=\"true\"></i></a>\n            <div class=\"col-md-6 rightborder\">\n                <div class=\"title\">\n                    IF USER SAYS SOMETHING SIMILAR TO:\n                </div>\n                <div class=\"paddingrow\">\n                    <input type=\"text\" id=\"phraseText{{phraseGroup.phraseGroup._id}}\" (keyup)=\"onKey($event, phraseGroup.phraseGroup._id)\" class=\"form-control\"\n                        placeholder=\"Press Enter to add more Phrases\" />\n                </div>\n                <div class=\"paddingrow\">\n                    <span id=\"{{phraseGroup2._id}}\" class=\"green\" (blur)=\"updatePhrase(phraseGroup2._id)\" contenteditable=\"true\" *ngFor=\"let phraseGroup2 of phraseGroup.phrases\" (mouseenter)=\"mouseEnterPhrase(phraseGroup2._id)\"\n                    (mouseleave)=\"mouseLeavePhrase(phraseGroup2._id)\">\n                        <a id=\"deletePhrase{{phraseGroup2._id}}\" (click)=\"deletePhrase(phraseGroup2._id)\" href=\"#\" class=\"closePhrase\" data-dismiss=\"alert\" aria-hidden=\"true\"><i class=\"fa fa-trash-o quickReplyCloseBtn\" aria-hidden=\"true\"></i></a>\n                        {{phraseGroup2.phrase}}\n                    </span>\n                </div>\n            </div>\n            <div class=\"col-md-6\">\n                <div class=\"title\">\n                    Bot Replies with\n                    <span id=\"replySelectionText{{phraseGroup.phraseGroup._id}}\" class=\"replySelectionDropdown\" (click)=\"openReplyUL(phraseGroup.phraseGroup._id)\">\n                        {{phraseGroup.phraseGroup.phraseGroupType}} <i class=\"fa fa-arrow-down\" aria-hidden=\"true\"></i>\n                    </span>\n                    <ul id=\"replyUL{{phraseGroup.phraseGroup._id}}\" class=\"replySelectionUL\" style=\"display:none\">\n                        <li class=\"replySelectionLI\" (click)=\"selectReplyUL(phraseGroup.phraseGroup._id, 'block')\">BLOCK</li>\n                        <li class=\"replySelectionLI\" (click)=\"selectReplyUL(phraseGroup.phraseGroup._id, 'text')\">TEXT</li>\n                    </ul>\n                </div>\n                <div class=\"paddingrow\">\n                    <div class=\"dropdown{{phraseGroup.phraseGroup._id}} attr\" [hidden]=\"phraseGroup.phraseGroup.phraseGroupType == 'text'\">\n                        \n                        <select2 id=\"grouped-select{{phraseGroup.phraseGroup._id}}\" style=\"margin-top:5px;\" class=\"dropdownBtnColor\" class=\"col-md-12 btn btn-primary dropdownBtnColor\"\n                         (valueChanged)=\"changeDropdown($event, phraseGroup.phraseGroup._id)\" [data]=\"dataArray\"></select2>\n                         <div class=\"row\">\n                             <br/>\n                        </div>\n                         <div class=\"blockNameDiv3\" *ngFor=\"let block of phraseGroup.phraseGroup._blockId; let i = index\">\n                            <a id=\"delTextPhraseGrp\" (click)=\"deletePhraseGroupBlock(phraseGroup.phraseGroup._id,i)\" href=\"#\" class=\"closeBlockName\" data-dismiss=\"alert\" aria-hidden=\"true\"><i class=\"fa fa-trash-o quickReplyCloseBtn\" aria-hidden=\"true\"></i></a>\n                            <div class=\"blockNameText\">\n                                {{block.blockName}}\n                            </div>\n                        </div>\n                    </div>\n                    <div class=\"textbox{{phraseGroup.phraseGroup._id}} attr\" [hidden]=\"phraseGroup.phraseGroup.phraseGroupType == 'block'\">\n                        <div *ngFor=\"let obj of phraseGroup.phraseGroup.textArray;let i = index\">\n                            <a id=\"delTextPhraseGrp{{phraseGroup.phraseGroup._id}}{{i}}\" (click)=\"deleteTextBox(phraseGroup.phraseGroup._id, i)\" href=\"#\" class=\"closeTextBoxDel\" data-dismiss=\"alert\" aria-hidden=\"true\"><i class=\"fa fa-trash-o quickReplyCloseBtn\" aria-hidden=\"true\"></i></a>\n                            <input type=\"text\" (mouseenter)=\"mouseEnterTD(phraseGroup.phraseGroup._id, i)\"  mouseLeaveTD=\"mouseLeaveTD(phraseGroup.phraseGroup._id, i)\"  (change)=\"textOfTextBox(phraseGroup.phraseGroup._id, i, $event)\" class=\"form-control textBoxBtn\" value=\"{{obj}}\" placeholder=\"Enter Text\"/>\n                        </div>\n                        <div class=\"addAnswerBtn\" (click)=\"addTextBox(phraseGroup.phraseGroup._id)\">\n                            <i class=\"fa fa-plus\" aria-hidden=\"true\"></i>\n                            Add Answer\n                        </div>\n                    </div>\n                </div>\n            </div>\n        </div>\n    </div>\n</section>\n<modal #phraseGroupModal>\n  <modal-header>\n    <h4 class=\"modal-title text-xs-center fw-bold mt\" id=\"myModalLabel18\">Confirmation</h4>\n    <p class=\"text-xs-center fs-mini text-muted mt-sm\">\n      Do you really want to remove this Phrase Group ?\n    </p>\n  </modal-header>\n  <modal-content>\n    <form>\n      <div class=\"row\">\n        <div class=\"col-lg-6 col-xs-12\">\n          <button type=\"button\" class=\"btn btn-success pull-right\" (click)=\"deletePhraseGroupBtn();\">Yes</button>\n        </div>\n        <div class=\"col-lg-6 col-xs-12\">\n          <button type=\"button\" class=\"btn btn-danger pull-left\" (click)=\"phraseGroupModal.close()\">No</button>\n        </div>\n      </div>\n    </form>\n  </modal-content>\n</modal>\n<modal #phraseModal>\n  <modal-header>\n    <h4 class=\"modal-title text-xs-center fw-bold mt\" id=\"myModalLabel18\">Confirmation</h4>\n    <p class=\"text-xs-center fs-mini text-muted mt-sm\">\n      Do you really want to remove this Phrase ?\n    </p>\n  </modal-header>\n  <modal-content>\n    <form>\n      <div class=\"row\">\n        <div class=\"col-lg-6 col-xs-12\">\n          <button type=\"button\" class=\"btn btn-success pull-right\" (click)=\"deletePhraseBtn();\">Yes</button>\n        </div>\n        <div class=\"col-lg-6 col-xs-12\">\n          <button type=\"button\" class=\"btn btn-danger pull-left\" (click)=\"phraseModal.close()\">No</button>\n        </div>\n      </div>\n    </form>\n  </modal-content>\n</modal>\n<modal #phraseTextBoxModal>\n  <modal-header>\n    <h4 class=\"modal-title text-xs-center fw-bold mt\" id=\"myModalLabel18\">Confirmation</h4>\n    <p class=\"text-xs-center fs-mini text-muted mt-sm\">\n      Do you really want to remove this custom message ?\n    </p>\n  </modal-header>\n  <modal-content>\n    <form>\n      <div class=\"row\">\n        <div class=\"col-lg-6 col-xs-12\">\n          <button type=\"button\" class=\"btn btn-success pull-right\" (click)=\"deletePhraseTextBoxBtn();\">Yes</button>\n        </div>\n        <div class=\"col-lg-6 col-xs-12\">\n          <button type=\"button\" class=\"btn btn-danger pull-left\" (click)=\"phraseTextBoxModal.close()\">No</button>\n        </div>\n      </div>\n    </form>\n  </modal-content>\n</modal>\n<modal #phraseOptionDDModal>\n  <modal-header>\n    <h4 class=\"modal-title text-xs-center fw-bold mt\" id=\"myModalLabel18\">Confirmation</h4>\n    <p class=\"text-xs-center fs-mini text-muted mt-sm\">\n      Do you really want to remove this Block ?\n    </p>\n  </modal-header>\n  <modal-content>\n    <form>\n      <div class=\"row\">\n        <div class=\"col-lg-6 col-xs-12\">\n          <button type=\"button\" class=\"btn btn-success pull-right\" (click)=\"deletePhraseOptionDDBtn();\">Yes</button>\n        </div>\n        <div class=\"col-lg-6 col-xs-12\">\n          <button type=\"button\" class=\"btn btn-danger pull-left\" (click)=\"phraseOptionDDModal.close()\">No</button>\n        </div>\n      </div>\n    </form>\n  </modal-content>\n</modal>\n"
 
 /***/ },
 
@@ -4732,6 +4732,7 @@ var core_1 = __webpack_require__("./node_modules/@angular/core/index.js");
 var AIService_1 = __webpack_require__("./src/app/services/AIService.ts");
 var BotTrainingService_1 = __webpack_require__("./src/app/services/BotTrainingService.ts");
 var WebStorage_1 = __webpack_require__("./node_modules/angular2-localstorage/WebStorage.ts");
+var ng2_modal_1 = __webpack_require__("./node_modules/ng2-modal/index.js");
 var BuildAI = (function () {
     function BuildAI(_aiService, _botTrainingService) {
         this._aiService = _aiService;
@@ -4782,30 +4783,6 @@ var BuildAI = (function () {
     };
     BuildAI.prototype.mouseLeavePhrase = function (id) {
         jQuery('#deletePhrase' + id).hide();
-    };
-    BuildAI.prototype.deletePhraseGroup = function (id) {
-        var _this = this;
-        this._aiService.deletePhraseGroup(id).subscribe(function (a) {
-            if (a.code == 200) {
-                _this.populate();
-            }
-        });
-    };
-    BuildAI.prototype.deletePhraseGroupBlock = function (id, indexId) {
-        var _this = this;
-        this._aiService.deleteBlockPhraseGroup(id, indexId).subscribe(function (a) {
-            if (a.code == 200) {
-                _this.populate();
-            }
-        });
-    };
-    BuildAI.prototype.deletePhrase = function (id) {
-        var _this = this;
-        this._aiService.deletePhrase(id).subscribe(function (a) {
-            if (a.code == 200) {
-                _this.populate();
-            }
-        });
     };
     BuildAI.prototype.changeDropdown = function (e, phaseGroupId) {
         var _this = this;
@@ -4951,17 +4928,79 @@ var BuildAI = (function () {
             });
         }
     };
+    BuildAI.prototype.deletePhraseGroup = function (id) {
+        this.deleteId = id;
+        this.phraseGroupModalComponent.open();
+    };
+    BuildAI.prototype.deletePhraseGroupBlock = function (id, indexId) {
+        this.deleteId = id;
+        this.indexId = indexId;
+        this.phraseOptionDDModalComponent.open();
+    };
     BuildAI.prototype.deleteTextBox = function (phraseGroupId, index) {
+        this.deleteId = phraseGroupId;
+        this.indexId = index;
+        this.phraseTextBoxModalComponent.open();
+    };
+    BuildAI.prototype.deletePhrase = function (id) {
+        this.deleteId = id;
+        this.phraseModalComponent.open();
+    };
+    BuildAI.prototype.deletePhraseGroupBtn = function () {
         var _this = this;
-        this._aiService.deleteTextBoxPhraseGroup(phraseGroupId, index).subscribe(function (a) {
-            for (var i = 0; i < _this.phraseGroups.length; i++) {
-                if (_this.phraseGroups[i].phraseGroup._id == phraseGroupId) {
-                    _this.phraseGroups[i].phraseGroup.textArray.splice(index, 1);
-                    break;
-                }
+        this._aiService.deletePhraseGroup(this.deleteId).subscribe(function (a) {
+            if (a.code == 200) {
+                _this.populate();
+                _this.phraseGroupModalComponent.close();
             }
         });
     };
+    BuildAI.prototype.deletePhraseBtn = function () {
+        var _this = this;
+        this._aiService.deletePhrase(this.deleteId).subscribe(function (a) {
+            if (a.code == 200) {
+                _this.populate();
+                _this.phraseModalComponent.close();
+            }
+        });
+    };
+    BuildAI.prototype.deletePhraseTextBoxBtn = function () {
+        var _this = this;
+        this._aiService.deleteTextBoxPhraseGroup(this.deleteId, this.indexId).subscribe(function (a) {
+            for (var i = 0; i < _this.phraseGroups.length; i++) {
+                if (_this.phraseGroups[i].phraseGroup._id == _this.deleteId) {
+                    _this.phraseGroups[i].phraseGroup.textArray.splice(_this.indexId, 1);
+                    break;
+                }
+            }
+            _this.phraseTextBoxModalComponent.close();
+        });
+    };
+    BuildAI.prototype.deletePhraseOptionDDBtn = function () {
+        var _this = this;
+        this._aiService.deleteBlockPhraseGroup(this.deleteId, this.indexId).subscribe(function (a) {
+            if (a.code == 200) {
+                _this.populate();
+                _this.phraseOptionDDModalComponent.close();
+            }
+        });
+    };
+    __decorate([
+        core_1.ViewChild('phraseGroupModal'), 
+        __metadata('design:type', (typeof (_a = typeof ng2_modal_1.Modal !== 'undefined' && ng2_modal_1.Modal) === 'function' && _a) || Object)
+    ], BuildAI.prototype, "phraseGroupModalComponent", void 0);
+    __decorate([
+        core_1.ViewChild('phraseModal'), 
+        __metadata('design:type', (typeof (_b = typeof ng2_modal_1.Modal !== 'undefined' && ng2_modal_1.Modal) === 'function' && _b) || Object)
+    ], BuildAI.prototype, "phraseModalComponent", void 0);
+    __decorate([
+        core_1.ViewChild('phraseTextBoxModal'), 
+        __metadata('design:type', (typeof (_c = typeof ng2_modal_1.Modal !== 'undefined' && ng2_modal_1.Modal) === 'function' && _c) || Object)
+    ], BuildAI.prototype, "phraseTextBoxModalComponent", void 0);
+    __decorate([
+        core_1.ViewChild('phraseOptionDDModal'), 
+        __metadata('design:type', (typeof (_d = typeof ng2_modal_1.Modal !== 'undefined' && ng2_modal_1.Modal) === 'function' && _d) || Object)
+    ], BuildAI.prototype, "phraseOptionDDModalComponent", void 0);
     __decorate([
         WebStorage_1.SessionStorage(), 
         __metadata('design:type', Object)
@@ -4974,10 +5013,10 @@ var BuildAI = (function () {
             encapsulation: core_1.ViewEncapsulation.None,
             styles: [__webpack_require__("./src/app/buildai/buildai.component.scss")]
         }), 
-        __metadata('design:paramtypes', [(typeof (_a = typeof AIService_1.AIService !== 'undefined' && AIService_1.AIService) === 'function' && _a) || Object, (typeof (_b = typeof BotTrainingService_1.BotTrainingService !== 'undefined' && BotTrainingService_1.BotTrainingService) === 'function' && _b) || Object])
+        __metadata('design:paramtypes', [(typeof (_e = typeof AIService_1.AIService !== 'undefined' && AIService_1.AIService) === 'function' && _e) || Object, (typeof (_f = typeof BotTrainingService_1.BotTrainingService !== 'undefined' && BotTrainingService_1.BotTrainingService) === 'function' && _f) || Object])
     ], BuildAI);
     return BuildAI;
-    var _a, _b;
+    var _a, _b, _c, _d, _e, _f;
 }());
 exports.BuildAI = BuildAI;
 
