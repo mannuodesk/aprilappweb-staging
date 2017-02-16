@@ -18228,7 +18228,7 @@ var Specific = (function () {
                 if (this.AddButtonName.match(/[a-z]/i)) {
                     specialCharacterFlag = false;
                 }
-                if (this.AddButtonBlock != "" && this.AddButtonName != "" && specialCharacterFlag == false) {
+                if (this.AddButtonBlock != "" && this.AddButtonBlock != "0" && this.AddButtonName.replace(/\s/g, '').length != 0 && this.AddButtonName != "" && specialCharacterFlag == false) {
                     jQuery('#buttonName').removeClass('modalError');
                     jQuery('#simple-select').removeClass('modalError');
                     if (this.responseMessageDiff == 'addButton') {
@@ -18255,8 +18255,6 @@ var Specific = (function () {
             }
             else {
                 this.addBtnflag = false;
-                this.AddButtonUrl = 'http://' + this.AddButtonUrl;
-                var cardAddButton = new CardAddButton_1.CardAddButton(this.AddButtonName, this.AddButtonUrl, "", "");
                 var specialCharacterFlag = false;
                 if (/^[a-zA-Z0-9- ]*$/.test(this.AddButtonName) == false) {
                     specialCharacterFlag = true;
@@ -18264,7 +18262,9 @@ var Specific = (function () {
                 if (this.AddButtonName.match(/[a-z]/i)) {
                     specialCharacterFlag = false;
                 }
-                if (this.AddButtonUrl != "" && this.AddButtonName != "" && specialCharacterFlag == false) {
+                if (this.AddButtonUrl != "" && this.AddButtonUrl.replace(/\s/g, '').length != 0 && this.AddButtonName.replace(/\s/g, '').length != 0 && this.AddButtonName != "" && specialCharacterFlag == false) {
+                    this.AddButtonUrl = 'http://' + this.AddButtonUrl;
+                    var cardAddButton = new CardAddButton_1.CardAddButton(this.AddButtonName, this.AddButtonUrl, "", "");
                     jQuery('#buttonName').removeClass('modalError');
                     jQuery('#urlContentData').removeClass('modalError');
                     this._botTrainingService.addAddButton(this.addButtonResponseMessageId, cardAddButton, this.addButtonResponseMessageType, jQuery('.addbuttonResultList').length).subscribe(function (a) {
@@ -18342,7 +18342,7 @@ var Specific = (function () {
         if (this.QuickReplyButtonName.match(/[a-z]/i)) {
             specialCharacterFlag = false;
         }
-        if (this.QuickReplyButtonName != "" && this.QuickReplyButtonBlock != "" && specialCharacterFlag == false && this.quickReplyBtnFlag == false) {
+        if (this.QuickReplyButtonName != "" && this.QuickReplyButtonName.replace(/\s/g, '').length != 0 && this.QuickReplyButtonBlock != "" && this.QuickReplyButtonBlock != "0" && specialCharacterFlag == false && this.quickReplyBtnFlag == false) {
             this.quickReplyBtnFlag = true;
             this._botTrainingService.addQuickReply(this.quickResponseMessageId, this.QuickReplyButtonName, this.QuickReplyButtonBlock, counts).subscribe(function (a) {
                 if (a.code == 200) {
