@@ -18863,7 +18863,7 @@ var Specific = (function () {
             }
             if (this.GroupText != "" && this.addGroupFlag == false && this.GroupText.replace(/\s/g, '').length != 0 && specialCharacterFlag == false) {
                 this.addGroupFlag = true;
-                this._botTrainingService.addGroup(this.GroupText, 'Specific').subscribe(function (a) {
+                this._botTrainingService.addGroup(this.GroupText, 'Generic').subscribe(function (a) {
                     _this.addGroupFlag = false;
                     if (a.code == 200) {
                         var groupObj = new BlockGroupsModel_1.BlockGroupsModel(a.data, []);
@@ -18884,8 +18884,10 @@ var Specific = (function () {
                 jQuery('#specialCharactersGroup').fadeIn("slow");
             }
             else {
-                this.addGroupFlag = false;
-                jQuery('#emptyGroup').fadeIn("slow");
+                if (this.addGroupFlag != true) {
+                    this.addGroupFlag = false;
+                    jQuery('#emptyGroup').fadeIn("slow");
+                }
             }
         }
     };

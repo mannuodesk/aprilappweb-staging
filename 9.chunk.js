@@ -18515,8 +18515,10 @@ var Generic = (function () {
                 jQuery('#specialCharactersGroup').fadeIn("slow");
             }
             else {
-                this.addGroupFlag = false;
-                jQuery('#emptyGroup').fadeIn("slow");
+                if (this.addGroupFlag != true) {
+                    this.addGroupFlag = false;
+                    jQuery('#emptyGroup').fadeIn("slow");
+                }
             }
         }
     };
