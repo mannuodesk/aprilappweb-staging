@@ -13404,10 +13404,10 @@ var core_1 = __webpack_require__("./node_modules/@angular/core/index.js");
 var http_1 = __webpack_require__("./node_modules/@angular/http/index.js");
 __webpack_require__("./node_modules/rxjs/add/operator/map.js");
 var BotTrainingService = (function () {
+    //baseUrl:string = "http://localhost/";
     function BotTrainingService(http) {
         this.http = http;
-        //baseUrl: string = "https://aprilappserver.azurewebsites.net/";
-        this.baseUrl = "http://localhost/";
+        this.baseUrl = "https://aprilappserver.azurewebsites.net/";
     }
     BotTrainingService.prototype.updateBlockName = function (blockId, blockName) {
         return this.http.get(this.baseUrl + 'blocks/updateBlockName/' + blockId + '/' + blockName)

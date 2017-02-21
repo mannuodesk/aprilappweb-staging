@@ -17689,12 +17689,14 @@ var ArticleCard_1 = __webpack_require__("./src/app/models/ArticleCard.ts");
 var QuickReplyCard_1 = __webpack_require__("./src/app/models/QuickReplyCard.ts");
 var core_2 = __webpack_require__("./node_modules/@angular/core/index.js");
 var ng2_modal_1 = __webpack_require__("./node_modules/ng2-modal/index.js");
+var WebStorage_1 = __webpack_require__("./node_modules/angular2-localstorage/WebStorage.ts");
 //select2GroupedData: Select2OptionData[] = [];
 var Generic = (function () {
     function Generic(_botTrainingService, _rootNode) {
         this._botTrainingService = _botTrainingService;
         this._rootNode = _rootNode;
         this.baseUrl = "https://aprilappserver.azurewebsites.net/";
+        this.dataArray = [];
         this.select2GroupedData = [];
         this.GroupText = "";
         this.groups = [];
@@ -17722,6 +17724,51 @@ var Generic = (function () {
         this.populateBlocksDropdown();
         jQuery('#simple-select').val(0);
     }
+    //Build AI
+    Generic.prototype.populateSessionBlocks = function () {
+        var _this = this;
+        this.dataArray = [];
+        var blockObj = {
+            id: '',
+            text: ''
+        };
+        var groupObj = {
+            'id': '',
+            'text': '',
+            'children': []
+        };
+        blockObj.id = '-1';
+        blockObj.text = 'Select a Block';
+        groupObj.id = '0';
+        groupObj.text = 'Block Mapping';
+        groupObj.children.push(blockObj);
+        this.dataArray.push(groupObj);
+        this._botTrainingService.getAllGroups2('-1').subscribe(function (a) {
+            if (a.code == 200) {
+                _this.blockGroupsModel = a.data;
+                for (var i = 0; i < _this.blockGroupsModel.length; i++) {
+                    groupObj = {
+                        'id': '',
+                        'text': '',
+                        'children': []
+                    };
+                    groupObj.id = _this.blockGroupsModel[i].group._id;
+                    groupObj.text = _this.blockGroupsModel[i].group.name;
+                    groupObj.children = [];
+                    for (var j = 0; j < _this.blockGroupsModel[i].blocks.length; j++) {
+                        blockObj = {
+                            id: '',
+                            text: ''
+                        };
+                        blockObj.id = _this.blockGroupsModel[i].blocks[j]._id;
+                        blockObj.text = _this.blockGroupsModel[i].blocks[j].name;
+                        groupObj.children.push(blockObj);
+                    }
+                    _this.dataArray.push(groupObj);
+                }
+            }
+        });
+    };
     //Delete UI Buttons Hovering and Image Changing
     Generic.prototype.mouseEnter = function (id) {
         jQuery('#' + id).show();
@@ -18191,6 +18238,7 @@ var Generic = (function () {
                             }
                         }
                     }
+                    _this.populateSessionBlocks();
                 }
                 else if (a.code == 300) {
                     _this.addBlockFlag = false;
@@ -18503,6 +18551,7 @@ var Generic = (function () {
                         jQuery('#duplicateGroup').fadeOut("slow");
                         jQuery('.GroupForm').fadeOut("slow");
                         jQuery('.GroupBtn').fadeIn("slow");
+                        _this.populateSessionBlocks();
                     }
                     else if (a.code == 300) {
                         _this.addGroupFlag = false;
@@ -19035,6 +19084,10 @@ var Generic = (function () {
             _this.galleryIndexModal.close();
         });
     };
+    __decorate([
+        WebStorage_1.SessionStorage(), 
+        __metadata('design:type', Object)
+    ], Generic.prototype, "dataArray", void 0);
     __decorate([
         core_1.ViewChild('myModal'), 
         __metadata('design:type', (typeof (_a = typeof ng2_modal_1.Modal !== 'undefined' && ng2_modal_1.Modal) === 'function' && _a) || Object)

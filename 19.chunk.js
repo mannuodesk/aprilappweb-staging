@@ -4916,16 +4916,18 @@ var BuildAI = (function () {
         var _this = this;
         console.log(_phraseGroupId);
         if (event.keyCode == 13) {
-            this._aiService.addPhrase(jQuery('#phraseText' + _phraseGroupId).val(), _phraseGroupId).subscribe(function (a) {
-                if (a.code == 200) {
-                    for (var i = 0; i < _this.phraseGroups.length; i++) {
-                        if (_this.phraseGroups[i].phraseGroup._id == _phraseGroupId) {
-                            _this.phraseGroups[i].phrases.push(a.data);
-                            jQuery('#phraseText' + _phraseGroupId).val('');
+            if (jQuery('#phraseText' + _phraseGroupId).val() != "" && jQuery('#phraseText' + _phraseGroupId).val() != undefined) {
+                this._aiService.addPhrase(jQuery('#phraseText' + _phraseGroupId).val(), _phraseGroupId).subscribe(function (a) {
+                    if (a.code == 200) {
+                        for (var i = 0; i < _this.phraseGroups.length; i++) {
+                            if (_this.phraseGroups[i].phraseGroup._id == _phraseGroupId) {
+                                _this.phraseGroups[i].phrases.push(a.data);
+                                jQuery('#phraseText' + _phraseGroupId).val('');
+                            }
                         }
                     }
-                }
-            });
+                });
+            }
         }
     };
     BuildAI.prototype.deletePhraseGroup = function (id) {
