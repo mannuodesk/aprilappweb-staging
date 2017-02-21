@@ -17701,6 +17701,7 @@ var Generic = (function () {
         this.GroupText = "";
         this.groups = [];
         this.blockGroupsModel = [];
+        this.blockGroupsModel2 = [];
         this.popBlockName = "Block Name";
         this.AddButtonBlock = "";
         this.AddButtonName = "";
@@ -17745,23 +17746,23 @@ var Generic = (function () {
         this.dataArray.push(groupObj);
         this._botTrainingService.getAllGroups2('-1').subscribe(function (a) {
             if (a.code == 200) {
-                _this.blockGroupsModel = a.data;
-                for (var i = 0; i < _this.blockGroupsModel.length; i++) {
+                _this.blockGroupsModel2 = a.data;
+                for (var i = 0; i < _this.blockGroupsModel2.length; i++) {
                     groupObj = {
                         'id': '',
                         'text': '',
                         'children': []
                     };
-                    groupObj.id = _this.blockGroupsModel[i].group._id;
-                    groupObj.text = _this.blockGroupsModel[i].group.name;
+                    groupObj.id = _this.blockGroupsModel2[i].group._id;
+                    groupObj.text = _this.blockGroupsModel2[i].group.name;
                     groupObj.children = [];
-                    for (var j = 0; j < _this.blockGroupsModel[i].blocks.length; j++) {
+                    for (var j = 0; j < _this.blockGroupsModel2[i].blocks.length; j++) {
                         blockObj = {
                             id: '',
                             text: ''
                         };
-                        blockObj.id = _this.blockGroupsModel[i].blocks[j]._id;
-                        blockObj.text = _this.blockGroupsModel[i].blocks[j].name;
+                        blockObj.id = _this.blockGroupsModel2[i].blocks[j]._id;
+                        blockObj.text = _this.blockGroupsModel2[i].blocks[j].name;
                         groupObj.children.push(blockObj);
                     }
                     _this.dataArray.push(groupObj);
