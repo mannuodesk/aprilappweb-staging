@@ -12925,8 +12925,6 @@ var Navbar = (function () {
         this._botTrainingService = _botTrainingService;
         this.toggleSidebarEvent = new core_1.EventEmitter();
         this.toggleChatEvent = new core_1.EventEmitter();
-        this.blockGroupsModel = [];
-        this.dataArray = [];
         this.$el = jQuery(el.nativeElement);
         this.config = config.getConfig();
         this.router = router;
@@ -12958,7 +12956,6 @@ var Navbar = (function () {
         this.router.navigate(['/app', 'extra', 'search'], { queryParams: { search: f.value.search } });
     };
     Navbar.prototype.ngOnInit = function () {
-        var _this = this;
         setTimeout(function () {
             var $chatNotification = jQuery('#chat-notification');
             $chatNotification.removeClass('hide').addClass('animated fadeIn')
@@ -12978,47 +12975,51 @@ var Navbar = (function () {
         this.$el.find('.input-group-addon + .form-control').on('blur focus', function (e) {
             jQuery(this).parents('.input-group')[e.type === 'focus' ? 'addClass' : 'removeClass']('focus');
         });
-        this.dataArray = [];
+        /*this.dataArray = [];
         var blockObj = {
-            id: '',
-            text: ''
-        };
+          id: '',
+          text: ''
+        }
         var groupObj = {
-            'id': '',
-            'text': '',
-            'children': []
-        };
+          'id': '',
+          'text': '',
+          'children': []
+        }
         blockObj.id = '-1';
-        blockObj.text = 'Select a Block';
+        blockObj.text = 'Select a Block'
         groupObj.id = '0';
         groupObj.text = 'Block Mapping';
         groupObj.children.push(blockObj);
         this.dataArray.push(groupObj);
-        this._botTrainingService.getAllGroups2('-1').subscribe(function (a) {
+        this._botTrainingService.getAllGroups2('-1').subscribe(
+          a => {
             if (a.code == 200) {
-                _this.blockGroupsModel = a.data;
-                for (var i = 0; i < _this.blockGroupsModel.length; i++) {
-                    groupObj = {
-                        'id': '',
-                        'text': '',
-                        'children': []
-                    };
-                    groupObj.id = _this.blockGroupsModel[i].group._id;
-                    groupObj.text = _this.blockGroupsModel[i].group.name;
-                    groupObj.children = [];
-                    for (var j = 0; j < _this.blockGroupsModel[i].blocks.length; j++) {
-                        blockObj = {
-                            id: '',
-                            text: ''
-                        };
-                        blockObj.id = _this.blockGroupsModel[i].blocks[j]._id;
-                        blockObj.text = _this.blockGroupsModel[i].blocks[j].name;
-                        groupObj.children.push(blockObj);
-                    }
-                    _this.dataArray.push(groupObj);
+              this.blockGroupsModel2 = a.data;
+              for (var i = 0; i < this.blockGroupsModel2.length; i++) {
+                groupObj = {
+                  'id': '',
+                  'text': '',
+                  'children': []
                 }
+                groupObj.id = this.blockGroupsModel2[i].group._id;
+                groupObj.text = this.blockGroupsModel2[i].group.name;
+                groupObj.children = [];
+                for (var j = 0; j < this.blockGroupsModel2[i].blocks.length; j++) {
+                  blockObj = {
+                    id: '',
+                    text: ''
+                  }
+                  blockObj.id = this.blockGroupsModel2[i].blocks[j]._id;
+                  blockObj.text = this.blockGroupsModel2[i].blocks[j].name;
+                  groupObj.children.push(blockObj);
+                }
+    
+                this.dataArray.push(groupObj);
+              }
+    
+              console.log(this.dataArray);
             }
-        });
+          });*/
     };
     __decorate([
         core_1.Output(), 
@@ -13028,10 +13029,6 @@ var Navbar = (function () {
         core_1.Output(), 
         __metadata('design:type', (typeof (_b = typeof core_1.EventEmitter !== 'undefined' && core_1.EventEmitter) === 'function' && _b) || Object)
     ], Navbar.prototype, "toggleChatEvent", void 0);
-    __decorate([
-        WebStorage_1.SessionStorage(), 
-        __metadata('design:type', Object)
-    ], Navbar.prototype, "dataArray", void 0);
     __decorate([
         WebStorage_1.SessionStorage(), 
         __metadata('design:type', String)

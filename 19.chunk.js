@@ -4738,14 +4738,14 @@ var BuildAI = (function () {
         this._aiService = _aiService;
         this._botTrainingService = _botTrainingService;
         this.phraseGroups = [];
-        this.blockGroupsModel = [];
+        this.blockGroupsModel2 = [];
         this.select2Data = [];
         this.dataArray = [];
     }
     BuildAI.prototype.ngOnInit = function () {
         this.phraseGroups = [];
-        this.populate();
         this.populateBlocks();
+        this.getDataArray();
     };
     BuildAI.prototype.updatePhrase = function (Id) {
         console.log(Id);
@@ -4760,11 +4760,11 @@ var BuildAI = (function () {
         var _this = this;
         this._botTrainingService.getAllGroups('-1').subscribe(function (a) {
             if (a.code == 200) {
-                _this.blockGroupsModel = a.data;
-                for (var i = 0; i < _this.blockGroupsModel.length; i++) {
-                    if (_this.blockGroupsModel[i].blocks.length > 0) {
-                        for (var j = 0; j < _this.blockGroupsModel[i].blocks.length; j++) {
-                            _this.select2Data.push({ id: _this.blockGroupsModel[i].blocks[j]._id, text: _this.blockGroupsModel[i].blocks[j].name });
+                _this.blockGroupsModel2 = a.data;
+                for (var i = 0; i < _this.blockGroupsModel2.length; i++) {
+                    if (_this.blockGroupsModel2[i].blocks.length > 0) {
+                        for (var j = 0; j < _this.blockGroupsModel2[i].blocks.length; j++) {
+                            _this.select2Data.push({ id: _this.blockGroupsModel2[i].blocks[j]._id, text: _this.blockGroupsModel2[i].blocks[j].name });
                         }
                     }
                 }
@@ -4833,6 +4833,7 @@ var BuildAI = (function () {
     };
     BuildAI.prototype.getDataArray = function () {
         var _this = this;
+        this.dataArray = [];
         var blockObj = {
             id: '',
             text: ''
@@ -4850,27 +4851,28 @@ var BuildAI = (function () {
         this.dataArray.push(groupObj);
         this._botTrainingService.getAllGroups2('-1').subscribe(function (a) {
             if (a.code == 200) {
-                _this.blockGroupsModel = a.data;
-                for (var i = 0; i < _this.blockGroupsModel.length; i++) {
+                _this.blockGroupsModel2 = a.data;
+                for (var i = 0; i < _this.blockGroupsModel2.length; i++) {
                     groupObj = {
                         'id': '',
                         'text': '',
                         'children': []
                     };
-                    groupObj.id = _this.blockGroupsModel[i].group._id;
-                    groupObj.text = _this.blockGroupsModel[i].group.name;
+                    groupObj.id = _this.blockGroupsModel2[i].group._id;
+                    groupObj.text = _this.blockGroupsModel2[i].group.name;
                     groupObj.children = [];
-                    for (var j = 0; j < _this.blockGroupsModel[i].blocks.length; j++) {
+                    for (var j = 0; j < _this.blockGroupsModel2[i].blocks.length; j++) {
                         blockObj = {
                             id: '',
                             text: ''
                         };
-                        blockObj.id = _this.blockGroupsModel[i].blocks[j]._id;
-                        blockObj.text = _this.blockGroupsModel[i].blocks[j].name;
+                        blockObj.id = _this.blockGroupsModel2[i].blocks[j]._id;
+                        blockObj.text = _this.blockGroupsModel2[i].blocks[j].name;
                         groupObj.children.push(blockObj);
                     }
                     _this.dataArray.push(groupObj);
                 }
+                _this.populate();
                 return _this.dataArray;
             }
         });
