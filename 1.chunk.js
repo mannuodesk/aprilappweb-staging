@@ -332,6 +332,7 @@ var core_1 = __webpack_require__("./node_modules/@angular/core/index.js");
 var http_1 = __webpack_require__("./node_modules/@angular/http/index.js");
 __webpack_require__("./node_modules/rxjs/add/operator/map.js");
 var UsersService = (function () {
+    //baseUrl:string = "http://localhost/";
     function UsersService(http) {
         this.http = http;
         this.baseUrl = "https://aprilappserver.azurewebsites.net/";
@@ -342,6 +343,10 @@ var UsersService = (function () {
     };
     UsersService.prototype.getUsersStats = function () {
         return this.http.get(this.baseUrl + 'users/dashboardStats')
+            .map(function (res) { return res.json(); });
+    };
+    UsersService.prototype.getGenderGraphData = function () {
+        return this.http.get(this.baseUrl + 'users/dashboardGenderStats')
             .map(function (res) { return res.json(); });
     };
     UsersService.prototype.authenticateAdminUser = function (email, password) {

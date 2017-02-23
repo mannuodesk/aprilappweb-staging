@@ -17661,7 +17661,8 @@ var QuillEditorComponent = (function () {
                 ['bold', 'italic', 'underline', 'strike'],
                 [{ 'list': 'ordered' }, { 'list': 'bullet' }],
                 [{ 'direction': 'rtl' }],
-                [{ 'align': [] }]
+                [{ 'align': [] }],
+                [{ 'color': [] }, { 'background': [] }]
             ]
         };
         this.onEditorCreated = new core_1.EventEmitter();

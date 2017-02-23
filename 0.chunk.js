@@ -12925,6 +12925,7 @@ var Navbar = (function () {
         this._botTrainingService = _botTrainingService;
         this.toggleSidebarEvent = new core_1.EventEmitter();
         this.toggleChatEvent = new core_1.EventEmitter();
+        this.genderGraphArray = [];
         this.$el = jQuery(el.nativeElement);
         this.config = config.getConfig();
         this.router = router;
@@ -12956,6 +12957,7 @@ var Navbar = (function () {
         this.router.navigate(['/app', 'extra', 'search'], { queryParams: { search: f.value.search } });
     };
     Navbar.prototype.ngOnInit = function () {
+        var _this = this;
         setTimeout(function () {
             var $chatNotification = jQuery('#chat-notification');
             $chatNotification.removeClass('hide').addClass('animated fadeIn')
@@ -12975,51 +12977,34 @@ var Navbar = (function () {
         this.$el.find('.input-group-addon + .form-control').on('blur focus', function (e) {
             jQuery(this).parents('.input-group')[e.type === 'focus' ? 'addClass' : 'removeClass']('focus');
         });
-        /*this.dataArray = [];
-        var blockObj = {
-          id: '',
-          text: ''
-        }
-        var groupObj = {
-          'id': '',
-          'text': '',
-          'children': []
-        }
-        blockObj.id = '-1';
-        blockObj.text = 'Select a Block'
-        groupObj.id = '0';
-        groupObj.text = 'Block Mapping';
-        groupObj.children.push(blockObj);
-        this.dataArray.push(groupObj);
-        this._botTrainingService.getAllGroups2('-1').subscribe(
-          a => {
+        this._userService.getGenderGraphData()
+            .subscribe(function (a) {
             if (a.code == 200) {
-              this.blockGroupsModel2 = a.data;
-              for (var i = 0; i < this.blockGroupsModel2.length; i++) {
-                groupObj = {
-                  'id': '',
-                  'text': '',
-                  'children': []
+                _this.morrisData = [];
+                _this.genderGraphArray = a.data;
+                var data = [];
+                var obj = {
+                    'y': "",
+                    'a': 0,
+                    'b': 0
+                };
+                for (var i = 0; i < _this.genderGraphArray.length; i++) {
+                    obj = {
+                        'y': "",
+                        'a': 0,
+                        'b': 0
+                    };
+                    var date = new Date(_this.genderGraphArray[i].date);
+                    var month = date.getMonth() + 1;
+                    console.log(month);
+                    obj.y = date.getFullYear().toString() + "-" + month.toString() + "-" + date.getDate().toString();
+                    obj.a = _this.genderGraphArray[i].maleCount;
+                    obj.b = _this.genderGraphArray[i].femaleCount;
+                    data.push(obj);
                 }
-                groupObj.id = this.blockGroupsModel2[i].group._id;
-                groupObj.text = this.blockGroupsModel2[i].group.name;
-                groupObj.children = [];
-                for (var j = 0; j < this.blockGroupsModel2[i].blocks.length; j++) {
-                  blockObj = {
-                    id: '',
-                    text: ''
-                  }
-                  blockObj.id = this.blockGroupsModel2[i].blocks[j]._id;
-                  blockObj.text = this.blockGroupsModel2[i].blocks[j].name;
-                  groupObj.children.push(blockObj);
-                }
-    
-                this.dataArray.push(groupObj);
-              }
-    
-              console.log(this.dataArray);
+                _this.morrisData = data;
             }
-          });*/
+        });
     };
     __decorate([
         core_1.Output(), 
@@ -13029,6 +13014,10 @@ var Navbar = (function () {
         core_1.Output(), 
         __metadata('design:type', (typeof (_b = typeof core_1.EventEmitter !== 'undefined' && core_1.EventEmitter) === 'function' && _b) || Object)
     ], Navbar.prototype, "toggleChatEvent", void 0);
+    __decorate([
+        WebStorage_1.SessionStorage(), 
+        __metadata('design:type', Object)
+    ], Navbar.prototype, "morrisData", void 0);
     __decorate([
         WebStorage_1.SessionStorage(), 
         __metadata('design:type', String)
@@ -13589,6 +13578,7 @@ var core_1 = __webpack_require__("./node_modules/@angular/core/index.js");
 var http_1 = __webpack_require__("./node_modules/@angular/http/index.js");
 __webpack_require__("./node_modules/rxjs/add/operator/map.js");
 var UsersService = (function () {
+    //baseUrl:string = "http://localhost/";
     function UsersService(http) {
         this.http = http;
         this.baseUrl = "https://aprilappserver.azurewebsites.net/";
@@ -13599,6 +13589,10 @@ var UsersService = (function () {
     };
     UsersService.prototype.getUsersStats = function () {
         return this.http.get(this.baseUrl + 'users/dashboardStats')
+            .map(function (res) { return res.json(); });
+    };
+    UsersService.prototype.getGenderGraphData = function () {
+        return this.http.get(this.baseUrl + 'users/dashboardGenderStats')
             .map(function (res) { return res.json(); });
     };
     UsersService.prototype.authenticateAdminUser = function (email, password) {
