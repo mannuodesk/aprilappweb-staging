@@ -17717,6 +17717,7 @@ var Generic = (function () {
         this.QuickReplyButtonBlock = "";
         this.quickReplyBtnFlag = false;
         this.addBlockFlag = false;
+        this.jQueryBlockId = "";
         this.addGroupFlag = false;
         this.galleryCardArray = [];
         this.cardArray = [];
@@ -18212,6 +18213,7 @@ var Generic = (function () {
     Generic.prototype.blockDetail = function (Id) {
         jQuery('.blockbtns').removeClass("blockactive");
         jQuery('#block' + Id).addClass("blockactive");
+        this.jQueryBlockId = Id;
         this.populateResponseMessages(Id);
     };
     Generic.prototype.populateResponseMessages = function (Id) {
@@ -18399,6 +18401,7 @@ var Generic = (function () {
     };
     Generic.prototype.ngOnInit = function () {
         var oldIndex;
+        var self = this;
         this.RenderSortable();
         jQuery("body").click(function (e) {
             if (e.target.className !== "blockNameDiv" && e.target.className !== "blockNameDiv2" && e.target.className !== "blockNameDiv form-control" && e.target.className !== "GroupName") {
@@ -18431,6 +18434,7 @@ var Generic = (function () {
                     newIndex: newIndex,
                     groupId: groupId
                 }, function (data, status) {
+                    console.log("Done Sorting");
                 });
                 jQuery(this).removeAttr('data-previndex');
             }
@@ -18463,6 +18467,7 @@ var Generic = (function () {
                     newIndex: newIndex,
                     groupId: groupId
                 }, function (data, status) {
+                    self.blockDetail(self.jQueryBlockId);
                 });
                 jQuery(this).removeAttr('data-previndex');
             }

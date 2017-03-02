@@ -18768,6 +18768,7 @@ var Specific = (function () {
     };
     Specific.prototype.ngOnInit = function () {
         var oldIndex;
+        var self = this;
         this.RenderSortable();
         jQuery("body").click(function (e) {
             if (e.target.className !== "blockNameDiv" && e.target.className !== "blockNameDiv2" && e.target.className !== "blockNameDiv form-control" && e.target.className !== "GroupName") {
@@ -18800,6 +18801,7 @@ var Specific = (function () {
                     newIndex: newIndex,
                     groupId: groupId
                 }, function (data, status) {
+                    console.log("Done Sorting");
                 });
                 jQuery(this).removeAttr('data-previndex');
             }
@@ -18832,6 +18834,7 @@ var Specific = (function () {
                     newIndex: newIndex,
                     groupId: groupId
                 }, function (data, status) {
+                    self.blockDetail(self.jQueryBlockId);
                 });
                 jQuery(this).removeAttr('data-previndex');
             }
