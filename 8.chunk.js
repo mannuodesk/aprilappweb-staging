@@ -18450,7 +18450,12 @@ var Specific = (function () {
                 else {
                     _this.blockIsCompletedStatusChange(_this.popBlock._id, false);
                 }
-                _this.blockDetail(_this.popBlock._id);
+                for (var i = 0; i < _this.cardArray.length; i++) {
+                    if (_this.cardArray[i]._id == responseMessageId) {
+                        _this.cardArray[i].isCompleted = true;
+                        break;
+                    }
+                }
             }
         });
     };
@@ -18520,7 +18525,13 @@ var Specific = (function () {
                 else {
                     _this.blockIsCompletedStatusChange(_this.popBlock._id, false);
                 }
-                _this.blockDetail(blockId);
+                for (var i = 0; i < _this.cardArray.length; i++) {
+                    if (_this.cardArray[i]._id == resMesId) {
+                        _this.cardArray[i].isCompleted = false;
+                        _this.cardArray[i].data.push(a.object);
+                        break;
+                    }
+                }
             }
         });
     };
