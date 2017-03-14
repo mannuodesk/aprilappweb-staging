@@ -18084,7 +18084,7 @@ var Generic = (function () {
                 }
                 for (var i = 0; i < _this.cardArray.length; i++) {
                     if (_this.cardArray[i]._id == responseMessageId) {
-                        _this.cardArray[i].isCompleted = true;
+                        _this.cardArray[i].isCompleted = a.data;
                         break;
                     }
                 }
@@ -18094,12 +18094,14 @@ var Generic = (function () {
     Generic.prototype.updateDescriptionGalleryCard = function (responseMessageId, indexId) {
         this._botTrainingService.updateDescriptionText(responseMessageId, jQuery('#galleryCardDescription' + indexId).val(), indexId).subscribe(function (a) {
             if (a.code == 200) {
+                console.log("Description Updated");
             }
         });
     };
     Generic.prototype.updateUrlGalleryCard = function (responseMessageId, indexId) {
         this._botTrainingService.updateUrlText(responseMessageId, jQuery('#galleryCardUrl' + indexId).val(), indexId).subscribe(function (a) {
             if (a.code == 200) {
+                console.log("Description Updated");
             }
         });
     };
@@ -18114,7 +18116,17 @@ var Generic = (function () {
         var file = event.target.files[0];
         this._botTrainingService.getPictureUrl(file, responseMessageId, "gallery", indexId).subscribe(function (a) {
             if (a.code == 200) {
-                _this.blockDetail(blockId);
+                console.log(a.data);
+                for (var i = 0; i < _this.cardArray.length; i++) {
+                    if (_this.cardArray[i]._id == responseMessageId) {
+                        for (var j = 0; j < _this.cardArray[i].data.length; j++) {
+                            if (_this.cardArray[i].data[j].indexId == indexId) {
+                                _this.cardArray[i].data[j].pictureUrl = a.data;
+                                break;
+                            }
+                        }
+                    }
+                }
             }
         });
     };
