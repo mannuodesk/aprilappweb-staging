@@ -18482,7 +18482,17 @@ var Specific = (function () {
         var file = event.target.files[0];
         this._botTrainingService.getPictureUrl(file, responseMessageId, "gallery", indexId).subscribe(function (a) {
             if (a.code == 200) {
-                _this.blockDetail(blockId);
+                console.log(a.data);
+                for (var i = 0; i < _this.cardArray.length; i++) {
+                    if (_this.cardArray[i]._id == responseMessageId) {
+                        for (var j = 0; j < _this.cardArray[i].data.length; j++) {
+                            if (_this.cardArray[i].data[j].indexId == indexId) {
+                                _this.cardArray[i].data[j].pictureUrl = a.data;
+                                break;
+                            }
+                        }
+                    }
+                }
             }
         });
     };

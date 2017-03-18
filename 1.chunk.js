@@ -188,6 +188,7 @@ var Login = (function () {
                     if (a.code == 200) {
                         console.log(a.message);
                         _this.userId = a.data;
+                        sessionStorage.setItem('userId', a.data);
                         //navigation
                         _this.router.navigate(['/app/dashboard']);
                         jQuery('#btns').show();
@@ -220,8 +221,9 @@ var Login = (function () {
             this._userService.authenticateAdminUser(this.Email, this.Password).subscribe(function (a) {
                 console.log(a);
                 if (a.code == 200) {
-                    console.log(a.message);
+                    console.log(a.data);
                     _this.userId = a.data;
+                    sessionStorage.setItem('userId', a.data);
                     //navigation
                     _this.router.navigate(['/app/dashboard']);
                     jQuery('#btns').show();
