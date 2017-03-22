@@ -18485,7 +18485,7 @@ var Generic = (function () {
                 // gets the new and old index then removes the temporary attribute
                 var newIndex = ui.item.index() + 1;
                 var groupId = jQuery(this).attr('data-previndex');
-                jQuery.post("http://localhost/responsemessage/sortingOfResponseMessages", {
+                jQuery.post("https://aprilappserver.azurewebsites.net/responsemessage/sortingOfResponseMessages", {
                     oldIndex: oldIndex,
                     newIndex: newIndex,
                     groupId: groupId
