@@ -13004,6 +13004,7 @@ var Navbar = (function () {
                     data.push(obj);
                 }
                 _this.morrisData = data;
+                localStorage.setItem('chartData', JSON.stringify(_this.morrisData));
             }
         });
     };
@@ -13015,10 +13016,6 @@ var Navbar = (function () {
         core_1.Output(), 
         __metadata('design:type', (typeof (_b = typeof core_1.EventEmitter !== 'undefined' && core_1.EventEmitter) === 'function' && _b) || Object)
     ], Navbar.prototype, "toggleChatEvent", void 0);
-    __decorate([
-        WebStorage_1.SessionStorage(), 
-        __metadata('design:type', Object)
-    ], Navbar.prototype, "morrisData", void 0);
     __decorate([
         WebStorage_1.SessionStorage(), 
         __metadata('design:type', String)

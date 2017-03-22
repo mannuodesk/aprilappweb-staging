@@ -20251,7 +20251,6 @@ exports.BootstrapCalendar = BootstrapCalendar;
 var core_1 = __webpack_require__("./node_modules/@angular/core/index.js");
 var app_config_1 = __webpack_require__("./src/app/app.config.ts");
 var UsersService_1 = __webpack_require__("./src/app/services/UsersService.ts");
-var WebStorage_1 = __webpack_require__("./node_modules/angular2-localstorage/WebStorage.ts");
 var Dashboard = (function () {
     function Dashboard(config, _usersService) {
         var _this = this;
@@ -20293,6 +20292,8 @@ var Dashboard = (function () {
         });
     }
     Dashboard.prototype.ngOnInit = function () {
+        this.morrisData = JSON.parse(localStorage.getItem('chartData'));
+        console.log();
         this.morris1Options = {
             resize: true,
             data: this.morrisData,
@@ -20302,10 +20303,6 @@ var Dashboard = (function () {
             lineColors: ['#02acee', '#ed008c']
         };
     };
-    __decorate([
-        WebStorage_1.SessionStorage(), 
-        __metadata('design:type', Object)
-    ], Dashboard.prototype, "morrisData", void 0);
     Dashboard = __decorate([
         core_1.Component({
             selector: 'dashboard',
