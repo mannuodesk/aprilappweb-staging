@@ -17500,6 +17500,7 @@ var Notification = (function () {
         this.notificationArray = [];
         this._notificationUserId = "";
         this.NotificationText = "";
+        this.waitFlag = true;
         this.populateNotifications();
     }
     Notification.prototype.populateNotifications = function () {
@@ -17512,9 +17513,13 @@ var Notification = (function () {
     };
     Notification.prototype.addNotification = function () {
         var _this = this;
-        if (this.NotificationText != "" || this.NotificationText != undefined) {
+        if (this.NotificationText != "" || this.NotificationText != undefined
+            && this.NotificationText.replace(/\s/g, '').length != 0 && this.waitFlag == true) {
+            this.waitFlag = false;
             this._notificationService.addNotification(this.NotificationText).subscribe(function (a) {
                 if (a.code == 200) {
+                    _this.waitFlag = true;
+                    _this.NotificationText = "";
                     _this.populateNotifications();
                 }
             });

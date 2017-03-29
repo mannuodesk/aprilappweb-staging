@@ -18162,6 +18162,7 @@ var Generic = (function () {
         this.galleryCard = new GalleryCard_1.GalleryCard("", "", "", "", [], jQuery('.galleryColumns' + resMesId).length);
         //this.card = new Card("gallery", this.galleryCard);
         this._botTrainingService.addGalleryCard(this.galleryCard, resMesId).subscribe(function (a) {
+            console.log(a);
             if (a.code == 200) {
                 if (a.data == true) {
                     _this.blockIsCompletedStatusChange(_this.popBlock._id, true);
