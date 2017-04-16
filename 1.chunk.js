@@ -163,11 +163,31 @@ var WebStorage_1 = __webpack_require__("./node_modules/angular2-localstorage/Web
 var router_1 = __webpack_require__("./node_modules/@angular/router/index.js");
 var Login = (function () {
     function Login(_userService, storageService, router) {
+        var _this = this;
         this._userService = _userService;
         this.Email = "";
         console.log(this.userId);
         this.router = router;
+        this.Email = localStorage.getItem('email');
+        this.Password = localStorage.getItem('password');
+        if (this.Email !== undefined && this.Email !== "" && this.Password !== undefined && this.Password !== "") {
+            this._userService.authenticateAdminUser(this.Email, this.Password).subscribe(function (a) {
+                console.log(a);
+                if (a.code == 200) {
+                    sessionStorage.setItem('userId', a.data);
+                    //navigation
+                    _this.router.navigate(['/app/dashboard']);
+                    jQuery('#btns').show();
+                    jQuery('#loader').hide();
+                }
+                else {
+                    _this.router.navigate(['/']);
+                }
+            });
+        }
     }
+    Login.prototype.ngOnInit = function () {
+    };
     Login.prototype.onKey = function (event) {
         var _this = this;
         if (event.keyCode == 13) {
@@ -204,6 +224,9 @@ var Login = (function () {
             }
         }
     };
+    Login.prototype.storeInLocalStorage = function () {
+        this.localStorageValue = true;
+    };
     Login.prototype.onSubmit = function () {
         var _this = this;
         jQuery('#wrongLogin').hide();
@@ -216,6 +239,10 @@ var Login = (function () {
             jQuery('#enterPassword').show();
         }
         if (this.Email != "" && this.Password != "") {
+            if (this.localStorageValue == true) {
+                localStorage.setItem('email', this.Email);
+                localStorage.setItem('password', this.Password);
+            }
             jQuery('#loader').show();
             jQuery('#btns').hide();
             this._userService.authenticateAdminUser(this.Email, this.Password).subscribe(function (a) {
@@ -321,63 +348,7 @@ module.exports = "/***********************************/\n/**             LOGIN  
 /***/ "./src/app/login/login.template.html":
 /***/ function(module, exports) {
 
-module.exports = "<div class=\"container\">\r\n  <main id=\"content\" class=\"widget-login-container\" role=\"main\">\r\n    <div class=\"row\">\r\n      <div class=\"col-xl-4 col-md-6 col-xs-10 offset-xl-4 offset-md-3 offset-xs-1\">\r\n        <h5 class=\"widget-login-logo animated fadeInUp\">\r\n          <i class=\"fa fa-circle text-gray\"></i>\r\n          april\r\n          <i class=\"fa fa-circle text-warning\"></i>\r\n        </h5>\r\n        <section class=\"widget widget-login animated fadeInUp\">\r\n          <header>\r\n            <h3>Login to your April App</h3>\r\n          </header>\r\n          <div class=\"widget-body\">\r\n            <!--<p class=\"widget-login-info\">\r\n              Use Facebook, Twitter or your email to sign in.\r\n            </p>\r\n            <p class=\"widget-login-info\">\r\n              Don't have an account? Sign up now!\r\n            </p>-->\r\n            <form class=\"login-form mt-lg\">\r\n              <div class=\"form-group\">\r\n                <input type=\"text\" [(ngModel)]=\"Email\" name=\"Email\" class=\"form-control\" id=\"exampleInputEmail1\" placeholder=\"Username\">\r\n              </div>\r\n              <div class=\"form-group\">\r\n                <input [(ngModel)]=\"Password\" name=\"Password\" (keyup)=\"onKey($event)\" class=\"form-control\" id=\"pswd\" type=\"password\" placeholder=\"Password\">\r\n              </div>\r\n              <div id=\"wrongLogin\" style=\"display:none\" class=\"form-group\">\r\n                <div class=\"alert alert-danger alert-sm\">\r\n                  <span class=\"fw-semi-bold\">Danger:</span> Invalid User Name or Password.\r\n                </div>\r\n              </div>\r\n              <div id=\"enterEmail\" style=\"display:none\" class=\"form-group\">\r\n                <div class=\"alert alert-warning alert-sm\">\r\n                  <span class=\"fw-semi-bold\">Warning:</span> Please Enter Email.\r\n                </div>\r\n              </div>\r\n              <div id=\"enterPassword\" style=\"display:none\" class=\"form-group\">\r\n                <div class=\"alert alert-warning alert-sm\">\r\n                  <span class=\"fw-semi-bold\">Warning:</span> Please Enter Password.\r\n                </div>\r\n              </div>\r\n              <div id=\"btns\" class=\"clearfix\">\r\n                <div class=\"btn-toolbar pull-xs-right m-t-1\">\r\n                  <!--<button type=\"button\" class=\"btn btn-secondary btn-sm\">Create an Account</button>-->\r\n                  \r\n                  <a (click)=\"onSubmit()\" class=\"btn btn-inverse btn-sm\" style=\"color:white;\">Login</a>\r\n                  <div class=\"abc-checkbox widget-login-info pull-xs-right\">\r\n                      <input type=\"checkbox\" id=\"checkbox1\" value=\"1\">\r\n                      <label for=\"checkbox1\">Keep me signed in </label>\r\n                    </div>\r\n                </div>\r\n              </div>\r\n              <div id=\"loader\" class=\"clearfix\" style=\"text-align: center;display: none\">\r\n                <i class=\"fa fa-spinner fa-spin\" style=\"font-size:24px\"></i>\r\n              </div>\r\n              <div class=\"row m-t-1\">\r\n                <div class=\"col-md-6 push-md-6\">\r\n                  <div class=\"clearfix\">\r\n                    \r\n                  </div>\r\n                </div>\r\n\r\n                <!--<div class=\"col-md-6 pull-md-6\">\r\n                  <a class=\"mr-n-lg\" href=\"#\">Trouble with account?</a>\r\n                </div>-->\r\n              </div>\r\n            </form>\r\n          </div>\r\n        </section>\r\n      </div>\r\n    </div>\r\n  </main>\r\n  <footer class=\"page-footer\">\r\n    2017 &copy; nDever\r\n  </footer>\r\n</div>\r\n"
-
-/***/ },
-
-/***/ "./src/app/services/UsersService.ts":
-/***/ function(module, exports, __webpack_require__) {
-
-"use strict";
-"use strict";
-var core_1 = __webpack_require__("./node_modules/@angular/core/index.js");
-var http_1 = __webpack_require__("./node_modules/@angular/http/index.js");
-__webpack_require__("./node_modules/rxjs/add/operator/map.js");
-var UsersService = (function () {
-    //baseUrl:string = "http://localhost/";
-    function UsersService(http) {
-        this.http = http;
-        this.baseUrl = "https://aprilappserver.azurewebsites.net/";
-    }
-    UsersService.prototype.getUsers = function () {
-        return this.http.get(this.baseUrl + 'users/getAllUsers')
-            .map(function (res) { return res.json(); });
-    };
-    UsersService.prototype.getUsersStats = function () {
-        return this.http.get(this.baseUrl + 'users/dashboardStats')
-            .map(function (res) { return res.json(); });
-    };
-    UsersService.prototype.getGenderGraphData = function () {
-        return this.http.get(this.baseUrl + 'users/dashboardGenderStats')
-            .map(function (res) { return res.json(); });
-    };
-    UsersService.prototype.authenticateAdminUser = function (email, password) {
-        var body = JSON.stringify({ "email": email, "password": password });
-        var headers = new http_1.Headers({ 'Content-Type': 'application/json' });
-        var options = new http_1.RequestOptions({ method: 'post', headers: headers });
-        return this.http.post(this.baseUrl + "users/adminUserLogin", body, options)
-            .map(function (res) { return res.json(); });
-    };
-    UsersService.prototype.getAdminData = function (Id) {
-        var body = JSON.stringify({ "userId": Id });
-        var headers = new http_1.Headers({ 'Content-Type': 'application/json' });
-        var options = new http_1.RequestOptions({ method: 'post', headers: headers });
-        return this.http.post(this.baseUrl + "users/getAdminUser", body, options)
-            .map(function (res) { return res.json(); });
-    };
-    UsersService.prototype.deleteUsers = function (Id) {
-        return this.http.get(this.baseUrl + 'users/deleteUser/' + Id)
-            .map(function (res) { return res.json(); });
-    };
-    UsersService = __decorate([
-        core_1.Injectable(), 
-        __metadata('design:paramtypes', [(typeof (_a = typeof http_1.Http !== 'undefined' && http_1.Http) === 'function' && _a) || Object])
-    ], UsersService);
-    return UsersService;
-    var _a;
-}());
-exports.UsersService = UsersService;
-
+module.exports = "<div class=\"container\">\r\n  <main id=\"content\" class=\"widget-login-container\" role=\"main\">\r\n    <div class=\"row\">\r\n      <div class=\"col-xl-4 col-md-6 col-xs-10 offset-xl-4 offset-md-3 offset-xs-1\">\r\n        <h5 class=\"widget-login-logo animated fadeInUp\">\r\n          <i class=\"fa fa-circle text-gray\"></i>\r\n          april\r\n          <i class=\"fa fa-circle text-warning\"></i>\r\n        </h5>\r\n        <section class=\"widget widget-login animated fadeInUp\">\r\n          <header>\r\n            <h3>Login to your April App</h3>\r\n          </header>\r\n          <div class=\"widget-body\">\r\n            <!--<p class=\"widget-login-info\">\r\n              Use Facebook, Twitter or your email to sign in.\r\n            </p>\r\n            <p class=\"widget-login-info\">\r\n              Don't have an account? Sign up now!\r\n            </p>-->\r\n            <form class=\"login-form mt-lg\">\r\n              <div class=\"form-group\">\r\n                <input type=\"text\" [(ngModel)]=\"Email\" name=\"Email\" class=\"form-control\" id=\"exampleInputEmail1\" placeholder=\"Username\">\r\n              </div>\r\n              <div class=\"form-group\">\r\n                <input [(ngModel)]=\"Password\" name=\"Password\" (keyup)=\"onKey($event)\" class=\"form-control\" id=\"pswd\" type=\"password\" placeholder=\"Password\">\r\n              </div>\r\n              <div id=\"wrongLogin\" style=\"display:none\" class=\"form-group\">\r\n                <div class=\"alert alert-danger alert-sm\">\r\n                  <span class=\"fw-semi-bold\">Danger:</span> Invalid User Name or Password.\r\n                </div>\r\n              </div>\r\n              <div id=\"enterEmail\" style=\"display:none\" class=\"form-group\">\r\n                <div class=\"alert alert-warning alert-sm\">\r\n                  <span class=\"fw-semi-bold\">Warning:</span> Please Enter Email.\r\n                </div>\r\n              </div>\r\n              <div id=\"enterPassword\" style=\"display:none\" class=\"form-group\">\r\n                <div class=\"alert alert-warning alert-sm\">\r\n                  <span class=\"fw-semi-bold\">Warning:</span> Please Enter Password.\r\n                </div>\r\n              </div>\r\n              <div id=\"btns\" class=\"clearfix\">\r\n                <div class=\"btn-toolbar pull-xs-right m-t-1\">\r\n                  <!--<button type=\"button\" class=\"btn btn-secondary btn-sm\">Create an Account</button>-->\r\n                  \r\n                  <a (click)=\"onSubmit()\" class=\"btn btn-inverse btn-sm\" style=\"color:white;\">Login</a>\r\n                  <div class=\"abc-checkbox widget-login-info pull-xs-right\">\r\n                      <input type=\"checkbox\" (click)=\"storeInLocalStorage()\" id=\"checkbox1\" value=\"1\">\r\n                      <label for=\"checkbox1\">Keep me signed in</label>\r\n                    </div>\r\n                </div>\r\n              </div>\r\n              <div id=\"loader\" class=\"clearfix\" style=\"text-align: center;display: none\">\r\n                <i class=\"fa fa-spinner fa-spin\" style=\"font-size:24px\"></i>\r\n              </div>\r\n              <div class=\"row m-t-1\">\r\n                <div class=\"col-md-6 push-md-6\">\r\n                  <div class=\"clearfix\">\r\n                    \r\n                  </div>\r\n                </div>\r\n\r\n                <!--<div class=\"col-md-6 pull-md-6\">\r\n                  <a class=\"mr-n-lg\" href=\"#\">Trouble with account?</a>\r\n                </div>-->\r\n              </div>\r\n            </form>\r\n          </div>\r\n        </section>\r\n      </div>\r\n    </div>\r\n  </main>\r\n  <footer class=\"page-footer\">\r\n    2017 &copy; nDever\r\n  </footer>\r\n</div>\r\n"
 
 /***/ }
 

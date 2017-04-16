@@ -17880,82 +17880,82 @@ exports.WidgetModule = WidgetModule;
 var core_1 = __webpack_require__("./node_modules/@angular/core/index.js");
 var http_1 = __webpack_require__("./node_modules/@angular/http/index.js");
 __webpack_require__("./node_modules/rxjs/add/operator/map.js");
+var UrlService_1 = __webpack_require__("./src/app/services/UrlService.ts");
 var MiscServices = (function () {
-    //baseUrl:string = "http://localhost/";
     function MiscServices(http) {
         this.http = http;
-        this.baseUrl = "https://aprilappserver.azurewebsites.net/";
+        this.urlService = new UrlService_1.UrlService();
     }
     MiscServices.prototype.getAboutApril = function () {
-        return this.http.get(this.baseUrl + 'aboutapril/getAboutApril')
+        return this.http.get(this.urlService.baseUrl + 'aboutapril/getAboutApril')
             .map(function (res) { return res.json(); });
     };
     MiscServices.prototype.getTermsOfService = function () {
-        return this.http.get(this.baseUrl + 'termsofservice/getTermsOfService')
+        return this.http.get(this.urlService.baseUrl + 'termsofservice/getTermsOfService')
             .map(function (res) { return res.json(); });
     };
     MiscServices.prototype.updateDirectoryTitle = function (Id, title) {
         var body = JSON.stringify({ 'title': title, '_directoryId': Id });
         var headers = new http_1.Headers({ 'Content-Type': 'application/json' });
         var options = new http_1.RequestOptions({ method: 'post', headers: headers });
-        return this.http.post(this.baseUrl + "directory/updateDirectoryTitle", body, options)
+        return this.http.post(this.urlService.baseUrl + "directory/updateDirectoryTitle", body, options)
             .map(function (res) { return res.json(); });
     };
     MiscServices.prototype.updateFAQTitle = function (Id, title) {
         var body = JSON.stringify({ 'title': title, '_faqsId': Id });
         var headers = new http_1.Headers({ 'Content-Type': 'application/json' });
         var options = new http_1.RequestOptions({ method: 'post', headers: headers });
-        return this.http.post(this.baseUrl + "faqs/updateFaqsTitle", body, options)
+        return this.http.post(this.urlService.baseUrl + "faqs/updateFaqsTitle", body, options)
             .map(function (res) { return res.json(); });
     };
     MiscServices.prototype.getAlldirectory = function () {
-        return this.http.get(this.baseUrl + 'directory/getAllDirectory')
+        return this.http.get(this.urlService.baseUrl + 'directory/getAllDirectory')
             .map(function (res) { return res.json(); });
     };
     MiscServices.prototype.getAllFaqs = function () {
-        return this.http.get(this.baseUrl + 'faqs/getAllFaqs')
+        return this.http.get(this.urlService.baseUrl + 'faqs/getAllFaqs')
             .map(function (res) { return res.json(); });
     };
     MiscServices.prototype.addAboutApril = function (content) {
         var body = JSON.stringify({ 'content': content });
         var headers = new http_1.Headers({ 'Content-Type': 'application/json' });
         var options = new http_1.RequestOptions({ method: 'post', headers: headers });
-        return this.http.post(this.baseUrl + "aboutapril/addAboutApril", body, options)
+        return this.http.post(this.urlService.baseUrl + "aboutapril/addAboutApril", body, options)
             .map(function (res) { return res.json(); });
     };
     MiscServices.prototype.addTermsOfService = function (content) {
         var body = JSON.stringify({ 'content': content });
         var headers = new http_1.Headers({ 'Content-Type': 'application/json' });
         var options = new http_1.RequestOptions({ method: 'post', headers: headers });
-        return this.http.post(this.baseUrl + "termsofservice/addTermsOfService", body, options)
+        return this.http.post(this.urlService.baseUrl + "termsofservice/addTermsOfService", body, options)
             .map(function (res) { return res.json(); });
     };
     MiscServices.prototype.updateAboutApril = function (content, Id) {
         var body = JSON.stringify({ 'content': content, 'Id': Id });
         var headers = new http_1.Headers({ 'Content-Type': 'application/json' });
         var options = new http_1.RequestOptions({ method: 'post', headers: headers });
-        return this.http.post(this.baseUrl + "aboutapril/updateAboutApril", body, options)
+        return this.http.post(this.urlService.baseUrl + "aboutapril/updateAboutApril", body, options)
             .map(function (res) { return res.json(); });
     };
     MiscServices.prototype.updateTermsOfService = function (content, Id) {
         var body = JSON.stringify({ 'content': content, 'Id': Id });
         var headers = new http_1.Headers({ 'Content-Type': 'application/json' });
         var options = new http_1.RequestOptions({ method: 'post', headers: headers });
-        return this.http.post(this.baseUrl + "termsofservice/updateTermsOfService", body, options)
+        return this.http.post(this.urlService.baseUrl + "termsofservice/updateTermsOfService", body, options)
             .map(function (res) { return res.json(); });
     };
     MiscServices.prototype.addDirectory = function (title, content) {
         var body = JSON.stringify({ "title": title, 'content': content });
         var headers = new http_1.Headers({ 'Content-Type': 'application/json' });
         var options = new http_1.RequestOptions({ method: 'post', headers: headers });
-        return this.http.post(this.baseUrl + "directory/addDirectory", body, options)
+        return this.http.post(this.urlService.baseUrl + "directory/addDirectory", body, options)
             .map(function (res) { return res.json(); });
     };
     MiscServices.prototype.addFaqs = function (title, content) {
         var body = JSON.stringify({ "title": title, 'content': content });
         var headers = new http_1.Headers({ 'Content-Type': 'application/json' });
         var options = new http_1.RequestOptions({ method: 'post', headers: headers });
-        return this.http.post(this.baseUrl + "faqs/addFaqs", body, options)
+        return this.http.post(this.urlService.baseUrl + "faqs/addFaqs", body, options)
             .map(function (res) { return res.json(); });
     };
     MiscServices.prototype.updateDirectory = function (_directoryId, content) {
@@ -17963,7 +17963,7 @@ var MiscServices = (function () {
         var body = JSON.stringify({ "_directoryId": _directoryId, 'content': content });
         var headers = new http_1.Headers({ 'Content-Type': 'application/json' });
         var options = new http_1.RequestOptions({ method: 'post', headers: headers });
-        return this.http.post(this.baseUrl + "directory/updateDirectoryContent", body, options)
+        return this.http.post(this.urlService.baseUrl + "directory/updateDirectoryContent", body, options)
             .map(function (res) { return res.json(); });
     };
     MiscServices.prototype.updateFaqs = function (_directoryId, content) {
@@ -17971,15 +17971,15 @@ var MiscServices = (function () {
         var body = JSON.stringify({ "_faqsId": _directoryId, 'content': content });
         var headers = new http_1.Headers({ 'Content-Type': 'application/json' });
         var options = new http_1.RequestOptions({ method: 'post', headers: headers });
-        return this.http.post(this.baseUrl + "faqs/updateFaqsContent", body, options)
+        return this.http.post(this.urlService.baseUrl + "faqs/updateFaqsContent", body, options)
             .map(function (res) { return res.json(); });
     };
     MiscServices.prototype.deleteDirectory = function (Id) {
-        return this.http.get(this.baseUrl + 'directory/deleteDirectory/' + Id)
+        return this.http.get(this.urlService.baseUrl + 'directory/deleteDirectory/' + Id)
             .map(function (res) { return res.json(); });
     };
     MiscServices.prototype.deleteFaqs = function (Id) {
-        return this.http.get(this.baseUrl + 'faqs/deleteFaqs/' + Id)
+        return this.http.get(this.urlService.baseUrl + 'faqs/deleteFaqs/' + Id)
             .map(function (res) { return res.json(); });
     };
     MiscServices = __decorate([

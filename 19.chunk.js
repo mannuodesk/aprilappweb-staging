@@ -17628,25 +17628,25 @@ exports.default = NotificationModule;
 var core_1 = __webpack_require__("./node_modules/@angular/core/index.js");
 var http_1 = __webpack_require__("./node_modules/@angular/http/index.js");
 __webpack_require__("./node_modules/rxjs/add/operator/map.js");
+var UrlService_1 = __webpack_require__("./src/app/services/UrlService.ts");
 var NotificationService = (function () {
-    //baseUrl:string = "http://localhost/";
     function NotificationService(http) {
         this.http = http;
-        this.baseUrl = "https://aprilappserver.azurewebsites.net/";
+        this.urlService = new UrlService_1.UrlService();
     }
     NotificationService.prototype.getNotification = function (userId) {
-        return this.http.get(this.baseUrl + 'notification/getNotifications?userId=' + userId)
+        return this.http.get(this.urlService.baseUrl + 'notification/getNotifications?userId=' + userId)
             .map(function (res) { return res.json(); });
     };
     NotificationService.prototype.deleteNotification = function (userNotificationId) {
-        return this.http.get(this.baseUrl + 'notification/deleteNotification?userNotificationId=' + userNotificationId)
+        return this.http.get(this.urlService.baseUrl + 'notification/deleteNotification?userNotificationId=' + userNotificationId)
             .map(function (res) { return res.json(); });
     };
     NotificationService.prototype.addNotification = function (text) {
         var body = JSON.stringify({ 'text': text });
         var headers = new http_1.Headers({ 'Content-Type': 'application/json' });
         var options = new http_1.RequestOptions({ method: 'post', headers: headers });
-        return this.http.post(this.baseUrl + "notification/addNotification", body, options)
+        return this.http.post(this.urlService.baseUrl + "notification/addNotification", body, options)
             .map(function (res) { return res.json(); });
     };
     NotificationService = __decorate([

@@ -12915,7 +12915,6 @@ var router_1 = __webpack_require__("./node_modules/@angular/router/index.js");
 var app_config_1 = __webpack_require__("./src/app/app.config.ts");
 var UsersService_1 = __webpack_require__("./src/app/services/UsersService.ts");
 var LocalStorageEmitter_1 = __webpack_require__("./node_modules/angular2-localstorage/LocalStorageEmitter.ts");
-var WebStorage_1 = __webpack_require__("./node_modules/angular2-localstorage/WebStorage.ts");
 var AIService_1 = __webpack_require__("./src/app/services/AIService.ts");
 var BotTrainingService_1 = __webpack_require__("./src/app/services/BotTrainingService.ts");
 var Navbar = (function () {
@@ -12931,6 +12930,7 @@ var Navbar = (function () {
         this.config = config.getConfig();
         this.router = router;
         //Populating Admin Data
+        this.userId = sessionStorage.getItem('userId');
         if (this.userId != null) {
             this._userService.getAdminData(this.userId).subscribe(function (a) {
                 if (a.code == 200) {
@@ -12945,9 +12945,13 @@ var Navbar = (function () {
             });
         }
         else {
+            console.log('Return');
             this.router.navigate(['/']);
         }
     }
+    Navbar.prototype.logout = function () {
+        localStorage.clear();
+    };
     Navbar.prototype.toggleSidebar = function (state) {
         this.toggleSidebarEvent.emit(state);
     };
@@ -13016,10 +13020,6 @@ var Navbar = (function () {
         core_1.Output(), 
         __metadata('design:type', (typeof (_b = typeof core_1.EventEmitter !== 'undefined' && core_1.EventEmitter) === 'function' && _b) || Object)
     ], Navbar.prototype, "toggleChatEvent", void 0);
-    __decorate([
-        WebStorage_1.SessionStorage(), 
-        __metadata('design:type', String)
-    ], Navbar.prototype, "userId", void 0);
     Navbar = __decorate([
         core_1.Component({
             selector: '[navbar]',
@@ -13040,7 +13040,7 @@ exports.Navbar = Navbar;
 /***/ "./src/app/layout/navbar/navbar.template.html":
 /***/ function(module, exports) {
 
-module.exports = "<div class=\"container-fluid\">\n  <!-- .navbar-header contains links seen on xs & sm screens -->\n  <div class=\"navbar-header\">\n    <ul class=\"nav navbar-nav\">\n      <li class=\"nav-item\">\n        <template #sidebarToggleTooltip>\n          Turn on/off <br> sidebar <br>collapsing\n        </template>\n        <!-- whether to automatically collapse sidebar on mouseleave. If activated acts more like usual admin templates -->\n        <a (click)=\"toggleSidebar('static')\" class=\"nav-link hidden-md-down\" [tooltipHtml]=\"sidebarToggleTooltip\"\n           tooltipPlacement=\"bottom\">\n          <i class=\"fa fa-bars fa-lg\"></i>\n        </a>\n        <!-- shown on xs & sm screen. collapses and expands navigation -->\n        <a (click)=\"toggleSidebar('collapse')\" class=\"hidden-lg-up nav-link\" href=\"#\" data-html=\"true\" title=\"Show/hide<br>sidebar\" data-placement=\"bottom\">\n          <span class=\"rounded rounded-lg bg-gray text-white hidden-md-up\"><i class=\"fa fa-bars fa-lg\"></i></span>\n          <i class=\"fa fa-bars fa-lg hidden-sm-down\"></i>\n        </a>\n      </li>\n      <!--\n      <li class=\"nav-item ml-sm hidden-sm-down\"><a class=\"nav-link\" href=\"#\"><i class=\"fa fa-refresh fa-lg\"></i></a></li>\n      <li class=\"nav-item ml-n-xs hidden-sm-down\"><a class=\"nav-link\" href=\"#\"><i class=\"fa fa-times fa-lg\"></i></a></li>\n      -->\n    </ul>\n    <ul class=\"nav navbar-nav navbar-right hidden-md-up\">\n      <li class=\"nav-item\">\n        <!-- toggles chat -->\n        <a class=\"nav-link\" href=\"#\" (click)=\"toggleChat()\">\n          <span class=\"rounded rounded-lg bg-gray text-white\"><i class=\"fa fa-globe fa-lg\"></i></span>\n        </a>\n      </li>\n    </ul>\n    <a class=\"navbar-brand hidden-md-up\" [routerLink]=\" ['/app/dashboard'] \">\n      <i class=\"fa fa-circle text-gray mr-n-sm\"></i>\n      <i class=\"fa fa-circle text-warning\"></i>\n      &nbsp;\n      {{config.name}}\n      &nbsp;\n      <i class=\"fa fa-circle text-warning mr-n-sm\"></i>\n      <i class=\"fa fa-circle text-gray\"></i>\n    </a>\n  </div>\n\n  <!-- this part is hidden for xs screens -->\n  <div class=\"collapse navbar-collapse\">\n    <!-- search-results form! link it to your search-results server \n    <form class=\"navbar-form pull-xs-left\" role=\"search\" #f=\"ngForm\" (ngSubmit)=\"onDashboardSearch(f)\">\n      <div class=\"form-group\">\n        <div class=\"input-group input-group-no-border\">\n          <span class=\"input-group-addon\">\n              <i class=\"fa fa-search\"></i>\n          </span>\n          <input class=\"form-control\" name=\"search\" ngModel type=\"text\" placeholder=\"Search Dashboard\">\n        </div>\n      </div>\n    </form>-->\n    <ul class=\"nav navbar-nav pull-xs-right\" (click)=\"$event.preventDefault()\">\n      <li class=\"nav-item dropdown\">\n        <a class=\"nav-link dropdown-toggle dropdown-toggle-notifications\"\n           id=\"notifications-dropdown-toggle\" data-toggle=\"dropdown\">\n                <span class=\"thumb-sm avatar pull-xs-left\">\n                    <img class=\"img-circle\" src=\"{{pictureUrl}}\" alt=\"...\">\n                </span>\n          &nbsp;\n          {{firstname}} <strong>{{lastname}}</strong>&nbsp;\n                <!--<span class=\"circle bg-warning fw-bold\">\n                    13\n                </span>-->\n          <!--<b class=\"caret\"></b>-->\n        </a>\n        <!-- ready to use notifications dropdown. inspired by smartadmin template.\n                     consists of three components:\n                     notifications, messages, progress. leave or add what's important for you.\n                     uses Sing's ajax-load plugin for async content loading. See #load-notifications-btn -->\n        <div notifications class=\"dropdown-menu dropdown-menu-right animated animated-fast fadeInUp\"\n          ></div>\n      </li>\n      <li class=\"nav-item dropdown\">\n        <a href class=\"nav-link dropdown-toggle\" data-toggle=\"dropdown\">\n          <i class=\"fa fa-cog fa-lg\"></i>\n        </a>\n        <ul class=\"dropdown-menu dropdown-menu-right\">\n          <!--<li><a class=\"dropdown-item\" href=\"#\"><i class=\"glyphicon glyphicon-user\"></i> &nbsp; My Account</a></li>-->\n          <!--<li class=\"dropdown-divider\"></li>-->\n          <!--<li><a class=\"dropdown-item\" [routerLink]=\" ['/app', 'extra', 'calendar'] \">Calendar</a></li>-->\n          <li><a class=\"dropdown-item\" [routerLink]=\" ['/app', 'inbox'] \">Inbox &nbsp;&nbsp;<span class=\"badge label-pill bg-danger text-white animated bounceIn\">9</span></a></li>\n          <li class=\"dropdown-divider\"></li>\n          <li><a class=\"dropdown-item\" [routerLink]=\" ['/'] \"><i class=\"fa fa-sign-out\"></i> &nbsp; Log Out</a></li>\n        </ul>\n      </li>\n      <!--<li class=\"nav-item\">\n        <a class=\"nav-link\" href=\"#\" (click)=\"toggleChat()\" id=\"toggle-chat\">\n          <i class=\"fa fa-globe fa-lg\"></i>\n        </a>\n        <div id=\"chat-notification\" class=\"chat-notification hide\" (click)=\"toggleChat()\">\n          <div class=\"chat-notification-inner\">\n            <h6 class=\"title\">\n              <span class=\"thumb-xs\">\n                  <img src=\"assets/img/people/a6.jpg\" class=\"img-circle mr-xs pull-xs-left\">\n              </span>\n              Jess Smith\n            </h6>\n            <p class=\"text\">Hi there! <br> This is a completely new version of Sing App <br> built with <strong class=\"text-danger\">Angular 2.0 Final Release</strong> </p>\n          </div>\n        </div>\n      </li>-->\n    </ul>\n  </div>\n</div>\n"
+module.exports = "<div class=\"container-fluid\">\n  <!-- .navbar-header contains links seen on xs & sm screens -->\n  <div class=\"navbar-header\">\n    <ul class=\"nav navbar-nav\">\n      <li class=\"nav-item\">\n        <template #sidebarToggleTooltip>\n          Turn on/off <br> sidebar <br>collapsing\n        </template>\n        <!-- whether to automatically collapse sidebar on mouseleave. If activated acts more like usual admin templates -->\n        <a (click)=\"toggleSidebar('static')\" class=\"nav-link hidden-md-down\" [tooltipHtml]=\"sidebarToggleTooltip\"\n           tooltipPlacement=\"bottom\">\n          <i class=\"fa fa-bars fa-lg\"></i>\n        </a>\n        <!-- shown on xs & sm screen. collapses and expands navigation -->\n        <a (click)=\"toggleSidebar('collapse')\" class=\"hidden-lg-up nav-link\" href=\"#\" data-html=\"true\" title=\"Show/hide<br>sidebar\" data-placement=\"bottom\">\n          <span class=\"rounded rounded-lg bg-gray text-white hidden-md-up\"><i class=\"fa fa-bars fa-lg\"></i></span>\n          <i class=\"fa fa-bars fa-lg hidden-sm-down\"></i>\n        </a>\n      </li>\n      <!--\n      <li class=\"nav-item ml-sm hidden-sm-down\"><a class=\"nav-link\" href=\"#\"><i class=\"fa fa-refresh fa-lg\"></i></a></li>\n      <li class=\"nav-item ml-n-xs hidden-sm-down\"><a class=\"nav-link\" href=\"#\"><i class=\"fa fa-times fa-lg\"></i></a></li>\n      -->\n    </ul>\n    <ul class=\"nav navbar-nav navbar-right hidden-md-up\">\n      <li class=\"nav-item\">\n        <!-- toggles chat -->\n        <a class=\"nav-link\" href=\"#\" (click)=\"toggleChat()\">\n          <span class=\"rounded rounded-lg bg-gray text-white\"><i class=\"fa fa-globe fa-lg\"></i></span>\n        </a>\n      </li>\n    </ul>\n    <a class=\"navbar-brand hidden-md-up\" [routerLink]=\" ['/app/dashboard'] \">\n      <i class=\"fa fa-circle text-gray mr-n-sm\"></i>\n      <i class=\"fa fa-circle text-warning\"></i>\n      &nbsp;\n      {{config.name}}\n      &nbsp;\n      <i class=\"fa fa-circle text-warning mr-n-sm\"></i>\n      <i class=\"fa fa-circle text-gray\"></i>\n    </a>\n  </div>\n\n  <!-- this part is hidden for xs screens -->\n  <div class=\"collapse navbar-collapse\">\n    <!-- search-results form! link it to your search-results server \n    <form class=\"navbar-form pull-xs-left\" role=\"search\" #f=\"ngForm\" (ngSubmit)=\"onDashboardSearch(f)\">\n      <div class=\"form-group\">\n        <div class=\"input-group input-group-no-border\">\n          <span class=\"input-group-addon\">\n              <i class=\"fa fa-search\"></i>\n          </span>\n          <input class=\"form-control\" name=\"search\" ngModel type=\"text\" placeholder=\"Search Dashboard\">\n        </div>\n      </div>\n    </form>-->\n    <ul class=\"nav navbar-nav pull-xs-right\" (click)=\"$event.preventDefault()\">\n      <li class=\"nav-item dropdown\">\n        <a class=\"nav-link dropdown-toggle dropdown-toggle-notifications\"\n           id=\"notifications-dropdown-toggle\" data-toggle=\"dropdown\">\n                <span class=\"thumb-sm avatar pull-xs-left\">\n                    <img class=\"img-circle\" src=\"{{pictureUrl}}\" alt=\"...\">\n                </span>\n          &nbsp;\n          {{firstname}} <strong>{{lastname}}</strong>&nbsp;\n                <!--<span class=\"circle bg-warning fw-bold\">\n                    13\n                </span>-->\n          <!--<b class=\"caret\"></b>-->\n        </a>\n        <!-- ready to use notifications dropdown. inspired by smartadmin template.\n                     consists of three components:\n                     notifications, messages, progress. leave or add what's important for you.\n                     uses Sing's ajax-load plugin for async content loading. See #load-notifications-btn -->\n        <div notifications class=\"dropdown-menu dropdown-menu-right animated animated-fast fadeInUp\"\n          ></div>\n      </li>\n      <li class=\"nav-item dropdown\">\n        <a href class=\"nav-link dropdown-toggle\" data-toggle=\"dropdown\">\n          <i class=\"fa fa-cog fa-lg\"></i>\n        </a>\n        <ul class=\"dropdown-menu dropdown-menu-right\">\n          <!--<li><a class=\"dropdown-item\" href=\"#\"><i class=\"glyphicon glyphicon-user\"></i> &nbsp; My Account</a></li>-->\n          <!--<li class=\"dropdown-divider\"></li>-->\n          <!--<li><a class=\"dropdown-item\" [routerLink]=\" ['/app', 'extra', 'calendar'] \">Calendar</a></li>-->\n          <li><a class=\"dropdown-item\" [routerLink]=\" ['/app', 'inbox'] \">Inbox &nbsp;&nbsp;<span class=\"badge label-pill bg-danger text-white animated bounceIn\">9</span></a></li>\n          <li class=\"dropdown-divider\"></li>\n          <li><a class=\"dropdown-item\" [routerLink]=\" ['/'] \" (click)=\"logout()\"><i class=\"fa fa-sign-out\"></i> &nbsp; Log Out</a></li>\n        </ul>\n      </li>\n      <!--<li class=\"nav-item\">\n        <a class=\"nav-link\" href=\"#\" (click)=\"toggleChat()\" id=\"toggle-chat\">\n          <i class=\"fa fa-globe fa-lg\"></i>\n        </a>\n        <div id=\"chat-notification\" class=\"chat-notification hide\" (click)=\"toggleChat()\">\n          <div class=\"chat-notification-inner\">\n            <h6 class=\"title\">\n              <span class=\"thumb-xs\">\n                  <img src=\"assets/img/people/a6.jpg\" class=\"img-circle mr-xs pull-xs-left\">\n              </span>\n              Jess Smith\n            </h6>\n            <p class=\"text\">Hi there! <br> This is a completely new version of Sing App <br> built with <strong class=\"text-danger\">Angular 2.0 Final Release</strong> </p>\n          </div>\n        </div>\n      </li>-->\n    </ul>\n  </div>\n</div>\n"
 
 /***/ },
 
@@ -13297,74 +13297,74 @@ module.exports = "<div class=\"js-sidebar-content\">\r\n  <header class=\"logo h
 var core_1 = __webpack_require__("./node_modules/@angular/core/index.js");
 var http_1 = __webpack_require__("./node_modules/@angular/http/index.js");
 __webpack_require__("./node_modules/rxjs/add/operator/map.js");
+var UrlService_1 = __webpack_require__("./src/app/services/UrlService.ts");
 var AIService = (function () {
-    //baseUrl:string = "http://localhost/";
     function AIService(http) {
         this.http = http;
-        this.baseUrl = "https://aprilappserver.azurewebsites.net/";
+        this.urlService = new UrlService_1.UrlService();
     }
     AIService.prototype.getAllphrases = function () {
-        return this.http.get(this.baseUrl + 'phrases/getAllphrases')
+        return this.http.get(this.urlService.baseUrl + 'phrases/getAllphrases')
             .map(function (res) { return res.json(); });
     };
     AIService.prototype.deleteBlockPhraseGroup = function (Id, indexId) {
-        return this.http.get(this.baseUrl + 'phrasegroup/deletePhraseGroupBlock/' + Id + '/' + indexId)
+        return this.http.get(this.urlService.baseUrl + 'phrasegroup/deletePhraseGroupBlock/' + Id + '/' + indexId)
             .map(function (res) { return res.json(); });
     };
     AIService.prototype.deleteTextBoxPhraseGroup = function (phraseGroupId, index) {
-        return this.http.get(this.baseUrl + 'phrasegroup/deleteTextBoxPhraseGroup/' + phraseGroupId + '/' + index)
+        return this.http.get(this.urlService.baseUrl + 'phrasegroup/deleteTextBoxPhraseGroup/' + phraseGroupId + '/' + index)
             .map(function (res) { return res.json(); });
     };
     AIService.prototype.addPhrase = function (phraseText, _phraseGroupId) {
         var body = JSON.stringify({ "phraseText": phraseText, '_phraseGroupId': _phraseGroupId });
         var headers = new http_1.Headers({ 'Content-Type': 'application/json' });
         var options = new http_1.RequestOptions({ method: 'post', headers: headers });
-        return this.http.post(this.baseUrl + "phrases/addPhrase", body, options)
+        return this.http.post(this.urlService.baseUrl + "phrases/addPhrase", body, options)
             .map(function (res) { return res.json(); });
     };
     AIService.prototype.updatePhrase = function (phraseText, phraseId) {
         var body = JSON.stringify({ "phraseText": phraseText, 'phraseId': phraseId });
         var headers = new http_1.Headers({ 'Content-Type': 'application/json' });
         var options = new http_1.RequestOptions({ method: 'post', headers: headers });
-        return this.http.post(this.baseUrl + "phrases/updatePhrase", body, options)
+        return this.http.post(this.urlService.baseUrl + "phrases/updatePhrase", body, options)
             .map(function (res) { return res.json(); });
     };
     AIService.prototype.updatePhraseGroup = function (_blockId, _phraseGroupId) {
         var body = JSON.stringify({ "_blockId": _blockId, '_phraseGroupId': _phraseGroupId });
         var headers = new http_1.Headers({ 'Content-Type': 'application/json' });
         var options = new http_1.RequestOptions({ method: 'post', headers: headers });
-        return this.http.post(this.baseUrl + "phrasegroup/updatePhraseGroup", body, options)
+        return this.http.post(this.urlService.baseUrl + "phrasegroup/updatePhraseGroup", body, options)
             .map(function (res) { return res.json(); });
     };
     AIService.prototype.deleteUsers = function (Id) {
-        return this.http.get(this.baseUrl + 'users/deleteUser/' + Id)
+        return this.http.get(this.urlService.baseUrl + 'users/deleteUser/' + Id)
             .map(function (res) { return res.json(); });
     };
     AIService.prototype.deletePhraseGroup = function (Id) {
-        return this.http.get(this.baseUrl + 'phrasegroup/deletePhraseGroup/' + Id)
+        return this.http.get(this.urlService.baseUrl + 'phrasegroup/deletePhraseGroup/' + Id)
             .map(function (res) { return res.json(); });
     };
     AIService.prototype.deletePhrase = function (Id) {
-        return this.http.get(this.baseUrl + 'phrases/deletePhrases/' + Id)
+        return this.http.get(this.urlService.baseUrl + 'phrases/deletePhrases/' + Id)
             .map(function (res) { return res.json(); });
     };
     AIService.prototype.changePhraseGroupType = function (Id, type) {
-        return this.http.get(this.baseUrl + 'phrasegroup/changePhraseGroup/' + Id + '/' + type)
+        return this.http.get(this.urlService.baseUrl + 'phrasegroup/changePhraseGroup/' + Id + '/' + type)
             .map(function (res) { return res.json(); });
     };
     AIService.prototype.addTextBoxPhraseGroup = function (Id) {
-        return this.http.get(this.baseUrl + 'phrasegroup/addTextBoxPhraseGroup/' + Id)
+        return this.http.get(this.urlService.baseUrl + 'phrasegroup/addTextBoxPhraseGroup/' + Id)
             .map(function (res) { return res.json(); });
     };
     AIService.prototype.editTextBoxPhraseGroup = function (Id, indexId, text) {
-        return this.http.get(this.baseUrl + 'phrasegroup/editTextBoxPhraseGroup/' + Id + '/' + indexId + '/' + text)
+        return this.http.get(this.urlService.baseUrl + 'phrasegroup/editTextBoxPhraseGroup/' + Id + '/' + indexId + '/' + text)
             .map(function (res) { return res.json(); });
     };
     AIService.prototype.postPhrasesGroups = function () {
         var body = JSON.stringify({ 'id': 0 });
         var headers = new http_1.Headers({ 'Content-Type': 'application/json' });
         var options = new http_1.RequestOptions({ method: 'post', headers: headers });
-        return this.http.post(this.baseUrl + "phrasegroup/addPhraseGroup", body, options)
+        return this.http.post(this.urlService.baseUrl + "phrasegroup/addPhraseGroup", body, options)
             .map(function (res) { return res.json(); });
     };
     AIService = __decorate([
@@ -13387,154 +13387,166 @@ exports.AIService = AIService;
 var core_1 = __webpack_require__("./node_modules/@angular/core/index.js");
 var http_1 = __webpack_require__("./node_modules/@angular/http/index.js");
 __webpack_require__("./node_modules/rxjs/add/operator/map.js");
+var UrlService_1 = __webpack_require__("./src/app/services/UrlService.ts");
 var BotTrainingService = (function () {
-    //baseUrl:string = "http://localhost/";
     function BotTrainingService(http) {
         this.http = http;
-        this.baseUrl = "https://aprilappserver.azurewebsites.net/";
+        this.urlService = new UrlService_1.UrlService();
     }
     BotTrainingService.prototype.updateBlockName = function (blockId, blockName) {
-        return this.http.get(this.baseUrl + 'blocks/updateBlockName/' + blockId + '/' + blockName)
+        return this.http.get(this.urlService.baseUrl + 'blocks/updateBlockName/' + blockId + '/' + blockName)
             .map(function (res) { return res.json(); });
     };
     BotTrainingService.prototype.updateGroupName = function (groupId, groupName) {
-        return this.http.get(this.baseUrl + 'groups/updateGroupName/' + groupId + '/' + groupName)
+        return this.http.get(this.urlService.baseUrl + 'groups/updateGroupName/' + groupId + '/' + groupName)
             .map(function (res) { return res.json(); });
     };
     BotTrainingService.prototype.updateAddBtns = function (responseMessageId, obj, type, responseMessageType) {
         var body = JSON.stringify({ "responseMessageId": responseMessageId, "object": obj, "type": type, "responseMessageType": responseMessageType });
         var headers = new http_1.Headers({ 'Content-Type': 'application/json' });
         var options = new http_1.RequestOptions({ method: 'post', headers: headers });
-        return this.http.post(this.baseUrl + "responsemessagesroute/editTextCardAddBtn", body, options)
+        return this.http.post(this.urlService.baseUrl + "responsemessagesroute/editTextCardAddBtn", body, options)
             .map(function (res) { return res.json(); });
     };
     BotTrainingService.prototype.updateGalleryAddBtns = function (responseMessageId, cardId, obj, type, responseMessageType) {
         var body = JSON.stringify({ "responseMessageId": responseMessageId, "cardId": cardId, "object": obj, "type": type, "responseMessageType": responseMessageType });
         var headers = new http_1.Headers({ 'Content-Type': 'application/json' });
         var options = new http_1.RequestOptions({ method: 'post', headers: headers });
-        return this.http.post(this.baseUrl + "responsemessagesroute/editGalleryCardAddBtn", body, options)
+        return this.http.post(this.urlService.baseUrl + "responsemessagesroute/editGalleryCardAddBtn", body, options)
             .map(function (res) { return res.json(); });
     };
     BotTrainingService.prototype.getAllGroups = function (type) {
-        return this.http.get(this.baseUrl + 'groups/getGroupsBlocks/' + type)
+        return this.http.get(this.urlService.baseUrl + 'groups/getGroupsBlocks/' + type)
             .map(function (res) { return res.json(); });
     };
     BotTrainingService.prototype.getAllGroups2 = function (type) {
-        return this.http.get(this.baseUrl + 'groups/getGroupsBlocks2/' + type)
+        return this.http.get(this.urlService.baseUrl + 'groups/getGroupsBlocks2/' + type)
             .map(function (res) { return res.json(); });
     };
     BotTrainingService.prototype.getAlBlocks = function () {
-        return this.http.get(this.baseUrl + 'blocks/getAllBlocks')
+        return this.http.get(this.urlService.baseUrl + 'blocks/getAllBlocks')
             .map(function (res) { return res.json(); });
     };
     BotTrainingService.prototype.getAllResponseMessages = function (blockId) {
-        return this.http.get(this.baseUrl + 'blocks/getResponseMessagesOfBlock/' + blockId)
+        return this.http.get(this.urlService.baseUrl + 'blocks/getResponseMessagesOfBlock/' + blockId)
             .map(function (res) { return res.json(); });
     };
     BotTrainingService.prototype.deleteGroup = function (Id) {
-        return this.http.get(this.baseUrl + 'groups/deleteOrderById/' + Id)
+        return this.http.get(this.urlService.baseUrl + 'groups/deleteOrderById/' + Id)
             .map(function (res) { return res.json(); });
     };
     BotTrainingService.prototype.deleteOneGalleryCard = function (Id, indexId) {
-        return this.http.get(this.baseUrl + 'responsemessage/deleteOneGalleryCard/' + Id + '/' + indexId)
+        return this.http.get(this.urlService.baseUrl + 'responsemessage/deleteOneGalleryCard/' + Id + '/' + indexId)
             .map(function (res) { return res.json(); });
     };
-    BotTrainingService.prototype.updateTitleText = function (Id, Text, indexId, type) {
-        var body = JSON.stringify({ "responseMessageId": Id, "titleText": Text, "indexId": indexId, "type": type });
+    BotTrainingService.prototype.deleteOneArticleCard = function (Id, indexId) {
+        return this.http.get(this.urlService.baseUrl + 'responsemessage/deleteOneArticleCard/' + Id + '/' + indexId)
+            .map(function (res) { return res.json(); });
+    };
+    BotTrainingService.prototype.updateTitleText = function (Id, text, indexId, type) {
+        console.log(text);
+        var body = JSON.stringify({ "responseMessageId": Id, "titleText": text, "indexId": indexId, "type": type });
         var headers = new http_1.Headers({ 'Content-Type': 'application/json' });
         var options = new http_1.RequestOptions({ method: 'post', headers: headers });
-        return this.http.post(this.baseUrl + "responsemessage/updateTitle", body, options)
+        return this.http.post(this.urlService.baseUrl + "responsemessage/updateTitle", body, options)
             .map(function (res) { return res.json(); });
     };
     BotTrainingService.prototype.updateRandomTitleText = function (Id, text, indexId) {
         var body = JSON.stringify({ "responseMessageId": Id, "titleText": text, "indexId": indexId });
         var headers = new http_1.Headers({ 'Content-Type': 'application/json' });
         var options = new http_1.RequestOptions({ method: 'post', headers: headers });
-        return this.http.post(this.baseUrl + "responsemessage/updateRandomTitle", body, options)
+        return this.http.post(this.urlService.baseUrl + "responsemessage/updateRandomTitle", body, options)
             .map(function (res) { return res.json(); });
     };
-    BotTrainingService.prototype.updateArticleText = function (Id, Text) {
-        var body = JSON.stringify({ "responseMessageId": Id, "text": Text });
+    BotTrainingService.prototype.updateArticleText = function (responseMessageId, Id, Text) {
+        var body = JSON.stringify({ "responseMessageId": responseMessageId, "text": Text, "indexId": Id });
         var headers = new http_1.Headers({ 'Content-Type': 'application/json' });
         var options = new http_1.RequestOptions({ method: 'post', headers: headers });
-        return this.http.post(this.baseUrl + "responsemessage/updateArticle", body, options)
+        return this.http.post(this.urlService.baseUrl + "responsemessage/updateArticle", body, options)
             .map(function (res) { return res.json(); });
     };
     BotTrainingService.prototype.updateDescriptionText = function (Id, Text, indexId) {
-        return this.http.get(this.baseUrl + 'responsemessage/updateDescription/' + Id + '/' + indexId + '/' + Text)
+        return this.http.get(this.urlService.baseUrl + 'responsemessage/updateDescription/' + Id + '/' + indexId + '/' + Text)
             .map(function (res) { return res.json(); });
     };
     BotTrainingService.prototype.updateUrlText = function (Id, Text, indexId) {
         var body = JSON.stringify({ "responseMessageId": Id, "indexId": indexId, "urlText": Text });
         var headers = new http_1.Headers({ 'Content-Type': 'application/json' });
         var options = new http_1.RequestOptions({ method: 'post', headers: headers });
-        return this.http.post(this.baseUrl + "responsemessage/updateUrl", body, options)
+        return this.http.post(this.urlService.baseUrl + "responsemessage/updateUrl", body, options)
             .map(function (res) { return res.json(); });
     };
     BotTrainingService.prototype.deleteBlock = function (Id) {
-        return this.http.get(this.baseUrl + 'blocks/deleteBlock/' + Id)
+        return this.http.get(this.urlService.baseUrl + 'blocks/deleteBlock/' + Id)
             .map(function (res) { return res.json(); });
     };
     BotTrainingService.prototype.deleteResponseMessage = function (Id) {
-        return this.http.get(this.baseUrl + 'responsemessage/deleteResponseMessage/' + Id)
+        return this.http.get(this.urlService.baseUrl + 'responsemessage/deleteResponseMessage/' + Id)
             .map(function (res) { return res.json(); });
     };
     BotTrainingService.prototype.deleteAddButton = function (AddButtonId, ParentId, type) {
-        return this.http.get(this.baseUrl + 'responsemessage/deleteAddButton/' + ParentId + '/' + AddButtonId + '/' + type)
+        return this.http.get(this.urlService.baseUrl + 'responsemessage/deleteAddButton/' + ParentId + '/' + AddButtonId + '/' + type)
             .map(function (res) { return res.json(); });
     };
     BotTrainingService.prototype.deleteQuickReply = function (AddButtonId, ParentId) {
-        return this.http.get(this.baseUrl + 'responsemessage/deleteQuickReply/' + ParentId + '/' + AddButtonId)
+        return this.http.get(this.urlService.baseUrl + 'responsemessage/deleteQuickReply/' + ParentId + '/' + AddButtonId)
             .map(function (res) { return res.json(); });
     };
     BotTrainingService.prototype.deleteRandomText = function (AddButtonId, ParentId) {
-        return this.http.get(this.baseUrl + 'responsemessage/deleteRandomText/' + ParentId + '/' + AddButtonId)
+        return this.http.get(this.urlService.baseUrl + 'responsemessage/deleteRandomText/' + ParentId + '/' + AddButtonId)
             .map(function (res) { return res.json(); });
     };
     BotTrainingService.prototype.addRandomText = function (Id, count) {
-        return this.http.get(this.baseUrl + 'responsemessage/addTextRandom/' + Id + '/' + count)
+        return this.http.get(this.urlService.baseUrl + 'responsemessage/addTextRandom/' + Id + '/' + count)
             .map(function (res) { return res.json(); });
     };
     BotTrainingService.prototype.addGroup = function (group, type) {
         var body = JSON.stringify({ "name": group, "type": type, "description": group });
         var headers = new http_1.Headers({ 'Content-Type': 'application/json' });
         var options = new http_1.RequestOptions({ method: 'post', headers: headers });
-        return this.http.post(this.baseUrl + "groups/addGroup", body, options)
+        return this.http.post(this.urlService.baseUrl + "groups/addGroup", body, options)
             .map(function (res) { return res.json(); });
     };
     BotTrainingService.prototype.addBlocks = function (block, type, groupId) {
         var body = JSON.stringify({ "name": block, "type": type, "description": block, "_groupId": groupId });
         var headers = new http_1.Headers({ 'Content-Type': 'application/json' });
         var options = new http_1.RequestOptions({ method: 'post', headers: headers });
-        return this.http.post(this.baseUrl + "blocks/addBlock", body, options)
+        return this.http.post(this.urlService.baseUrl + "blocks/addBlock", body, options)
             .map(function (res) { return res.json(); });
     };
     BotTrainingService.prototype.addResponseMessage = function (data, type, blockId) {
         var body = JSON.stringify({ "data": data, "type": type, "_blockId": blockId });
         var headers = new http_1.Headers({ 'Content-Type': 'application/json' });
         var options = new http_1.RequestOptions({ method: 'post', headers: headers });
-        return this.http.post(this.baseUrl + "responsemessage/addResponseMessage", body, options)
+        return this.http.post(this.urlService.baseUrl + "responsemessage/addResponseMessage", body, options)
             .map(function (res) { return res.json(); });
     };
     BotTrainingService.prototype.addGalleryCard = function (data, responseMessageId) {
         var body = JSON.stringify({ "data": data, "responseMessageId": responseMessageId });
         var headers = new http_1.Headers({ 'Content-Type': 'application/json' });
         var options = new http_1.RequestOptions({ method: 'post', headers: headers });
-        return this.http.post(this.baseUrl + "responsemessage/addGalleryCard", body, options)
+        return this.http.post(this.urlService.baseUrl + "responsemessage/addGalleryCard", body, options)
+            .map(function (res) { return res.json(); });
+    };
+    BotTrainingService.prototype.addArticleCard = function (data, responseMessageId) {
+        var body = JSON.stringify({ "data": data, "responseMessageId": responseMessageId });
+        var headers = new http_1.Headers({ 'Content-Type': 'application/json' });
+        var options = new http_1.RequestOptions({ method: 'post', headers: headers });
+        return this.http.post(this.urlService.baseUrl + "responsemessage/addArticleCard", body, options)
             .map(function (res) { return res.json(); });
     };
     BotTrainingService.prototype.addAddButton = function (responseMessageId, data, type, index) {
         var body = JSON.stringify({ "data": data, "responseMessageId": responseMessageId, "type": type, "index": index });
         var headers = new http_1.Headers({ 'Content-Type': 'application/json' });
         var options = new http_1.RequestOptions({ method: 'post', headers: headers });
-        return this.http.post(this.baseUrl + "responsemessage/addAddButton", body, options)
+        return this.http.post(this.urlService.baseUrl + "responsemessage/addAddButton", body, options)
             .map(function (res) { return res.json(); });
     };
     BotTrainingService.prototype.addQuickReply = function (responseMessageId, buttonName, _blockId, count) {
         var body = JSON.stringify({ "buttonName": buttonName, "responseMessageId": responseMessageId, "_blockId": _blockId, "count": count });
         var headers = new http_1.Headers({ 'Content-Type': 'application/json' });
         var options = new http_1.RequestOptions({ method: 'post', headers: headers });
-        return this.http.post(this.baseUrl + "responsemessage/addQuickReply", body, options)
+        return this.http.post(this.urlService.baseUrl + "responsemessage/addQuickReply", body, options)
             .map(function (res) { return res.json(); });
     };
     BotTrainingService.prototype.getPictureUrl = function (file, Id, type, indexId) {
@@ -13545,14 +13557,14 @@ var BotTrainingService = (function () {
         formData.append("indexId", indexId);
         //let body = JSON.stringify({ "name":group, "type":type, "description":group });
         var options = new http_1.RequestOptions({ method: 'post' });
-        return this.http.post(this.baseUrl + "usercode/uploadPicture", formData, options)
+        return this.http.post(this.urlService.baseUrl + "usercode/uploadPicture", formData, options)
             .map(function (res) { return res.json(); });
     };
     BotTrainingService.prototype.editQuickReply = function (buttonName, _blockId, responseMessageId, _quickReplyId) {
         var body = JSON.stringify({ "buttonName": buttonName, "responseMessageId": responseMessageId, "_blockId": _blockId, "_quickReplyId": _quickReplyId });
         var headers = new http_1.Headers({ 'Content-Type': 'application/json' });
         var options = new http_1.RequestOptions({ method: 'post', headers: headers });
-        return this.http.post(this.baseUrl + "responsemessagesroute/editQuickReply", body, options)
+        return this.http.post(this.urlService.baseUrl + "responsemessagesroute/editQuickReply", body, options)
             .map(function (res) { return res.json(); });
     };
     BotTrainingService = __decorate([
@@ -13563,62 +13575,6 @@ var BotTrainingService = (function () {
     var _a;
 }());
 exports.BotTrainingService = BotTrainingService;
-
-
-/***/ },
-
-/***/ "./src/app/services/UsersService.ts":
-/***/ function(module, exports, __webpack_require__) {
-
-"use strict";
-"use strict";
-var core_1 = __webpack_require__("./node_modules/@angular/core/index.js");
-var http_1 = __webpack_require__("./node_modules/@angular/http/index.js");
-__webpack_require__("./node_modules/rxjs/add/operator/map.js");
-var UsersService = (function () {
-    //baseUrl:string = "http://localhost/";
-    function UsersService(http) {
-        this.http = http;
-        this.baseUrl = "https://aprilappserver.azurewebsites.net/";
-    }
-    UsersService.prototype.getUsers = function () {
-        return this.http.get(this.baseUrl + 'users/getAllUsers')
-            .map(function (res) { return res.json(); });
-    };
-    UsersService.prototype.getUsersStats = function () {
-        return this.http.get(this.baseUrl + 'users/dashboardStats')
-            .map(function (res) { return res.json(); });
-    };
-    UsersService.prototype.getGenderGraphData = function () {
-        return this.http.get(this.baseUrl + 'users/dashboardGenderStats')
-            .map(function (res) { return res.json(); });
-    };
-    UsersService.prototype.authenticateAdminUser = function (email, password) {
-        var body = JSON.stringify({ "email": email, "password": password });
-        var headers = new http_1.Headers({ 'Content-Type': 'application/json' });
-        var options = new http_1.RequestOptions({ method: 'post', headers: headers });
-        return this.http.post(this.baseUrl + "users/adminUserLogin", body, options)
-            .map(function (res) { return res.json(); });
-    };
-    UsersService.prototype.getAdminData = function (Id) {
-        var body = JSON.stringify({ "userId": Id });
-        var headers = new http_1.Headers({ 'Content-Type': 'application/json' });
-        var options = new http_1.RequestOptions({ method: 'post', headers: headers });
-        return this.http.post(this.baseUrl + "users/getAdminUser", body, options)
-            .map(function (res) { return res.json(); });
-    };
-    UsersService.prototype.deleteUsers = function (Id) {
-        return this.http.get(this.baseUrl + 'users/deleteUser/' + Id)
-            .map(function (res) { return res.json(); });
-    };
-    UsersService = __decorate([
-        core_1.Injectable(), 
-        __metadata('design:paramtypes', [(typeof (_a = typeof http_1.Http !== 'undefined' && http_1.Http) === 'function' && _a) || Object])
-    ], UsersService);
-    return UsersService;
-    var _a;
-}());
-exports.UsersService = UsersService;
 
 
 /***/ }
